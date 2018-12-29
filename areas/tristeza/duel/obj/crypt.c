@@ -16,7 +16,7 @@
 #define CHARS "ABCDEFGHIJLKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"+\
               "0123456789-+<>*&/()?{[]}$.,:;'#@!` ~%" 
 
-#define DEFSEED "Crypt V 0.3 --(C) Tron--"                 
+#define DEFSEED "Crypt V 0.3 --(C) Tron--"
 
 
 private string chars;
@@ -26,7 +26,6 @@ private int *defkey;  // Default crypt seed key.
 private int *codekey; // User defined crypt seed key.
 private int len;      // Length of source characters.
 
-           
 int *compute_codekey(string str);
 
 void
@@ -35,7 +34,7 @@ reset(status arg) {
   if(arg) return;
 
   chars = CHARS;
-  len = strlen(chars);
+  len = sizeof(chars);
   defkey = compute_codekey(DEFSEED);
   codekey = ({});
 
@@ -56,9 +55,9 @@ string start, end;
 
    if(!str) return 0;
 
-   if(sscanf(chars,"%s"+str+"%s",start,end)==2) return strlen(start)+1;
+   if(sscanf(chars,"%s"+str+"%s",start,end)==2) return sizeof(start)+1;
    if(sscanf(chars,str+"%s",end)) return 1;
-   if(sscanf(chars,"%s"+str,start)) return strlen(chars);
+   if(sscanf(chars,"%s"+str,start)) return sizeof(chars);
 
    return 0;
 }
@@ -79,9 +78,9 @@ int *tmp;
 int i;
 
     if(!str) return defkey;
-                                  
+
     tmp = ({});
-    for(i=0; i<strlen(str); i++)     
+    for(i=0; i<sizeof(str); i++)
        tmp += ({displacement(str[i..i])});
 
  return tmp;
@@ -120,10 +119,9 @@ compute_new_value(int val) {
 
 varargs string
 decrypt(string str, string seed, status new, status encrypt) {
-                              
 int i, j, tmp, siz;
 string st;
-    
+
     if(!str) return 0;
 
     if(new || !codekey) 
@@ -131,11 +129,11 @@ string st;
 
     st = "";
     siz = sizeof(codekey);
-    
-    for(i=j=0; i < strlen(str); i++, j++) {
-       
+
+    for(i=j=0; i < sizeof(str); i++, j++) {
+
          if(!(j%siz)) j=0;
-           
+
            tmp = displacement(str[i..i]);
            if(tmp && encrypt)
              st += compute_new_value(tmp + codekey[j]);
@@ -143,7 +141,7 @@ string st;
              st += compute_new_value(tmp - codekey[j]);
            else st += str[i..i];
       }
-   
+
 return st;
 }
 

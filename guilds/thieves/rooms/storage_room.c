@@ -71,7 +71,7 @@ list_item(string item)
 	list_type = 1;
 	if(item=="armours") list_type = 2; else
 	if(item=="weapons") list_type = 3; else
-	if((len=strlen(item)) && item[len-1]=='s') item = item[0..len-2];
+	if((len=sizeof(item)) && item[len-1]=='s') item = item[0..len-2];
     }
 
     first = 1;
@@ -93,7 +93,7 @@ list_item(string item)
 	    text = "Num\tItem\t\t\tNum\tItem";
 	    first = 0;
 	}
-	len = strlen(str = (string)ob->short());
+	len = sizeof(str = (string)ob->short());
 	if (!old_len) {
 	    text = sprintf("%s\n%d\t%-24s",
 	      text, count, str

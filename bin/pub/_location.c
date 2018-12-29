@@ -25,7 +25,7 @@ status location_cmd(string str)
         return 1;
     }
 
-    if (strlen(str) > 20)
+    if (sizeof(str) > 20)
         return notify_fail("That location is much too long!  "
             "Please abbreviate! (max 20 chars)\n"), 0;
 

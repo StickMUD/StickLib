@@ -102,7 +102,7 @@ s, implode(m_indices(messages), "', '", "' and '")));
 		}
 		x = explode(t, " ");
 		while (i < sizeof(x)) {
-			if (!strlen(x[i])) {
+			if (!sizeof(x[i])) {
 				x[i] = 0;
 				continue;	// Skip extra spaces...
 			}

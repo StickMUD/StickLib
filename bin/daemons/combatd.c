@@ -118,7 +118,7 @@ npc_hit_desc(object me, object ob, int dmg)
 
   if (me->query(NPC_CONTROLLED))
     me->tell_me(snd + "You" +
-		(what ? " " + what[0..strlen(what)-2] : "") + " " +
+		(what ? " " + what[0..sizeof(what)-2] : "") + " " +
 		(string)ob->query_name(0, me) + how + ".");
 
   if (ob)

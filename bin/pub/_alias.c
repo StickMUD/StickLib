@@ -22,7 +22,7 @@ int	i, siz;
          tmp2 = m_values(aliases);
          me->tell_me("Aliases:\n");
          siz = sizeof(aliases);
-        
+
          while (i < siz) {
 		tmp1[i] = sprintf("%3d) %-15s = %s",
 		  i+1, tmp1[i], tmp2[i]);
@@ -35,7 +35,7 @@ int	i, siz;
 
 	sscanf(s, "%t%s", s);
 
-   if(sscanf(s, "%s%.1t%s", name, alias) < 2 || !(i = strlen(alias))) {
+   if(sscanf(s, "%s%.1t%s", name, alias) < 2 || !(i = sizeof(alias))) {
       name = s;
       alias = 0;
    }
@@ -47,7 +47,7 @@ int	i, siz;
 	 me->tell_me("Usage: alias [ [-h] [-help] [-clear] [-del[ete] <alias>] ] "+
 		"[<alias> [string]]");
          return 1;
- 
+
       case "-clear":
          me->set_command_data("alias", 0, 0);
          return 1;

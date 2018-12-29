@@ -36,7 +36,7 @@ int	i, siz;
 
 	sscanf(s, "%.1t%s", s);
 
-   if(sscanf(s, "%s %s", cmd, command) < 2 || !strlen(command)) {
+   if(sscanf(s, "%s %s", cmd, command) < 2 || !sizeof(command)) {
       cmd = s;
       command = 0;
    }

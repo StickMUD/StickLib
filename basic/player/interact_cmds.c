@@ -60,7 +60,7 @@ communicate(string str)
 
     //   if (dump_esc(str)) return 1;
 
-    if (i = strlen(str))
+    if (i = sizeof(str))
 	switch (str[i - 1]) {
     case '?':
 	dummy = "asks";	// TODO: (perhaps) call ask_living()s

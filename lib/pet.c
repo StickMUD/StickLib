@@ -192,15 +192,15 @@ int catch_feeling(string verb, string arg) {
 int catch_show(object shower, object showee) {
     if(shower != master)
         return 0;
- 
+
     // The /bin/pub/_show.c file does a message to let people know
     // that the showing of objects is actually done.  All that's left
     // is for us to print out the long description of the pet
     if(query_long())
         showee->tell_me(TO->query_long());
-    return 1;   
+    return 1;
 }
- 
+
 varargs status get(status silent) {
     if(!master  &&  petFlags & F_PET_HAS_MASTER) {
         destruct(TO);
@@ -208,14 +208,14 @@ varargs status get(status silent) {
     }
     if(!TP) return 1;  // It must know what it's doing
     if(TP != master) {
-        if(!silent  &&  pickUpMsg  &&  strlen(pickUpMsg))
+        if(!silent  &&  pickUpMsg  &&  sizeof(pickUpMsg))
              if(ENV(TO))
                 ENV(TO)->tell_here(pickUpMsg);
         return 0;
     }
     return 1;
 }
- 
+
 varargs status drop(status silent) {
     // return 1 means you can't drop it.
     if(!master  &&  petFlags & F_PET_HAS_MASTER) {

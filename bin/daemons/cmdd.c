@@ -149,7 +149,7 @@ int i;
 		c += ({ s });
 	}
 
-	if (stringp(path) && strlen(path)) {
+	if (stringp(path) && sizeof(path)) {
 		s = RESOLVE_PATH(path, player);
 		if (hash[s] || rehash(s)) {
 			if (!c) c = ({ });

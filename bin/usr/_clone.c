@@ -49,7 +49,7 @@ clone_cmd(string str) {
     tmp = (string)this_player()->query_env("MCLONE");
     if(tmp) {
 	message ="";
-      for(i=0, ie=strlen(tmp)-1, j=0 ; i < ie ; i++) {
+      for(i=0, ie=sizeof(tmp)-1, j=0 ; i < ie ; i++) {
         if(tmp[i] == ASDOL && tmp[i+1] == ASN) {
           if( i == 0 ) message += (string)this_player()->query_name();
           else message += tmp[j..i-1] + (string)this_player()->query_name();

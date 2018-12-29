@@ -190,7 +190,7 @@ on, off, toggle, send, list, who, hist, tail, more and ban.");
       return 1;
     }
 
-  if (strlen(msg) < 1)
+  if (sizeof(msg) < 1)
     {
       // Empty msg: list channel.
       me->more((string *)CHANNEL_D->list_channel(ch, me));

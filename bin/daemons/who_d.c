@@ -143,7 +143,7 @@ nomask string *who_list(object me, object *who)
 
             title_field = (string)who_member[i]->query_title();
 
-            if (strlen(title_field) > 33)
+            if (sizeof(title_field) > 33)
                 title_field = title_field[0..29] + "...";
 
             name_field += " " + title_field;

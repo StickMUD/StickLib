@@ -11,7 +11,7 @@ log_file(string file,string str)
 
     file_name = "/log/" + file;
 
-    if (sizeof(regexp(({file}), "/")) || file[0] == '.' || strlen(file) > 30 )
+    if (sizeof(regexp(({file}), "/")) || file[0] == '.' || sizeof(file) > 30 )
     {
         write("Illegal file name to log_file("+file+")\n");
         return;

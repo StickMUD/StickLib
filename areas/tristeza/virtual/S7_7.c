@@ -178,7 +178,7 @@ why_did(string str)
 {
 string who, what;
 int i;
-	i = strlen(str) - 1;
+	i = sizeof(str) - 1;
 	if (str[i..i] == "\n")
 		str = str[0..i-1];
 	if (sscanf(str, "%s %s", who, what) < 2 || !test_if_valid_who(who))

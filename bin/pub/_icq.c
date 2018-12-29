@@ -25,13 +25,13 @@ status icq_cmd(string str)
         return 1;
     }
 
-    if (strlen(str) > 8)
+    if (sizeof(str) > 8)
         return notify_fail("That number is much too large!  "
             "Please check again! (max 8 digits)\n"), 0;
 
     flag = 0;
 
-    for (t = 0; t < strlen(str); t++)
+    for (t = 0; t < sizeof(str); t++)
         if (str[t] < '0' || str[t] > '9')
             flag = 1;
 

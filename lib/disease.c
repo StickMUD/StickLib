@@ -625,7 +625,7 @@ delirious_talk()
 		    })[random(48)] + " ";
     }
 
-	if (tmp[strlen(tmp) - 1] == ' ')
+	if (tmp[sizeof(tmp) - 1] == ' ')
 		tmp = tmp[0..<2];
 
     return tmp;

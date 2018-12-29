@@ -366,14 +366,14 @@ query_valid_name(string str)
         sscanf(str, "%t%s", str);       // Let's remove leading white spaces,
                                         // -+ Doomdark 22-jul-96 +-
 if (str == "" || sizeof(explode(str," ")) != 1) return 0;
- 
-        j = i = strlen(str)-1;
+
+        j = i = sizeof(str)-1;
         while ( str[j] == ' ' ) j--;    // find last non-space char
         if (j != i)
                 str = capitalize(str[0..j]);
         else
                 str = capitalize(str);
- 
+
         if ( str == "Guest" ) return 0;
         for ( i=0; i<sizeof(_ILLEGAL_CHARS); i++ )
           if ( strstr(str,_ILLEGAL_CHARS[i]) != -1 ) return 0;

@@ -25,7 +25,7 @@ status name_cmd(string str)
         return 1;
     }
 
-    if (strlen(str) > 25)
+    if (sizeof(str) > 25)
         return notify_fail("That name is much too long!  "
             "Please abbreviate! (max 25 chars)\n"), 0;
 

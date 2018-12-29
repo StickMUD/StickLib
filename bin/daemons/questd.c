@@ -474,7 +474,7 @@ status list_quests()
         {
             qn++;
             tmp = query_short(qlist[i]);
-            if (strlen(tmp) > 70)
+            if (sizeof(tmp) > 70)
                 tmp = tmp[0..69] + "...";
             m += ({ sprintf("%2d. %s", qn, tmp) });
         }

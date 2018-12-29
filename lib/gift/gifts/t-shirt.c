@@ -37,7 +37,7 @@ status destaa(string str){
 
 status teepaita(string str){
    if(!str) return notify_fail("Pls gimme some desc, idiot.\n"),0;
-   if(strlen(str) > 40) return notify_fail("Too long desc!\n"),0;
+   if(sizeof(str) > 40) return notify_fail("Too long desc!\n"),0;
    paitadesc = str;
    return 1;
  }

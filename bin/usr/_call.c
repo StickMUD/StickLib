@@ -202,7 +202,7 @@ mixed build_number(mixed arg)
     // or all numbers with a single '.' in it.
  
     period = 0;
-    for(i=0 ; i < strlen(arg) ; i++)
+    for(i=0 ; i < sizeof(arg) ; i++)
     {
         if(arg[i] < '0'  ||  arg[i] > '9')
         {

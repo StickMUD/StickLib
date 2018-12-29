@@ -1,5 +1,5 @@
 /*
-** People command.  
+** People command.
 ** Aramis - Nov. 29, 1998
 ** added n option. - Dec. 6, 1998
 */
@@ -42,8 +42,8 @@ nomask int people_cmd(string str) {
 	    if(str=="n") where = environment(people[x])->query_short();
 	    else where = object_name(environment(people[x]));
 	else where = "Login area.";
-	if(where[0..5] == "areas/") where = "^"+capitalize(where[6..strlen(where)]);
-	if(where[0..1] == "u/") where = "~"+capitalize(where[2..strlen(where)]);
+	if(where[0..5] == "areas/") where = "^"+capitalize(where[6..sizeof(where)]);
+	if(where[0..1] == "u/") where = "~"+capitalize(where[2..sizeof(where)]);
 	where = format_text(where,str);
 
 	switch(str) {
@@ -82,7 +82,7 @@ string format_text(string str, string bah) {
 
     if(bah=="n") num=31;
     else num=35;
-    if(strlen(str) > num) str = str[0..(num-20)]+"..."+str[<16..<1];
+    if(sizeof(str) > num) str = str[0..(num-20)]+"..."+str[<16..<1];
     return str;
 }
 

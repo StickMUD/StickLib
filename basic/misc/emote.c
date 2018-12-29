@@ -5,7 +5,7 @@ int emote_cmd(string str) {
 	} else {
 	    int i;
 
-	    i = strlen(str);
+	    i = sizeof(str);
 	    while (i--) {
 		if (str[i] < ' ' || str[i] > 127) {
 		    write("Illegal characters on emote line.\n");

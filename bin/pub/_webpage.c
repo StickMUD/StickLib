@@ -25,7 +25,7 @@ status webpage_cmd(string str)
         return 1;
     }
 
-    if (strlen(str) > 50)
+    if (sizeof(str) > 50)
         return notify_fail("That name is much too long! "
             "(max 50 chars)\n"), 0;
 

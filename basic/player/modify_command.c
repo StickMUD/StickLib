@@ -133,7 +133,7 @@ mixed tmp, tmp2, cmd_tmp, tmpstr;
 	case "delimeter":
 	case "delim":
 
-	  if (!arg || !strlen(arg))  {
+	  if (!arg || !sizeof(arg))  {
 		tell_me(sprintf("Your current command delimeter is '%s'.",
 			delim));
 		break;
@@ -233,7 +233,7 @@ Delimiter was not changed.", arg));
  (%d aliases).", COMMAND_SIZE));
 				return FALSE;
 			} else {
-			  if (strlen(arg) < MIN_ALIAS_LENGTH) {
+			  if (sizeof(arg) < MIN_ALIAS_LENGTH) {
 				tell_me(sprintf("Minimum length for alias:\
  %d.", MIN_ALIAS_LENGTH));
 				return FALSE;
@@ -333,7 +333,7 @@ int i, j;
 		if ((num > 0) && (num <= sizeof(words))) {
 			num--;
 			head = sprintf("%s%s%s", left, words[num], right);
-			j = strlen(left) + strlen(words[num]);
+			j = sizeof(left) + sizeof(words[num]);
 			tmp += ({num});
 		} else {
 			if (left[<1] == ' ')
@@ -450,7 +450,7 @@ int     i, j, mul, siz;
 	} else {
 	  // Multipliers have to be taken care of now:
 	  if (i = sscanf(s, "%d%.0t%s", mul, s)) {
-	    if (i == 1 || !strlen(s)) {
+	    if (i == 1 || !sizeof(s)) {
 		if (!(s = tail)) {
 			tell_me(sprintf("Repeat what %d times?", mul));
 			return FAIL;
@@ -475,7 +475,7 @@ int     i, j, mul, siz;
 	  }
 
 	// Also, need to take "n", "e" and all such commands: */
-	  if ((i = strlen(s)) == 1) {
+	  if ((i = sizeof(s)) == 1) {
 	    switch (s[0]) {
 		case 'n': s = "north"; break;
 		case 's': s = "south"; break;
@@ -506,11 +506,11 @@ int     i, j, mul, siz;
 		if (!_int_aliases) {
 			_int_aliases = m_indices(aliases);
 			_int_substs = allocate(sizeof(_int_aliases));
-			_int_alias_min = _int_alias_max = strlen(
+			_int_alias_min = _int_alias_max = sizeof(
 			  _int_aliases[0]);
 			_int_aliases = sort_array(_int_aliases, #'>);
 			for (i = 0; i < sizeof(_int_aliases); i++) {
-				if ((j = strlen(_int_aliases[i])) <
+				if ((j = sizeof(_int_aliases[i])) <
 				  _int_alias_min)
 					_int_alias_min = j;
 				else if (j > _int_alias_max)
@@ -560,7 +560,7 @@ string *list;
 // Let's check moving commands; not automatically converted by
 // gamedriver any more! -+ Doomdark +-
 // (as well as 'l'-> 'look' and 'i'->'inventory')
-	if ((i = strlen(s)) == 1) {
+	if ((i = sizeof(s)) == 1) {
 	switch (s[0]) {
 	case 'n': return "north";
 	case 's': return "south";
@@ -633,7 +633,7 @@ string *list;
 	  }
 	}
 
-	if (strlen(s) > HISTORY_STR_LEN) {
+	if (sizeof(s) > HISTORY_STR_LEN) {
 	  if (siz = sizeof(history)) {
 		if (s != history[0]) {
 			history = ({s}) + history;

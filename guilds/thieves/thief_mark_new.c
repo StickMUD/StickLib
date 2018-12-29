@@ -336,7 +336,7 @@ void set_tattoo_desc(mixed x) { if (valid_desc(x)) tattoo_desc = x; }
 nomask void
 set_pretitle(string str)
 {
-    if (stringp(str) && strlen(str) < 15) pretitle = str;
+    if (stringp(str) && sizeof(str) < 15) pretitle = str;
 }
 
 void set_tax_time(mixed t) { tax_time = t; }
@@ -577,13 +577,13 @@ valid_desc(string x)
     if (!x)
 	return 0;
 
-    if (strlen(x) > 30)
+    if (sizeof(x) > 30)
     {
 	owner->tell_me("Too long description! Max 30 characters.");
 	return 0;
     }
 
-    for (i = (strlen(x) - 1); i >= 0; i--)
+    for (i = (sizeof(x) - 1); i >= 0; i--)
 	if (x[i] < ' ' || x[i] == '#')
 	{
 	    owner->tell_me("Illegal character in description!");

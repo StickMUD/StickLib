@@ -1244,7 +1244,7 @@ int
 catch_shout(string str)
 {
     if (coder_level && (this_player()->query_disguised() ||
-	(strlen(str) > 5 && str[0..6] == "Someone")))
+	(sizeof(str) > 5 && str[0..6] == "Someone")))
 	str = sprintf("%s=%s", (string)TP->query_real_name(), str);
     if (listen_to_shouts_from_level) {
 	if ((int) TP->query_level() >= listen_to_shouts_from_level) {

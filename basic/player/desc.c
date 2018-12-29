@@ -78,7 +78,7 @@ descset(string str)
 	desc_cmd(0); return;
     }
 
-    if (strlen(str) > 79) {
+    if (sizeof(str) > 79) {
        tell_me("Too long line - it was truncated.");
        str = str[0..79];
     }
@@ -109,11 +109,11 @@ string tit;
 		return 1;
 	}
 
-	if (strlen(t) > 60)
+	if (sizeof(t) > 60)
 		t = t[0..59];	// Max 60 characters
 
 	tit = "";
-	for (i = 0; i < strlen(t); i++)
+	for (i = 0; i < sizeof(t); i++)
 	if (lower_case(t[i..i]) >= " " && lower_case(t) <= "z")
 		tit += t[i..i];
 

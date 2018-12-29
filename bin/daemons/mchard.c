@@ -1,9 +1,9 @@
 /**************************************************
- 
+
  NAME:    mchard.c
- 
+
  PURPOSE: Daemon for multiple character registering
- 
+
  AUTHOR:  Tron
 
  CHANGES:
@@ -11,25 +11,24 @@
         string to be printed, if login is not
         allowed, otherwise 1.
      4-Jan-97 / Graah: Coders and up only can now read
- 
+
  **************************************************/
- 
-#include <coder_levels.h>               
- 
+
+#include <coder_levels.h>
+
 #define	MCHARD_SAVE	"data/d/mchard/MCHARD"
 #define DELAY_MIN   5
- 
+
 void clean_logouts();
 
-private string mchard_chars;          // "\n#owner#mchar1#mchar2#\n..."          
+private string mchard_chars;          // "\n#owner#mchar1#mchar2#\n..."
 static mapping logouts;
- 
+
 nomask status
 query_prevent_shadow() { return 1; }
- 
+
 nomask private static status 
 _validUser() {
-  
    if(!this_player() || !interactive(this_player()) ||
       (int)this_player()->query_coder_level() < LVL_CODER)
        return 0;
@@ -106,7 +105,7 @@ int i;
 		return 0;
    if(sscanf(mchard_chars, "%s#"+plr+"#%s", head, tail) != 2) return 0;
  
-   i = strlen(head)-1;
+   i = sizeof(head)-1;
    if(head[i..i] == "\n") head = "";
    else {
         tmp = explode(head, "\n");
@@ -136,7 +135,7 @@ query_no_of_mchars(string plr)
   if (extern_call() && !_validQuery(plr)) return 0;
   if (sscanf(mchard_chars, "%s#"+plr+"#%s", head, tail) != 2) return 0;
  
-  i = strlen(head)-1;
+  i = sizeof(head)-1;
   if (head[i..i] == "\n") head = "";
   else {
     tmp = explode(head, "\n");

@@ -309,7 +309,7 @@ whatever you want it to look like) to change it.");
 	if (owner->dump_esc(tit))
 	    return 1;
 
-	if (strlen(tit) > 14)
+	if (sizeof(tit) > 14)
 	{
 	    TM("Maximum length of pretitle is 14.");
 	    return 1;

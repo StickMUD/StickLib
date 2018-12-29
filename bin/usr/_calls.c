@@ -31,7 +31,7 @@ calls_cmd(string str, object me)
          continue;
       }
 	if (!strstr(tmp, PATH_USER_FNAME))
-		tmp = "~" + tmp[strlen(PATH_USER_FNAME)..];
+		tmp = "~" + tmp[sizeof(PATH_USER_FNAME)..];
       s += sprintf("%-35s", tmp)+" ";
       s += sprintf("%-20s", (tmp = (string)call_array[i][1]))+" ";
       s += call_array[i][2]+"\t ";

@@ -422,7 +422,7 @@ mixed s;
 // Also; query_party(PARTY_DO_LEAD) checks that we're not invis...
 	i = 0;
 // Ok. So let's rock...
-	if (stringp(arg) && strlen(arg))
+	if (stringp(arg) && sizeof(arg))
 		s = verb + " " + arg;
 	else
 		s = verb;

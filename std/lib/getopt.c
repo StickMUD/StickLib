@@ -114,7 +114,7 @@ mapping getopt(string arg, mixed optlist) {
 private int getopt_short(string opt, string optlist, mapping ret) {
     int i, len, foundopt;
 
-    len = strlen(opt);
+    len = sizeof(opt);
     do {
 	int tmp;
 
@@ -122,7 +122,7 @@ private int getopt_short(string opt, string optlist, mapping ret) {
 	foundopt = member_array(opt[i], optlist);
 #else
 	tmp = opt[i];
-	foundopt = strlen(optlist);
+	foundopt = sizeof(optlist);
 	while (foundopt--)
 	    if (tmp == optlist[foundopt]) break;
 #endif
@@ -177,7 +177,7 @@ private int getopt_long(string opt, string *optlist, mapping ret) {
     }
 
     /* Check if there should be arguments behind flag */
-    i = optlist[foundopt][strlen(optlist[foundopt]) - 1];
+    i = optlist[foundopt][sizeof(optlist[foundopt]) - 1];
     if (i == ':' || i == ';') {
 	ret[-4] = optlist[foundopt][0..<2];
 	ret[-3] = foundopt;

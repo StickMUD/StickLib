@@ -226,7 +226,7 @@ get that.");
 		return 1;
 	}
 
-	if (strlen(what) > 35){
+	if (sizeof(what) > 35){
 
 		orderer->tell_me("The jeweler says: Your inscription is \
 too long. Please pick another one.");

@@ -36,7 +36,7 @@ title_cmd(string str)
       return 1;
     }
 
-  if (strlen(str) > TITLE_MAX_LEN)
+  if (sizeof(str) > TITLE_MAX_LEN)
     {
       notify_fail("That title is too long max length is: "+TITLE_MAX_LEN+".\n");
       return 0;

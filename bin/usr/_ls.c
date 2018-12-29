@@ -42,12 +42,12 @@ status Fflag,sflag;
 	if (!me) return 0;
 
 	while (str) {
-	  if (strlen(str) < 1 || str[0] != '-') break;
+	  if (sizeof(str) < 1 || str[0] != '-') break;
 		if (sscanf(str, "%s %s", tmp, str) < 2) {
 			tmp = str;
 			str = 0;
 		}
-		i = strlen(tmp);
+		i = sizeof(tmp);
 		while (--i) {
 		  switch (tmp[i]) {
 			case 's': flags |= LS_s; break;
@@ -66,7 +66,7 @@ status Fflag,sflag;
 	if (!str) {
 		path = me->query_env("cwd");
 		if (path == "") path = "/";
-		else if (strlen(path) > 1) {
+		else if (sizeof(path) > 1) {
 			if (path[0] != '/') {
 				if (path[<1] != '/')
 					path = sprintf("/%s/", path);
@@ -76,7 +76,7 @@ status Fflag,sflag;
 		}
 	} else {
 		path = me->absolute_path(str, 0);
-		i = strlen(path) - 1;
+		i = sizeof(path) - 1;
 		if (i != -1 && path[i]!='/' && file_size(path+"/")==-2) {
 			path += "/";
 		}
@@ -90,7 +90,7 @@ status Fflag,sflag;
 	}
 	num = sizeof(dir);
 
-	for (i = strlen(path) - 1; i > 0 && path[i] != '/'; --i)
+	for (i = sizeof(path) - 1; i > 0 && path[i] != '/'; --i)
 		;
 	path = path[0..i];
 	me->tell_me(sprintf("Directory: '%s':", path));
@@ -117,7 +117,7 @@ status Fflag,sflag;
 	}
 
 	for(i = maxlen = 0; i < num; i += 2) {
-		if ((j = strlen(dir[i])) > maxlen)
+		if ((j = sizeof(dir[i])) > maxlen)
 			maxlen = j;
 	}
     /** most of flags **/
@@ -144,7 +144,7 @@ status Fflag,sflag;
 			else tmp = "";
 			sizeall += size;
 			blocks += (size+BLOCKSIZE2) >> BLOCKBITS;
-			if (strlen(name) > maxlen) {
+			if (sizeof(name) > maxlen) {
 				name = name[0..maxlen-1];
 				name[maxlen-1] = '#';
 			}

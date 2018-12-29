@@ -13,10 +13,6 @@
 #define LOGGED_IN	-1
 #define LINKDEAD	-2
 
-#define	PLAYER_LIST	({\
-	"darkelf"\
-})
-
 static closure compare_cl;
 
 nomask string show_info(string who, int ptime);
@@ -32,7 +28,7 @@ object ob;
     if (!me && !me=this_player()) return 0;
 
     if ( str ) tt=str[0];
-    if ( tt=='-' && strlen(str)>1) tt=str[1];
+    if ( tt=='-' && sizeof(str)>1) tt=str[1];
 
     if ( tt )
     switch ( tt )
@@ -43,9 +39,6 @@ object ob;
 	case 'a': names = ADMIN_LIST + COADMIN_LIST;
 		  str = "Admin";
 		  break;
-	case 'p': names = PLAYER_LIST;
-		str ="Player";
-		break;
 	default:
 		notify_fail("Usage: logouts [a|c|p]\n");
 		return 0;

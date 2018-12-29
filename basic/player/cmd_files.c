@@ -75,7 +75,7 @@ nomask string *
 recursive_dir(string arg)
 {
   rdirs = ({});
-  if (arg[strlen(arg)-1] == '/') arg = arg[0..strlen(arg)-2];
+  if (arg[sizeof(arg)-1] == '/') arg = arg[0..sizeof(arg)-2];
   process(arg, 0);
   return rdirs;
 }
@@ -242,7 +242,7 @@ private static int do_multi_file(int operation, string p1, string p2) {
     }
  
     /* Cut file name from p1; /ftp/*.c => /ftp/ */
-    i = strlen(p1)-1;
+    i = sizeof(p1)-1;
     while (p1[i] != '/') --i;
     p1 = p1[0..i];
  
@@ -431,7 +431,7 @@ int i, j, max, found, nsize;
                         while(j < max  &&  !found) {
                             if(file_size(p2 + files[j]) == -2) {
                                 if(p1[i][0..<2] == 
-                                    files[j][0..strlen(p1[i][0..<2])-1])
+                                    files[j][0..sizeof(p1[i][0..<2])-1])
                                     found = 1;
                             }
                             j++;

@@ -223,7 +223,7 @@ int feel_help() {
 
    s = 0;
    for(i=0;i<sizeof(feels);i++) {
-      s += strlen(feels[i]) + 1; if(s > 70) { s = 0; write("\n"); }
+      s += sizeof(feels[i]) + 1; if(s > 70) { s = 0; write("\n"); }
       write(feels[i] + " ");
    }
 

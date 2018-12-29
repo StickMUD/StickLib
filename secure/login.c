@@ -44,12 +44,12 @@ int set_env(mixed value, mixed arg);
 #define LOGIN_DUMMY	"secure/dummy"
 
 /* DO customize these if you want to be an admin / a coadmin: */
-#define LOGIN_ADMIN_L    ({ "tamarindo", "starks", "kieve" })
+#define LOGIN_ADMIN_L    ({ "tamarindo" })
 
 #define LOGIN_COADMIN_L  ({ })
 
 #define LOGIN_NAMELEN   11     /* Player's max name length          */
-#define LOGIN_PASSLEN   6      /* Min length for password           */
+#define LOGIN_PASSLEN   8      /* Min length for password           */
 
 #define LOGIN_PASSWORD_FAIL 1  /* user can fail once with password. */
 #define LOGIN_PASSWD_EXPIRE 2592000 /* 30 days */
@@ -450,7 +450,7 @@ validName(string str)
       return 0;
     }
 
-  len = strlen(str);
+  len = sizeof(str);
 
   if (len > LOGIN_NAMELEN)
     {
@@ -673,7 +673,7 @@ string tmp;
        return;
     }
 
-    if(strlen(str) < LOGIN_PASSLEN) {
+    if(sizeof(str) < LOGIN_PASSLEN) {
        write("The password must have at least "+LOGIN_PASSLEN+
              " characters.\n");
        logon();
@@ -794,7 +794,7 @@ login_gender(string str) {
 
     if(!str) str = "";
 
-    if(!strlen(str)) {
+    if(!sizeof(str)) {
        logon("\"m\" or \"f\": ");
        return;
     }
@@ -832,7 +832,7 @@ login_throwOut(string str) {
 
     if(!str) str = "";
 
-    if(!strlen(str)) {
+    if(!sizeof(str)) {
 	login_input("(y/n): ", "login_throwOut", 0);
 	return;
     }

@@ -437,7 +437,7 @@ int xx;
  
   xx = x*tdesc_x;
  
-  if(strlen(m[y]) > xx) 
+  if(sizeof(m[y]) > xx) 
        return m[y][ xx..(xx+tdesc_x-1) ];
  
  return 0;
@@ -661,7 +661,7 @@ int n;
       y2 += sizeof(tmpy);
     }
    if(tmpx) {
-      x2 += strlen(tmpx[0]);
+      x2 += sizeof(tmpx[0]);
     }
    map2 = ({});       
    for(n = y; n <= y2; n++) {

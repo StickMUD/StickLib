@@ -14,7 +14,7 @@ int i;
         && sscanf(str,"%s %s", to_find, str) != 2))
         return notify_fail("Usage: grep '<match>' <file1> [<file2> <file3> ..]\n"), 0;
 
-	if (strlen(to_find) < 2) {
+	if (sizeof(to_find) < 2) {
 		me->tell_me("The string to be searched for has to be at least\
  2 characters long.");
 		return 1;
@@ -34,7 +34,7 @@ int i;
             continue;
         }
 
-        j = strlen(path) - 1;
+        j = sizeof(path) - 1;
         while (path[j] != '/') j--;
         path = path[0..j];
 

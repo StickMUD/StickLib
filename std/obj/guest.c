@@ -182,7 +182,7 @@ _allowedStr(string s) {
 
     if(!s) return 0;
 
-    i = strlen(s);
+    i = sizeof(s);
     if(!i) return "";
 
     tmp = "";

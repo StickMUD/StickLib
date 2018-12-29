@@ -199,7 +199,7 @@ mixed obs;
 
 /* And old code: */
 #if 0
-		len = strlen(str = (string)ob->short());
+		len = sizeof(str = (string)ob->short());
 		if (!old_len) {
 		  text = sprintf("%s\n%d\t%d\t%-24s",
 			text, count, value, str
@@ -240,7 +240,7 @@ mixed obs;
             	text = "Num\tCost\tItem\t\t\tNum\tCost\tItem";
                 first = 0;
             }
-		len = strlen(str = (string)ob->short());
+		len = sizeof(str = (string)ob->short());
 		if (!old_len) {
 		  text = sprintf("%s\n%d\t%d\t%-24s",
 			text, count, value, str

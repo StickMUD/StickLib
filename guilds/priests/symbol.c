@@ -239,7 +239,7 @@ restore_skills(string str) {
       return 0;
     }
     i = 0;
-    while(strlen(ps) && i<N_SKILLS) {
+    while(sizeof(ps) && i<N_SKILLS) {
       sscanf(ps,"%d#%s", pexes[i++], ps);
     }
     return 1;
@@ -247,7 +247,7 @@ restore_skills(string str) {
 
 
 string
-query_guild_save() 
+query_guild_save()
 {
     string temp;
     mixed err;

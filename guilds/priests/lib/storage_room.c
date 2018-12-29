@@ -49,7 +49,7 @@ int list_item(string item) {
 	list_type = 1;
 	if(item=="armours") list_type = 2; else
 	if(item=="weapons") list_type = 3; else
-	if((len=strlen(item)) && item[len-1]=='s') item = item[0..len-2];
+	if((len=sizeof(item)) && item[len-1]=='s') item = item[0..len-2];
     }
 
     first = 1;
@@ -75,7 +75,7 @@ int list_item(string item) {
 		write("Num\tItem                          Num\tItem\n");
 		first = 0;
 	    }
-	    len = strlen(str = (string)ob->short());
+	    len = sizeof(str = (string)ob->short());
 	    if(old_len && len>34) {write("\n");old_len=0;}
 	    write( SPACES[(old_len ? old_len : 35)..((count<10) ? 36 : 35 )]
 	      + count

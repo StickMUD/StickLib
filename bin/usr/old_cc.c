@@ -160,12 +160,12 @@ string
 		valid = (string) MASTER_OB->valid_read(files[y], 0,
 			"read_file", this_player());
 		if(valid) {
-			z=strlen(files[y])-1;
+			z=sizeof(files[y])-1;
 			while(files[y][z] != '/') z--;
 			tmp_path=files[y][0..z];
 
 			tmp=files[y];
-			m=strlen(tmp);
+			m=sizeof(tmp);
 			if (tmp[m] != '*' &&
                             tmp[<2..<1] != "*c" && tmp[<2..<1] != ".c")
 				if (tmp[<2..<1] != "??" && tmp[<2..<1] != ".?"
@@ -206,7 +206,7 @@ string process_args(string tmp) {
 	int x;
 	string str;
 	str="";
-	for(x=strlen(tmp)-1;x > -1;x--) {
+	for(x=sizeof(tmp)-1;x > -1;x--) {
 
 		if(tmp[x]=='s') {
 			str=set_bit(str,1);

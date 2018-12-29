@@ -14,10 +14,10 @@ chd_cmd(string str)
 
    p = (string)this_player()->absolute_path(str);
    if(file_size(p) == -1) {
-      i = strlen(p);
+      i = sizeof(p);
       while(p[--i] != '/');
       c = p[i+1..];
-      l = strlen(c);
+      l = sizeof(c);
       p = p[0..i];
       d = get_dir(p);
       n = sizeof(d);

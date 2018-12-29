@@ -1900,13 +1900,13 @@ whine(string str)
 
   if (str && !(who = find_target(str,1)))
     {
-      if (strlen(str) > 70)
+      if (sizeof(str) > 70)
 	{
 	  notify_fail("You are whining too much...maximum is 70 characters.");
 	  return 0;
 	}
 
-      for (i = strlen(str) - 1; i >= 0; i--)
+      for (i = sizeof(str) - 1; i >= 0; i--)
 	if (str[i..i] < " ")
 	  {
 	    notify_fail("Trying to harrass other players?\n");

@@ -51,7 +51,7 @@ tell_me(string str, status no_wrap, status update_wrap) {
 	if(s_columns < 2) s_columns = 80;
 	s_wrap = "%-=" + (s_columns - 1) + "s\n";
     }
-   
+
     if (!str) return;
     if (no_wrap) {
 	tell_object(this_object(), str);
@@ -59,7 +59,7 @@ tell_me(string str, status no_wrap, status update_wrap) {
     }
 
     /* Kludge, but has to do 'til tell_me's won't use linefeeds anymore. */
-	if (strlen(str) > 1 && str[<1] == '\n')
+	if (sizeof(str) > 1 && str[<1] == '\n')
 		str = str[0..<2];
 
     if(s_wrap) tell_object(this_object(), sprintf(s_wrap, str));

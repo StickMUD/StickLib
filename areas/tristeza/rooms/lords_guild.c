@@ -151,7 +151,7 @@ list_quests(string num)
           {
             qn++;
             tmp = QUEST_D->query_short(quests[i]);
-            if (strlen(tmp) > 70) tmp = tmp[0..69] + "...";
+            if (sizeof(tmp) > 70) tmp = tmp[0..69] + "...";
             m += ({ sprintf("%2d. %s", qn, tmp) });
           }
 

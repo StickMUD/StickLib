@@ -592,11 +592,11 @@ int x, y;
            }
           if(map) {
              if(!x) {
-		if (strlen(map[y]) > 1) map[y] = "@" + map[y] [1..<1];
+		if (sizeof(map[y]) > 1) map[y] = "@" + map[y] [1..<1];
                 else map[y] = "@";
               }
              else {
-		if (strlen(map[y]) > (x + 1))
+		if (sizeof(map[y]) > (x + 1))
 			map[y] = map[y] [0..x - 1] + "@"
 				+ map[y][x + 1.. <1];
 		else map[y] = map[y] [0.. x-1] + "@";

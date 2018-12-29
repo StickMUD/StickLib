@@ -47,7 +47,7 @@ do_load(string str) {
     /* Check for validity of name */
     if (!stringp(str)) return 0;
     str = lower_case(str);
-    for (i = 0; i < strlen(str); i++) {
+    for (i = 0; i < sizeof(str); i++) {
         if (str[i] < 'a' || str[i] > 'z') return 0;
     }
 

@@ -82,7 +82,7 @@ mchar_cmd(string s, object ob)
 
     /* make this nicer */
     mchar = (string) MCHAR_D->query_multiple_char_string();
-    if(!mchar || strlen(mchar) <= 1)
+    if(!mchar || sizeof(mchar) <= 1)
       write("Sorry, multiple character list is empty.\n");
     else write(mchar);
     return 1;

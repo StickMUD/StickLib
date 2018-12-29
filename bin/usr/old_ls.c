@@ -46,7 +46,7 @@ ls_norm(string base, mixed *files, status s_flag, int tab_count)
 	    }
 	}
 	files[i] = s_flag ? sprintf("%4d %s", j, str) : str;
-	if ((j = strlen(str)) > maxlen) maxlen = j;
+	if ((j = sizeof(str)) > maxlen) maxlen = j;
     } while ((i += 3) < max);
 
     printf("%s : Total: %d\n", base, total);
@@ -59,10 +59,10 @@ ls_norm(string base, mixed *files, status s_flag, int tab_count)
     tabs = sprintf("%'\t'*s", maxlen--, "");
     i = 0;
     do {
-	k = strlen(str = files[j = i]);
+	k = sizeof(str = files[j = i]);
 	while ((j += offset) < max) {
 	    str += tabs[(k>>3)..maxlen] + files[j];
-	    k = strlen(files[j]);
+	    k = sizeof(files[j]);
 	}
 	write(str + "\n");
     } while ((i += 3) < offset);
@@ -134,7 +134,7 @@ ls_cmd(string path) {
     }
 
     /* Cut the base of path */
-    i = strlen(path) - 1;
+    i = sizeof(path) - 1;
     while (path[i] != '/') i--;
     path = path[0..i];
 

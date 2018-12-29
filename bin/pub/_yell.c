@@ -32,7 +32,7 @@ You should use 'tell' instead until you get to level 2.");
     return 1;
   }
 
-  if (strlen(str) > 160) { /* //Starbyt */
+  if (sizeof(str) > 160) { /* //Starbyt */
     me->tell_me("Your throat is too sore to yell that much at one time!");
     return 1;
   }

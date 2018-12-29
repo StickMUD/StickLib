@@ -87,7 +87,7 @@ rsay_cmd(string str) {
 // No need. set_connection_char() takes care of it.
 //  if((int)this_object()->dump_esc(str)) return 1;
  
-	if (strlen(str))
+	if (sizeof(str))
 	switch (str[<1]) {
 	case '?': dummy = "asks"; break;
 	case '!': dummy = "yells"; break;

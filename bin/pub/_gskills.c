@@ -15,7 +15,7 @@ int gskills_cmd(string arg, object me) {
 		ret = sprintf("%s    None%58s\n",
 		ret, "None");
 	else while(i--)
-		ret = sprintf("%s    %s%"+ to_string(62 - strlen(
+		ret = sprintf("%s    %s%"+ to_string(62 - sizeof(
 			indc[i]))+"s\n",
 		ret, capitalize(indc[i]), capitalize(SK_RANKS[
 		to_int(skills[indc[i]])]));

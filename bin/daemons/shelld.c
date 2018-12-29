@@ -25,12 +25,12 @@ int i, j;
    
    if(!s || !by) return 0;
  
-   if(!strlen(by)) return 0;
-   if(!(j = strlen(s))) return 0;
+   if(!sizeof(by)) return 0;
+   if(!(j = sizeof(s))) return 0;
 
    while(sscanf(s, "%s"+by+"%s", head, tail) == 2) {
-       if(head[strlen(head)-1] == '\\') {
-          if(strlen(head) > 1) head = head[0..-2];
+       if(head[sizeof(head)-1] == '\\') {
+          if(sizeof(head) > 1) head = head[0..-2];
           else head = "";
           head += by;
           last = (last ? last + head : head);
@@ -53,7 +53,7 @@ object obj;
 
    if(!a) return 0;
 
-   len = strlen(a);
+   len = sizeof(a);
 
    if(!env) {
       if(a == "me") return me;

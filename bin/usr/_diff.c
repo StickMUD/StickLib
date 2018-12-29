@@ -445,7 +445,7 @@ diff_cmd( string str )
 		context = -context;
 	    } else if( str[0] == 'o' ) {
 		sscanf( str, "o%s", output_file );
-		if( !strlen( output_file ) ) {
+		if( !sizeof( output_file ) ) {
 		    notify_fail( "Flag -o needs an argument.\n" );
 		    return 0;
 		}

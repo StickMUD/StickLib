@@ -44,7 +44,7 @@ moving()
 
   tmp = "swssseeennneeeeeesssssswwwnnennwsswnwwnnnwwn";
 
-  if (m >= strlen(tmp))
+  if (m >= sizeof(tmp))
     {
       start_move();
       return;

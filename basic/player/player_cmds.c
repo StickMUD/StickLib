@@ -332,8 +332,8 @@ change_password2(string str)
 		return;
 	}
 	if (!password2) {
-		if (strlen(str) < 6) {
-			tell_me("Must be at least 6 characters!");
+		if (sizeof(str) < 8) {
+			tell_me("Must be at least 8 characters!");
 			return;
 		}
 		password2 = str;

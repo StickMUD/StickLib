@@ -54,7 +54,7 @@ varargs string
 get_data(string about_whom, string which_data)
 {
 string s, s2, tmp, tmp2;
-	if (!stringp(about_whom) || !strlen(about_whom)) return 0;
+	if (!stringp(about_whom) || !sizeof(about_whom)) return 0;
 	s = lower_case(about_whom);
 	check_file (s[0..0]);
 	if (!(s2 = data [s])) return 0; // No data about this player!
@@ -68,7 +68,7 @@ put_data(string about_whom, string which_data, string what_data)
 {
 string s, s2, s3, tmp, tmp2;
 	if (!stringp(about_whom) || !stringp(which_data) ||
-		!strlen(about_whom)) return 0;
+		!sizeof(about_whom)) return 0;
 	s = lower_case(about_whom);
 	check_file (s[0..0]);
 	if (!(s2 = data[s])) {
@@ -76,13 +76,13 @@ string s, s2, s3, tmp, tmp2;
 		data += ([ about_whom:"*#"+which_data+":"+what_data+"#*" ]); }
 	else {
 	  if (sscanf(s2, "%s#" + which_data + ":%s#%s", tmp, s3, tmp2) < 3)
-	    data[s] = what_data ? s2[0..strlen(s2)-2]+ which_data+":"+
+	    data[s] = what_data ? s2[0..sizeof(s2)-2]+ which_data+":"+
 		what_data + "#*" : data[s];
 	  else
 	    data[s] = what_data ? tmp + "#" + which_data + ":" + what_data +
 		"#" + tmp2 : tmp + "#" + tmp2;
 	  }
-	if(strlen(data[s]) < 4) data = m_delete(data, s);
+	if(sizeof(data[s]) < 4) data = m_delete(data, s);
 	save_object(SAVEDIR + first_letter);
 	return 1;
 }

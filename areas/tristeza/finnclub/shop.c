@@ -47,7 +47,7 @@ int cost;
 
    str = lower_case(str);
 
-   if (strlen(str) > 5) str = str[0..4];
+   if (sizeof(str) > 5) str = str[0..4];
 
    cost = -1;
 

@@ -137,13 +137,13 @@ we_have_to_do_this(arg)
 {
   int i;
 
-  if (strlen(arg) > 75)
+  if (sizeof(arg) > 75)
     {
       write("Warning: too long emote - it is truncated.\n");
       arg = arg[0..74];
     }
 
-  for(i=0;i<strlen(arg);i++)
+  for(i=0;i<sizeof(arg);i++)
     if(arg[i] < ' ' || arg[i] > 127) {
       write("Illegal characters in emote - it failed.\n");
       return 0;
