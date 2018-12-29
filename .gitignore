@@ -1,3 +1,12 @@
-/data/plr/*
+# No object savefile for now
+*.o
+
+# No log files
+*.log 
 /log/*
+
+# No coder directories
 /u/*
+
+# No files intended to be shared with the Internet
+/www/*
