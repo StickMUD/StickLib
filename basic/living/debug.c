@@ -20,9 +20,9 @@ write(sprintf("%-50slevel: %d\n",
 
 if (interactive())
 {
-  write("ip: " + (tmp = query_ip_name(this_object())));
-  if (tmp != query_ip_number(this_object()))
-	write(" (" + query_ip_number(this_object()) + ")");
+  write("ip: " + (tmp = interactive_info(this_object(), II_IP_NAME)));
+  if (tmp != interactive_info(this_object(), II_IP_NUMBER))
+	write(" (" + interactive_info(this_object(), II_IP_NUMBER) + ")");
   write("\n");
   if((int) this_player()->query_coder_level()>=300)
 	write("mail: " + this_player()->query_mailaddr() + "\n");
@@ -41,7 +41,7 @@ write("Quests:\t" + tmp + "\n");
 
   if (interactive())
 {
-  if ((i=query_idle(this_object())))
+  if ((i=interactive_info(this_object(), II_IDLE)))
 	{
 	  tmp = "";
 	  if (i>3600) tmp = (i/3600)+" h ";

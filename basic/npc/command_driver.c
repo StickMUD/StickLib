@@ -68,7 +68,7 @@ int x;
 	if (verb[0] == ':') return 0;
 #else
 	if (verb[0] == ':') {
-		if (strlen(verb) > 1)
+		if (sizeof(verb) > 1)
 		  if (arg) arg = verb[1..<1] + " " + arg;
 		  else arg = verb[1..<1];
 		verb = "emote";

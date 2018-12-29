@@ -73,9 +73,7 @@ int query_invis();
 // Levels 20 - 29: 1% / level
 // Levels 30+	   2% / level
 // -+ Doomdark +-
-public int
-query_ac()
-{
+public int query_ac() {
 	if (level < 20 || (liv_Flags & F_LIV_IS_NPC))
 		return armour_class;
 	if (level < 30)
@@ -99,6 +97,8 @@ query_armour(string s)
 		return pointerp(worn_armour) ? ({ worn_armour, worn_armour_type,
 		worn_armour_ac, worn_armour_weight }):({ ({ }) });
 	}
+
+	return 0;
 }
 
 void

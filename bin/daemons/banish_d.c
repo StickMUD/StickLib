@@ -25,6 +25,8 @@
 //	321.456.*
 //	432.456.789.*
 
+#include "/sys/interactive_info.h"
+
 #include <coder_levels.h>
 
 #pragma strict_types
@@ -163,8 +165,8 @@ is_ip_banished(object who, string n)
 
   if (!who || !n) return 0;
   if (member(allowed, n) != -1) return 0;
-  ipname = query_ip_name(who);
-  ipno = query_ip_number(who);
+  ipname = interactive_info(who, II_IP_NAME);
+  ipno = interactive_info(who, II_IP_NUMBER);
 
   if (stringp(ipname))
     {
@@ -225,8 +227,8 @@ is_ip_stopped(object who)
 
   if (!pointerp(ip_stopped)) return 0;
   if (!who) return 0;
-  ipname = query_ip_name(who);
-  ipno = query_ip_number(who);
+  ipname = interactive_info(who, II_IP_NAME);
+  ipno = interactive_info(who, II_IP_NUMBER);
 
   if (stringp(ipname))
     {
@@ -287,8 +289,8 @@ is_guest_ip_banished(object who, string n)
 
   if (!who || !n) return 0;
 
-  ipname = query_ip_name(who);
-  ipno = query_ip_number(who);
+  ipname = interactive_info(who, II_IP_NAME);
+  ipno = interactive_info(who, II_IP_NUMBER);
 
   if (stringp(ipname))
     {
@@ -350,7 +352,7 @@ nomask int banish(string str, int lvl)
 #endif
 
    /* It must come from a real player */
-   if (!query_ip_number(this_player())) return 0;
+   if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;
 
    /* Only player object can call this... It does checking. -+ Doomdark +- */
    if (!interactive(previous_object())) return 0;
@@ -380,10 +382,9 @@ banish_ip(string str)
 
   if (!str) return 0;
 
-  if (!query_ip_number(this_player())) return 0;
+  if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;
   if (!interactive(this_player())) return 0;
-  if ((string)this_player()->query_real_name() != "darkelf"
-      && (int)this_player()->query_coder_level() < LVL_COADMIN) return 0;
+  if (this_player()->query_coder_level() < LVL_COADMIN) return 0;
   if (member(ip_banished, str) != -1) return 0;
 
   log_file("BANISH_IP",this_player()->query_real_name() + " banished IP " +
@@ -402,9 +403,9 @@ stop_ip(string str)
   int x;
 
   if (!str) return 0;
-  if (!query_ip_number(this_player())) return 0;
+  if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;
   if (!interactive(this_player())) return 0;
-  if ((int)this_player()->query_coder_level() < LVL_COADMIN) return 0;
+  if (this_player()->query_coder_level() < LVL_COADMIN) return 0;
   if (!pointerp(ip_stopped)) ip_stopped = ({});
   if (member(ip_stopped, str) != -1) return 0;
 
@@ -425,10 +426,9 @@ banish_guest_ip(string str)
 
   if (!str) return 0;
 
-  if (!query_ip_number(this_player())) return 0;
+  if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;
   if (!interactive(this_player())) return 0;
-  if ((string)this_player()->query_real_name() != "darkelf"
-      && (int)this_player()->query_coder_level() < LVL_COADMIN) return 0;
+  if (this_player()->query_coder_level() < LVL_COADMIN) return 0;
   if (member(guest_ip_banished, str) != -1) return 0;
 
   log_file("BANISH_IP",this_player()->query_real_name() +
@@ -449,10 +449,9 @@ allow_ip(string str)
 
   if (!str) return 0;
 
-  if (!query_ip_number(this_player())) return 0;
+  if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;
   if (!interactive(this_player())) return 0;
-  if ((string)this_player()->query_real_name() != "darkelf"
-      && (int)this_player()->query_coder_level() < LVL_COADMIN) return 0;
+  if (this_player()->query_coder_level() < LVL_COADMIN) return 0;
   if (member(ip_banished, str) == -1) return 0;
 
   log_file("BANISH_IP",this_player()->query_real_name() + " allowed IP " +
@@ -472,9 +471,9 @@ unstop_ip(string str)
 
   if (!str) return 0;
 
-  if (!query_ip_number(this_player())) return 0;
+  if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;
   if (!interactive(this_player())) return 0;
-  if ((int)this_player()->query_coder_level() < LVL_COADMIN) return 0;
+  if (this_player()->query_coder_level() < LVL_COADMIN) return 0;
   if (!pointerp(ip_stopped)) return 0;
   if (member(ip_stopped, str) == -1) return 0;
 
@@ -495,10 +494,9 @@ allow_guest_ip(string str)
 
   if (!str) return 0;
 
-  if (!query_ip_number(this_player())) return 0;
+  if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;
   if (!interactive(this_player())) return 0;
-  if ((string)this_player()->query_real_name() != "darkelf"
-      && (int)this_player()->query_coder_level() < LVL_COADMIN) return 0;
+  if (this_player()->query_coder_level() < LVL_COADMIN) return 0;
   if (member(guest_ip_banished, str) == -1) return 0;
 
   log_file("BANISH_IP",this_player()->query_real_name() +
@@ -519,10 +517,9 @@ allow_name(string str)
 
   if (!str) return 0;
 
-  if (!query_ip_number(this_player())) return 0;
+  if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;
   if (!interactive(this_player())) return 0;
-  if (((string)this_player()->query_real_name() != "darkelf")
-      && ((int)this_player()->query_coder_level() < LVL_COADMIN)) return 0;
+  if (this_player()->query_coder_level() < LVL_COADMIN) return 0;
   str = lower_case(str);
   if (member(allowed, str) != -1) return 0;
 // Easier to not have this here...
@@ -545,10 +542,9 @@ disallow_name(string str)
 
   if (!str) return 0;
 
-  if (!query_ip_number(this_player())) return 0;
+  if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;
   if (!interactive(this_player())) return 0;
-  if (((string)this_player()->query_real_name() != "darkelf")
-      && ((int)this_player()->query_coder_level() < LVL_COADMIN)) return 0;
+  if (this_player()->query_coder_level() < LVL_COADMIN) return 0;
   str = lower_case(str);
   if (member(allowed, str) == -1) return 0;
 

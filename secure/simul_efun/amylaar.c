@@ -7,6 +7,8 @@
 
 #define MASTER "secure/master"
 
+#include "/sys/interactive_info.h"
+#include "/sys/object_info.h"
 #include "/sys/wizlist.h"
 
 #define MAX_LOG_SIZE 50000
@@ -225,33 +227,6 @@ public mixed * exclude_element (mixed *arr, int index) {
         return arr[1..sizeof (arr)];
 }
 
-
-/*************************************************************************/
-
-/* Efun: all_environment() */
-
-/*
- * Function name: all_environment
- * Description:   Gives an array of all containers which an object is in, i.e.
- *		  match in matchbox in bigbox in chest in room, would for the
- *		  match give: matchbox, bigbox, chest, room 
- * Arguments:     ob: The object
- * Returns:       The array of containers.
- */
-public object *
-all_environment(object ob)
-{
-  object *r;
-  
-  if (!ob || !environment(ob)) return 0;
-  if (!environment(environment(ob)))
-      return ({ environment(ob) });
-  r = ({ ob = environment(ob) });
-  while (environment(ob))
-      r = r + ({ ob = environment(ob) });
-  return r;
-}
-
 /*************************************************************************/
 
 /* Efuns: break_string() and update_actions()
@@ -384,7 +359,7 @@ int file_time(string path)
 mixed snoop(mixed snoopee) {
     int result;
 
-    if (snoopee && query_snoop(snoopee)) {
+    if (snoopee && interactive_info(snoopee, II_SNOOP_NEXT)) {
         write("Busy.\n");
         return 0;
     }
@@ -516,9 +491,9 @@ object find_player(string name) {
     int i;
 
     if (pointerp(r = name_living_m[name])) {
-	if ( !(r = (a = r)[0]) || !query_once_interactive(r)) {
+	if ( !(r = (a = r)[0]) || !object_info(r, OI_ONCE_INTERACTIVE)) {
 	    for (i = sizeof(a); --i;) {
-		if (a[<i] && query_once_interactive(a[<i])) {
+		if (a[<i] && object_info(a[<i], OI_ONCE_INTERACTIVE)) {
 		    r = a[<i];
 		    a[<i] = a[0];
 		    return a[0] = r;
@@ -528,7 +503,7 @@ object find_player(string name) {
 	}
 	return r;
     }
-    return r && query_once_interactive(r) && r;
+    return r && object_info(r, OI_ONCE_INTERACTIVE) && r;
 }
 #endif
 

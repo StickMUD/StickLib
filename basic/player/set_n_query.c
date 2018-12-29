@@ -168,7 +168,7 @@ mixed n;
 			return 0;
 		n = _combat_queue[0];
 		_combat_queue = _combat_queue[1..];
-		return n;		   
+		return n;
 	case PLR_FULL_COMBAT_QUEUE:
 		return _combat_queue;
 	}
@@ -179,7 +179,7 @@ mixed n;
 }
 
 varargs nomask int
-set(int x, int value)
+set(int x, mixed value) // mixed for _combat_queue ??
 {
 status n;
 	if (!intp(x)) return 0;

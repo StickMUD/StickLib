@@ -127,9 +127,9 @@ add(int what, mixed arg1, mixed arg2)
       else Items[arg1[0]] = arg2;
 
       x = sizeof(arg1);
-      t = "=" + (string*) arg1[0];
+      t = "=" + arg1[0];
 
-      while (--x) Items[(string*) arg1[x]] = t;
+      while (--x) Items[arg1[x]] = t;
     }
     else return 0;
     return 1;

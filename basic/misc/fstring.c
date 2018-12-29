@@ -79,7 +79,7 @@ string *tmp, s, func;
 int i, j, bit_flags, func_flags;
 mixed misc, *tmp2;
 
-	if (!stringp(x) || !strlen(x))
+	if (!stringp(x) || !sizeof(x))
 		return x;
 	if (x[0] == ':') x = x[1..];
 	tmp = explode(x, "%");
@@ -90,7 +90,7 @@ mixed misc, *tmp2;
 
 // Now let's remove empty strings, if there are some.
 	while (i--)
-        if (!strlen(tmp[i])) {
+        if (!sizeof(tmp[i])) {
             tmp[i] = 0;
             bit_flags++;
         }

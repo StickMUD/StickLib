@@ -349,7 +349,7 @@ list_channel(string ch, object who)
      if ((s & CHANNEL_LD)
          && member(dont_show_ld, ch) != -1) continue;
 
-     if (interactive(m[i])) idle = query_idle(m[i]); else idle = 0;
+     if (interactive(m[i])) idle = interactive_info(m[i], II_IDLE); else idle = 0;
 
      if (!stringp(tmp2 = (string)m[i]->query_pretitle()))
        tmp2 = "";
@@ -359,7 +359,7 @@ list_channel(string ch, object who)
      if (ilevel >= IL_TOTALLY_INVISIBLE) n = "<"+n+">";
      else if (ilevel > 0) n = "("+n+")";
 
-     if (query_editing(m[i])) n = "[" + n + "]";
+     if (interactive_info(m[i], II_EDITING)) n = "[" + n + "]";
 
      tmp += ({
        sprintf("[%|21s]  %-16s %8s",
@@ -428,7 +428,7 @@ send_channel_message(mixed ob, string ch, string msg)
   // Emote?
   if (msg[0] == ':')
     {
-      indent = strlen(ch) + 3;
+      indent = sizeof(ch) + 3;
       msg = msg[1..<1];
       if (msg[0] != ' ') msg = " " + msg;
       e = 1;
@@ -437,14 +437,14 @@ send_channel_message(mixed ob, string ch, string msg)
   else
     {
       if (stringp(ob))
-        indent = strlen(ob) + 3;
+        indent = sizeof(ob) + 3;
       else
-        indent = strlen(ob->query_real_name()) + 3;
+        indent = sizeof(ob->query_real_name()) + 3;
       if (ch == "lord" || ch == "flord") msg = " " + msg;
       else 
         {
           msg = ": " + msg;
-          indent += strlen(ch) + 2;
+          indent += sizeof(ch) + 2;
         }
     }
 
@@ -1118,7 +1118,7 @@ ninja_list(object me)
 		{ loc = (string) environment(who_member[i])->short();
 		  if (!loc) loc = "Unknown place"; }
          else loc = "--";
-    if (strlen(loc) > 18) loc = loc[0..14] + "...";
+    if (sizeof(loc) > 18) loc = loc[0..14] + "...";
 
     tmp = sprintf("%-16s %-14s %-11s %-6s %-8s %-17s",
                   (nmark ? (string)nmark->ninja_pretitle() : who_member[i]->query_pretitle() ),
@@ -1126,7 +1126,7 @@ ninja_list(object me)
                   beltstr,
                   chanstat,
                   actvstat,
-                  loc                  
+                  loc
                );
      who_list += ({ tmp });
    }
@@ -1267,7 +1267,7 @@ ninjasen_list(object me)
       (int)who_member[i]->query_level() < me_level) 
              loc = (string) environment(who_member[i])->short();
          else loc = "--";
-    if (strlen(loc) > 18) loc = loc[0..14] + "...";
+    if (sizeof(loc) > 18) loc = loc[0..14] + "...";
 
     tmp = sprintf("%-16s %-14s %-11s %-6s %-8s %-17s",
                   (nmark ? (string)nmark->ninja_pretitle() : who_member[i]->query_pretitle() ),
@@ -1275,7 +1275,7 @@ ninjasen_list(object me)
                   beltstr,
                   chanstat,
                   actvstat,
-                  loc                  
+                  loc
                );
      who_list += ({ tmp });
    }
@@ -1460,7 +1460,7 @@ mage_list(object who)
           IS_MAGE_GUILD_CODER(who->query_real_name()) )
    place = environment(us[i])->query_short();
 
-      if (strlen(place) > 35) place = place[0..34];
+      if (sizeof(place) > 35) place = place[0..34];
 
       {  // Stripataan moniriviset yksirivisiksi.
         j = strstr((string)place, "\n");
@@ -1503,7 +1503,7 @@ mage_list(object who)
  %d idle.", ctotal, (ctotal != 1 ? "s" : ""), ptotal,
       (ptotal != 1 ? "s" : ""), itotal)
   );
-  if (strlen(text2) >= 10)
+  if (sizeof(text2) >= 10)
     text2 += sprintf("%|78s\n", MAGE_CHANNEL_HEADER);
   who->tell_me(text3+text2+text);
 }
@@ -1636,7 +1636,7 @@ priest_list(object me)
                 temp_strs = explode(locat_s, "\n");
                 locat_s = temp_strs[sizeof(temp_strs)-1];
             }
-            if(strlen(locat_s)>36) locat_s = locat_s[0..32] + "...";
+            if(sizeof(locat_s)>36) locat_s = locat_s[0..32] + "...";
         }
         else locat_s = "";
 
@@ -1823,7 +1823,7 @@ healer_list(object me)
 	    	    if (!loc) loc = "Unknown place";
              }
              else loc = " ";
-        if (strlen(loc) > 26) loc = loc[0..23] + "...";
+        if (sizeof(loc) > 26) loc = loc[0..23] + "...";
 
         tmp = sprintf("  %18s %-14s %-8s  %s", pretitle, name, chanstat, loc);
         who_list += ({ tmp });
@@ -1950,9 +1950,8 @@ fighter_list(object me)
               (int)who_member[i]->query_level() < me_level) 
               loc = (string) environment(who_member[i])->short();
           else loc = " ";
-        if (strlen(loc) > 17) loc = loc[0..13] + "...";
+        if (sizeof(loc) > 17) loc = loc[0..13] + "...";
 
- 
          tmp = sprintf(" | %14s %-31s %-6s %-17s |", pretitle, name, chanstat, loc);
          who_list += ({ tmp });
        }

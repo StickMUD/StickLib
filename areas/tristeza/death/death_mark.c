@@ -1,3 +1,5 @@
+#include "/sys/configuration.h"
+
 #include <areas.h>
 
 #include <generic_rooms.h>
@@ -78,7 +80,7 @@ init()
 	victim->set(LIV_DEATH_MARK);
 	add_action("no_cmd", "", 1);
 	race = (string) victim->query_race();
-	set_heart_beat(1);
+	configure_object(this_object(), OC_HEART_BEAT, 1);
 }
 
 int

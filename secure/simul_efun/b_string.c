@@ -13,7 +13,7 @@ int	intSpace, intChar, intI, intLen, intInd;
 	intSpace = -1;
 	intChar = 0;
 	intInd = 0;
-	intLen = strlen(strInput);
+	intLen = sizeof(strInput);
 
 	for(intI = 0; intI < intLen; intI++) {
 // Optimized a bit, -+ Doomdark 17-Apr-99 +-

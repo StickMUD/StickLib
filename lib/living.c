@@ -20,6 +20,8 @@
 *	added a later point.					*
 ****************************************************************/
 
+#include "/sys/interactive_info.h"
+
 #include <logging.h>
 #include <conditions.h>
 #include <daemons.h>
@@ -78,16 +80,16 @@ varargs mixed query_condition(int c, int mode);
 string query_real_name();
 object query_attack();
 varargs int query_wc(status left);
-int query_ac();
+public int query_ac();
 status query_ghost();
 object is_wearing(mixed x);
-varargs status is_fighting(object a);
+varargs object is_fighting(object a);
 int query_level();
 status query_sit();
 status query_rest();
 status test_dark();
 status test_dark2(int a, int b, int c);
-varargs void attack_object(object o, status no_hit);
+varargs status attack_object(object o, status no_hit);
 varargs int attacked_by(object o, int i, int x);
 void transfer_all_to(object x);
 varargs status add_weight(int w, status no_recount);
@@ -96,7 +98,7 @@ void race_update();
 varargs status set_sit(status a, status silent);
 varargs status set_rest(status a, status silent);
 int query_age();
-varargs void stop_fight(object o);
+varargs void stop_fight(object o, int flags);
 varargs string get_short(object o, object o2, int sil);
 void start_hunting(object o);
 void purge_hunt();
@@ -694,7 +696,7 @@ add_money(int m)
     int x;
 #ifdef LOG_EXP
     if (this_player() && this_player() != this_object() &&
-      query_ip_number(this_player()) && query_ip_number(this_object()) &&
+      interactive_info(this_player(), II_IP_NUMBER) && interactive_info(this_object(), II_IP_NUMBER) &&
       (m >= ROOM_EXP_LIMIT || this_object()->query_coder_level())) {
 	x = (int) this_player()->query_coder_level();
 	log_file("EXPERIENCE", sprintf("%s %s(%d) %d money by %s(%s%d)\n",
@@ -884,7 +886,7 @@ currently attack other players, nor can they attack you.");
 	return 1;
     }
     if (!attackers && (liv_Flags & F_LIV_IS_NPC))
-	set_heart_beat(1);
+	configure_object(this_object(), OC_HEART_BEAT, 1);
 
     if (!sizeof(attacker))
 	attacker = allocate(ATTACKER_ARRAY_SIZE);
@@ -1165,7 +1167,7 @@ hit_player(int dam, int t, mixed hc, object enemy)
 	if (member(attacker, enemy) < 0) {
 	    if (enemy != this_object()) {
 		if (!us_player)
-		    set_heart_beat(1);
+		    configure_object(this_object(), OC_HEART_BEAT, 1);
 		if (!attacked_by(enemy, 0, enemy_flags))
 		    return 0;
 		pk_checked = 1;
@@ -1252,7 +1254,7 @@ hit_player(int dam, int t, mixed hc, object enemy)
 
     // Removed the kludge that Graah had added for healers, and added a check
     // here so that healers can idle as much as they want and still stop fights.
-    // Chopin 3-May-98    
+    // Chopin 3-May-98
     if (query_can_move()
 #ifdef GN_HEALER
 	|| guild == GN_HEALER
@@ -1262,7 +1264,7 @@ hit_player(int dam, int t, mixed hc, object enemy)
 	// Guild bonus/penalty applied before armor class, only for players.
 	if (us_player && (GuildFlags & (1 << G_HOOK_HIT_PLAYER)) &&
 	  interactive(this_object()) &&
-	  (query_idle(this_object()) < IDLE_LIMIT_FOR_DODGE
+	  (interactive_info(this_object(), II_IDLE) < IDLE_LIMIT_FOR_DODGE
 #ifdef GN_HEALER
 	  || guild == GN_HEALER
 #endif
@@ -1647,7 +1649,7 @@ void
 force_us(string cmd)
 {
     if (!this_player() || (int) this_player()->query_level() <= level ||
-      !query_ip_number(this_player())) {
+      !interactive_info(this_player(), II_IP_NUMBER)) {
 	tell_me(sprintf("%s failed to force you to '%s'.",
 	    this_player()->query_real_name(), cmd));
 	return;
@@ -1655,7 +1657,7 @@ force_us(string cmd)
     if (this_player() && !this_player()->query(LIV_IS_NPC)) {
 	if (!(liv_Flags & F_LIV_IS_NPC)
 	  && (int) this_player()->query_level() < level ||
-	  !query_ip_number(this_player())) {
+	  !interactive_info(this_player(), II_IP_NUMBER)) {
 	    tell_me(sprintf("%s failed to force you to '%s'.",
 		(string) this_player()->query_real_name(), cmd));
 	    return;

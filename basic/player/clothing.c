@@ -154,7 +154,7 @@ query_clothing_text()
 int i, s;
 mixed c;
 string txt;
-	if (!clothes || 
+	if (!clothes ||
 		!(c = m_values(clothes)) ||
             !(s = sizeof(c))
 //           ) return "Nothing.";
@@ -162,6 +162,6 @@ string txt;
 
 	for (i = 0, txt = ""; i < s; i++)
 		txt += c [i] [0] + " (worn).\n";
-	if ((i = strlen(txt)) > 1)
+	if ((i = sizeof(txt)) > 1)
 		return txt[0..i-2];
 }

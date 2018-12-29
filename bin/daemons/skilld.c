@@ -71,13 +71,13 @@ query_is_valid_skill(string skname)
     }
 
     /* Or are we going to have "ki"? Oriental stuff... */
-    if (strlen(skname) < 3) {
+    if (sizeof(skname) < 3) {
 	write("query_is_valid_skill: too short skill name \"" +
 		skname + "\"\n");
 	return 0;
     }
 
-    if (strlen(skname) > MAX_SKNAME_LEN) {
+    if (sizeof(skname) > MAX_SKNAME_LEN) {
 	write("query_is_valid_skill: too long skill name \"" +
 		skname + "\"\n");
 	return 0;

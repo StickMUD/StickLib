@@ -114,7 +114,7 @@ int query(int x);
 // living object. -+ Doomdark +-
 // Alas, this doesn't prevent func from inheritance... So won't save memory.
 
-private static int
+private int
 exp_loss(int xp, int div)
 {
   int x;
@@ -145,7 +145,7 @@ exp_loss(int xp, int div)
   return x;
 }
 
-private static int
+private int
 exp_gained(int exp, int kr_level, int kr_ep, int kr_expt,
 	   int killed_level, int k_wc, int k_ac)
 {
@@ -452,8 +452,7 @@ death(int mode, object killer)
 
   if (environment())
     {
-      if (inv = all_inventory(this_object())
-	  && (x = sizeof(inv)))
+      if ((inv = all_inventory(this_object())) && (x = sizeof(inv)))
 	{
 	  // Corpse mega-carry cheat solution: drop all but wielded and
 	  // worn things outside.

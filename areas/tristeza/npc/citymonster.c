@@ -29,7 +29,7 @@ extra_attacked_by(object ob)
 #endif
 
     if (!assaulter) assaulter = ({ });
-    if (member_array(ob, assaulter) == -1)
+    if (member(assaulter, ob) == -1)
       assaulter += ({ ob });
   }
 }
@@ -53,7 +53,7 @@ killed_by(object ob)
   if (!environment() || ob->query_npc()) return;
 
   /* Only the one who first assaulted us can be a murderer */
-  if (!assaulter || member_array(ob, assaulter) == -1) return;
+  if (!assaulter || member(assaulter, ob) == -1) return;
 
 #ifdef CRIMES
   CRIME_D->crime(ob, CR_MURDER);

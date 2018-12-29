@@ -17,6 +17,8 @@
 *								*
 ****************************************************************/
 
+#include "/sys/object_info.h"
+
 #include <weatherdesc.h>
 #include <room_defs.h>
 #include <daemons.h>
@@ -100,12 +102,12 @@ query_total_light(int x)
   // Have to add a kludge for city rooms. *SIGH*
   if (x && (outdoorness & WD_OUTDOORS) && !(outdoorness & WD_CITY)) {
     if (light_level < 1)
-      return efun::set_light(0);
+      return set_light(0);
     if (light_level < 3)
-      return efun::set_light(0) - light_level;
-    return efun::set_light(0) - 2;
+      return set_light(0) - light_level;
+    return set_light(0) - 2;
   }
-  return efun::set_light(0);
+  return set_light(0);
 }
 
 varargs int
@@ -113,12 +115,12 @@ query_light(int x)
 {
   if (x && (outdoorness & WD_OUTDOORS) && !(outdoorness & WD_CITY)) {
     if (light_level < 1)
-      return efun::set_light(0);
+      return set_light(0);
     if (light_level < 3)
-      return efun::set_light(0) - light_level;
-    return efun::set_light(0) - 2;
+      return set_light(0) - light_level;
+    return set_light(0) - 2;
   }
-  return efun::set_light(0);
+  return set_light(0);
 }
 
 int query_light_level() { return light_level; }
@@ -327,7 +329,7 @@ query_long(string str, object who)
       else temp =  long_desc;
     }
     if ((outdoorness & WD_OUTDOORS) && who->query(LIV_NOT_BRIEF_WEATHER))
-      if ((temp2 = (string) NATURE -> query_short_weather()) && strlen(temp2))
+      if ((temp2 = (string) NATURE -> query_short_weather()) && sizeof(temp2))
 	temp = sprintf("%s\n%s", temp, temp2);
 
     if (Flags & F_ROOM_EXITS_SKIPPED)
@@ -396,14 +398,7 @@ set_light_level(int x)
 
   t = x - light_level;
   light_level = x;
-  efun::set_light(t);
-}
-
-void
-set_light(int x)
-{
-  light_level += x;
-  efun::set_light(x);
+  set_light(t);
 }
 
 void
@@ -506,9 +501,9 @@ add_item(mixed s, mixed d)
     else Items[(string*) s[0]] = d;
 
     x = sizeof(s);
-    t = "=" + (string*) s[0];
+    t = "=" + s[0];
 
-    while (--x) Items[(string*) s[x]] = t;
+    while (--x) Items[s[x]] = t;
   }
   else return 0;
   return 1;
@@ -901,7 +896,7 @@ init()
 	if ((Flags & (F_ROOM_HAS_EFFECTS | F_ROOM_HB_ON)) ==
 	    (F_ROOM_HAS_EFFECTS)) {
 		Flags |= F_ROOM_HB_ON;
-		set_heart_beat(1);
+		configure_object(this_object(), OC_HEART_BEAT, 1);
 	  }
 	}
 }
@@ -921,7 +916,7 @@ int i, r;
 		}
 		if (!x) {
 			Flags &= (~F_ROOM_HB_ON);
-			set_heart_beat(0);
+			configure_object(this_object(), OC_HEART_BEAT, 1);
 			return;
 		}
 	}

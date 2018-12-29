@@ -12,12 +12,12 @@
 #define MY_NAME         capitalize((string)who->query_name())
 #define HIS             who->query_possessive()
 
-mapping smokers;        
+mapping smokers;
 
 string *pipe_out_msg;
 
-check_smokers();
-create_monster();
+status check_smokers();
+void create_monster();
 
 void create() {
  pipe_out_msg = ({ "Your pipe goes out!", "Your pipe suddenly gets cold.",
@@ -369,10 +369,10 @@ status check_smokers() {
    them a bit if they are in the right condition and so on. Check out more
    detailed commaents in the function. */
 
- int i, *stats; 
- object *we; 
+ int i, *stats;
+ object *we;
  we = m_indices(smokers);
- for(i=0;i < sizeof(we); i++) { 
+ for(i=0;i < sizeof(we); i++) {
   if (query_fit(we[i]) > 0) cough(we[i],0);
   if (query_smoking(we[i]) == YES) smoke(we[i]);
   else if(query_addiction(we[i]) > 0) sweat(we[i]);

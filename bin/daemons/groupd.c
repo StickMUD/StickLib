@@ -37,6 +37,8 @@
 // this is to allow group to be called few npcs at a time. And this is to
 // prevent too_long_eval_costs...).
 
+#include "/sys/configuration.h"
+
 mapping groups;		// Groups of npcs
 mixed *attacks;		// Groups under attack, and to be processed.
 mixed *attacks2;	// Groups under attack, after call for help is made.
@@ -106,7 +108,7 @@ group_attacked(object npc, object attacker, string group)
 	if (processing) return;
 
 	if (!hb_on)
-		set_heart_beat(hb_on = 1);
+	configure_object(this_object(), OC_HEART_BEAT, (hb_on = 1));
 
 	attacks += ({ ({ npc, attacker, group }) });
 }
@@ -206,8 +208,7 @@ int i;
 	} else if (!sizeof(attacks)) {
 
 // If no more calls, we can turn hb off to save CPU-time.
-
-		set_heart_beat(processing = hb_on = 0);
+		configure_object(this_object(), OC_HEART_BEAT, (processing = hb_on = 0));
 		return;
 	}
 

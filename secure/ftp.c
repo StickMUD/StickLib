@@ -148,7 +148,7 @@ int i, j;
 	case '/':
 		break;
 	case '~':
-		if (strlen(file) < 2)
+		if (sizeof(file) < 2)
 			file = sprintf(PATH_USER "%s", user);
 		else if (file[1] == '/')
 			file = sprintf(PATH_USER "%s/%s", user, file[2..]);

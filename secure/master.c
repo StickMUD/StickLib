@@ -20,8 +20,12 @@
 #pragma strong_types
 #pragma strict_types
 
-#include "/include/driver.h"
-#include "/include/driver_hook.h"
+#include "/sys/driver_hook.h"
+#include "/sys/interactive_info.h"
+#include "/sys/object_info.h"
+
+//#include "/include/driver.h" // If nothing is found broken delete this later
+//#include "/include/driver_hook.h"
 
 #include "/include/config.h"
 
@@ -34,8 +38,8 @@
 #include "/include/areas.h"
 #include "/include/generic_rooms.h"
 
-#define PLANFILE "/ftp/.plan"
-#define	HTMLPLANFILE	"/ftp/finger.html"
+#define PLANFILE "/www/.plan"
+#define	HTMLPLANFILE	"/www/finger.html"
 
 // Some of these need to be without the leading slash, at least
 // so long as we're in compat mode:
@@ -78,7 +82,7 @@ private static mapping _players;
 
 #include "/secure/simul_efun/amylaar.c"
 
-mixed check_access(string path, mixed caller, string func, status write);
+int check_access(string path, mixed caller, string func, status write);
 #include "/secure/ftp.c"
 
 /*
@@ -229,8 +233,7 @@ int i;
 	return 1;
 }
 
-private static
-mixed
+private mixed
 get_access_data(string dir)
 {
 mixed data;
@@ -312,7 +315,7 @@ mixed data, old_data;
 			if (!acc) ;
 			else {
 			  a = data[<1];
-			  if (strlen(a) && a[<1] == ':')
+			  if (sizeof(a) && a[<1] == ':')
 				a = sprintf("%s%s:%s:", a, who, acc);
 			  else
 				a = sprintf("%s:%s:%s:", a, who, acc);
@@ -355,7 +358,7 @@ query_coder_data()
 *									*
 ************************************************************************/
 
-status
+int
 check_access(string path, mixed caller, string func, status write)
 {
 mixed *pl_data;
@@ -384,7 +387,7 @@ string rn, file, rn2, tmp;
 		} else if (lower_case(rn) == rn2)
 			return 1;
 	}
-	i = strlen(path);
+	i = sizeof(path);
 	while (--i)
 		if (path[i] == '/')
 			break;
@@ -411,7 +414,7 @@ string rn, file, rn2, tmp;
 	if (sizeof(acc_data) > 1 && !(sizeof(acc_data) & 1)) {
 	  tmp = sprintf(":%s:", rn);
 	  if ((i = strstr(acc_data[<1], tmp)) >= 0) {
-	   tmp = acc_data[<1][i+strlen(tmp)..];
+	   tmp = acc_data[<1][i+sizeof(tmp)..];
 	    if (write) {
 		if (!strstr(tmp, "w:") || !strstr(tmp, "rw:") || !strstr(tmp, "wr:"))
 			return 1;
@@ -866,6 +869,32 @@ flag(string str)
 	printf("master: Unknown flag %s.\n", str);
 }
 
+//---------------------------------------------------------------------------
+static string _auto_include_hook (string base_file, string current_file, int sys_include)
+// Optional string to be included when compiling <base_file>.
+//
+// Argument:
+//   base_file: The file to be compiled.
+//   current_file: When handling #include statements, the file to be included
+//   sys_include:  1, when <current_file> is a system include
+//
+
+{
+    // Do nothing for includes.
+    if(current_file)
+        return 0;
+
+    // Add the light mechanism to every object except the light object itself.
+    // And of course ignore master and simul-efun.
+    if(base_file[0] != '/')
+        base_file = "/" + base_file;
+
+    if(member((["/lib/light.c", "/secure/simul_efun.c", "/secure/simul_efun/amylaar.c", "/secure/master.c" ]), base_file))
+        return 0;
+
+    return "virtual inherit \"/lib/light\";\n";
+}
+
 // Perform mudlib specific setup of the master.
 //
 // Argument:
@@ -944,7 +973,7 @@ inaugurate_master(int arg)
 	      ({#'sscanf, 'wiz_name, "%s/%s", 'start, 'trailer}),
 	      2,
 	    }),
-	    ({#'&&, ({#'strlen, 'start}), 'start}),
+	    ({#'&&, ({#'sizeof, 'start}), 'start}),
 	    'wiz_name
 	  }),
 
@@ -957,12 +986,12 @@ inaugurate_master(int arg)
 	      ({#'sscanf, 'area_name, "%s/%s", 'start, 'trailer}),
 	      2,
 	    }),
-	    ({#'&&, ({#'strlen, 'start}), 'start}),
+	    ({#'&&, ({#'sizeof, 'start}), 'start}),
 	    'area_name
 	  }),
 
 	  ({#'&&,
-	    ({#'!=, ({#'[..], 'object_name, 0, 3}), "ftp/"}),
+	    ({#'!=, ({#'[..], 'object_name, 0, 3}), "www/"}),
 	    ({#'!=, ({#'[..], 'object_name, 0, 4}), "open/"}),
 	  })
 	})
@@ -1009,6 +1038,7 @@ inaugurate_master(int arg)
 // "/secure/", "/room/"
         }) );
 
+	set_driver_hook(H_AUTO_INCLUDE, #'_auto_include_hook);
 
 	if (!_access) create();
 }
@@ -1066,7 +1096,7 @@ int i;
 	ini = explode(inf, "\n");
 
 	for (i = sizeof(ini) - 1; i >= 0; i--)
-	  if (!strlen(ini[i]) || ini[i][0] == '#')
+	  if (!sizeof(ini[i]) || ini[i][0] == '#')
 		ini[i] = 0;
 
 	ini -= ({ 0 });
@@ -1343,7 +1373,7 @@ mixed
 heart_beat_error(object culprit, string err,
 		 string prg, string curobj, int line)
 {
-	if (query_once_interactive(culprit)) {
+	if (object_info(culprit, OI_ONCE_INTERACTIVE)) {
 		culprit->tell_me("You have no heart beat! But I'll try\
  to restart it.");
 		return 1;
@@ -1537,7 +1567,7 @@ set_test_connect(string str)
 
 nomask object connect();
 
-private static object
+private object
 testConnect()
 {
 object ob;
@@ -1880,10 +1910,10 @@ query_player_level(string what)
 void
 runtime_error(string err, string prg, string curobj, int line)
 {
-	write_file("/runtime.log", sprintf(
+	write_file("/log/driver_runtime.log", sprintf(
 "Program: %s, Cur obj: %s, line: %d,\nError: %s\n",
 prg, curobj, line, err));
-	if (this_player() && query_ip_number(this_player()))
+	if (this_player() && interactive_info(this_player(), II_IP_NUMBER))
 	  catch( write(curobj ?
 		 err +
 		 "program: " + prg +

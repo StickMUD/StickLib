@@ -268,8 +268,8 @@ restore_variables(mapping var)
 // void set_alt_name(string str) { if (str) set_id(str); }
 
 /*** Default short and long ***/
-short(x,y) { return query_short(x,y); }
-long(x,y) { if (this_player()) this_player() -> tell_me(query_long(x,y)); }
+mixed short(mixed x, mixed y) { return query_short(x,y); }
+mixed long(mixed x, mixed y) { return query_long(x,y); }
 
 /*** Can now ask light from all objects ***/
 int query_light() { return set_light(0); }

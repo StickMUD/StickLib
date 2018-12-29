@@ -81,6 +81,8 @@ the werevolves!
 
 */
 
+#include "/sys/configuration.h"
+
 #include <room_defs.h>
 #include <gametime.h>
 #include <living_defs.h>
@@ -294,7 +296,7 @@ create()
 #ifdef UIDS
     seteuid(getuid());
 #endif
-    set_heart_beat(1);
+    configure_object(this_object(), OC_HEART_BEAT, 1);
     uptime = time();
     if (!restore_object(SAVEFILE)) {
 	Year = 600;
@@ -740,7 +742,7 @@ query_long_weather()
 {
     string s, t;
 
-    if (!strlen(t = Temp_Type())) s = sprintf("It is %s %s.\n",
+    if (!sizeof(t = Temp_Type())) s = sprintf("It is %s %s.\n",
 	  Season, query_time_of_day());
     else s = sprintf("%s %s %s.\n", t, Season, query_time_of_day());
     if (query_sun()) s += "Sun is shining.\n";

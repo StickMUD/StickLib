@@ -68,7 +68,7 @@ w.............w\
 // s:   Smoke shop
 // i:   don't come Inn
 
-private static int
+private int
 base_MAP(int x, int y)
 {
 	if (x < SMALLEST_X || x > LARGEST_X || y < SMALLEST_Y || y > LARGEST_Y)
@@ -82,7 +82,7 @@ query_map()
 	return MAP_STRING;
 }
 
-private static mixed *
+private mixed *
 base_count_dir(int x, int y, int dir)
 {
 string str;
@@ -99,7 +99,7 @@ string str;
     return ({ x, y, str });
 }
 
-private static string *
+private string *
 type_dir(int x, int y, int type)
 {
 string *dir;

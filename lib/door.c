@@ -178,7 +178,7 @@ void set_can_lock(status val) { Flags |= F_CAN_BE_LOCKED; }
 void
 set_door_long(string str)
 {
-	if (stringp(str) && str[strlen(str) - 1] == '\n')
+	if (stringp(str) && str[sizeof(str) - 1] == '\n')
 		set_long(str[0..<2]);
    else
             set_long(str);
@@ -426,7 +426,7 @@ string
 remove_nr(string str)
 {
 int x, y;
-	if (!(x = strlen(str))) return 0;
+	if (!(x = sizeof(str))) return 0;
 	for (y = x = x - 1; x; x--) {
 		if (str[x] < '0' || str[x] > '9') break;
 	}
@@ -854,7 +854,7 @@ string tmp, tmp2;
 object room, room2;
 object door, door2, p_door;
 	Flags |= F_CREATING;
-     tmp = file_name(this_object());
+     tmp = object_name(this_object());
  if(sscanf(tmp, "%s#%d", tmp2, i) == 2) tmp = tmp2;
       partner_door = clone_object(tmp2);
 

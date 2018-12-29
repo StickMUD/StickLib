@@ -1,3 +1,4 @@
+#include <sys/interactive_info.h>
 #include <cmd.h>
 #include <coder_levels.h>
 
@@ -18,7 +19,7 @@ string text;
 	}
     ulist = users();
     for(i = sizeof(ulist) - 1; i >= 0; i--)
-      if ((sn=query_snoop(ulist[i]))
+      if ((sn=interactive_info(ulist[i]), II_SNOOP_NEXT)
 	  && ((cl >= LVL_COADMIN) ||
 	      ((int)sn->query_coder_level()<= cl))) {
 	if (!text) text = ""; else text += "\n";

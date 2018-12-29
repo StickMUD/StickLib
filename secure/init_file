@@ -41,13 +41,7 @@
 /areas/tristeza/shops/shop
 /areas/tristeza/rooms/attic
 /areas/tristeza/city_daemon
-/areas/magic_mansion/daemon/bunny_d
 /areas/tristeza/rooms/well
 /room/void
 /room/xyzzy_void
 # All lines below these comments are for loading wizard castles.
-#areas/islands/castle
-#areas/asahi/castle
-#/players/doomdark/city/lobby
-/areas/faraway/icecave/cavern2
-#/players/priests/alchemy/top_board

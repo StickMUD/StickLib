@@ -10,7 +10,7 @@ mapping query_channels()
 
 void set_channels(mapping m) { channels = m; }
 
-static
+void
 c_channel(string ch)
 {
   if (!mappingp(channels)) channels = ([]);

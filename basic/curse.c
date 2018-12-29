@@ -4,7 +4,7 @@
 * At least standard armour and weapon files use this.		*
 *								*
 * V1.01 02-oct-94						*
-*								*	
+*								*
 * Last changes 02-oct-94 by Doomdark.				*
 *								*
 ****************************************************************/
@@ -225,14 +225,14 @@ set_name(string s)
 	else ::set_name(curse_name2);
 }
 
-private static status
+private status
 is_article(string s)
 {
 	return s == "a" || s == "an" || s == "the" || s == "A" || 
 		s == "An" || s == "The";
 }
 
-private static string*
+private string *
 get_article(string s)
 {
 string tmp, tmp2;

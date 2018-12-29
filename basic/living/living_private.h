@@ -8,7 +8,7 @@
 #define	F_LIV_IS_PLAYER		(1 << 4)
 #define	F_LIV_SITTING		(1 << 5)
 #define	F_LIV_RESTING		(1 << 6)
-#define	F_LIV_OK_TO_PK	(1 << 7)
+#define	F_LIV_OK_TO_PK		(1 << 7)
 #define	F_LIV_NIGHT		(1 << 8)
 
 #define	LIV_FLAGS		10

@@ -12,7 +12,7 @@
 * - This is now included by living.c, not inheritted.		*
 *								*
 *- Added RACE_EAT_VALUE to take into account the amount of value*
-*- one would get form eating. i.e. little hobbit, big food      *	
+*- one would get form eating. i.e. little hobbit, big food      *
 *								*
 *	Version:	2.1					*
 *	Modified 05-Apr-95 by Kelgath				*
@@ -214,9 +214,9 @@ troll	110	Hitting a barn is easy, especially when it moves SLOW!
 
 ******************************************************************/
 	  switch(race) {
-	  case "troll": return 150;	
-	  case "half-orc": return 130;	
-	  case "dwarf": return 140;	
+	  case "troll": return 150;
+	  case "half-orc": return 130;
+	  case "dwarf": return 140;
 	  case "elf": return 90;
 	  case "dark elf": return 90;
 	  case "hobbit": return 90;
@@ -355,7 +355,6 @@ Tough guys: trolls, dwarves, half-orcs, hobbits and humans
     case "half-orc": return 5;
     case "troll": return 7;
     default: return 6;
-      
     }
 
   case RACE_HP_DELAY:
@@ -397,4 +396,6 @@ Tough guys: trolls, dwarves, half-orcs, hobbits and humans
       return 10;
     }
   }
+
+    return 0;
 }

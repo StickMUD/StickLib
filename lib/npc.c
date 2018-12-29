@@ -13,6 +13,7 @@
 * Modifications:						*
 *								*
 ****************************************************************/
+#include "/sys/configuration.h"
 
 #include <npc_defs.h>
 
@@ -146,13 +147,13 @@ void do_spell_message(object victim, int real_dmg, int orig_dmg);
 #define	NPC_START_HB	if (keep_hb < 0)\
 				hb_left = -keep_hb;\
 			if (!(npc_Flags & F_NPC_HB_IS_ON)) {\
-				set_heart_beat(1);\
+				configure_object(this_object(), OC_HEART_BEAT, 1);\
 				npc_Flags |= F_NPC_HB_IS_ON;\
 				CHECK_HEAL }
 
 #define	NPC_STOP_HB	hb_left = 0;\
 			if (npc_Flags & F_NPC_HB_IS_ON) {\
-				set_heart_beat(0);\
+				configure_object(this_object(), OC_HEART_BEAT, 0);\
 				npc_Flags &= (~F_NPC_HB_IS_ON);\
 				LastHBTime = time();\
 			}
@@ -763,7 +764,7 @@ int amount;
 	liv_Flags = F_LIV_IS_NPC;
 	wander = possessed_by = spell_chance = breath_attack = 0;
 	damage_type = DT_SLASH;
-	enable_commands();
+	configure_object(this_object(), OC_COMMANDS_ENABLED, 1);
 	set_master(0);
 	create_living();
 
