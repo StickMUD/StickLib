@@ -7,7 +7,7 @@
 
 #define MASTER "secure/master"
 
-#include "/include/wizlist.h"
+#include "/sys/wizlist.h"
 
 #define MAX_LOG_SIZE 50000
 
@@ -40,35 +40,6 @@ void localcmd() {
 	write(verbs[i]+" ");
     }
     write("\n");
-}
-
-mixed *unique_array(mixed *arr,string func,mixed skipnum) {
-    mixed *al, last;
-    int i, j, k, *ordinals;
-
-    if (sizeof(arr) < 32) return efun::unique_array(arr, func, skipnum);
-    for (ordinals = allocate(i = sizeof(arr)); i--; )
-	ordinals[i] = i;
-    al = order_alist(map_objects(arr, func), ordinals, (ordinals=0,arr));
-    arr = al[2];
-    ordinals = al[1];
-    al = al[0];
-    if (k = i = sizeof(al)) {
-	for (last = al[j = --i]; i--; ) {
-	    if (al[i] != last) {
-		if (last != skipnum) {
-		    arr[--k] = arr[i+1..j];
-		    ordinals[k] = ordinals[j];
-		}
-		last = al[j = i];
-	    }
-	}
-	if (last != skipnum) {
-	    arr[--k] = arr[0..j];
-	    ordinals[k] = ordinals[j];
-	}
-    }
-    return order_alist(ordinals[k..], arr[k..])[1];
 }
 
 string version() {
@@ -106,6 +77,7 @@ void add_worth(int value, object ob) {
         set_extra_wizinfo(ob, old + value);
 }
 
+#if 0
 void wizlist(string name) {
     int i, pos, total_cmd;
     int *cmds;
@@ -155,14 +127,83 @@ void wizlist(string name) {
     }
     printf("\nTotal         %7d     (%d)\n\n", total_cmd, sizeof(cmds));
 }
+#else
+varargs void wizlist(string name)
+{
+    int i, pos, total_cmd;
+    int *cmds;
+    mixed *a;
+    mixed *b;
 
+    if (!name) {
+        name = this_player()->query_real_name();
+        if (!name)
+        {
+            write("Need to provide a name or 'ALL' to the wizlist function.\n");
+            return;
+        }
+    }
+    a = transpose_array(wizlist_info());
+    cmds = a[WL_COMMANDS];
+        a[WL_COMMANDS] = a[0];
+    a[0] = cmds;
+
+    a = unmkmapping(apply(#'mkmapping, a));
+    cmds = a[0];
+    a[0] = a[WL_COMMANDS];
+    a[WL_COMMANDS] = cmds;
+
+    if ((pos = member(a[WL_NAME], name)) < 0 && name != "ALL")
+    {
+        write("No wizlist info for '"+name+"' found.\n");
+        return;
+    }
+    b = allocate(sizeof(cmds));
+    for (i = sizeof(cmds); i;) {
+        b[<i] = i;
+        total_cmd += cmds[--i];
+    }
+    a = transpose_array(a + ({b}) );
+    if (name != "ALL") {
+        if (pos + 18 < sizeof(cmds)) {
+            a = a[pos-2..pos+2]+a[<15..];
+        } else if (pos < sizeof(cmds) - 13) {
+            a = a[pos-2..];
+        } else {
+            a = a[<15..];
+        }
+    }
+    write("\nWizard top score list\n\n");
+    if (total_cmd == 0)
+        total_cmd = 1;
+    for (i = sizeof(a); i; ) {
+        b = a[<i--];
+        if (b[WL_GIGACOST] > 1000)
+            printf("%-15s %5d %2d%% (%d)\t[%d%4dk,%5d] %6d %d\n",
+              b[WL_NAME], b[WL_COMMANDS],
+              b[WL_COMMANDS] * 100 / total_cmd, b[<1],
+              b[WL_GIGACOST] / 1000,
+              b[WL_COST] / 1000 + (b[WL_GIGACOST] % 1000) * 1000000000,
+              b[WL_HEART_BEATS], b[WL_EXTRA], b[WL_ARRAY_TOTAL]
+            );
+    else
+            printf("%-15s %5d %2d%% (%d)\t[%4dk,%5d] %6d %d\n",
+              b[WL_NAME], b[WL_COMMANDS],
+              b[WL_COMMANDS] * 100 / total_cmd, b[<1],
+              b[WL_COST] / 1000 + (b[WL_GIGACOST] % 1000) * 1000000000,
+              b[WL_HEART_BEATS], b[WL_EXTRA], b[WL_ARRAY_TOTAL]
+            );
+    }
+    printf("\nTotal         %7d     (%d)\n\n", total_cmd, sizeof(cmds));
+}
+#endif
 /*
  * Function name: exclude_array
  * Description:   Deletes a section of an array
  * Arguments:     arr: The array
  *		  from: Index from which to delete elements
  *		  to: Last index to be deleted.
- * Returns:       
+ * Returns:
  */
 public mixed *
 exclude_array(mixed *arr, int from, int to)
@@ -255,15 +296,15 @@ static string brk(string word, mixed *width_indstr)
 
     width = width_indstr[0];
     indstr = width_indstr[1];
-    if ((strlen(word)+gCol) > width) {
-	gCol = strlen(indstr) + strlen(word) + 1;
+    if ((sizeof(word)+gCol) > width) {
+	gCol = sizeof(indstr) + sizeof(word) + 1;
 	return "\n" + indstr + word;
     }
     else {
-	gCol += strlen(word) + 1;
+	gCol += sizeof(word) + 1;
 	return word;
     }
-}    
+}
 
 /*
  * Function name:   update_actions

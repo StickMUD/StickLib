@@ -6,7 +6,7 @@ file_lines(string s)
 int i, j;
 string last_str, curr_str;
 string *tmp;
-	while ((curr_str = read_file(s, j, FL_BUFF_SIZE)) && strlen(curr_str)) {
+	while ((curr_str = read_file(s, j, FL_BUFF_SIZE)) && sizeof(curr_str)) {
 		if (last_str) {
 			i += FL_BUFF_SIZE;
 		}
@@ -16,7 +16,7 @@ string *tmp;
 	if (last_str) {
 		tmp = explode(last_str, "\n");
 		i += sizeof(tmp);
-		if (!strlen(tmp[<1])) i--;
+		if (!sizeof(tmp[<1])) i--;
 	}
 	return i;
 }

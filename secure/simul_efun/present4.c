@@ -22,7 +22,7 @@ object ob;
 	if (!stringp(Id)) return 0;
 // Id can contain trailing number ("object 2" and alike)...
 	if (Id[<1] >= '0' && Id[<1] <= '9') {
-	  x = strlen(Id);
+	  x = sizeof(Id);
 		while (--x && (c = Id[x]) >= '0' && c <= '9')
 			i = i * 10 + (c - '0');
 		while (x && Id[x] == ' ')	// Let's also skip spaces...

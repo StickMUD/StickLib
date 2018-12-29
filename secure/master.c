@@ -1569,7 +1569,7 @@ connect()
   if (call_other(BANISH_D, "is_ip_stopped", this_object()))
     return 0;
 
-  ret = (string)catch(ob = clone_object(PLAYERFILE));
+  ret = catch(ob = clone_object(PLAYERFILE));
 
     write("\n");
 
@@ -1580,11 +1580,11 @@ connect()
         if(ob) {
             res += "Recompiling...\n";
             destruct(ob);
-            ret = (string)catch(call_other(PLAYERFILE, "???"));
+            ret = catch(call_other(PLAYERFILE, "???"));
             if (ret) {
                 res += sprintf("Errors occured: %s.\n", ret);
             } else {
-                ret = (string)catch(ob = clone_object(PLAYERFILE));
+                ret = catch(ob = clone_object(PLAYERFILE));
                 if (!ret) {
                     if (res) { write(res); write_file("/log/LOGIN", res); }
                     return ob;
