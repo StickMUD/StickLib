@@ -1,0 +1,276 @@
+/*
+ * Could be called "channel daemon" too...
+ * 
+ * Almost completely rewritten by Chopin, 30/5/97
+ * The old version was quite messy, because it was made of separate
+ * pieces of code taken from different places in the old guild.
+ * Now this should be cleaner... lacks documentation tho, but who reads
+ * them anyway? :P
+ */
+
+#include <room_defs.h>
+#include <tell_me.h>
+#include "../priest.h"
+
+#define TP this_player()
+#define ENV environment
+
+#define COMMUNE_INVIS_LEVEL 1500 // so that I can be deep invis and still
+  // at the guild channel :)
+
+
+mapping priests;
+
+/* prototypes: */
+
+void im_in(object me);
+void im_out(object me);
+status change_channel(object me);
+varargs status broadcast(string msg, status no_log, object pl);
+varargs void inform(string msg, status no_log);
+void channel_say(object pl, string str);
+string get_idle_str(int time);
+void channel_info(object pl);
+void search_priests();
+
+// filters:
+status is_active(object who);
+status on_channel(object who);
+
+/* and the funs: */
+
+void
+create() {
+    int *size;
+    int n;
+    
+    if (sizeof(size = get_dir(COMMUNELOG, 2)) && size[0] > 100000)
+         catch(rename(COMMUNELOG, COMMUNELOG + ".old"));
+    if (sizeof(size = get_dir(PEXLOG, 2)) && size[0] > 20000)
+        catch(rename(PEXLOG, PEXLOG + ".old"));
+
+    priests = ([]);
+    search_priests();
+}
+
+
+int clean_up(int ref) { return 0; } // no clean up, thank you
+
+
+void
+im_in(object me) {
+    // no need to check, if the player is already on
+    priests[me] = 1; // let's turn the channel on;
+    priests -= ([0]);
+}
+
+void
+im_out(object me) {
+    priests-=([me]);
+}
+
+
+status
+change_channel(object me) {
+    return priests[me] = !priests[me];
+}
+
+
+// Thanks for the idea, Macleod
+varargs status
+broadcast(string msg, status no_log, object pl) {
+    mapping ppl;
+    object *pl_objs;
+    int i;
+    
+    ppl = filter_mapping(priests, #'on_channel);
+    pl_objs = m_indices(ppl);
+    for(i=sizeof(ppl)-1; i>=0; i--)
+        pl_objs[i]->tell_me(msg, TELL_TYPE_GUILD_CHANNEL);
+    if(!no_log)
+        write_file(COMMUNELOG, msg + "\n");
+    if(pl)
+        return sizeof(pl_objs - ({pl}));
+    return 1;
+}
+
+
+varargs void
+inform(string msg, status no_log) {
+    string str;
+
+    str = "+Guild Informer+ " + msg;
+    broadcast(str, no_log);
+}
+
+
+void
+channel_say(object pl, string str) {
+    string tmp;
+    status is_emote;
+    int i,n_priests;
+    object *ingame;
+
+    if(ENV(pl)->query(ROOM_ISOLATED)) {
+        pl->tell_me("You feel no one can hear you.");
+        return;
+    }
+    if(sscanf(str,":%s", str)) {
+        tmp = "Priest";
+        str = sprintf("%s %s",capitalize(pl->query_real_name()),str);
+    }
+    else
+        tmp = capitalize(pl->query_real_name());
+    if(pl->query_invis())
+        tmp = "(" + tmp + ")";
+    tmp = sprintf("+%s+ %s",tmp,str);
+
+    if(broadcast(tmp,0,pl)<1)
+        pl->tell_me("No one heard you!");
+    pl->tell_me("Ok.");
+    if(!priests[pl])
+        pl->tell_me("But your channel is turned off.");
+}
+
+
+string
+get_idle_str(int time) {
+    if(time<60) return "";
+    if(time/3600)
+        return sprintf("%d h", time/3600);
+    return sprintf("%d m", time/60);
+}
+
+
+#define SEP_L1 sprintf("\n%'+*'77s", "")
+#define SEP_L2 sprintf("\n%'-'77s", "")
+
+void
+channel_info(object pl) {
+    string str, comm_s, office_s, name_s, order_s, idle_s, locat_s;
+    object ob, room, *pl_objs;
+    int n_priests, i, my_level;
+    string *temp_strs;
+    status is_coder, ob_is_coder;
+    mapping ingame;
+    
+    is_coder = pl->query_coder_level();
+    if(ENV(pl)->query(ROOM_ISOLATED))
+        ingame = ([ pl : priests[pl] ]);
+    else
+        ingame = filter_mapping(priests,#'is_active);
+    pl_objs = m_indices(ingame);
+    n_priests = sizeof(ingame);
+    my_level = pl->query_level();
+
+    str = sprintf("%|77s", "[The Holy Order of " GOD_NAME "]") + SEP_L1;
+    str += sprintf("\n  %-12s %-12s %-6s %-5s %-36s", "Rank", "Name",
+        "Deity", "Idle", "Location");
+    str += SEP_L2;
+    
+    i = n_priests;
+    while(--i>=0) {
+        ob = pl_objs[i];
+        ob_is_coder = ob->query_coder_level();
+        comm_s = ingame[ob] ? "+" : "-";
+        name_s = ob->query_real_name();
+        office_s = OFFICER_D->query_title(ob);
+        order_s = ORDERS[(ob->query_guild_object())->query_order()+1];
+        idle_s = get_idle_str(query_idle(ob));
+        if(is_coder || (ob->query_level()<=my_level) && !ob_is_coder) {
+            room = ENV(ob);
+            locat_s = room->query_short();
+            if(!locat_s) locat_s = " ";
+            else
+            if(room->query_virtual_room()) {
+                temp_strs = explode(locat_s, "\n");
+                locat_s = temp_strs[sizeof(temp_strs)-1];
+            }
+        }
+        else
+            locat_s = " ";
+        
+        str += sprintf("\n%-1s %-12s %-12s %-6s %-5s %-=36s",
+            comm_s, office_s, capitalize(name_s), order_s, idle_s, locat_s);
+    }
+    str += SEP_L2;
+    str += sprintf("\nTotal of %d Priests out of %d players."
+        ,n_priests,sizeof(users()));
+    str += SEP_L1;
+    pl->tell_me(str);
+}
+
+
+status
+is_active(object who) {
+    return who && interactive(who) && !ENV(who)->query(ROOM_ISOLATED) &&
+        who->query_invis() < COMMUNE_INVIS_LEVEL;
+}
+
+status
+on_channel(object who) {
+    return who && interactive(who) && !ENV(who)->query(ROOM_ISOLATED) &&
+        priests[who];
+}
+
+
+// search_priests() is called from create(), so that players don't have
+// to update their symbols if someone compiles this object
+void
+search_priests() {
+    object *ppl;
+    int i;
+    
+    ppl = users();
+    i = sizeof(ppl);
+    while(--i>=0) {
+        if(ppl[i]->query_guild_object_name() == PRIEST_SYMBOL)
+            im_in(ppl[i]);
+    }
+}
+
+status
+resign(mixed who) {
+    string name;
+    int fee;
+    object ob, pret;
+
+    if(stringp(who)) {
+        who = find_player(who);
+        if(!who) return 0;
+    }
+    name = who->query_real_name();
+    ob = who->query_guild_object();
+    if(pret = ob->query_pretitle_object())
+        destruct(pret);
+    SKILL_SAVER->save_my_skills(who, ob, 1);
+    destruct(ob);
+    SERVER->im_out(who);
+    BOOKKEEPER->remove_me(name);
+    OFFICER_D->add_officer(name,0);
+    DELAY_D->remove_delays(who);
+    SHIELD_D->remove_pl(who);
+    if(!who->query_coder_level()) {
+        who->set_title("the former member of the fraternity of " GOD_NAME);
+        INFORMER->inform(sprintf("%s has forsaken the Holy Church. \
+Requist en pas.", capitalize(who->query_real_name())));
+        fee = (who->query_ep() / 10);
+        if(fee > 300000) fee=300000;
+        who->add_exp(-fee);
+    }
+    if(ob = present("s_scalpel",who))
+        destruct(ob);
+    if(ob = present(STAFF_ID, who))
+        destruct(ob);
+    who->set_guild(0);
+    if(!who->query_coder_level() && !who->query_testplayer())
+        write_file(PRIEST_DIR "log/new_priests",sprintf("%s %s resigned.\n",
+       ctime(time()), capitalize(who->query_real_name())));
+
+    return 1;
+}
+
+
+
+// For debugging:
+mapping query_priests() { return priests; }

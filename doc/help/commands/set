@@ -1,0 +1,27 @@
+Set can be used to change a number of options for your character.
+
+set term [ansi/vt100/dumb] : Sets your terminal to either see ANSI color,
+VT100 graphics, or no graphic options.
+
+set message [type] to [color] :
+Sets your message [type] to [color].
+
+Types:
+lord        -          lord channel
+guild       -          guild/clan channel
+mud         -          mud channel
+tell        -          tells
+coder       -          coder channel
+party       -          party channel
+hitby       -          if you are successfully hit
+missedby    -          if you are missed by something
+missing     -          if you miss something in combat
+hitting     -          if you hit something in combat
+
+Colors:
+red, blue, yellow, green, orange, purple, black,
+bold red, bold blue, bold yellow, bold green, bold orange,
+bold purple, bold black
+
+NOTE: You will probably not even see the 'black' color, so don't bother with
+it. Use bold black instead.

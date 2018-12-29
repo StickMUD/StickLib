@@ -1,0 +1,4 @@
+#0:0
+terrains (["t":"tunnel","m":"mountain_edge","h":"hill","w":"water","e":"meadow","l":"forest_light","d":"forest_dark",])
+objects ([])
+maps ({({0,0,13,8,"gardens_of_boccob",}),})

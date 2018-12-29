@@ -1,0 +1,7 @@
+#0:0
+room_effects 0
+guildmaster 0
+co_guildmaster ({})
+enforcers ({"mystica","fodao","nikki",})
+tax_base 5
+tax_per_level 5

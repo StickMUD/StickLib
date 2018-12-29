@@ -1,0 +1,55 @@
+#include "priest_spell.h"
+
+void begin_id_dis(object who, mixed target);
+status identify_disease(object who, mixed target);
+
+void
+create_spell() {
+    dif = 20;
+    lvl = 18;
+    cost = 50;
+    skills_used = ({SK_SERENITY, SK_LIFE});
+    skill_p = ({30,70});
+    funs = ({ #'begin_id_dis, #'identify_disease });
+}
+
+void begin_id_dis(object who, mixed target)
+{
+    if(!target || !(target = find_player(target))) {
+	who->tell_me("There's no such player!");
+	return;
+    }
+    if(EXCOM_D->excomed(target->query_real_name())) {
+	who->tell_me("That player is excommunicated and thus does not deserve \
+to be healed.");
+	target = 0;
+	return;
+    }
+
+    who->tell_me(sprintf("You pray for " GOD_NAME " to identify %s's \
+disease.",target->query_name()));
+    HERE->tell_here(":%<me.capname>% chants an ancient prayer, gliding \
+%<me.possessive>% hands around %<him.gen_possessive>% body"
+      ,0,0,who,who,target,0);
+}
+
+status
+identify_disease(object who, mixed target)
+{
+    object dob;
+    string dname,a;
+
+    if(!objectp(target))
+	return 0;
+    dob = present("disease", target);
+    if(!dob) {
+	if(target==who) who->tell_me("You're not diseased.");
+	else who->tell_me("That player is not diseased.");
+	return 1;
+    }
+    dname = dob->query_name();
+    if(target==who) a = "You are";
+    else a = "That player is";
+    who->tell_me(sprintf("%s diseased with %s.",a,dname));
+    return 1;
+}

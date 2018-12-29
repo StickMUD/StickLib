@@ -1,0 +1,13 @@
+#0:0
+voting_started 915217954
+duration 172800
+voting 0
+vg_voters ({"elyic","venom","messiah","isa","funakoshi","baptist","thark","timebomb",})
+ph_voters ({"thark","funakoshi","baptist","messiah","timebomb",})
+pt_voters ({"messiah","isa","funakoshi","baptist","elyic","timebomb",})
+vg_votes (["timebomb":3,"elyic":5,])
+ph_votes (["funakoshi":1,"thark":1,"snip":3,])
+pt_votes (["messiah":6,])
+vg_candidates ({"timebomb","elyic",})
+ph_candidates ({"snip","thark","funakoshi",})
+pt_candidates ({"messiah","shotgun",})
