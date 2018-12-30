@@ -27,20 +27,20 @@ static mapping logouts;
 nomask status
 query_prevent_shadow() { return 1; }
 
-nomask private static status 
+nomask private status
 _validUser() {
    if(!this_player() || !interactive(this_player()) ||
       (int)this_player()->query_coder_level() < LVL_CODER)
        return 0;
- 
+
    return 1;
 }
 
 /* Allows everybody to check for his/her own multiple chars. */
-nomask private static status 
+nomask private status
 _validQuery(string plr) {
-  
-   if(!this_player() || 
+
+   if(!this_player() ||
       !interactive(this_player()) ||
       !( (string)this_player()->query_real_name() == plr ||
          (int)this_player()->query_coder_level() >= LVL_CODER ) )
@@ -57,23 +57,23 @@ _validQuery(string plr) {
  ****************************************************/
  
 nomask void
-create() { 
+create() {
 string file;
 int clone;
- 
+
    /* Master object only */
    if(sscanf(object_name(this_object()), "%s#%d", file, clone) == 2) 
-    {    
+    {
       destruct(this_object());
       return;
     }
-    
+
    mchard_chars = read_file(MCHARD_SAVE);
    if(!mchard_chars) mchard_chars = "\n";
 
 	logouts = ([ ]);
 }
-    
+
 nomask void
 reset()
 {

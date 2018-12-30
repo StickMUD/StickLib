@@ -32,7 +32,7 @@ varargs void tell_me(string s, mixed x, int f, object a, object b, object c);
 
 #endif
 
-varargs nomask string modify_command(string s, int recurse);
+nomask mixed modify_command(string s);
 
 #define AUTH if (this_interactive() && this_interactive()!=this_object()) return
 #define AUTH2 (this_interactive() && this_interactive() != this_object())

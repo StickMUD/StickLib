@@ -211,7 +211,7 @@ string query_current_path() { return query_env ("cwd"); }
 */
 #endif
  
-private static int copy(string p1, string p2) {
+private int copy(string p1, string p2) {
     string buf;
  
     if (!(buf = read_file(p1))) return 0;
@@ -224,7 +224,7 @@ private static int copy(string p1, string p2) {
     return 1;
 }
  
-private static int do_multi_file(int operation, string p1, string p2) {
+private int do_multi_file(int operation, string p1, string p2) {
     string tmp;
     string *list, *list2;
     int i,c,d;

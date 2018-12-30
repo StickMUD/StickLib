@@ -17,7 +17,7 @@ mapping smokers;
 string *pipe_out_msg;
 
 status check_smokers();
-void create_monster();
+void create_monster(object who);
 
 void create() {
  pipe_out_msg = ({ "Your pipe goes out!", "Your pipe suddenly gets cold.",

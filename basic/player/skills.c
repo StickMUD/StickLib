@@ -79,7 +79,7 @@ mixed	use_skill(string name, float fac, mixed *data)	{
 	}
 	if(rtotal == HOOK_RESOLVED_NT) return rtotal;
 	uses = exp(old = to_float(Skills[name]));
-	uses += ((float)fac * (float)SKILL_TRAIN_RATE);
+	uses += (fac * SKILL_TRAIN_RATE);
 	if(log(uses) <= to_float(TOP_RANK))
 		Skills[name] = log(uses);
 /* Not going to work with multi-skill commands

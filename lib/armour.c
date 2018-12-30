@@ -73,7 +73,7 @@ inherit "/basic/object/dimensions";
 
 // Prototypes:
 
-private static void check_armour();
+private void check_armour();
 varargs status wear_me(object who, status silent);
 varargs status unwear_me(object who, status silent);
 int query_ac();
@@ -568,7 +568,7 @@ add_damage(int amount)
     return 1;
 }
 
-private static void
+private void
 check_armour()
 {
     if (ac <= 0) return;

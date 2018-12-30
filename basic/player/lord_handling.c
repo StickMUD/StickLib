@@ -2,6 +2,8 @@
 // to under 50k. -+ Doomdark 20-oct-95 +-
 // Last Modified: 01-14-98, Kieve
 
+#include "/sys/interactive_info.h"
+
 #ifndef PLAYER_C
 #include <mud_name.h>
 #include <player_defs.h>
@@ -176,7 +178,7 @@ lich_cmd(string str)
 			  capitalize(n), (ob[i]->query(PLR_LICH_ON) ? "on" : "off"));
 	if (n == liege) s +="\t(Your liege)";
 	if (query_lord() >= 4) {
-	  if (!query_ip_number(ob[i])) s += "  (Link dead)";
+	  if (!interactive_info(ob[i], II_IP_NUMBER)) s += "  (Link dead)";
 	  else {
 	    if (ob[i]->query_ghost()) s += "  (Dead)";
 	    else {

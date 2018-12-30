@@ -17,6 +17,8 @@
 ****************************************************************/
 
 
+#include "/sys/interactive_info.h"
+
 #define SKILLS_IN_ATTACK
 
 #include <player_defs.h>
@@ -100,7 +102,7 @@ void add_exp(int x);
 int dump_esc(string s);
 status query_can_quit();
 int listen_shout(int x);
-void save_character();
+int save_character();
 mixed do_client_command(string a, string b);
 
 // Banish server
@@ -577,16 +579,16 @@ set_quest(string q)
 	log_file("QUESTS", sprintf("%s: %s from %s.\n",
 	    name, q, object_name(previous_object())));
 	if(TP && TP != this_object() &&
-	  query_ip_number(TP))
-	    c = (int) TP->query_coder_level();
+	  interactive_info(TP, II_IP_NUMBER))
+	    c = TP->query_coder_level();
 	log_file("QUESTS", sprintf("Done by %s (%s%d)\n",
-	    (string) TP->query_real_name(),
-	    (c ? "C" : ""), (c ? c : (int) TP->query_level())));
+	    TP->query_real_name(),
+	    (c ? "C" : ""), (c ? c : TP->query_level())));
     }
 #endif
     if (!quests) quests = q;
     else quests = sprintf("%s#%s", quests, q);
-    set_qp((int) QUEST_D->recalc_qp(this_object()));
+    set_qp(QUEST_D->recalc_qp(this_object()));
     return 1;
 }
 
@@ -905,7 +907,7 @@ prompt_time()
  *************************************/
 
 nomask void
-initialize(string str, string passwd, int passtime, 
+initialize(string str, string passwd, int passtime,
   int lvl, string maddr, int gen, status interactive_copy,
 	mapping attrs)
 {
@@ -997,8 +999,8 @@ initialize(string str, string passwd, int passtime,
 	myself = this_object();
 	cap_name = capitalize(name);
 
-	enable_commands();
-	//set_living_name(name);
+	configure_object(this_object(), OC_COMMANDS_ENABLED, 1);
+	set_living_name(name);
     }
 
 /* If login-module wanted to pass us some data: */
@@ -1051,7 +1053,7 @@ initialize(string str, string passwd, int passtime,
     max_sp = SPS(query_stat(ST_INT));
     max_fp = FPS(query_stat(ST_STR), query_stat(ST_CON));
 
-    set_heart_beat(1);
+    configure_object(this_object(), OC_HEART_BEAT, 1);
 
     if (!Env)
 	Env = ([]);
@@ -1096,13 +1098,14 @@ initialize(string str, string passwd, int passtime,
 	    more(CODERNEWS_FILE);
 
 	    p = query_env("prompt");
+
 	    if (p) {
 		if (p == "PATH")
-		    set_prompt(#'prompt_path, this_object());
+		    configure_interactive(this_object(), IC_PROMPT, #'prompt_path);
 		else if(p == "TIME")
-		    set_prompt(#'prompt_time, this_object());
+		    configure_interactive(this_object(), IC_PROMPT, #'prompt_time);
 		else
-		    set_prompt(p, this_object());
+		    configure_interactive(this_object(), IC_PROMPT, p);
 	    }
 
 	}
@@ -1120,8 +1123,8 @@ initialize(string str, string passwd, int passtime,
 	// Log entering too. 15.6.1995 //Frobozz
 	log_file ("ENTER", sprintf("%s %s (enter) from %s(%s) %d,%d(%d),%d,\
 %d/%d,%d/%d,%d/%d,%d/%d\n",
-	    ctime(time())[4..15], capitalize(name), query_ip_name(this_object()),
-	    query_ip_number(this_object()), level, experience, exp_times, money,
+	    ctime(time())[4..15], capitalize(name), interactive_info(this_object(), II_IP_NAME),
+	    interactive_info(this_object(), II_IP_NUMBER), level, experience, exp_times, money,
 	    Str, max_Str, Con, max_Con, Dex, max_Dex, Int, max_Int));
 #endif
 
@@ -1181,11 +1184,11 @@ initialize(string str, string passwd, int passtime,
    tell_me(MAIL_D->query_mail(name, 0));
 
     // Argh! Amylaar certainly hates this func:
-    if (query_ip_number() != called_from_ip && called_from_ip)
+    if (interactive_info(this_object(), II_IP_NUMBER) != called_from_ip && called_from_ip)
 	tell_me(sprintf("Your last login was from %s.", called_from_ip));
 
-    called_from_ip = query_ip_number();
-    called_from_ip_name = query_ip_name(this_object());
+    called_from_ip = interactive_info(this_object(), II_IP_NUMBER);
+    called_from_ip_name = interactive_info(this_object(), II_IP_NAME);
 
     if (hit_point < 0) {
 	tell_me("\nYou are mortally wounded and unconscious.");
@@ -1375,7 +1378,7 @@ heart_beat()
       /* ((!check_fight(1) && query_hp() >= 0) || ++ld_delay > 2)) */
       /*  IF we are mortally wounded...no link death. ++Tron */
       (/* !is_fighting() || */ ++ld_delay > 5) && query_hp() >= 0) {
-	set_heart_beat(0);
+	configure_object(this_object(), OC_HEART_BEAT, 0);
 	ld_delay = 0;
 	// Let's not save here... too long evaluations occur Grrr. ++Tron
 	// save_me(1);
@@ -1425,7 +1428,7 @@ heart_beat()
 
     // Who had removed this? /Graah
     if (coder_level == 0 && interactive(this_object()) &&
-      query_idle(this_object()) >= (2 * 60 * 60))
+      interactive_info(this_object(), II_IDLE) >= (2 * 60 * 60))
     {
 	tell_me("You've been idle for 2 hours. Now, get out.");
 //	save_me(2);
@@ -1672,7 +1675,7 @@ heart_beat()
 }
 
 // Let's throw link-deaders out in two hours time 8.4.1992 //Frobozz
-static private void
+private void
 throw_ld_out2()
 {
     int i, m;

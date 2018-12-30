@@ -17,6 +17,8 @@
 
  ***************************************************/
 
+#include "/sys/interactive_info.h"
+
 #include <coder_levels.h>
 #include <daemons.h>
 #include <mchar.h>
@@ -814,7 +816,7 @@ login_gender(string str) {
 
     // Log new created player here. / Graah
     log_file("NEW_PLAYER",
-       name + " from " + query_ip_name(this_object()) +
+       name + " from " + interactive_info(this_object(), II_IP_NAME) +
        " at " + ctime(time()) + "\n");
 
     login_state = LOGIN_STATE_CONN;
@@ -852,13 +854,13 @@ login_throwOut(string str) {
     }
     else if(str[0] == 'y'  &&  find_player(name)) { 
 	 object ob;
-	   
+
 	 if (catch(ob = clone_object(LOGIN_DUMMY))) {
 	     other_copy->quit();
-	 } 
+	 }
          else {
 	     exec(ob, other_copy);
-	     tell_object(ob, "--relogin-from-"+query_ip_name(this_object())+
+	     tell_object(ob, "--relogin-from-" + interactive_info(this_object(), II_IP_NAME) +
                              "-\n");
 	 }
     }

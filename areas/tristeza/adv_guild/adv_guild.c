@@ -48,7 +48,6 @@ Is: */
   /* User graph */
 	call_other(GENERIC_USER_GRAPH, "????");
 
-    add_permanent("/u/kieve/open/obj/kingdom_machine");
 	// So I'm a little theatrical.....
 	// Starks
 	call_out(#'make_noise, 500);

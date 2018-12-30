@@ -31,7 +31,7 @@ create_room()
 		"move"	: "pull",
 		//"down"	: "down"
 	]));
-        add_object(AREA_W+"obj/donator_gate", 0, 1);
+        //add_object(AREA_W+"obj/donator_gate", 0, 1);
 
 #if 0
 	add_object( ({ DOOR_FILE,

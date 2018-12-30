@@ -5,6 +5,8 @@
 **
 */
 
+#include "/sys/interactive_info.h"
+
 #include <mud_name.h>
 #include <room_defs.h>
 #include <coder_levels.h>
@@ -152,11 +154,11 @@ nomask string *who_list(object me, object *who)
                 status_field = "R.I.P.";
             if ((int)who_member[i]->query_frog())
                  status_field = "Froggy";
-            else if ((int)query_idle(who_member[i]) > 300)
+            else if (interactive_info(who_member[i], II_IDLE) > 300)
                 status_field = "Idle";
             else if (me_coder && (int)who_member[i]->is_fighting())
                 status_field = "Fighting";
-            else if ((int)query_editing(who_member[i]))
+            else if (interactive_info(who_member[i], II_EDITING))
                 status_field = "Editing";
             else
                 status_field = "";
@@ -185,7 +187,8 @@ nomask string *who_quick(object me, object *who)
     int i, num, il, rc, me_coder, me_level, me_invis, me_light;
     status isolated;
 
-    who_member = who_list = ({});
+    who_member = ({});
+    who_list = ({});
 
     if (me && environment(me))
         isolated = (status)environment(me)->query(ROOM_ISOLATED);

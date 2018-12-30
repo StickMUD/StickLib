@@ -17,6 +17,10 @@
 *								*
 ****************************************************************/
 
+#include "/sys/configuration.h"
+#include "/sys/interactive_info.h"
+#include "/sys/object_info.h"
+
 #include <channels.h>
 #include <coder_levels.h>
 #include <guild.h>
@@ -1102,11 +1106,11 @@ ninja_list(object me)
          // Active Status
          if ((z & CHANNEL_LD))
             actvstat = "LinkDead";
-         else if (query_idle(who_member[i])>300)
+         else if (interactive_info(who_member[i], II_IDLE) > 300)
             actvstat = "Idle";
          else if (who_member[i]->is_fighting())
             actvstat = "Fighting";
-         else if (query_editing(who_member[i]))
+         else if (interactive_info(who_member[i], II_EDITING))
             actvstat = "Editing";
          else actvstat = "";
 
@@ -1114,7 +1118,7 @@ ninja_list(object me)
     if (me_coder<0) loc = "(test character)";
     else
          if (me_coder || me == who_member[i] ||
-      (int)who_member[i]->query_level() < me_level) 
+      (int)who_member[i]->query_level() < me_level)
 		{ loc = (string) environment(who_member[i])->short();
 		  if (!loc) loc = "Unknown place"; }
          else loc = "--";
@@ -1252,11 +1256,11 @@ ninjasen_list(object me)
          // Active Status
          if ((z & CHANNEL_LD))
             actvstat = "LinkDead";
-         else if (query_idle(who_member[i])>300)
+         else if (interactive_info(who_member[i], II_IDLE) > 300)
             actvstat = "Idle";
          else if (who_member[i]->is_fighting())
             actvstat = "Fighting";
-         else if (query_editing(who_member[i]))
+         else if (interactive_info(who_member[i], II_EDITING))
             actvstat = "Editing";
          else actvstat = "";
 
@@ -1402,10 +1406,10 @@ mage_list(object who)
          (us[i]->query_guild() == GN_MAGE) && // Let's not show non-mage
                                               // coders to mortals.
          !environment(us[i])->query(ROOM_ISOLATED)) ||
-         ((int)who->query_coder_level()&&!(s & CHANNEL_OFF)) ) {   
+         ((int)who->query_coder_level()&&!(s & CHANNEL_OFF)) ) {
 
       if(interactive(us[i])) {
-        if (query_idle(us[i]) >= 300) {
+        if (interactive_info(us[i], II_EDITING) >= 300) {
           idle = "(idle)";
           itotal ++;
         }
@@ -1419,7 +1423,7 @@ mage_list(object who)
       else
 	alig = "Grey";
 
-      if (cl = us[i]->query_coder_level()) {   
+      if (cl = us[i]->query_coder_level()) {
         ctotal ++;
         title = (string) us[i]->query_pretitle();
         if (title == "Apprentice ") title = "Novice Coder ";
@@ -1471,7 +1475,7 @@ mage_list(object who)
       if(!interactive(us[i])) {
         if(cl) ctotal --;
         else ptotal --;
-        if(query_idle(us[i]) > 300) {
+        if(interactive_info(us[i], II_IDLE) > 300) {
           itotal --;
           if (itotal < 0) itotal = 0;
         }
@@ -1623,7 +1627,7 @@ priest_list(object me)
 
         if(s & CHANNEL_LD)
             locat_s = "(Linkdead)";
-        else if(query_editing(cur))
+        else if(interactive_info(cur, II_EDITING))
             locat_s = "(Editing)";
         else if(cur->query_testplayer())
             locat_s = "(test character)";
@@ -1641,7 +1645,7 @@ priest_list(object me)
         else locat_s = "";
 
         if(interactive(cur)) {
-        t = query_idle(cur);
+        t = interactive_info(cur, II_IDLE);
         if(t<60) idle_s = "";
         else if(t/3600)
             idle_s = sprintf("%d h", t/3600);
@@ -1690,7 +1694,7 @@ jyu_check(object ob)
 #define JYU_EXTRA_LIST ({ "eldaron" })
 
   return (ob
-          && (query_once_interactive(ob) && (tmp = query_ip_name(ob)) &&
+          && (object_info(ob, OI_ONCE_INTERACTIVE) && (tmp = interactive_info(ob, II_IP_NAME)) &&
              (strstr(tmp,"jyu.fi") != -1))
           || ob->query_coder_level()
           || ( member( JYU_EXTRA_LIST, ob->query_real_name() )>= 0 )
@@ -1808,7 +1812,7 @@ healer_list(object me)
          // Channel Status
          z = who_member[i]->query_channel_status("healer");
          if ((z & CHANNEL_LD)) chanstat = "LinkDead";
-         else if(query_idle(who_member[i])>300) chanstat = "Idle";
+         else if(interactive_info(who_member[i], II_IDLE) > 300) chanstat = "Idle";
          else if ((z & CHANNEL_OFF)) chanstat = "Off";
          else if ((z & CHANNEL_BAN)) chanstat = "BANNED";
          else chanstat = "On";
@@ -1939,7 +1943,7 @@ fighter_list(object me)
          // Channel Status
          z = who_member[i]->query_channel_status("fighter");
          if ((z & CHANNEL_LD)) chanstat = "LD";
-         else if(query_idle(who_member[i])>300) chanstat = "Idle";
+         else if(interactive_info(who_member[i], II_IDLE) > 300) chanstat = "Idle";
          else if ((z & CHANNEL_OFF)) chanstat = "Off";
          else if ((z & CHANNEL_BAN)) chanstat = "BANNED";
          else chanstat = "On";

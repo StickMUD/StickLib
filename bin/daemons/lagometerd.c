@@ -3,6 +3,8 @@
 // inherit "/basic/id";
 // No need as this is daemon. -+ Doomdark +-
 
+#include "/sys/configuration.h"
+
 #define HB_CYCLE      2
 //How many minutes backwards do we show?
 #define LAG_MINUTES   5
@@ -18,7 +20,7 @@ void
 create()
 {
   lagometer=allocate(LAG_MINUTES);
-  set_heart_beat(1);
+  configure_object(this_object(), OC_HEART_BEAT, 1);
 }
 
 void

@@ -1,3 +1,5 @@
+#include "/sys/interactive_info.h"
+
 #include <coder_levels.h>
 #include <guild.h>
 #include <config.h>
@@ -102,7 +104,7 @@ show_login() {
 
     if (ob = find_player(name)) {
         if (interactive(ob)) {
-	    i = query_idle(ob) / 60;
+	    i = interactive_info(ob, II_IDLE) / 60;
 	    write("Logged in." + (i ? (" Idle " + i + " min.\n") : "\n"));
 	} else
 	    write("Link dead.\n");

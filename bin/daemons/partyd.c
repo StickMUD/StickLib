@@ -21,6 +21,8 @@
 
 ***************************************************/
 
+#include "/sys/configuration.h"
+
 #include <party.h>
 
 int party_id;
@@ -33,7 +35,7 @@ mapping members;	// "Reversed" party list; index is player object,
 mapping hooks;		// Mapping of all hooks 'connected' to players.
 status hb_on;		// Turning hb on is costly... So let's be sure it's needed
 
-nomask void del_party(object o, int i);
+nomask int del_party(object o, int i);
 varargs nomask int set_party_data(int i, string s, mixed x, mixed y);
 
 // Let's check out which parties exist at the moment... :-/
@@ -174,7 +176,7 @@ int pid, pid2;
 
 // Check if player is part of some other party.
    if (pid = members[member]) return 0;
-   
+
 	pid = members[inviter];
 	if (!pid) {
 		pid = _generate_pid();
@@ -188,14 +190,14 @@ int pid, pid2;
 	}
 
 	if (pid2 && !hb_on) {
-		set_heart_beat(hb_on = 1);
+		configure_object(this_object(), OC_HEART_BEAT, (hb_on = 1));
 	}
 
 	return pid2;
 }
 
 
-nomask int 
+nomask int
 del_party(object plr, int pid)
 {
 mixed arg;
@@ -395,7 +397,7 @@ int *pid_list;
 int i;
 
 	if (!parties || !sizeof(parties)) {
-		set_heart_beat(hb_on = 0);
+		configure_object(this_object(), OC_HEART_BEAT, (hb_on = 0));
 		return;
 	}
 

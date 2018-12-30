@@ -4,6 +4,9 @@
 ** added n option. - Dec. 6, 1998
 */
 
+#include "/sys/driver_info.h"
+#include "/sys/interactive_info.h"
+
 #include <cmd.h>
 #include <driver.h>
 #include <config.h>
@@ -34,10 +37,10 @@ nomask int people_cmd(string str) {
         if(name) name = capitalize(name);
         else     name = "Login";
 	age   =format_time((people[x]->query_age())/30);
-	if(str=="n") ip_num = format_text(query_ip_name(people[x]),"bah");
-	else ip_num=query_ip_number(people[x]);
+	if(str=="n") ip_num = format_text(interactive_info(people[x], II_IP_NAME),"bah");
+	else ip_num=interactive_info(people[x], II_IP_NUMBER);
 	level =get_level(people[x]);
-	idle  =format_time(query_idle(people[x])/60);
+	idle  =format_time(interactive_info(people[x], II_IDLE)/60);
 	if(environment(people[x]))
 	    if(str=="n") where = environment(people[x])->query_short();
 	    else where = object_name(environment(people[x]));
@@ -92,8 +95,8 @@ string *make_output(string *input, int num, string bah) {
     if(bah == "n") TITLE= " Name            Current IP                        Location";
     else TITLE = " Age Name        Current IP      Level Idle Location";
     input=({ BAR, (num > 1)
-      ? sprintf("%|75s", "There are "+num+" people on "+MUD_NAME+".  "+query_load_average()+".")
-      : sprintf("%|75s", "There is one person on "+MUD_NAME+".  "+query_load_average()+"."),
+      ? sprintf("%|75s", "There are "+num+" people on "+MUD_NAME+".  "+driver_info(DI_LOAD_AVERAGE_COMMANDS)+".")
+      : sprintf("%|75s", "There is one person on "+MUD_NAME+".  "+driver_info(DI_LOAD_AVERAGE_COMMANDS)+"."),
       BAR, TITLE})+input+({BAR});
     return input;
 }

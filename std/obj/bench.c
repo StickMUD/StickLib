@@ -1,6 +1,8 @@
 /*************************************************************************
  * New bench by Necros - Jan 5 1997                                      *
  ************************************************************************/
+#include "/sys/configuration.h"
+
 #include <treasure.h>
 #include <invis_levels.h>
 #define CAPNAME capitalize(this_player()->query_real_name())
@@ -27,7 +29,7 @@ void create_treasure() {
     string bench_color, bench_material, bench_adj;
     set_name("bench");
     set_id(({ "bench" }));
-    set_heart_beat(1);
+    configure_object(this_object(), OC_HEART_BEAT, 1);
     people = ({ });
     bench_color = ({ "red", "blue", "yellow", "orange", "purple", "crimson",
       "black", "white", "gray", "magenta", "lavender" }) [random(11)];

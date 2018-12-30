@@ -62,15 +62,12 @@ string *_subject;
 string *_cc;
 string *_message;
 int    *_time;
- 
- 
- 
+
 // Function prototypes
 //
-nomask void   load_player(object who);
+nomask void load_player(mixed who);
 nomask string query_valid_name(string s);
- 
- 
+
 //
 // Miscelaneous command handler
 // Handles:  headers, read, delete, save.
@@ -127,7 +124,11 @@ post_command(int func, string str, string return_text, mixed who )
      switch ( func )
       {
         case CMD_MAIL_DELETE :
-          tmp1 = tmp2 = tmp3 = tmp4 = tmp5 = ({ });
+          tmp1 = ({ });
+          tmp2 = ({ });
+          tmp3 = ({ });
+          tmp4 = ({ });
+          tmp5 = ({ });
           for ( i=0; i<size-1; i++ )
             {
                 if ( j==num ) j++;
@@ -181,10 +182,7 @@ post_command(int func, string str, string return_text, mixed who )
         }
     return RET_ERROR;
 }
- 
- 
- 
- 
+
 //
 // Loads the player's mail file into memory. If the file
 // contains new mail, reset the new_mail flag and re-save.
@@ -276,8 +274,13 @@ send_mail(mixed who, string dest, string subj, string cc, string mess )
            ob->tell_me(sprintf("You have new mail from %s, Subject: %s",capitalize(name),subj));
  
         if ( !restore_object(sprintf("%s%s/%s",_MAIL_PATH,
-            lower_case(list[i])[0..0], lower_case(list[i])) ))
-           _sender = _subject = _cc = _message = _time = ({ });
+            lower_case(list[i])[0..0], lower_case(list[i])) )) {
+           _sender = ({ });
+           _subject = ({ });
+           _cc = ({ });
+           _message = ({ });
+           _time = ({ });
+       }
  
         _sender += ({ capitalize(name) });
         _subject += ({ subj });
@@ -289,8 +292,7 @@ send_mail(mixed who, string dest, string subj, string cc, string mess )
             lower_case(list[i])[0..0], lower_case(list[i])));
       }
 }
- 
- 
+
 //
 // This is to be called by player.c at login to determine if
 // the player has any mail.  Returns the number of messages.
@@ -302,18 +304,17 @@ query_mail(mixed who, status silent)
    int num;
    if (!who || ( stringp(who) && !_PREVIOUS_OBJ((PLAYER_FILE)[1..<1]+"#%s") ))
        return 0;
- 
+
    if ( objectp(who)) tmp = (string)who->query_real_name();
    if ( stringp(who)) tmp = who;
- 
+
    if (!restore_object(sprintf("%s%s/%s",_MAIL_PATH, tmp[0..0], tmp))
         || !num=sizeof(_sender)) return 0;
    if (silent) return num;
    return sprintf( "\nThere is%s mail for you in your mailbox.\n",
         (_new_mail) ? " NEW" : "" );
 }
- 
- 
+
 //
 // Return a mapping containing message <num>, or 0 if
 // message <num> does not exist.

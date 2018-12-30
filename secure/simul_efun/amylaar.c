@@ -20,6 +20,10 @@
 
 static int RebootTime;
 
+#include "/secure/simul_efun/cat.c"
+#include "/secure/simul_efun/tail.c"
+#include "/secure/simul_efun/set_connection_charset.c"
+#include "/secure/simul_efun/set_combine_charset.c"
 #include "/secure/simul_efun/log_file.c"
 #include "/secure/simul_efun/file_lines.c"
 #include "/secure/simul_efun/implode.c"
@@ -438,6 +442,7 @@ static void clean_simul_efun() {
 }
 
 /* disable symbol_function('set_living_name, SIMUL_EFUN_OBJECT) */
+#if 0
 protected void set_living_name(string name) {
     string old;
     mixed a;
@@ -466,6 +471,37 @@ protected void set_living_name(string name) {
     }
     name_living_m[name] = previous_object();
 }
+#else
+void set_living_name(string name)
+{
+    string old;
+    mixed a;
+    int i;
+
+    if (old = living_name_m[previous_object()]) {
+        if (pointerp(a = name_living_m[old])) {
+            a[member(a, previous_object())] = 0;
+        } else {
+            efun::m_delete(name_living_m, old);
+        }
+    }
+    living_name_m[previous_object()] = name;
+    if (a = name_living_m[name]) {
+        if (!pointerp(a)) {
+            name_living_m[name] = ({a, previous_object()});
+                        return;
+        }
+    /* Try to reallocate entry from destructed object */
+        if ((i = member(a, 0)) >= 0) {
+            a[i] = previous_object();
+            return;
+        }
+    name_living_m[name] = a + ({previous_object()});
+        return;
+    }
+    name_living_m[name] = previous_object();
+}
+#endif
 
 object find_living(string name) {
     mixed *a, r;

@@ -15,6 +15,8 @@
 *								*
 ****************************************************************/
 
+#include "/sys/interactive_info.h"
+
 #ifndef PLAYER_C
 
 #define	INVIS_LEVEL	query_invis()
@@ -230,7 +232,7 @@ email_cmd(string str)
 {
 	if(!str) {
 		tell_me(sprintf("Your official electric mail address is: %s\n\
-Your connection seems to be from %s", mailaddr, query_ip_name(this_object())));
+Your connection seems to be from %s", mailaddr, interactive_info(this_object(), II_IP_NAME)));
 		return 1;
 	}
 	if (strstr(str, " ", 0) != -1)
