@@ -21,7 +21,7 @@ create_room()
     set_exits(([
 	"south"	: AREA_TRISTEZA+"virtual/S8_6",
 	"north" : RACE_ROOM,
-	"west"	: GENERIC_ROOM_CHURCH 
+	"west"	: GENERIC_ROOM_CHURCH
       ]));
     set_items(([ "sign" :
 	"It's made of pure magic. But perhaps you can read it?"
@@ -68,9 +68,8 @@ choose_cmd(string arg)
 
   if (!arg) return notify_fail("What did you want to choose?\n"), 0;
   arg = lower_case(arg);
-  if (member_array(arg,
-		   ({ "human", "elf", "dark elf", "dwarf",
-			"hobbit", "half-orc", "troll" })) == -1)
+  if (member(({ "human", "elf", "dark elf", "dwarf",
+			"hobbit", "half-orc", "troll" }), arg) == -1)
     return
 	notify_fail("Hmm, perhaps " + arg + " is not one of possible\
  choices.\nTry reading the sign first.\n"), 0;

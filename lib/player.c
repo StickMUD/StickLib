@@ -999,7 +999,8 @@ initialize(string str, string passwd, int passtime,
 	myself = this_object();
 	cap_name = capitalize(name);
 
-	configure_object(this_object(), OC_COMMANDS_ENABLED, 1);
+	configure_object(myself, OC_COMMANDS_ENABLED, 1);
+	efun::set_this_player(myself);
 	set_living_name(name);
     }
 

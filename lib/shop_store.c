@@ -380,7 +380,7 @@ I wish I had my tax refund, I'm quite low on money.",me);
 		while(i2--)
 		    store_list[i2] = (string)store_list[i2]->short();
 	    }
-	    if(member_array(desc,store_list)!=-1) {
+	    if(member(store_list, desc)!=-1) {
 		/* destruct automatically updates the weight */
 		destruct(ob);
 	    } else {

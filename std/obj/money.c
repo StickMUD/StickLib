@@ -11,6 +11,8 @@
 *								*
 ****************************************************************/
 
+#include "/std/configuration.h"
+
 inherit "/basic/id";
 
 #include <invis_levels.h>
@@ -41,7 +43,7 @@ init()
       money = 0;
       // This money is about to disappear, don't show it.
       set_invis(IL_TOTALLY_INVISIBLE);
-      set_heart_beat(1);
+      configure_object(this_object(), OC_HEART_BEAT, 1);
     }
   else if ((money > 0) && environment())
     {
@@ -56,7 +58,7 @@ init()
 	      money = 0;
 	      // This money is about to disappear, don't show it.
 	      set_invis(IL_TOTALLY_INVISIBLE);
-	      set_heart_beat(1);
+	      configure_object(this_object(), OC_HEART_BEAT, 1);
 	      break;
 	    }
 	}
@@ -74,7 +76,7 @@ set_money(int m)
 
   if (!m)
     {
-      set_heart_beat(1);
+      configure_object(this_object(), OC_HEART_BEAT, 1);
       set_id(0);
     }
   else if (money == 1)
@@ -104,5 +106,5 @@ void
 heart_beat()
 {
   if (money <= 0) destruct(this_object());
-  else set_heart_beat(0);
+  else configure_object(this_object(), OC_HEART_BEAT, 0);
 }

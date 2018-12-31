@@ -1,8 +1,9 @@
+#include "/sys/configuration.h"
+
 #include <nroom.h>
 #include <areas.h>
 #include <generic_items.h>
 
-//#define NPC_NO_INHERIT
 #include <npc_defs.h>
 
 object cash, boy;
@@ -150,7 +151,7 @@ press(int b)
 	}
 	if (dest == 1 || level == 1) moving_time += 10;
 	moving_time++;
-	set_heart_beat(1);
+	configure_object(this_object(), OC_HEART_BEAT, 1);
 	return 1;
 }
 
@@ -163,7 +164,7 @@ heart_beat()
 		tell_here("Boy winds the lever and the room continues to move...");
 		return;
 	}
-	set_heart_beat(0);
+	configure_object(this_object(), OC_HEART_BEAT, 0);
 	tell_here("The elevator slows down and stops.\n\
 Boy says: Here we are! The " + tell_floor(dest) + ".");
 	open_door();
@@ -243,7 +244,7 @@ call_elevator(int button)
 	if (level > dest) moving_time = level - dest;
 	if (dest == 1 || level == 1) moving_time += 10;
 	moving_time++;
-	set_heart_beat(1);
+	configure_object(this_object(), OC_HEART_BEAT, 1);
 	return 1;
 }
 

@@ -1,7 +1,7 @@
 #include <cmd.h>
 #include <std_lib>
 
-#define	MASTER_OB	"/secure/master_amy"
+#define	MASTER_OB	"/secure/master"
 varargs nomask int
 uptime_cmd(string str, object me)
 {
@@ -13,9 +13,9 @@ int adj, t;
     if (str) {
 	z = lower_case(str);
 
-	if ((adj = member_array(z,
+	if ((adj = member(
 		({ "bst", "alst", "yst", "pst", "mst", "cst", "est",
-		"ast", "gmt", "cet", "eet" })))
+		"ast", "gmt", "cet", "eet" }), z))
 	        == -1)
 	    return notify_fail(
 	       "Usage: uptime [time zone] (check 'help uptime' for zones)\n"),0;

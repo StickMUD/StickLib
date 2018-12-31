@@ -12,7 +12,7 @@ init()
   if (!is_fighting())
     shout = fight = 0;
   if (environment()
-      && strstr(file_name(environment()),BANK)==-1)
+      && strstr(object_name(environment()),BANK)==-1)
     {
       environment()->tell_here("Teller says: Oh, my! Is it that late\
  already? I have some work to do!",this_object());
@@ -108,7 +108,7 @@ throw(object ob)
 int
 run_away()
 {
-  if( strstr(file_name(environment()),BANK)!=-1)
+  if( strstr(object_name(environment()),BANK)!=-1)
     {
       environment()->tell_here("Teller takes a piece of parchment \
 and writes something in it, then she places it on the counter.",

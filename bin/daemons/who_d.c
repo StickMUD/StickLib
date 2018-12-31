@@ -171,7 +171,7 @@ nomask string *who_list(object me, object *who)
          }
     }
 
-    tmp = "Total of " + num + " mudder"+((num>1) ? "s": "")+" visible to you.";
+    tmp = "Total of " + num + " gamer"+((num>1) ? "s": "")+" visible to you.";
     tmp = sprintf(" |%73s|\n_\\ %-72s \\", " ",tmp);
 
     who_list += ({ tmp });

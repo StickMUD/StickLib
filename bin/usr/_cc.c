@@ -38,6 +38,8 @@
 //	another compile command to compile it.				//
 *************************************************************************/
 
+#include "/sys/object_info.h"
+
 #include <config.h>
 #include <generic_rooms.h>
 
@@ -132,7 +134,7 @@ cc_cmd(string str, object me)
 	  || ob = present4(files[i], environment(me),me,-1))
 	{
 	   sscanf(object_name(ob),"%s#%s",files[i],tmp);
-	   if (!living(ob) || query_once_interactive(ob))
+	   if (!living(ob) || object_info(ob, OI_ONCE_INTERACTIVE))
 	     {
 		options |= _OBJECT_FLAG; 
 		object_path+=([sprintf("%s.c",files[i]):environment(ob)]);

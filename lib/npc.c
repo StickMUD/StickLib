@@ -295,7 +295,7 @@ set_wander(int x, string *dirs)
 void
 set_name(string n)
 {
-	//set_living_name(name = n);
+	set_living_name(name = n);
 	alignment = 0;		// Neutral monster
 	cap_name = capitalize(n);
 	set_short(cap_name);
@@ -723,7 +723,7 @@ id(string s, object who)
 	return ::id(s, who) || (!invis_level && (s == race || s == "monster"));
 }
 
-varargs void create_monster() { }
+void create_monster() { }
 
 void
 reset(int arg)
