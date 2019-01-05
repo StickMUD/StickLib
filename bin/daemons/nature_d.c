@@ -92,9 +92,9 @@ the werevolves!
 #pragma strict_types
 
 #define SAVETIME	900	/* heartbeats between saves */
-#define	SAVEFILE	"/complex/nature_save"
+#define	SAVEFILE	"/data/d/nature_d/nature_save"
 inherit "/room/weathersave";
-inherit "complex/_timerequester";
+inherit "/lib/timerequester";
 
 
 int Year;	// unlimited

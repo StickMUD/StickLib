@@ -28,8 +28,6 @@
 #include <npc_defs.h>
 #include <treasure_defs.h>
 
-#define	NATURE	"/complex/nature"
-
 #define	TYPE_MONSTER	1
 #define	TYPE_OBJECT	2
 
@@ -329,7 +327,7 @@ query_long(string str, object who)
       else temp =  long_desc;
     }
     if ((outdoorness & WD_OUTDOORS) && who->query(LIV_NOT_BRIEF_WEATHER))
-      if ((temp2 = (string) NATURE -> query_short_weather()) && sizeof(temp2))
+      if ((temp2 = NATURE_D -> query_short_weather()) && sizeof(temp2))
 	temp = sprintf("%s\n%s", temp, temp2);
 
     if (Flags & F_ROOM_EXITS_SKIPPED)
@@ -975,7 +973,7 @@ weather_cmd(string s)
 		this_player() -> tell_me("You have no sense of weather from here!");
 		return 1;
 	}
-	this_player()->tell_me((string) NATURE->query_long_weather());
+	this_player()->tell_me(NATURE_D->query_long_weather());
 	return 1;
 }
 

@@ -5,9 +5,19 @@
 # Also, some areas may need to 'get booted', in which case
 # they need to be preloaded too.
 
-# First we'll preload the most important mudlib base objects
+# First we'll preload some daemons and servers:
 
-/complex/nature
+/bin/daemons/nature_d
+/bin/daemons/skilld
+/bin/daemons/remarks
+/bin/daemons/groupd
+/bin/daemons/lagometerd
+/bin/daemons/channel_d
+/bin/daemons/banish_d
+/bin/daemons/smoked
+
+# Then we'll preload the most important mudlib base objects
+
 /lib/room
 /lib/treasure
 /lib/living
@@ -19,16 +29,6 @@
 /lib/group_npc
 /lib/equipped_npc
 /lib/equipped_group_npc
-
-# Then we'll preload some daemons and servers:
-
-/bin/daemons/skilld
-/bin/daemons/remarks
-/bin/daemons/groupd
-/bin/daemons/lagometerd
-/bin/daemons/channel_d
-/bin/daemons/banish_d
-/bin/daemons/smoked
 
 # And finally entry points of certain areas and some
 # other rooms that need to be preloaded on reboot:
@@ -44,4 +44,5 @@
 /areas/tristeza/rooms/well
 /room/void
 /room/xyzzy_void
+
 # All lines below these comments are for loading wizard castles.

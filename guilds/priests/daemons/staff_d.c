@@ -1,12 +1,12 @@
 #define	TESTING
 
 #include "../priest.h"
-#include	<gametime.h>
+#include <daemons.h>
+#include <gametime.h>
 
 #define SAVEDIR PRIEST_SAVE_DIR "staff/"
 
 #define		GET_NAME(x)	(string)x->query_real_name()
-#define		NATURE	"/complex/nature"
 
 /* Save-handler; coded by Doomdark 21.11.-92.
  * An object that loads parameter-string from the desired
@@ -129,7 +129,7 @@ int *a, lvl;
  * '1:10:603-3:10:603' for example means that the first date etc is the time when
  * the staff is ordered and second when it'll be ready.
  */
-	a = (int*) NATURE -> query_game_time();
+	a = (int*) NATURE_D -> query_game_time();
 	t = "" + a[0] + ";" + a[1] + ";" + a[2] + ";" + a[3] + ";" + a[4];
 	if (s == "order0") a[2]++;
 /* So, the new staffs will only take 1 day to get ready. */
@@ -168,7 +168,7 @@ int foo, hour, day, month, year;
 	s = get_data(GET_NAME(who), "staff");
 	if (sscanf(s, "%s/%s/%d", t, u, foo) < 3) return GOD_NAME + " knows when";
 	sscanf(u, "%d;%d;%d;%d;%d", foo, hour, day, month, year);
-	s = (string) NATURE -> query_month_s(month) + " " + day;
+	s = (string) NATURE_D -> query_month_s(month) + " " + day;
 	if(day > 10 && day < 14) s += "th";
 	else switch(day % 10) {
 	case 1: s += "st"; break;
@@ -193,7 +193,7 @@ int sum1, sum2, sum3;
 	if(!s || (sscanf(s, "%s/%s/%d", t, u, a) < 3)) return 0;
 	if(sscanf(t, "%d;%d;%d;%d;%d", foo, h1, d1, m1, y1) < 5) return 0;
 	if(sscanf(u, "%d;%d;%d;%d;%d", foo, h2, d2, m2, y2) < 5) return 0;
-	b = (int*) NATURE -> query_game_time();
+	b = (int*) NATURE_D -> query_game_time();
 	sum1 = h1 + d1 * HOURS + m1 * HOURS * DAYS + y1 * HOURS * DAYS * MONTHS;
 	sum2 = h2 + d2 * HOURS + m2 * HOURS * DAYS + y2 * HOURS * DAYS * MONTHS;
 	sum3 = b[1] + b[2]*HOURS + b[3]*HOURS*DAYS + b[4]*HOURS*DAYS*MONTHS;

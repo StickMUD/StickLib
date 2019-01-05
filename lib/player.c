@@ -65,7 +65,6 @@ inherit "/basic/player/skill_mod";
 #define CURRENT_PATH query_env("cwd")
 #define TP this_player()
 #define MAX_SCAR	18
-#define	NATURE	"/complex/nature"
 #define	NAME_OF_GHOST	"some mist"
 
 #define	PRINT_INV	call_other("/bin/pub/_inventory", "inventory_cmd", 0, this_object());
@@ -924,7 +923,7 @@ initialize(string str, string passwd, int passtime,
 		return;
 
     set_connection_charset(_charset, 0);
-    set(LIV_NIGHT, NATURE->query_night());
+    set(LIV_NIGHT, NATURE_D->query_night());
 
 	// New: Let's make sure they are passed; if not, we'll default
 	// to the old values in use.

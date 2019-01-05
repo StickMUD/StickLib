@@ -1,4 +1,5 @@
 #include <nroom.h>
+#include <daemons.h>
 #include <generic_items.h>
 #include <door_defs.h>
 #include <bboard_defs.h>
@@ -343,9 +344,7 @@ pub_open() {
     object gc;
     int hour;
 
-    gc = find_object("complex/nature");
-    if (!gc) return 1;
-    hour = (int)gc->query_24_hour();
+    hour = NATURE_D->query_24_hour();
     if (hour >= 10 && hour < 16) return 0;
 
     return 1;
@@ -598,7 +597,7 @@ north()
     if (!pub_open() && !TP->query_coder_level()) {
         write("The Cloak and Dagger is closed from 10 AM to 4 PM.\n");
 	write("(The game time is now " + 
-	    find_object("complex/nature")->query_time() + ")\n");
+	    NATURE_D->query_time() + ")\n");
 	return 1;
     }
     TP->move_player("north#" + GDIR2 + "rooms/thief_pub");

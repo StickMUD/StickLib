@@ -31,7 +31,7 @@
 #define HALLU_D		"/bin/daemons/hallucinations"
 #define FUMBLE_D	"/bin/daemons/fumbled"
 #define LEVELS_D	"/lib/levels"
-#define NATURE_D	"/complex/nature"
+#define NATURE_D	"/bin/daemons/nature_d"
 #define PARTY_D         "/bin/daemons/partyd"
 #define	GROUP_D		"/bin/daemons/groupd"
 #define	GUILD_D		"/bin/daemons/guildd"

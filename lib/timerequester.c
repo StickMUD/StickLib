@@ -11,19 +11,19 @@
 **
 ** EXAMPLE OF USE:
 **
- 
+
 void room_reset()
 {
    set_short("my room");
    midnight();
 }
- 
+
 void midnight()
 {
     nature()->add_timerequest(0, 0, "midnight");
     tell_room(this_object(), "The clock booms twelve times for midnight!\n");
 }
- 
+
 **
 ** So as you see, it works quite a lot like call_outs. Shouldn't be any
 ** troubles using, but the normal warning: DO NOT USE THIS FOR YOUR EVERY

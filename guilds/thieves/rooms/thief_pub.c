@@ -1,5 +1,6 @@
 #pragma strict_types
 
+#include <daemons.h>
 #include <room_defs.h>
 #include <drink_defs.h>
 #include <npc_defs.h>
@@ -45,9 +46,7 @@ check_hours() {
    object gc;
    int hour;
 
-   gc = find_object("complex/nature");
-   if (!gc) return 1;
-   hour = (int)gc->query_24_hour();
+   hour = NATURE_D->query_24_hour();
    if (hour >= 10 && hour < 16) return 0;
 
    return 1;

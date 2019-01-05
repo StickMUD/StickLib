@@ -9,7 +9,6 @@
 #include "dirs.h"
 
 /* Time server */
-#define NATURE "/complex/nature"
 #define	MASTER_OB	"/secure/master"
 
 #define TO this_object()
@@ -241,7 +240,7 @@ monster_died(object this_npc, object killer)
    else tmp = capitalize(tmp);
 
       write_file(GDIR+"ATTACKLOG", tmp+ " killed our guard at " +
-      NATURE->query_about_time() + ", " + NATURE->query_date_s() +
+      NATURE_D->query_about_time() + ", " + NATURE_D->query_date_s() +
 			       "\n");
 
   if (key &&

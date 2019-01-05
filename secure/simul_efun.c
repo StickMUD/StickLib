@@ -82,8 +82,8 @@ master_object()
 object
 nature()
 {
-  catch(call_other("complex/nature", "lfun_not_exist"));
-  return find_object("complex/nature");
+  catch(call_other("bin/daemons/nature_d", "lfun_not_exist"));
+  return find_object("bin/daemons/nature_d");
 }
 
 /* Another addition.. will be put some day into the gd */

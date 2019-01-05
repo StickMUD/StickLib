@@ -56,7 +56,7 @@ implode3(fname, "', '", "' and '")));
 	return 1;
 }
 
-private static string
+private string
 load_mans(string dir, string dir2, status main)
 {
 mixed *x, y;
