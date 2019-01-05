@@ -58,62 +58,57 @@ varargs void tell_me(string s, status a, status b);
 nomask status
 command_driver(string arg)
 {
-string verb, tmp;
-int x;
+    string verb, tmp;
+    int x;
 
-	if (!(verb = query_verb())) return 0; // Impossible?
+    if (!(verb = query_verb())) return 0; // Impossible?
 
-#if 0
-// What are these shit commands that someone has written?
-	if (verb[0] == ':') return 0;
-#else
-	if (verb[0] == ':') {
-		if (sizeof(verb) > 1)
-		  if (arg) arg = verb[1..<1] + " " + arg;
-		  else arg = verb[1..<1];
-		verb = "emote";
+    if (verb[0] == ':') {
+	if (sizeof(verb) > 1)
+	    if (arg) arg = verb[1..<1] + " " + arg;
+	    else arg = verb[1..<1];
+	verb = "emote";
+    }
+
+    // Is this the first time we're called? (handled this way so that monsters
+    // load the commands only if they really use them. -Doomdark).
+    // Of course, this only applies to command in /bin etc...
+
+    if (!cmdd) {
+	if (!(cmdd = (object) CMDD->cmdd()) && !(cmdd = find_object(CMDD)))
+	    return notify_fail("<ERROR> Standard commands missing!\n"), 0;
+    }
+
+    switch(verb) {
+    case "north": case "east": case "south": case "west":
+    case "northeast": case "southeast": case "southwest": case "northwest":
+    case "exit": case "out": case "enter": case "up": case "down":
+	notify_fail(query(LIV_IS_FLEEING) ? "" : "You can't go that way.\n");
+	if (!query_can_move()) {
+	    tell_me("You are unable to move!");
+	    return 1;
 	}
-#endif
-
-// Is this the first time we're called? (handled this way so that monsters
-// load the commands only if they really use them. -Doomdark).
-// Of course, this only applies to command in /bin etc...
-
-	if (!cmdd) {
-		if (!(cmdd = (object) CMDD->cmdd()) && !(cmdd = find_object(CMDD)))
-			return notify_fail("<ERROR> Standard commands missing!\n"), 0;
-	}
-
-	switch(verb) {
-	case "north": case "east": case "south": case "west":
-	case "northeast": case "southeast": case "southwest": case "northwest":
-	case "exit": case "out": case "enter": case "up": case "down": 
-		notify_fail(query(LIV_IS_FLEEING) ? "" : "You can't go that way.\n");
-	   if (!query_can_move()) {
-	      tell_me("You are unable to move!");
-	      return 1;
-	   }
-           return 0;
-	   break;
-	case "take": verb = "get"; break;
-	case "describe": verb = "desc"; break;
-	case "destruct": verb = "dest"; break;
-//	case "destr": case "dest": verb = "destruct"; break;
-	case "wizem": verb = "wiz"; break;
-	case "i": verb = "inventory"; break;
-	case "consider": verb = "cons"; break;
-	case "verbose": verb = "brief"; break;
-	case "sc": verb = "score"; break;
-	case "l": verb = "look"; break;
-	case "exa": case "exam": case "exami": case "examin": verb = "examine";
-	}
-
-// New. We won't have to check if command is ok, let command daemon
-// check that out. May be a bit slower, but saves memory (not having to
-// use all these mappings etc.).
-
-	if (cmdd)
-		return (int) cmdd -> do_command(0, verb, arg);
-
 	return 0;
+	break;
+    case "take": verb = "get"; break;
+    case "describe": verb = "desc"; break;
+    case "destruct": verb = "dest"; break;
+	//	case "destr": case "dest": verb = "destruct"; break;
+    case "wizem": verb = "wiz"; break;
+    case "i": verb = "inventory"; break;
+    case "consider": verb = "cons"; break;
+    case "verbose": verb = "brief"; break;
+    case "sc": verb = "score"; break;
+    case "l": verb = "look"; break;
+    case "exa": case "exam": case "exami": case "examin": verb = "examine";
+    }
+
+    // New. We won't have to check if command is ok, let command daemon
+    // check that out. May be a bit slower, but saves memory (not having to
+    // use all these mappings etc.).
+
+    if (cmdd)
+	return (int) cmdd -> do_command(0, verb, arg);
+
+    return 0;
 }

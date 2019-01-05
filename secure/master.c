@@ -122,47 +122,47 @@ int next_reboot_time;    /* Timestamp of our next scheduled reboot */
 int
 query_reboot_time()
 {
-	return _reboot_time;
+    return _reboot_time;
 }
 
 status
 exists_player(string s)
 {
 #if 0
-	return file_size(sprintf("/data/plr/%s.o", lower_case(s))) > 0;
+    return file_size(sprintf("/data/plr/%s.o", lower_case(s))) > 0;
 #else
-	return file_size(sprintf("%s.o", PATH_FOR_PLAYER_SAVE(lower_case(s)))) > 0;
+    return file_size(sprintf("%s.o", PATH_FOR_PLAYER_SAVE(lower_case(s)))) > 0;
 #endif
 }
 
 mixed *
 get_player_data(object x)
 {
-mixed *y;
-	if (!x) return 0;
-	if (!(y = _players[x])) {
-	  y = ({
-		REAL_NAME(x),
-		CODER_LEVEL(x),
-	  });
-	  _players[x] = y;
-	}
-	return y;
+    mixed *y;
+    if (!x) return 0;
+    if (!(y = _players[x])) {
+	y = ({
+	  REAL_NAME(x),
+	  CODER_LEVEL(x),
+	});
+	_players[x] = y;
+    }
+    return y;
 }
 
 mixed *
 get_full_player_data(object x)
 {
-mixed *y;
-	if (!x) return 0;
-	if (!(y = _players[x])) {
-	  y = ({
-		REAL_NAME(x),
-		CODER_LEVEL(x),
-	  });
-	  _players[x] = y;
-	}
-	return y;
+    mixed *y;
+    if (!x) return 0;
+    if (!(y = _players[x])) {
+	y = ({
+	  REAL_NAME(x),
+	  CODER_LEVEL(x),
+	});
+	_players[x] = y;
+    }
+    return y;
 }
 
 // A file ".ACCESS" on a dir we're trying to access might look like this:
@@ -183,172 +183,172 @@ mixed *y;
 nomask status
 load_access_data(string dir)
 {
-mixed *data;
-string tmp, owner;
-int level;
-	if (file_size(dir) != -2)
-		return 0;
-	if (file_size(tmp = sprintf("%s.ACCESS", dir)) < 0)
-		_access[dir] = ({ DEFAULT_OWNER });
-	else {
-		tmp = read_file(tmp);
-		sscanf(tmp, "owner:%s\n%s", owner, tmp);
-		data = ({ owner });
-		while (sscanf(tmp, "%d:%s\n%s", level, owner, tmp) == 3)
-			data += ({ level, owner });
-		data += ({ tmp });
-		_access[dir] = data;
-	}
-	return 1;
+    mixed *data;
+    string tmp, owner;
+    int level;
+    if (file_size(dir) != -2)
+	return 0;
+    if (file_size(tmp = sprintf("%s.ACCESS", dir)) < 0)
+	_access[dir] = ({ DEFAULT_OWNER });
+    else {
+	tmp = read_file(tmp);
+	sscanf(tmp, "owner:%s\n%s", owner, tmp);
+	data = ({ owner });
+	while (sscanf(tmp, "%d:%s\n%s", level, owner, tmp) == 3)
+	    data += ({ level, owner });
+	data += ({ tmp });
+	_access[dir] = data;
+    }
+    return 1;
 }
 
 // This will simply rewrite the access-file in the specified directory...
 static status
 save_access_data(string dir)
 {
-mixed *data;
-string afile;
-int i;
-	if (file_size(dir) != -2)
-		return 0;
-	if (!(data = _access[dir])) {
-		if (!load_access_data(dir))
-			return 0;
-		data = _access[dir];
-	}
-	if (!sizeof(data))
-		data = ({ DEFAULT_OWNER });
-	afile = sprintf("%s/.ACCESS", dir);
-	if (file_size(afile) >= 0)
-		rm(afile);
-	write_file(afile, sprintf("owner:%s\n", data[0]));
-	for (i = 2; i < sizeof(data); i += 2)
-		write_file(afile, sprintf("%d:%s\n", data[i-1], data[i]));
-	if (sizeof(data) > 1 && !(sizeof(data) & 1)) {
-		if (data[<1][<1] == '\n')
-			write_file(afile, data[<1]);
-		else
-			write_file(afile, sprintf("%s\n", data[<1]));
-	}
-	return 1;
+    mixed *data;
+    string afile;
+    int i;
+    if (file_size(dir) != -2)
+	return 0;
+    if (!(data = _access[dir])) {
+	if (!load_access_data(dir))
+	    return 0;
+	data = _access[dir];
+    }
+    if (!sizeof(data))
+	data = ({ DEFAULT_OWNER });
+    afile = sprintf("%s/.ACCESS", dir);
+    if (file_size(afile) >= 0)
+	rm(afile);
+    write_file(afile, sprintf("owner:%s\n", data[0]));
+    for (i = 2; i < sizeof(data); i += 2)
+	write_file(afile, sprintf("%d:%s\n", data[i-1], data[i]));
+    if (sizeof(data) > 1 && !(sizeof(data) & 1)) {
+	if (data[<1][<1] == '\n')
+	    write_file(afile, data[<1]);
+	else
+	    write_file(afile, sprintf("%s\n", data[<1]));
+    }
+    return 1;
 }
 
 private mixed
 get_access_data(string dir)
 {
-mixed data;
-	if (!(data = _access[dir])) {
-		load_access_data(dir);
-		return _access[dir];
-	}
-	return data;
+    mixed data;
+    if (!(data = _access[dir])) {
+	load_access_data(dir);
+	return _access[dir];
+    }
+    return data;
 }
 
 int
 set_access_data(string dir, mixed who, string acc)
 {
-int i;
-string rn, a, b, c, fn;
-mixed data, old_data;
-	if (dir[<1] != '/')
-		dir = dir + "/";
-	if (dir[0] != '/')
-		dir = "/"+dir;
-	if (file_size(dir) != -2)
-		return 0;
-	if (!(data = get_access_data(dir)))
-		return 0;
-/* Can only call this function from the player object... */
-/* Or from simul_efun... */
-	if ((fn = object_name(previous_object())) == "secure/simul_efun") {
-		if (acc != "owner" || !stringp(who))
-		    if(acc != "r"  ||  who != 0)
-			return 0;
-		old_data = data;
-		if(acc == "r")
-			data += ({ who, acc });
-		else
-			data[0] = who;
-		_access[dir] = data;
-		if (save_access_data(dir))
-			return 1;
-		_access[dir] = old_data;
-		return 0;
-	}
-	if ((!interactive(previous_object()) || !sscanf(fn, PLAYER_CLONE, i)))
-		return 0;
-	i = CODER_LEVEL(previous_object());
-	rn = REAL_NAME(previous_object());
-// Only (co)admins or the owner can change the access...
-	if (i < LVL_COADMIN && rn != data[0])
+    int i;
+    string rn, a, b, c, fn;
+    mixed data, old_data;
+    if (dir[<1] != '/')
+	dir = dir + "/";
+    if (dir[0] != '/')
+	dir = "/"+dir;
+    if (file_size(dir) != -2)
+	return 0;
+    if (!(data = get_access_data(dir)))
+	return 0;
+    /* Can only call this function from the player object... */
+    /* Or from simul_efun... */
+    if ((fn = object_name(previous_object())) == "secure/simul_efun") {
+	if (acc != "owner" || !stringp(who))
+	    if(acc != "r"  ||  who != 0)
 		return 0;
 	old_data = data;
-// Adding level-based access-rights?
-	if (intp(who)) {
-// Already have access set for this coder level?
-		if ((i = member(data, who)) >= 0) {
-		  if (!acc) {
-			data = data[0..i-1] + data[i+2..];
-		  } else {
-			data[i+1] = acc;
-		  }
-		} else if (acc) {
-// Nope. Then we need to decide where to put it...
-			i = 1;
-			while (i < sizeof(data) && intp(data[i]) && data[i] < who)
-				i += 2;
-			data = data[0..i-1] + ({ who, acc }) + data[i..];
-		}
-// ... or player-specific ones?
-	} else {
-		who = lower_case(who);
-// Are we changing the owner of the dir; or
-	  if(acc == "owner") {
-		data[0] = who;
-// just modifying the access
-	  } else {
-		if (sizeof(data) < 2 || (sizeof(data) & 1)) {
-		  if (acc)
-			data += ({ sprintf(":%s:%s:", who, acc) });
-		} else {
-		  if (sscanf(data[<1], ("%s:"+who+":%s:%s"), a, b, c) < 2) {
-			if (!acc) ;
-			else {
-			  a = data[<1];
-			  if (sizeof(a) && a[<1] == ':')
-				a = sprintf("%s%s:%s:", a, who, acc);
-			  else
-				a = sprintf("%s:%s:%s:", a, who, acc);
-			  data[<1] = a;
-			}
-		  } else {
-			if (!acc)
-				data[<1] = sprintf("%s:%s", a, c);
-			else
-				data[<1] = sprintf("%s:%s:%s:%s", a, who, acc, c);
-		  }
-		}
-	  }
-	}
-// *Sigh* we still have to be careful here... :-/
+	if(acc == "r")
+	    data += ({ who, acc });
+	else
+	    data[0] = who;
 	_access[dir] = data;
 	if (save_access_data(dir))
-		return 1;
+	    return 1;
 	_access[dir] = old_data;
 	return 0;
+    }
+    if ((!interactive(previous_object()) || !sscanf(fn, PLAYER_CLONE, i)))
+	return 0;
+    i = CODER_LEVEL(previous_object());
+    rn = REAL_NAME(previous_object());
+    // Only (co)admins or the owner can change the access...
+    if (i < LVL_COADMIN && rn != data[0])
+	return 0;
+    old_data = data;
+    // Adding level-based access-rights?
+    if (intp(who)) {
+	// Already have access set for this coder level?
+	if ((i = member(data, who)) >= 0) {
+	    if (!acc) {
+		data = data[0..i-1] + data[i+2..];
+	    } else {
+		data[i+1] = acc;
+	    }
+	} else if (acc) {
+	    // Nope. Then we need to decide where to put it...
+	    i = 1;
+	    while (i < sizeof(data) && intp(data[i]) && data[i] < who)
+		i += 2;
+	    data = data[0..i-1] + ({ who, acc }) + data[i..];
+	}
+	// ... or player-specific ones?
+    } else {
+	who = lower_case(who);
+	// Are we changing the owner of the dir; or
+	if(acc == "owner") {
+	    data[0] = who;
+	    // just modifying the access
+	} else {
+	    if (sizeof(data) < 2 || (sizeof(data) & 1)) {
+		if (acc)
+		    data += ({ sprintf(":%s:%s:", who, acc) });
+	    } else {
+		if (sscanf(data[<1], ("%s:"+who+":%s:%s"), a, b, c) < 2) {
+		    if (!acc) ;
+		    else {
+			a = data[<1];
+			if (sizeof(a) && a[<1] == ':')
+			    a = sprintf("%s%s:%s:", a, who, acc);
+			else
+			    a = sprintf("%s:%s:%s:", a, who, acc);
+			data[<1] = a;
+		    }
+		} else {
+		    if (!acc)
+			data[<1] = sprintf("%s:%s", a, c);
+		    else
+			data[<1] = sprintf("%s:%s:%s:%s", a, who, acc, c);
+		}
+	    }
+	}
+    }
+    // *Sigh* we still have to be careful here... :-/
+    _access[dir] = data;
+    if (save_access_data(dir))
+	return 1;
+    _access[dir] = old_data;
+    return 0;
 }
 
 #if 0
 mapping
 query_access_data()
 {
-	return copy_mapping(_access);
+    return copy_mapping(_access);
 }
 
 mapping
 query_coder_data()
 {
-	return copy_mapping(_players);
+    return copy_mapping(_players);
 }
 #endif
 
@@ -361,85 +361,85 @@ query_coder_data()
 int
 check_access(string path, mixed caller, string func, status write)
 {
-mixed *pl_data;
-mixed *acc_data;
-int cl, cl2, i;
-string rn, file, rn2, tmp;
-	if (pointerp(caller)) {
-		rn = caller[0];
-		cl = caller[1];
-	} else {
-		pl_data = get_player_data(caller);
-		cl = pl_data[1];
-		rn = pl_data[0];
-	}
-	if (cl >= LVL_COADMIN)
+    mixed *pl_data;
+    mixed *acc_data;
+    int cl, cl2, i;
+    string rn, file, rn2, tmp;
+    if (pointerp(caller)) {
+	rn = caller[0];
+	cl = caller[1];
+    } else {
+	pl_data = get_player_data(caller);
+	cl = pl_data[1];
+	rn = pl_data[0];
+    }
+    if (cl >= LVL_COADMIN)
+	return 1;
+    // Player object needs to be able to restore_/save_object from/to /data/plr...
+    if (!strstr(path, "/data/plr/") && (func == "save_object"
+	|| func == "restore_object"))
+	return 1;
+    // Also, let's let them have full access to their home dir; an easy hack here.. :-/
+    if (sscanf(path, CODER_ROOT_DIR "%s", rn2)) {
+	if (sscanf(rn2, "%s/%s", rn2, tmp) == 2) {
+	    if (lower_case(rn) == rn2)
 		return 1;
-// Player object needs to be able to restore_/save_object from/to /data/plr...
-	if (!strstr(path, "/data/plr/") && (func == "save_object"
-	  || func == "restore_object"))
-		return 1;
-// Also, let's let them have full access to their home dir; an easy hack here.. :-/
-	if (sscanf(path, CODER_ROOT_DIR "%s", rn2)) {
-		if (sscanf(rn2, "%s/%s", rn2, tmp) == 2) {
-			if (lower_case(rn) == rn2)
-				return 1;
-		} else if (lower_case(rn) == rn2)
-			return 1;
-	}
-	i = sizeof(path);
-	while (--i)
-		if (path[i] == '/')
-			break;
-	file = path[i + 1..];
-	path = path[0 .. i];
-	acc_data = get_access_data(path);
+	} else if (lower_case(rn) == rn2)
+	    return 1;
+    }
+    i = sizeof(path);
+    while (--i)
+	if (path[i] == '/')
+	    break;
+    file = path[i + 1..];
+    path = path[0 .. i];
+    acc_data = get_access_data(path);
 
-// Owner of a dir can edit it as he/she wishes to...
-	if (sizeof(acc_data) && rn == acc_data[0])
+    // Owner of a dir can edit it as he/she wishes to...
+    if (sizeof(acc_data) && rn == acc_data[0])
+	return 1;
+    // But, only owner (or a (co)admin) can alter the access rights!
+    if (file == ".ACCESS" && write)
+	return 0;
+    for (i = 2; i < sizeof(acc_data); i += 2) {
+	if (cl < acc_data[i-1]) break;
+	if (write) {
+	    if (member(acc_data[i], 'w') >= 0)
 		return 1;
-// But, only owner (or a (co)admin) can alter the access rights!
-	if (file == ".ACCESS" && write)
-		return 0;
-	for (i = 2; i < sizeof(acc_data); i += 2) {
-	  if (cl < acc_data[i-1]) break;
-	  if (write) {
-		if (member(acc_data[i], 'w') >= 0)
-			return 1;
-	  } else {
-		if (member(acc_data[i], 'r') >= 0)
-			return 1;
-	  }
+	} else {
+	    if (member(acc_data[i], 'r') >= 0)
+		return 1;
 	}
-	if (sizeof(acc_data) > 1 && !(sizeof(acc_data) & 1)) {
-	  tmp = sprintf(":%s:", rn);
-	  if ((i = strstr(acc_data[<1], tmp)) >= 0) {
-	   tmp = acc_data[<1][i+sizeof(tmp)..];
+    }
+    if (sizeof(acc_data) > 1 && !(sizeof(acc_data) & 1)) {
+	tmp = sprintf(":%s:", rn);
+	if ((i = strstr(acc_data[<1], tmp)) >= 0) {
+	    tmp = acc_data[<1][i+sizeof(tmp)..];
 	    if (write) {
 		if (!strstr(tmp, "w:") || !strstr(tmp, "rw:") || !strstr(tmp, "wr:"))
-			return 1;
+		    return 1;
 	    } else {
 		if (!strstr(tmp, "r:") || !strstr(tmp, "rw:") || !strstr(tmp, "wr:"))
-			return 1;
+		    return 1;
 	    }
-	  }
 	}
-	if (!strstr(path, "/open"))
-		return 1;
-	if (!strstr(path, "/doc")) {
-		if (!write)
-			return 1;
-		return (cl >= LVL_SENIOR) ? 1 : 0;
-	}
-	if (!strstr(path, "/log")) {
-		if (!write)
-			return 1;
-		if (cl >= LVL_SENIOR || func == "write_file"
-		|| func == "save_object" || func == "write_bytes")
-			return 1;
-		return 0;
-	}
+    }
+    if (!strstr(path, "/open"))
+	return 1;
+    if (!strstr(path, "/doc")) {
+	if (!write)
+	    return 1;
+	return (cl >= LVL_SENIOR) ? 1 : 0;
+    }
+    if (!strstr(path, "/log")) {
+	if (!write)
+	    return 1;
+	if (cl >= LVL_SENIOR || func == "write_file"
+	  || func == "save_object" || func == "write_bytes")
+	    return 1;
 	return 0;
+    }
+    return 0;
 }
 
 
@@ -490,209 +490,209 @@ string rn, file, rn2, tmp;
 mixed
 valid_read(string path, string euid, string fun, object caller)
 {
-string dummy, name;
-string *caller_dir, *dest_dir;
-int i;
-	if (!stringp(path)) return 0;
-	if (caller == this_object())
-		return path;
-	if (strstr(path, "/../", 0) >= 0)
-		return 0;
-	if (path == "/")
-		return path;
-/* Need to take care of excessive leading & trailing slashes... */
-	while (path[i] == '/')
-		i++;
-	if (!i)
-		path = "/"+path;
-	else if (i > 1)
-		path = path[i-1..];
-
-// Coders have some "extra rights" when using standard file handling
-// commands...
-	if (objectp(caller))
-		name = object_name(caller);
-	else name = "UNKNOWN";
-/* Have to strip the leading slash off... */
-	if (name[0] == '/')
-		name = name[1..];
-
-	if (!strstr(name, PLAYER_CLONE2)) {
-// Kludge to allow player object to use restore_object when player logs in. :-/
-		if (!strstr(path, "/data/plr/") && fun == "restore_object")
-			return path;
-		if (check_access(path, caller, fun, 0))
-			return path;
-	} else if (!strstr(name, "bin/usr/")) {
-		if (check_access(path, this_interactive(), fun, 0))
-			return path;
-	} else if (sscanf(name, "bin/daemons/%s", dummy)) {
-// Daemons have access to their 'own' dirs; but nowhere else...
-		if (sscanf(path, sprintf("/data/d/%s/%%s", dummy), dummy))
-			return path;
-		if ((dummy == "fingerd" || dummy == "stat_d")
-		    && !strstr("/data/plr/", path))
-			return path;
-	}
-
-	dest_dir = explode(path[1..<1], "/");
-	caller_dir = explode(name, "/");
-
-	if (sizeof(dest_dir) < 2)
-		return path;	// Ok to read at main level.
-	if (caller_dir[0] == "secure")
-		return path; // Always ok from secure...
-
-	switch (dest_dir[0]) {
-	case "admin":
-		return 0;	// No access. Or should admins have?
-	case "u":
-// Rule 1: It's ok for an object under some subdir of /u to
-// read files on same subdir....
-		if (caller_dir[0] == dest_dir[0] && dest_dir[1] == caller_dir[1])
-			return path;
-		if (!strstr(name, "bin/daemons/cmdd"))
-			return path;
-		return 0;
-// Otherwise, only coders can read them, not non-interactive objects. Then again,
-// public code shouldn't be located in /u anyway, only temporary stuff.
-
-	case "data":
-		if (caller_dir[0] == "bin" && (caller_dir[1] == "daemons"
-		  )) return path;
-// Let's allow /bin - objects (daemons, commands) to read the data.
-// This one's bit kinky... :-/
-		if (sizeof(dest_dir) < 3) return path;
-// Let 'em ls the dir and such, at least...
-// (a kludge to let player object read it ok: )
-		if (dest_dir[1] == "plr" &&
-			fun == "restore_object" &&
-		  sscanf(object_name(caller), PLAYER_CLONE, dummy))
-			return path;
-// This will allow, for example /guild/priest/symbol.c to read sub-directories
-// of /data/guild/priest.
-		if (sizeof(caller_dir) >= 2
-		  && dest_dir[1] == caller_dir[0]
-		  && dest_dir[2] == caller_dir[1]) return path;
-	case "guilds":
-		if (caller_dir[0] != "guilds") return 0;
-		if (caller_dir[1] == dest_dir[1]) return path;
-		return 0;
-	}
-// But main idea is; if it's not prevented, it's allowed (for reading).
-/* Exception being /guilds-dir. Thank you idiotic newbie coders telling
- * players too much info. -+ Doomdark +-
- */
+    string dummy, name;
+    string *caller_dir, *dest_dir;
+    int i;
+    if (!stringp(path)) return 0;
+    if (caller == this_object())
 	return path;
+    if (strstr(path, "/../", 0) >= 0)
+	return 0;
+    if (path == "/")
+	return path;
+    /* Need to take care of excessive leading & trailing slashes... */
+    while (path[i] == '/')
+	i++;
+    if (!i)
+	path = "/"+path;
+    else if (i > 1)
+	path = path[i-1..];
+
+    // Coders have some "extra rights" when using standard file handling
+    // commands...
+    if (objectp(caller))
+	name = object_name(caller);
+    else name = "UNKNOWN";
+    /* Have to strip the leading slash off... */
+    if (name[0] == '/')
+	name = name[1..];
+
+    if (!strstr(name, PLAYER_CLONE2)) {
+	// Kludge to allow player object to use restore_object when player logs in. :-/
+	if (!strstr(path, "/data/plr/") && fun == "restore_object")
+	    return path;
+	if (check_access(path, caller, fun, 0))
+	    return path;
+    } else if (!strstr(name, "bin/usr/")) {
+	if (check_access(path, this_interactive(), fun, 0))
+	    return path;
+    } else if (sscanf(name, "bin/daemons/%s", dummy)) {
+	// Daemons have access to their 'own' dirs; but nowhere else...
+	if (sscanf(path, sprintf("/data/d/%s/%%s", dummy), dummy))
+	    return path;
+	if ((dummy == "fingerd" || dummy == "stat_d")
+	  && !strstr("/data/plr/", path))
+	    return path;
+    }
+
+    dest_dir = explode(path[1..<1], "/");
+    caller_dir = explode(name, "/");
+
+    if (sizeof(dest_dir) < 2)
+	return path;	// Ok to read at main level.
+    if (caller_dir[0] == "secure")
+	return path; // Always ok from secure...
+
+    switch (dest_dir[0]) {
+    case "admin":
+	return 0;	// No access. Or should admins have?
+    case "u":
+	// Rule 1: It's ok for an object under some subdir of /u to
+	// read files on same subdir....
+	if (caller_dir[0] == dest_dir[0] && dest_dir[1] == caller_dir[1])
+	    return path;
+	if (!strstr(name, "bin/daemons/cmdd"))
+	    return path;
+	return 0;
+	// Otherwise, only coders can read them, not non-interactive objects. Then again,
+	// public code shouldn't be located in /u anyway, only temporary stuff.
+
+    case "data":
+	if (caller_dir[0] == "bin" && (caller_dir[1] == "daemons"
+	  )) return path;
+	// Let's allow /bin - objects (daemons, commands) to read the data.
+	// This one's bit kinky... :-/
+	if (sizeof(dest_dir) < 3) return path;
+	// Let 'em ls the dir and such, at least...
+	// (a kludge to let player object read it ok: )
+	if (dest_dir[1] == "plr" &&
+	  fun == "restore_object" &&
+	  sscanf(object_name(caller), PLAYER_CLONE, dummy))
+	    return path;
+	// This will allow, for example /guild/priest/symbol.c to read sub-directories
+	// of /data/guild/priest.
+	if (sizeof(caller_dir) >= 2
+	  && dest_dir[1] == caller_dir[0]
+	  && dest_dir[2] == caller_dir[1]) return path;
+    case "guilds":
+	if (caller_dir[0] != "guilds") return 0;
+	if (caller_dir[1] == dest_dir[1]) return path;
+	return 0;
+    }
+    // But main idea is; if it's not prevented, it's allowed (for reading).
+    /* Exception being /guilds-dir. Thank you idiotic newbie coders telling
+     * players too much info. -+ Doomdark +-
+     */
+    return path;
 }
 
 mixed
 valid_write(string path, string euid, string fun, object caller)
 {
-string dummy, name;
-string *caller_dir, *dest_dir;
-int i;
+    string dummy, name;
+    string *caller_dir, *dest_dir;
+    int i;
 
-	if (strstr(path, "..", 0) >= 0)
-		return 0;
-	if (caller == this_object())
-		return 1;
-	i = 0;
-
-	if (path != "/") {
-/* Need to take care of excessive leading & trailing slashes... */
-	 while (path[i] == '/')
-		i++;
-	 if (!i)
-		path = "/"+path;
-	 else if (i > 1)
-		path = path[i-1..];
-	}
-
-// Coders have some "extra rights" when using standard file handling
-// commands...
-
-	if (objectp(caller))
-		name = object_name(caller);
-	else name = "UNKNOWN";
-/* Have to strip the leading slash off... */
-	if (name[0] == '/')
-		name = name[1..];
-
-	if (!strstr(name, PLAYER_CLONE2)) {
-		if (check_access(path, caller, fun, 1))
-			return path;
-	} else if (!strstr(name, "bin/usr/")) {
-		if (check_access(path, this_interactive(), fun, 1))
-			return path;
-	} else if (sscanf(name, "bin/daemons/%s", dummy)) {
-// Daemons have access to their 'own' dirs; but nowhere else...
-		if (sscanf(path, sprintf("/data/d/%s/%%s", dummy), dummy))
-			return path;
-		return 0;
-	}
-
-	dest_dir = explode(path[1..], "/");
-	caller_dir = explode(name, "/");
-
-// These objects should be able to do it:
-	if (caller_dir[0] == "secure")
-		return path;
-
-	switch (dest_dir[0]) {
-// First some public directories:
-	case "open":
-		return path;
-	case "log":
-		if (dest_dir[1] == "log")
-			return 0;	// This log should be public, I guess...
-		switch(caller_dir[0]) {
-		case "std": case "bin":
-			return path;
-		}
-		return 0;
-	case "guilds":
-// Guild objects should be able to write to their 'own' dir.
-		if (dest_dir[0] == caller_dir[0] && dest_dir[1] == caller_dir[1])
-			return path;
-		return 0;
-	case "admin":
-	case "secure":
-		return 0;
-	case "u":
-		if (sizeof(dest_dir) < 3)
-			return 0;
-
-// Rule 1: It's ok for an object under some subdir of /u to
-// write files on same subdir....
-		if (dest_dir[0] == caller_dir[0] && dest_dir[1] == caller_dir[1])
-			return path;
-		return 0;
-	case "data":
-// No. No write access to plr-savefile dir for anyone but (co)admins
-// (and that's checked much earlier)
-		if (sizeof(dest_dir) < 2 || dest_dir[1] == "plr")
-			return 0;
-// This will allow, for example /guild/priest/symbol.c to write sub-directories
-// of /data/guild/priest.
-		if (sizeof(caller_dir) >= 2 
-		  && dest_dir[1] == caller_dir[0]
-		  && dest_dir[2] == caller_dir[1])
-			return path;
-		return 0;
-	}
-// Still one rule to allow miscellaneous writing; we are allowed to write
-// to "sibling" files and files in dirs in the directory we are;
-	if (sizeof(caller_dir) <= sizeof(dest_dir)) {
-		i = sizeof(caller_dir) - 1;
-		while (--i >= 0) {
-			if (caller_dir[i] != dest_dir[i]) break;
-		}
-		if (i == -1) return path;
-	}
-
-// Ok. Main rule; if write is not explicitly allowed, it's prevented. Simple.
+    if (strstr(path, "..", 0) >= 0)
 	return 0;
+    if (caller == this_object())
+	return 1;
+    i = 0;
+
+    if (path != "/") {
+	/* Need to take care of excessive leading & trailing slashes... */
+	while (path[i] == '/')
+	    i++;
+	if (!i)
+	    path = "/"+path;
+	else if (i > 1)
+	    path = path[i-1..];
+    }
+
+    // Coders have some "extra rights" when using standard file handling
+    // commands...
+
+    if (objectp(caller))
+	name = object_name(caller);
+    else name = "UNKNOWN";
+    /* Have to strip the leading slash off... */
+    if (name[0] == '/')
+	name = name[1..];
+
+    if (!strstr(name, PLAYER_CLONE2)) {
+	if (check_access(path, caller, fun, 1))
+	    return path;
+    } else if (!strstr(name, "bin/usr/")) {
+	if (check_access(path, this_interactive(), fun, 1))
+	    return path;
+    } else if (sscanf(name, "bin/daemons/%s", dummy)) {
+	// Daemons have access to their 'own' dirs; but nowhere else...
+	if (sscanf(path, sprintf("/data/d/%s/%%s", dummy), dummy))
+	    return path;
+	return 0;
+    }
+
+    dest_dir = explode(path[1..], "/");
+    caller_dir = explode(name, "/");
+
+    // These objects should be able to do it:
+    if (caller_dir[0] == "secure")
+	return path;
+
+    switch (dest_dir[0]) {
+	// First some public directories:
+    case "open":
+	return path;
+    case "log":
+	if (dest_dir[1] == "log")
+	    return 0;	// This log should be public, I guess...
+	switch(caller_dir[0]) {
+	case "std": case "bin":
+	    return path;
+	}
+	return 0;
+    case "guilds":
+	// Guild objects should be able to write to their 'own' dir.
+	if (dest_dir[0] == caller_dir[0] && dest_dir[1] == caller_dir[1])
+	    return path;
+	return 0;
+    case "admin":
+    case "secure":
+	return 0;
+    case "u":
+	if (sizeof(dest_dir) < 3)
+	    return 0;
+
+	// Rule 1: It's ok for an object under some subdir of /u to
+	// write files on same subdir....
+	if (dest_dir[0] == caller_dir[0] && dest_dir[1] == caller_dir[1])
+	    return path;
+	return 0;
+    case "data":
+	// No. No write access to plr-savefile dir for anyone but (co)admins
+	// (and that's checked much earlier)
+	if (sizeof(dest_dir) < 2 || dest_dir[1] == "plr")
+	    return 0;
+	// This will allow, for example /guild/priest/symbol.c to write sub-directories
+	// of /data/guild/priest.
+	if (sizeof(caller_dir) >= 2 
+	  && dest_dir[1] == caller_dir[0]
+	  && dest_dir[2] == caller_dir[1])
+	    return path;
+	return 0;
+    }
+    // Still one rule to allow miscellaneous writing; we are allowed to write
+    // to "sibling" files and files in dirs in the directory we are;
+    if (sizeof(caller_dir) <= sizeof(dest_dir)) {
+	i = sizeof(caller_dir) - 1;
+	while (--i >= 0) {
+	    if (caller_dir[i] != dest_dir[i]) break;
+	}
+	if (i == -1) return path;
+    }
+
+    // Ok. Main rule; if write is not explicitly allowed, it's prevented. Simple.
+    return 0;
 }
 
 /****************************************************************
@@ -704,49 +704,49 @@ int i;
 nomask void
 create()
 {
-	_access = ([ ]);
-	_players = ([ ]);
-	_ftp_users = ([ ]);
+    _access = ([ ]);
+    _players = ([ ]);
+    _ftp_users = ([ ]);
 
-	if (find_call_out("time_glass") < 0)
-		call_out ("time_glass", 60);
+    if (find_call_out("time_glass") < 0)
+	call_out ("time_glass", 60);
 #ifdef AUTOREBOOT
 
-// Calculate next_reboot_time, the timestamp of next reboot. Do this by
-// first calculating how many seconds it would take from this moment to
-// the reboot and then add time() to it
+    // Calculate next_reboot_time, the timestamp of next reboot. Do this by
+    // first calculating how many seconds it would take from this moment to
+    // the reboot and then add time() to it
 
-// Autoreboots at 10:00 every work day. Let's cheat the time variable
-// by reducing those 10 hours from it... Be sure to add it to the final value.
+    // Autoreboots at 10:00 every work day. Let's cheat the time variable
+    // by reducing those 10 hours from it... Be sure to add it to the final value.
 
-	t = time() - 36000;
+    t = time() - 36000;
 
-  sscanf (ctime(t)[11..18], "%d:%d:%d", hour, min, sec);
-  weekday = ctime(t)[0..2];
+    sscanf (ctime(t)[11..18], "%d:%d:%d", hour, min, sec);
+    weekday = ctime(t)[0..2];
 
-  /* Now we can very easily calculate how long it is till midnight */
+    /* Now we can very easily calculate how long it is till midnight */
 
-  sec = (59 - sec) + 60 * (59 - min) + 60 * 60 * (23 - hour);
+    sec = (59 - sec) + 60 * (59 - min) + 60 * 60 * (23 - hour);
 
-  /* So sec now stands for seconds we have left for this day. For Mon, */
-  /* Wed and Sat add one day, two for Fri. */
-/*
-  if (weekday == "Fri" || weekday == "Tue")
-    sec += 86400*2;
-  else if (weekday == "Mon")
-    sec += 86400*3;
-  else if (weekday == "Wed" || weekday == "Sat")
-    sec += 86400;
-*/
-  if (weekday == "Fri")
-    sec += 86400*2;
-  else if (weekday == "Sat")
-    sec += 86400;
+    /* So sec now stands for seconds we have left for this day. For Mon, */
+    /* Wed and Sat add one day, two for Fri. */
+    /*
+      if (weekday == "Fri" || weekday == "Tue")
+	sec += 86400*2;
+      else if (weekday == "Mon")
+	sec += 86400*3;
+      else if (weekday == "Wed" || weekday == "Sat")
+	sec += 86400;
+    */
+    if (weekday == "Fri")
+	sec += 86400*2;
+    else if (weekday == "Sat")
+	sec += 86400;
 
-  /* Finally add the seconds until reboot to the current time stamp, and */
-  /* voila! Don't forget to add the 36000 seconds we borrowed. */
+    /* Finally add the seconds until reboot to the current time stamp, and */
+    /* voila! Don't forget to add the 36000 seconds we borrowed. */
 
-  next_reboot_time = sec + t + 36001;
+    next_reboot_time = sec + t + 36001;
 
 #endif /* AUTOREBOOT */
 }
@@ -760,92 +760,92 @@ create()
 nomask void
 time_glass()
 {
-int hour, min;
-string day;
+    int hour, min;
+    string day;
 #ifdef FINGER_WHO
-object *u;
-string s, *st;
-int i;
+    object *u;
+    string s, *st;
+    int i;
 #endif
-	if (find_call_out("time_glass") == -1)
-		call_out ("time_glass", 60);
+    if (find_call_out("time_glass") == -1)
+	call_out ("time_glass", 60);
 
-	sscanf (ctime(time())[11..15], "%d:%d", hour, min);
-	day = ctime(time())[0..2];
+    sscanf (ctime(time())[11..15], "%d:%d", hour, min);
+    day = ctime(time())[0..2];
 #ifdef FINGER_WHO
-  u = users();
-  st = ({ });
-  for (i = sizeof(u) - 1; i >= 0; i--)
-    if (u[i] && !u[i]->query_invis())
-      st += ({ capitalize(REAL_NAME(u[i])) });
-  s = "\n"+MUD_NAME+" at "+ctime(time())+" EET:\n\n";
-  if (!sizeof(st))
-    s += "No visible players in "+MUD_NAME+".\n\n";
-  else
+    u = users();
+    st = ({ });
+    for (i = sizeof(u) - 1; i >= 0; i--)
+	if (u[i] && !u[i]->query_invis())
+	    st += ({ capitalize(REAL_NAME(u[i])) });
+    s = "\n"+MUD_NAME+" at "+ctime(time())+" EET:\n\n";
+    if (!sizeof(st))
+	s += "No visible players in "+MUD_NAME+".\n\n";
+    else
 	s = sprintf("%sTotal of %d visible players in "+MUD_NAME+":\n\n%s\n\n"
-+MUD_NAME+" is located at <address of the mud> <port>.\n\n",
-s, sizeof(st), sprintf("%-=78s", implode(sort_array(st, #'<), ", ", " and ")));
-	rm (PLANFILE);
-        rm (HTMLPLANFILE);
-	write_file (PLANFILE, s);
-//NEW! A HTML version of the finger information 10.1.1996 //F
-        write_file(HTMLPLANFILE, "<pre>");
-        write_file(HTMLPLANFILE, s);
-        write_file(HTMLPLANFILE, "</pre>");
+	  +MUD_NAME+" is located at <address of the mud> <port>.\n\n",
+	  s, sizeof(st), sprintf("%-=78s", implode(sort_array(st, #'<), ", ", " and ")));
+    rm (PLANFILE);
+    rm (HTMLPLANFILE);
+    write_file (PLANFILE, s);
+    //NEW! A HTML version of the finger information 10.1.1996 //F
+    write_file(HTMLPLANFILE, "<pre>");
+    write_file(HTMLPLANFILE, s);
+    write_file(HTMLPLANFILE, "</pre>");
 #endif
 #ifdef AUTOREBOOT
-	if (time() > (query_reboottime() - 1800) /*1800=30 mins before reboottime*/
-	  && !find_object(SHUT_D)) {
-	  if (query_uptime() < 300) { /* If we have been up for lesser than */
-		create();  /* 5 minutes it is possible we just experienced a */
-	  } else {      /* reboot and reboottime is messed. Re-calculate. */
-		SHUT_D->shut(30);
-	  }
+    if (time() > (query_reboottime() - 1800) /*1800=30 mins before reboottime*/
+      && !find_object(SHUT_D)) {
+	if (query_uptime() < 300) { /* If we have been up for lesser than */
+	    create();  /* 5 minutes it is possible we just experienced a */
+	} else {      /* reboot and reboottime is messed. Re-calculate. */
+	    SHUT_D->shut(30);
 	}
+    }
 #endif /* AUTOREBOOT */
 #ifdef WORKING_HOURS
-  if (day != "Sat" && day != "Sun" &&
+    if (day != "Sat" && day != "Sun" &&
       /* The standard holidays //Graah */
       (member_array(ctime(time())[4..9],
-		      ({
-			"May 25", /* Another "holy" day shit...temporary. */
+	  ({
+	    "May 25", /* Another "holy" day shit...temporary. */
 
-			"May  1", /* Communists' day */
-			"Dec  6", /* Finland Indepencece Day */
-			"Dec 24", /* Some religious shit... */
-			"Dec 25", /* which goes on and on... */
-			"Dec 26", /* And on... */
-			"Jan  1", /* 1996, monday */
-			"Jan  2", /* 1996 temporary */
-			"Dec 27"  /* Temporary (1995) */
-		      })) == -1)
-      )
+	    "May  1", /* Communists' day */
+	    "Dec  6", /* Finland Indepencece Day */
+	    "Dec 24", /* Some religious shit... */
+	    "Dec 25", /* which goes on and on... */
+	    "Dec 26", /* And on... */
+	    "Jan  1", /* 1996, monday */
+	    "Jan  2", /* 1996 temporary */
+	    "Dec 27"  /* Temporary (1995) */
+	  })) == -1)
+    )
     {
-      if (hour == 9)
+	if (hour == 9)
 	{
-	  if (member_array (min, ({ 0,15,30,40,45,50,55,57,58,59 })) != -1) {
-	    SHOUT ("Armageddon shouts: All mortals will be kicked out in " +
-		   (60-min) + " minute" + (min==60?"!\n":"s!"));
-	  }
-      } else if (hour == 10 && min >= 0 && min <= 10) {
-	/* Kicked only at 10.00, sometimes let players continue playing...
-	   now it checks them for 10 minutes. //Graah */
-	object *wh_u;
-	int wh_i;
-	for (wh_i = 0, wh_u = users(); wh_i < sizeof(wh_u); wh_i++) {
-	  if (!wh_u[wh_i] || wh_u[wh_i]->query_coder_level() ||
-	      wh_u[wh_i]->query_is_testplayer())
-	    continue;
-	  wh_u[wh_i]->tell_me(
-	      "Armageddon tells you: I will kick you out now. " +
-	      "Welcome back in 6 hours.");
-	  remove_interactive (wh_u[wh_i]);
+	    if (member_array (min, ({ 0,15,30,40,45,50,55,57,58,59 })) != -1) {
+		SHOUT ("Armageddon shouts: All mortals will be kicked out in " +
+		  (60-min) + " minute" + (min==60?"!\n":"s!"));
+	    }
+	} else if (hour == 10 && min >= 0 && min <= 10) {
+	    /* Kicked only at 10.00, sometimes let players continue playing...
+	       now it checks them for 10 minutes. //Graah */
+	    object *wh_u;
+	    int wh_i;
+	    for (wh_i = 0, wh_u = users(); wh_i < sizeof(wh_u); wh_i++) {
+		if (!wh_u[wh_i] || wh_u[wh_i]->query_coder_level() ||
+		  wh_u[wh_i]->query_is_testplayer())
+		    continue;
+		wh_u[wh_i]->tell_me(
+		  "Armageddon tells you: I will kick you out now. " +
+		  "Welcome back in 6 hours.");
+		remove_interactive (wh_u[wh_i]);
+	    }
+
+	    /* Throw mortal link deads too */
+	    PURGATORY->bail_out(1);
+
 	}
-
-	/* Throw mortal link deads too */
-	PURGATORY->bail_out(1);
-
-      }
     }
 #endif /* WORKING_HOURS */
 }
@@ -853,11 +853,11 @@ s, sizeof(st), sprintf("%-=78s", implode(sort_array(st, #'<), ", ", " and ")));
 void
 SHOUT(string msg)
 {
-object *u;
-int i;
-	u = users();
-	for (i = sizeof(u) - 1; i >= 0; i--)
-		if (u[i]) u[i]->tell_me(msg);
+    object *u;
+    int i;
+    u = users();
+    for (i = sizeof(u) - 1; i >= 0; i--)
+	if (u[i]) u[i]->tell_me(msg);
 }
 
 // parse "-fcall yy xx arg" "-fshutdown"
@@ -866,7 +866,7 @@ int i;
 nomask void
 flag(string str)
 {
-	printf("master: Unknown flag %s.\n", str);
+    printf("master: Unknown flag %s.\n", str);
 }
 
 //---------------------------------------------------------------------------
@@ -882,15 +882,15 @@ static string _auto_include_hook (string base_file, string current_file, int sys
 {
     // Do nothing for includes.
     if(current_file)
-        return 0;
+	return 0;
 
     // Add the light mechanism to every object except the light object itself.
     // And of course ignore master and simul-efun.
     if(base_file[0] != '/')
-        base_file = "/" + base_file;
+	base_file = "/" + base_file;
 
     if(member((["/lib/light.c", "/secure/simul_efun.c", "/secure/simul_efun/amylaar.c", "/secure/master.c" ]), base_file))
-        return 0;
+	return 0;
 
     return "virtual inherit \"/lib/light\";\n";
 }
@@ -916,49 +916,49 @@ static string _auto_include_hook (string base_file, string current_file, int sys
 nomask void
 inaugurate_master(int arg)
 {
-	if (arg == 0) {
-		_reboot_time = time();
-	} else {
-		_reboot_time = (int) "/secure/simul_efun"
-			-> query_uptime();
-	}
+    if (arg == 0) {
+	_reboot_time = time();
+    } else {
+	_reboot_time = (int) "/secure/simul_efun"
+	-> query_uptime();
+    }
 
     // Updated efun308 to set_environment
 
     set_driver_hook(
       H_MOVE_OBJECT0,
       unbound_lambda( ({'item, 'dest}), ({#',,
-	({#'efun::set_environment, 'item, 'dest}),
-	({#'?, ({#'living, 'item}), ({#',,
-	  ({#'efun::set_this_player, 'item}),
-	  ({#'call_other, 'dest, "init"}),
-	  ({#'?, ({#'!=, ({#'environment, 'item}), 'dest}), ({#'return})}),
-	}) }),
-	({#'=, 'others, ({#'all_inventory, 'dest}) }),
-	({#'=, ({#'[, 'others, ({#'member, 'others, 'item}) }), 0}),
-	({#'filter, 'others,
-	  ({#'bind_lambda,
-	    unbound_lambda( ({'ob, 'item}),
-	      ({#'?, ({#'living, 'ob}), ({#',,
-		({#'efun::set_this_player, 'ob}),
-		({#'call_other, 'item, "init"}),
-	      }) })
-	    )
+	  ({#'efun::set_environment, 'item, 'dest}),
+	  ({#'?, ({#'living, 'item}), ({#',,
+	      ({#'efun::set_this_player, 'item}),
+	      ({#'call_other, 'dest, "init"}),
+	      ({#'?, ({#'!=, ({#'environment, 'item}), 'dest}), ({#'return})}),
+	    }) }),
+	  ({#'=, 'others, ({#'all_inventory, 'dest}) }),
+	  ({#'=, ({#'[, 'others, ({#'member, 'others, 'item}) }), 0}),
+	  ({#'filter, 'others,
+	    ({#'bind_lambda,
+	      unbound_lambda( ({'ob, 'item}),
+		({#'?, ({#'living, 'ob}), ({#',,
+		    ({#'efun::set_this_player, 'ob}),
+		    ({#'call_other, 'item, "init"}),
+		  }) })
+	      )
+	    }),
+	    'item,
 	  }),
-	  'item,
-	}),
-	({#'?, ({#'living, 'item}), ({#',,
-	  ({#'efun::set_this_player, 'item}),
-	  ({#'filter_objects, 'others, "init"}),
-	}) }),
-	({#'?, ({#'living, 'dest}), ({#',,
-	  ({#'efun::set_this_player, 'dest}),
-	  ({#'call_other, 'item, "init"}),
-	}) }),
-      }) )
+	  ({#'?, ({#'living, 'item}), ({#',,
+	      ({#'efun::set_this_player, 'item}),
+	      ({#'filter_objects, 'others, "init"}),
+	    }) }),
+	  ({#'?, ({#'living, 'dest}), ({#',,
+	      ({#'efun::set_this_player, 'dest}),
+	      ({#'call_other, 'item, "init"}),
+	    }) }),
+	}) )
     );
 
-// Stick-specific; don't care about flags here. -+ Doomdark +-
+    // Stick-specific; don't care about flags here. -+ Doomdark +-
 
     set_driver_hook(
       H_LOAD_UIDS,
@@ -1000,47 +1000,47 @@ inaugurate_master(int arg)
     set_driver_hook(
       H_CLONE_UIDS,
       unbound_lambda( ({'blueprint, 'new_name}), ({
-	#'||,
+	  #'||,
 	  ({#'creator, 'blueprint}),
 	  ({#'creator, ({#'previous_object})}),
 	  1
-      }) )
+	}) )
     );
 
-// Note; no arguments here; this way will call lfuns of the object in
-// question?
-// These lambdas will call "create()" if it's defined, otherwise "reset(0)".
+    // Note; no arguments here; this way will call lfuns of the object in
+    // question?
+    // These lambdas will call "create()" if it's defined, otherwise "reset(0)".
 
-	set_driver_hook(H_CREATE_SUPER, 0);
-// What would we need that for? Idea of masking create is to block it,
-// right??
-	set_driver_hook(H_CREATE_OB, unbound_lambda( ({ 'x }),
-		({ #'?, ({ #'function_exists, "create", 'x }),
-			({ #'call_other, 'x, "create" }),
-			({ #'call_other, 'x, "reset", 0 }) }) ));
-	set_driver_hook(H_CREATE_CLONE, unbound_lambda( ({ 'x }),
-		({ #'?, ({ #'function_exists, "create", 'x }),
-			({ #'call_other, 'x, "create" }),
-			({ #'call_other, 'x, "reset", 0 }) }) ));
+    set_driver_hook(H_CREATE_SUPER, 0);
+    // What would we need that for? Idea of masking create is to block it,
+    // right??
+    set_driver_hook(H_CREATE_OB, unbound_lambda( ({ 'x }),
+	({ #'?, ({ #'function_exists, "create", 'x }),
+	  ({ #'call_other, 'x, "create" }),
+	  ({ #'call_other, 'x, "reset", 0 }) }) ));
+    set_driver_hook(H_CREATE_CLONE, unbound_lambda( ({ 'x }),
+	({ #'?, ({ #'function_exists, "create", 'x }),
+	  ({ #'call_other, 'x, "create" }),
+	  ({ #'call_other, 'x, "reset", 0 }) }) ));
 
-	set_driver_hook(H_RESET,        "reset");
-	set_driver_hook(H_CLEAN_UP,     "clean_up");
+    set_driver_hook(H_RESET,        "reset");
+    set_driver_hook(H_CLEAN_UP,     "clean_up");
 
-	set_driver_hook(H_MODIFY_COMMAND, "modify_command");
-	set_driver_hook(H_MODIFY_COMMAND_FNAME, "modify_command");
+    set_driver_hook(H_MODIFY_COMMAND, "modify_command");
+    set_driver_hook(H_MODIFY_COMMAND_FNAME, "modify_command");
 
-	set_driver_hook(H_NOTIFY_FAIL, unbound_lambda( ({ 'cmd }),
-		({ #'call_other, "/bin/daemons/remarks",
-			"query_random_notify_fail", 'cmd }) ));
+    set_driver_hook(H_NOTIFY_FAIL, unbound_lambda( ({ 'cmd }),
+	({ #'call_other, "/bin/daemons/remarks",
+	  "query_random_notify_fail", 'cmd }) ));
 
-	set_driver_hook(H_INCLUDE_DIRS, ({
-		"/include/std/", "/include/",
-// "/secure/", "/room/"
-        }) );
+    set_driver_hook(H_INCLUDE_DIRS, ({
+	"/include/std/", "/include/",
+	// "/secure/", "/room/"
+      }) );
 
-	set_driver_hook(H_AUTO_INCLUDE, #'_auto_include_hook);
+    set_driver_hook(H_AUTO_INCLUDE, #'_auto_include_hook);
 
-	if (!_access) create();
+    if (!_access) create();
 }
 
 /*
@@ -1051,7 +1051,7 @@ inaugurate_master(int arg)
 nomask string
 get_root_uid()
 {
-	return "root";
+    return "root";
 }
 
 /*
@@ -1062,7 +1062,7 @@ get_root_uid()
 nomask string
 get_bb_uid()
 {
-	return "backbone";
+    return "backbone";
 }
 
 // Return the string to be used as uid (and -euid) of a (re)loaded master.
@@ -1071,7 +1071,7 @@ get_bb_uid()
 nomask string
 get_master_uid()
 {
-	return "root";
+    return "root";
 }
 
 // Perform final actions before opening the game to players.
@@ -1089,21 +1089,21 @@ get_master_uid()
 nomask string *
 epilog(int eflag)
 {
-string inf, *ini;
-int i;
+    string inf, *ini;
+    int i;
 
-	inf = read_file(INIT_FILE);
-	ini = explode(inf, "\n");
+    inf = read_file(INIT_FILE);
+    ini = explode(inf, "\n");
 
-	for (i = sizeof(ini) - 1; i >= 0; i--)
-	  if (!sizeof(ini[i]) || ini[i][0] == '#')
-		ini[i] = 0;
+    for (i = sizeof(ini) - 1; i >= 0; i--)
+	if (!sizeof(ini[i]) || ini[i][0] == '#')
+	    ini[i] = 0;
 
-	ini -= ({ 0 });
+    ini -= ({ 0 });
 
 
-	printf("About to preload %d objects.\n", sizeof(ini));
-	return ini;
+    printf("About to preload %d objects.\n", sizeof(ini));
+    return ini;
 }
 
 // Preload a given object.
@@ -1123,9 +1123,9 @@ int i;
 nomask void
 preload(string file)
 {
-//  seteuid("preload");
-	catch(call_other(file, "?"));
-//  seteuid(getuid());
+    //  seteuid("preload");
+    catch(call_other(file, "?"));
+    //  seteuid(getuid());
 }
 
 // Master was reloaded on external request by SIGUSR1.
@@ -1183,7 +1183,7 @@ stale_erq(closure callback)
 nomask string
 detail_name(object obj)
 {
-	return GET_NAME(obj);
+    return GET_NAME(obj);
 }
 
 // Prepare the destruction of the given object.
@@ -1207,33 +1207,33 @@ detail_name(object obj)
 nomask mixed
 prepare_destruct(object obj)
 {
-object *inv, dest;
-int i;
-string s;
-	s = object_name(obj);
-	if (sscanf(s, "%s/server", s)) {
-		obj->destruct_server();
-		if (!obj) return 0;
-	} else if (sscanf(s, "%s_cmd", s)) {
-		obj->destruct_command();
-		if (!obj) return 0;
-	}
-	inv = all_inventory(obj);
+    object *inv, dest;
+    int i;
+    string s;
+    s = object_name(obj);
+    if (sscanf(s, "%s/server", s)) {
+	obj->destruct_server();
+	if (!obj) return 0;
+    } else if (sscanf(s, "%s_cmd", s)) {
+	obj->destruct_command();
+	if (!obj) return 0;
+    }
+    inv = all_inventory(obj);
 
-	if (sizeof(inv) < 1) return 0;
+    if (sizeof(inv) < 1) return 0;
 
 #if 0
-	dest = environment(obj);
-	if (!dest) dest = find_object(GENERIC_ROOM_VOID);
-	if (!dest)
-		return "Unable to remove stuff from object!";
+    dest = environment(obj);
+    if (!dest) dest = find_object(GENERIC_ROOM_VOID);
+    if (!dest)
+	return "Unable to remove stuff from object!";
 #endif
 
-	for (i = sizeof(inv) - 1; i >= 0; i--) {
-		DESTRUCT(inv[i]);
-	}
+    for (i = sizeof(inv) - 1; i >= 0; i--) {
+	DESTRUCT(inv[i]);
+    }
 
-	return 0;
+    return 0;
 }
 
 // Handle quotas in times of memory shortage.
@@ -1250,7 +1250,7 @@ string s;
 nomask void
 quota_demon()
 {
-	return;
+    return;
 }
 
 // Handle a received IMP message.
@@ -1307,7 +1307,7 @@ receive_imp(string host, string msg, int port)
 void
 slow_shut_down(int minutes)
 {
-       call_other(SHUT_D, "shut", minutes);
+    call_other(SHUT_D, "shut", minutes);
 }
 
 // Notify the master about an immediate shutdown.
@@ -1345,7 +1345,7 @@ notify_shutdown()
 void
 dangling_lfun_closure()
 {
-	raise_error("dangling lfun closure\n");
+    raise_error("dangling lfun closure\n");
 }
 
 // Announce an error in the heart_beat() function.
@@ -1371,38 +1371,38 @@ dangling_lfun_closure()
 // inherited one) whereas <curobj> is just the offending object.
 mixed
 heart_beat_error(object culprit, string err,
-		 string prg, string curobj, int line)
+  string prg, string curobj, int line)
 {
-	if (object_info(culprit, OI_ONCE_INTERACTIVE)) {
-		culprit->tell_me("You have no heart beat! But I'll try\
+    if (object_info(culprit, OI_ONCE_INTERACTIVE)) {
+	culprit->tell_me("You have no heart beat! But I'll try\
  to restart it.");
-		return 1;
-	}
+	return 1;
+    }
 
-	if (!environment(culprit)) {
+    if (!environment(culprit)) {
 	log_file("HB", sprintf("%s: Room (?) '%s' dested due to error '%s' in:\n\
 %s::%s, line %d.\n", ctime(time()), object_name(culprit), err, prg,
-curobj, line));
-		culprit->tell_here("There is black smoke in the room\
+	    curobj, line));
+	culprit->tell_here("There is black smoke in the room\
  indicating serious internal problems in mudlib.\n\
 Please contact (co)admins!");
-		return 0;
-	}
-	log_file("HB", sprintf("%s: (%s, in room '%s'):\n'%s'.\n\
+	return 0;
+    }
+    log_file("HB", sprintf("%s: (%s, in room '%s'):\n'%s'.\n\
 Code in %s::%s, line %d.\n",
 	object_name(culprit), ctime(time()),
 	environment(culprit) ? object_name(environment(culprit)) : "<NONE>",
 	err, prg, curobj, line));
-// Just get rid of easy monsters etc.
-	if (living(culprit)) {
-		if (environment(culprit))
-		environment(culprit)->tell_here(capitalize(GET_NAME(culprit))
-+" vanishes in a puff of black smoke!");
-		DESTRUCT(culprit);
-		if (culprit)
-			destruct(culprit);
-	}
-	return 0;
+    // Just get rid of easy monsters etc.
+    if (living(culprit)) {
+	if (environment(culprit))
+	    environment(culprit)->tell_here(capitalize(GET_NAME(culprit))
+	      +" vanishes in a puff of black smoke!");
+	DESTRUCT(culprit);
+	if (culprit)
+	    destruct(culprit);
+    }
+    return 0;
 }
 
 
@@ -1461,33 +1461,33 @@ Code in %s::%s, line %d.\n",
 int
 privilege_violation(string op, mixed who, mixed arg, mixed arg2)
 {
-	if (!objectp(who)) who = find_object(who);
-	if (!who) return 0;
+    if (!objectp(who)) who = find_object(who);
+    if (!who) return 0;
 
-// Not sure if master object's things are checked but if they are...
-	if (who == this_object()) return 1;
+    // Not sure if master object's things are checked but if they are...
+    if (who == this_object()) return 1;
 
-// Well. Let's prevent _all_ operations we don't think are needed;
-// if (when?) we need 'em, we can allow some...
-	switch (op) {
-        case "attach_erq_demon":
-            if (CODER_LEVEL(who) > LVL_SENIOR)
-                return 1;
-            return 0;
-	case "erq":
-		return 1;
-	case "send_imp":
-	case "bind_lambda":
-	case "nomask simul_efun":
-	case "rename_object":
-	case "set_driver_hook":
-	case "set_auto_include_string":
-	case "shadow_add_action":
-	case "symbol_variable":
-		return 0;
-// Should log these too but...
-	}
+    // Well. Let's prevent _all_ operations we don't think are needed;
+    // if (when?) we need 'em, we can allow some...
+    switch (op) {
+    case "attach_erq_demon":
+	if (CODER_LEVEL(who) > LVL_SENIOR)
+	    return 1;
+	return 0;
+    case "erq":
 	return 1;
+    case "send_imp":
+    case "bind_lambda":
+    case "nomask simul_efun":
+    case "rename_object":
+    case "set_driver_hook":
+    case "set_auto_include_string":
+    case "shadow_add_action":
+    case "symbol_variable":
+	return 0;
+	// Should log these too but...
+    }
+    return 1;
 }
 
 // Validate if the snoopers of an object may be revealed by usage of the
@@ -1503,11 +1503,11 @@ privilege_violation(string op, mixed who, mixed arg, mixed arg2)
 int
 valid_query_snoop(object obj)
 {
-        if (previous_object() && object_name(previous_object()) ==
-           "bin/usr/_snooplist")
-		return 1;
+    if (previous_object() && object_name(previous_object()) ==
+      "bin/usr/_snooplist")
+	return 1;
 
-	return 0;
+    return 0;
 }
 
 // Validate the start/stop of a snoop.
@@ -1522,12 +1522,12 @@ valid_query_snoop(object obj)
 int
 verify_snoop(object snooper, object snoopee)
 {
-int my_clevel;
-	if (!snoopee) return 1;
-	if (!interactive(snooper) || !(my_clevel = CODER_LEVEL(snooper)))
+    int my_clevel;
+    if (!snoopee) return 1;
+    if (!interactive(snooper) || !(my_clevel = CODER_LEVEL(snooper)))
 	if (CODER_LEVEL(snoopee) >= my_clevel)
-		return 0;
-	return 1;
+	    return 0;
+    return 1;
 }
 
 // Validate the change of an objects euid by efun seteuid().
@@ -1541,9 +1541,9 @@ int my_clevel;
 int
 valid_seteuid(object obj, string neweuid)
 {
-  /* Todo? */
-// Perhaps, _if_ we ever begin using UIDs.
-  return 1;
+    /* Todo? */
+    // Perhaps, _if_ we ever begin using UIDs.
+    return 1;
 }
 
 /*
@@ -1557,12 +1557,12 @@ private static string test_connect;
 nomask status
 set_test_connect(string str)
 {
-	if (!this_interactive()
-	  || CODER_LEVEL(this_interactive()) < LVL_COADMIN)
-		return 0;
+    if (!this_interactive()
+      || CODER_LEVEL(this_interactive()) < LVL_COADMIN)
+	return 0;
 
-	test_connect = str;
-	return 1;
+    test_connect = str;
+    return 1;
 }
 
 nomask object connect();
@@ -1570,17 +1570,17 @@ nomask object connect();
 private object
 testConnect()
 {
-object ob;
-string err;
+    object ob;
+    string err;
 
-err = catch(ob = clone_object(test_connect));
+    err = catch(ob = clone_object(test_connect));
 
-if(err) {
-   write(err+"\n");
-   test_connect = 0; // we return to the old login.
-   return connect();
- }
-return ob;
+    if(err) {
+	write(err+"\n");
+	test_connect = 0; // we return to the old login.
+	return connect();
+    }
+    return ob;
 }
 
 // This function is called every time a player connects.
@@ -1588,46 +1588,46 @@ return ob;
 nomask object
 connect()
 {
-  object ob;
-  string ret, res;
+    object ob;
+    string ret, res;
 
-  // Hm, who's playing with this function?
-  if (!interactive(this_object())) return 0;
-  if (test_connect) return testConnect(); // For testing login.
+    // Hm, who's playing with this function?
+    if (!interactive(this_object())) return 0;
+    if (test_connect) return testConnect(); // For testing login.
 
-  // Is an IP _stopped_ immediately?
-  if (call_other(BANISH_D, "is_ip_stopped", this_object()))
-    return 0;
+    // Is an IP _stopped_ immediately?
+    if (call_other(BANISH_D, "is_ip_stopped", this_object()))
+	return 0;
 
-  ret = catch(ob = clone_object(PLAYERFILE));
+    ret = catch(ob = clone_object(PLAYERFILE));
 
     write("\n");
 
     if(ret) {
-        res = sprintf("Couldn't clone player.c: %s.\n", ret);
+	res = sprintf("Couldn't clone player.c: %s.\n", ret);
 
-        ob = find_object(PLAYERFILE);
-        if(ob) {
-            res += "Recompiling...\n";
-            destruct(ob);
-            ret = catch(call_other(PLAYERFILE, "???"));
-            if (ret) {
-                res += sprintf("Errors occured: %s.\n", ret);
-            } else {
-                ret = catch(ob = clone_object(PLAYERFILE));
-                if (!ret) {
-                    if (res) { write(res); write_file("/log/LOGIN", res); }
-                    return ob;
+	ob = find_object(PLAYERFILE);
+	if(ob) {
+	    res += "Recompiling...\n";
+	    destruct(ob);
+	    ret = catch(call_other(PLAYERFILE, "???"));
+	    if (ret) {
+		res += sprintf("Errors occured: %s.\n", ret);
+	    } else {
+		ret = catch(ob = clone_object(PLAYERFILE));
+		if (!ret) {
+		    if (res) { write(res); write_file("/log/LOGIN", res); }
+		    return ob;
 		}
-           }
-        }
-        if (res) { write(res); write_file("/log/LOGIN", res); }
-        if (file_size ("/no_login_shut") != -1)
+	    }
+	}
+	if (res) { write(res); write_file("/log/LOGIN", res); }
+	if (file_size ("/no_login_shut") != -1)
 	    return 0;
-        write ("Shutting down.\n");
-        write_file("/log/LOGIN", "=> Shutdown\n");
-        shutdown ();
-        return 0;
+	write ("Shutting down.\n");
+	write_file("/log/LOGIN", "=> Shutdown\n");
+	shutdown ();
+	return 0;
     }
 
     return ob;
@@ -1645,15 +1645,15 @@ int xx(int arg)
 nomask string
 get_wiz_name(string file)
 {
-string name, rest;
+    string name, rest;
 
-	if(sscanf(file,"/u/%s/%s", name, rest) == 2)
-		return name;
-// Perhaps this would allow nice tricks like adding /areas-areas to wizlist?
-// -+ Doomdark 11-aug-95 +-
-	if (sscanf(file, "/areas/%s/%s", name, rest) == 2)
-		return name;
-	return 0;
+    if(sscanf(file,"/u/%s/%s", name, rest) == 2)
+	return name;
+    // Perhaps this would allow nice tricks like adding /areas-areas to wizlist?
+    // -+ Doomdark 11-aug-95 +-
+    if (sscanf(file, "/areas/%s/%s", name, rest) == 2)
+	return name;
+    return 0;
 }
 
 // Write an error message into a log file. The error occured in the object
@@ -1662,11 +1662,11 @@ string name, rest;
 nomask void
 log_error(string file, string message)
 {
-string name;
+    string name;
 
-	name = get_wiz_name(file);
-	if (name == 0) name = "log";
-	log_file(name, message);
+    name = get_wiz_name(file);
+    if (name == 0) name = "log";
+    log_file(name, message);
 }
 
 /* save_ed_setup and restore_ed_setup are called by the ed to maintain
@@ -1704,12 +1704,12 @@ string name;
 nomask int
 save_ed_setup(object who, int code)
 {
-string file;
-	if (!intp(code))
-		return 0;
-	file = sprintf("/u/%s/.edrc", lower_case(REAL_NAME(who)));
-	rm(file);
-	return write_file(file, code + "");
+    string file;
+    if (!intp(code))
+	return 0;
+    file = sprintf("/u/%s/.edrc", lower_case(REAL_NAME(who)));
+    rm(file);
+    return write_file(file, code + "");
 }
 
 // Retrieve the ed setup. No meaning to defend this file read from
@@ -1717,14 +1717,14 @@ string file;
 nomask int
 retrieve_ed_setup(object who)
 {
-string file;
-int code;
+    string file;
+    int code;
 
-	file = sprintf("/u/%s/.edrc", lower_case(REAL_NAME(who)));
-	if (file_size(file) <= 0)
-		return 0;
-	sscanf(read_file(file), "%d", code);
-	return code;
+    file = sprintf("/u/%s/.edrc", lower_case(REAL_NAME(who)));
+    if (file_size(file) <= 0)
+	return 0;
+    sscanf(read_file(file), "%d", code);
+    return code;
 }
 
 /*
@@ -1734,10 +1734,10 @@ int code;
 nomask void
 destruct_environment_of(object ob)
 {
-	if (!interactive(ob)) return;
-	ob->tell_me("Everything you see is disolved. Luckily, you are \
+    if (!interactive(ob)) return;
+    ob->tell_me("Everything you see is disolved. Luckily, you are \
 transported somewhere...");
-	ob->move_player("is transferred", GENERIC_ROOM_VOID);
+    ob->move_player("is transferred", GENERIC_ROOM_VOID);
 }
 
 /*
@@ -1750,8 +1750,8 @@ transported somewhere...");
 nomask int
 query_allow_shadow(object ob)
 {
-	if (ob == this_object()) return 0; // never let us to be shadowed
-	return !ob->query_prevent_shadow(previous_object());
+    if (ob == this_object()) return 0; // never let us to be shadowed
+    return !ob->query_prevent_shadow(previous_object());
 }
 
 // Default language functions used by parse_command() in non -o mode
@@ -1759,7 +1759,7 @@ nomask string *
 parse_command_id_list() { return ({ "one", "thing" }); }
 nomask string *
 parse_command_plural_id_list() {
-   return ({ "ones", "things", "them" });
+    return ({ "ones", "things", "them" });
 }
 nomask string *
 parse_command_adjectiv_id_list() {
@@ -1778,12 +1778,12 @@ parse_command_all_word() {
 nomask string
 get_ed_buffer_save_file_name(string file)
 {
-string *file_ar;
+    string *file_ar;
 
-  if (!this_player()) return 0;
-  file_ar=explode(file,"/");
-  file=file_ar[sizeof(file_ar)-1];
-  return "/u/"+REAL_NAME(this_player())+"/.ed/"+file;
+    if (!this_player()) return 0;
+    file_ar=explode(file,"/");
+    file=file_ar[sizeof(file_ar)-1];
+    return "/u/"+REAL_NAME(this_player())+"/.ed/"+file;
 }
 
 // compile_object() for virtual objects
@@ -1792,25 +1792,25 @@ string *file_ar;
 nomask object
 compile_object(string path)
 {
-  string server;
-  string tmp;
-   object ob;
+    string server;
+    string tmp;
+    object ob;
 
-// URGH!
-	if (path[0] != '/')
-		path = "/" + path;
-//printf("Virtual path: %s.", path);
+    // URGH!
+    if (path[0] != '/')
+	path = "/" + path;
+    //printf("Virtual path: %s.", path);
 
-  if (sscanf(path, "%s/virtual/", tmp))
+    if (sscanf(path, "%s/virtual/", tmp))
     {
-      server = tmp+"/virtual/server.c";
-      if (file_size(server) > 0) 
-       if(ob = (object)server->compile_object(path)) {
-          rename_object(ob, path);
-       }
-       return ob;
+	server = tmp+"/virtual/server.c";
+	if (file_size(server) > 0) 
+	    if(ob = (object)server->compile_object(path)) {
+		rename_object(ob, path);
+	    }
+	return ob;
     }
-  return 0;
+    return 0;
 }
 
 // Give a path to a simul_efun file. Observe that it is a string returned,
@@ -1819,19 +1819,19 @@ compile_object(string path)
 nomask string
 get_simul_efun()
 {
-string fname;
-string error;
+    string fname;
+    string error;
 
-	fname = SIMUL_EFUN;
+    fname = SIMUL_EFUN;
 
-	if (error = catch(fname->start_simul_efun())) {
-		write("Failed to load " + fname + "\n\
+    if (error = catch(fname->start_simul_efun())) {
+	write("Failed to load " + fname + "\n\
 error message :"+error+"\n");
-		shutdown();
-		return 0;
-	}
+	shutdown();
+	return 0;
+    }
 
-	return fname;
+    return fname;
 }
 
 // Get the file sizes for the 'ls' command. It is open so wizards
@@ -1841,21 +1841,21 @@ error message :"+error+"\n");
 nomask mixed *
 get_file_sizes(string path)
 {
-mixed *flist;
-string *name_list;
-int *size_list;
-int     i, min,max;
+    mixed *flist;
+    string *name_list;
+    int *size_list;
+    int     i, min,max;
 
-	if (!(flist = get_dir(path, 3))) return 0;
+    if (!(flist = get_dir(path, 3))) return 0;
 
-	i = sizeof(flist) >> 1;
-	name_list = allocate(i);
-	size_list = allocate(i);
-	while (--i >= 0) {
-		name_list[i] = flist[i << 1];
-		size_list[i] = flist[(i << 1) + 1];
-	}
-	return ({ name_list, size_list });
+    i = sizeof(flist) >> 1;
+    name_list = allocate(i);
+    size_list = allocate(i);
+    while (--i >= 0) {
+	name_list[i] = flist[i << 1];
+	size_list[i] = flist[(i << 1) + 1];
+    }
+    return ({ name_list, size_list });
 }
 
 /*
@@ -1880,11 +1880,11 @@ query_player_level(string what)
 	clevel = CODER_LEVEL(this_player());
 	switch(what) {
 	case "wizard":
-		ret = (clevel >= LVL_APPRENTICE);
+	    ret = (clevel >= LVL_APPRENTICE);
 	case "error messages":
-		ret = (clevel >= 0);
+	    ret = (clevel >= 0);
 	case "trace":
-		ret = (clevel >= LVL_COADMIN);
+	    ret = (clevel >= LVL_COADMIN);
 	}
     }
 
@@ -1910,18 +1910,18 @@ query_player_level(string what)
 void
 runtime_error(string err, string prg, string curobj, int line)
 {
-	write_file("/log/driver_runtime.log", sprintf(
-"Program: %s, Cur obj: %s, line: %d,\nError: %s\n",
-prg, curobj, line, err));
-	if (this_player() && interactive_info(this_player(), II_IP_NUMBER))
-	  catch( write(curobj ?
-		 err +
-		 "program: " + prg +
-		 ", object: " + curobj +
-		 " line " + line + "\n"
-		 :
-		 err
-		 ));
+    write_file("/log/driver_runtime.log", sprintf(
+	"Program: %s, Cur obj: %s, line: %d,\nError: %s\n",
+	prg, curobj, line, err));
+    if (object_info(this_player(), OI_ONCE_INTERACTIVE) && interactive_info(this_player(), II_IP_NUMBER))
+	catch( write(curobj ?
+	    err +
+	    "program: " + prg +
+	    ", object: " + curobj +
+	    " line " + line + "\n"
+	    :
+	    err
+	  ));
 }
 
 
@@ -1938,25 +1938,25 @@ prg, curobj, line, err));
 nomask int
 valid_exec(string name, object ob, object obfrom)
 {
-	if (name[0] != '/') name = "/"+name;
-	switch(name) {
-		case "/basic/player/relogin.c":
-		case "/secure/master.c":
-		case "/bin/usr/_switch.c":
-		case "/secure/login.c":
-		case PLAYER_OBJECT2: 
-		  return 1;
-	}
+    if (name[0] != '/') name = "/"+name;
+    switch(name) {
+    case "/basic/player/relogin.c":
+    case "/secure/master.c":
+    case "/bin/usr/_switch.c":
+    case "/secure/login.c":
+    case PLAYER_OBJECT2: 
+	return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 nomask string
 make_path_absolute(string p)
 {
-	if (this_player() && interactive(this_player())) {
-		return (string)this_player()->absolute_path(p);
-	}
+    if (this_player() && interactive(this_player())) {
+	return (string)this_player()->absolute_path(p);
+    }
 }
 
 // Don't allow master.c to be shadowed!
@@ -1965,33 +1965,33 @@ nomask int query_prevent_shadow() { return 1; }
 status
 valid_snoop(object me, object you)
 {
-	if (!you) return 1;
-	if (!interactive(me) || !interactive(you))
-		return 0;
-	return (int) me->query_coder_level() > (int) you->query_coder_level();
+    if (!you) return 1;
+    if (!interactive(me) || !interactive(you))
+	return 0;
+    return (int) me->query_coder_level() > (int) you->query_coder_level();
 }
 
 /* Arghh! Don't ask why... //Graah */
 nomask void
 thief_log(string fn, string x)
 {
-  string tmp1, tmp2;
+    string tmp1, tmp2;
 
-  if (!x || !fn || !stringp(fn)) return;
+    if (!x || !fn || !stringp(fn)) return;
 
-  if (sscanf(fn, "%s..%s", tmp1, tmp2) == 2)
+    if (sscanf(fn, "%s..%s", tmp1, tmp2) == 2)
     {
-      log_file("ILLEGAL", "Illegal attempt at master:thief_log()\n");
-      return ;
+	log_file("ILLEGAL", "Illegal attempt at master:thief_log()\n");
+	return ;
     }
 
-  if (file_size("/guilds/thieves/" + fn) > 256000)
+    if (file_size("/guilds/thieves/" + fn) > 256000)
     {
-      rm("/guilds/thieves/" + fn + ".old");
-      rename("/guilds/thieves/" + fn, "/guilds/thieves/" + fn + ".old");
-      write_file("/guilds/thieves/" + fn,
-		 "Started new log file at " + ctime(time()) + "\n");
+	rm("/guilds/thieves/" + fn + ".old");
+	rename("/guilds/thieves/" + fn, "/guilds/thieves/" + fn + ".old");
+	write_file("/guilds/thieves/" + fn,
+	  "Started new log file at " + ctime(time()) + "\n");
     }
 
-  catch(write_file("/guilds/thieves/" + fn, x));
+    catch(write_file("/guilds/thieves/" + fn, x));
 }
