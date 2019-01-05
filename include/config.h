@@ -12,10 +12,10 @@
 #define SHUT_OB_FNAME     "secure/shut"
 #define	SWITCH_OB_FNAME	"bin/usr/_switch"
 
-#define	DIR_USER		"u"
-#define	PATH_USER		"/u/"
-#define	PATH_USER_FNAME		"u/"
-#define	PATH_FOR_USER(user)	sprintf("/u/%s/", user)
+#define	DIR_USER		"home"
+#define	PATH_USER		"/home/"
+#define	PATH_USER_FNAME		"home/"
+#define	PATH_FOR_USER(user)	sprintf("/home/%s/", user)
 #define	DIR_AREA	"areas"
 #define	PATH_AREA	"/areas/"
 #define	PATH_AREA_FNAME	"areas/"

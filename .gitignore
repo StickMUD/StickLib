@@ -6,7 +6,7 @@
 /log/*
 
 # No coder directories
-/u/*
+/home/*
 
 # No files intended to be shared with the Internet
 /www/*

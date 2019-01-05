@@ -30,8 +30,8 @@ status check_access(string path, mixed caller, string func, status write);
 	}\
 	write_file("/log/FTP.log", ctime(time()) +" "+ (x));\
 }
-#define UNIX_PATH	"/Users/sticklib/StickLib/lib%s"
-		
+#define UNIX_PATH	"/home/game/lib%s"
+
 
 nomask void FtpAccess(string a, string b, int c);
 
@@ -320,7 +320,7 @@ int i;
 			reply = "NONE";
 			break;
 		}
-		reply = sprintf("/u/%s", user);
+		reply = sprintf("/home/%s", user);
 		break;
     	case "pass":
 		if (sizeof(comp) <= FTP_ARG2)

@@ -59,7 +59,7 @@
 #define	GET_NAME(x)	((string)x->query_name())
 #define	DESTRUCT(x)	destruct(x)
 
-#define	CODER_ROOT_DIR	"/u/"
+#define	CODER_ROOT_DIR	"/home/"
 
 #define USER_IS(x)	(this_interactive() && (int)this_interactive()\
 			->query_coder_level() >= x)
@@ -891,7 +891,7 @@ inaugurate_master(int arg)
       unbound_lambda( ({'object_name}),
 	({#'?,
 	  ({#'==,
-	    ({#'sscanf, 'object_name, "u/%s", 'wiz_name}),
+	    ({#'sscanf, 'object_name, "home/%s", 'wiz_name}),
 	    1,
 	  }),
 	  ({#'?,
@@ -1566,7 +1566,7 @@ get_wiz_name(string file)
 {
     string name, rest;
 
-    if(sscanf(file,"/u/%s/%s", name, rest) == 2)
+    if(sscanf(file,"/home/%s/%s", name, rest) == 2)
 	return name;
     // Perhaps this would allow nice tricks like adding /areas-areas to wizlist?
     // -+ Doomdark 11-aug-95 +-
@@ -1614,7 +1614,7 @@ log_error(string file, string message)
 
 /*
  * The wizard object 'who' wants to save his ed setup. It is saved in the
- * file /u/wiz_name/.edrc . A test should be added to make sure it is
+ * file /home/wiz_name/.edrc . A test should be added to make sure it is
  * a call from a wizard.
  *
  * Don't care to prevent unauthorized access of this file. Only make sure
@@ -1626,7 +1626,7 @@ save_ed_setup(object who, int code)
     string file;
     if (!intp(code))
 	return 0;
-    file = sprintf("/u/%s/.edrc", lower_case(REAL_NAME(who)));
+    file = sprintf("/home/%s/.edrc", lower_case(REAL_NAME(who)));
     rm(file);
     return write_file(file, code + "");
 }
@@ -1639,7 +1639,7 @@ retrieve_ed_setup(object who)
     string file;
     int code;
 
-    file = sprintf("/u/%s/.edrc", lower_case(REAL_NAME(who)));
+    file = sprintf("/home/%s/.edrc", lower_case(REAL_NAME(who)));
     if (file_size(file) <= 0)
 	return 0;
     sscanf(read_file(file), "%d", code);
@@ -1702,7 +1702,7 @@ get_ed_buffer_save_file_name(string file)
     if (!this_player()) return 0;
     file_ar=explode(file,"/");
     file=file_ar[sizeof(file_ar)-1];
-    return "/u/"+REAL_NAME(this_player())+"/.ed/"+file;
+    return "/home/"+REAL_NAME(this_player())+"/.ed/"+file;
 }
 
 // compile_object() for virtual objects

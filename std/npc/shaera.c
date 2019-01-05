@@ -48,7 +48,7 @@ status monster_died(object p)
  the power you should. Weird.");
 
 #if 0
-  sce = clone_object("/u/cigam/nk/sceptre_tristeza");
+  sce = clone_object("/players/cigam/nk/sceptre_tristeza");
   sce->set_kingdom_name(CITY_NAME);
 
   move_object(sce, this_player());

@@ -59,11 +59,11 @@
 /** locations of guild marks **/
 
 #define PRIEST_MARK_PATH "/guilds/priests/symbol"
-//#define NINJA_MARK_PATH "/u/ninja/mark_new"
+//#define NINJA_MARK_PATH "/guilds/ninja/mark_new"
 #define THIEF_MARK_PATH "/guilds/thieves/thief_mark_new"
 //#define NECRO_MARK_PATH "/guilds/necromancer/amulet"
-//#define FIGHTER_MARK_PATH "/u/frobozz/F/mark"
-//#define MAGE_MARK_PATH "/u/mage/mark"
-//#define HEALER_MARK_PATH "/u/healers/symbol"
+//#define FIGHTER_MARK_PATH "/guilds/frobozz/F/mark"
+//#define MAGE_MARK_PATH "/guilds/mage/mark"
+//#define HEALER_MARK_PATH "/guilds/healers/symbol"
 
 #endif
