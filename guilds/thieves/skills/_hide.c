@@ -129,9 +129,9 @@ hiding_stop(string str, object ob)
       // Commands allowed when hiding. Now even those commands can stop
       // hiding, if they set_hidden to 0 from tmark. Mainly stab.
       if (!hs &&
-	  (str == "" || member_array(cmd, ({
+	  (str == "" || member(({
 	    "exa", "examine", "l", "look", "stab", "hide",
-	      })) != -1))
+	      }), cmd) != -1))
 	{
 	  write("Hiding> ");
 	  input_to("hiding_stop", 128, ob);

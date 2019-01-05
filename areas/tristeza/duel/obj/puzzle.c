@@ -75,7 +75,7 @@ int y;
 int x;
  
    for(y=0; y < 3; y++) 
-      if((x=member_array(i, arr[y]))!=-1)
+      if((x=member(arr[y], i))!=-1)
           return ({x, y});
  
 return 0;

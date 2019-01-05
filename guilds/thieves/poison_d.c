@@ -83,7 +83,7 @@ remove_poisoned_thing(object what)
 {
 string desc;
 string dummy;
-   if (member_array(what,query_poisoned_things(1)) == -1)
+   if (member(query_poisoned_things(1), what) == -1)
       return 0;        // Not poisoned
    if (sscanf((string)what->query_short(),"%s covered in a strange substance",desc) == 1)
       what->set_short(desc);
@@ -139,7 +139,7 @@ add_poisoned_living(object who,object with_what, int p_strength)
    if (!p_things) p_things = ([]);
    if (!living(with_what))
    {   
-      if(member_array(with_what,query_poisoned_things(1)) == -1)
+      if(member(query_poisoned_things(1), with_what) == -1)
          return 0;
       else
       {   
@@ -388,7 +388,7 @@ is_poisoned(object who)
 object *ppl;
 
    ppl = query_poisoned_livings(1);
-   if (member_array(who,ppl) != -1)
+   if (member(ppl, who) != -1)
       return 1;
    else
       return 0;

@@ -14,7 +14,7 @@ nomask status kingdom_cmd(string arg)
     if (!interactive(ob))
         return notify_fail(capitalize(who)+" does not seem to be in the game.\n"), 0;
 
-    if (member_array(kingdom, ({"earth", "water", "wind", "fire"})) == -1)
+    if (member(({"earth", "water", "wind", "fire"}), kingdom) == -1)
         return notify_fail("Valid kingdoms are earth, water wind or fire.\n"), 0;
 
     filename = "/log/history/"+who[0..0]+"/"+who;

@@ -266,7 +266,7 @@ int i;
           return 0;
        }
      }
-     if(member_array(team, teams) != -1) {
+     if(member(teams, team) != -1) {
         notify_fail("You have already joined!\n");
         return 0;
      }
@@ -278,13 +278,12 @@ int i;
        i = sizeof(players);
        if(i) 
          while(i--) {
-            if(member_array(this_player()->query_real_name(), 
-                            players[i]) != -1) {
+            if(member(players[i], this_player()->query_real_name()) != -1) {
                 notify_fail("You have already joined, sorry.\n");
                 return 0;
              }
          }
-       if((i = member_array(team, teams)) != -1) {
+       if((i = member(teams, team)) != -1) {
           players[i] += ({this_player(), name});
  
           tell_room(this_object(), Name+" joined team: "+team+".\n");
@@ -292,7 +291,7 @@ int i;
        else {
           teams += ({team});
           players += ({ ({this_player(), name }) });
-          
+
           write("You join team "+team+".\n");
           tell_room(this_object(), Name +
                " created a new team called '"+team+"'.\n");

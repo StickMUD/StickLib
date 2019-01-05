@@ -217,23 +217,23 @@ create_custom_cloth(string n)
   if (sizeof(x) < 4) return 0;
   if (sizeof(x) == 5)
     {
-      q = member_array(x[0], qualname);
-      tex = member_array(x[1], texname);
-      col = member_array(x[2], colname);
-      m = member_array(x[3], matname);
-      clo = member_array(x[4], clothname);
-    
+      q = member(qualname, x[0]);
+      tex = member(texname, x[1]);
+      col = member(colname, x[2]);
+      m = member(matname, x[3]);
+      clo = member(clothname, x[4]);
+
       if (q == -1 || tex == -1 || col == -1 || m == -1 || clo == -1 ||
 	  texname[tex] == "UNUSED")
 	return 0;
     }
   else
     {
-      q = member_array(x[0], qualname);
-      col = member_array(x[1], colname);
-      m = member_array(x[2], matname);
-      clo = member_array(x[3], clothname);
-    
+      q = member(qualname, x[0]);
+      col = member(colname, x[1]);
+      m = member(matname, x[2]);
+      clo = member(clothname, x[3]);
+
       if (q == -1 || col == -1 || m == -1 || clo == -1) return 0;
     }
 

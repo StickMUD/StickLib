@@ -31,8 +31,8 @@ int i, s;
 
 	    if (cl && (s = sizeof(cl)) > 0) {
 	        for (i = 0; i < s; i++) {
-		    if (member_array(lower_case(arg),
-			explode(c[cl[i]][0], " ")) != -1) {
+		    if (member(explode(c[cl[i]][0], " "),
+			lower_case(arg)) != -1) {
 		        wn = c[cl[i]][0];
 			break;
 		    }

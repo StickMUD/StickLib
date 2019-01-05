@@ -90,9 +90,9 @@ deliver(string str)
       return 1;
    }
 
-   if (member_array(flcol, ({ "red", "white", "black",
+   if (member(({ "red", "white", "black",
 			       "yellow", "purple", "green",
-			       "violet" })) == -1)
+			       "violet" }), flcol) == -1)
      {
        this_player()->tell_me("Sorry, but "+flcol+"-coloured "+flnam+
 		   " are out of stock.");

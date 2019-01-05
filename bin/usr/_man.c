@@ -65,7 +65,7 @@ string s, f, n;
 	x = get_dir(dir, 0x23);
 #if 1
 	if (main) {
-		if ((i = member_array("help", x)) >= 0) {
+		if ((i = member(x, "help")) >= 0) {
 			x = x[0..i-1] + x[i + 2..<1];
 		}
 	}

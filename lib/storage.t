@@ -145,9 +145,8 @@ status list_cmd(string arg)
 
     if (sscanf(arg, "%s %s", arg, item) < 2)
     {
-	if ((index = member_array(arg, list)) < 0)
-	    return 
-	    notify_fail("That type of item is not sold here.\n"), 0;
+	if ((index = member(list, arg)) < 0)
+	    return notify_fail("That type of item is not sold here.\n"), 0;
 
 	if (!sizeof(list = create_list(chests[index])))
 	    return notify_fail("Storage is empty!\n"), 0;
@@ -156,9 +155,8 @@ status list_cmd(string arg)
     }
     else
     {
-	if ((index = member_array(arg, list)) < 0)
-	    return
-	    notify_fail("That type of item is not sold here.\n"), 0;
+	if ((index = member(list, arg)) < 0)
+	    return notify_fail("That type of item is not sold here.\n"), 0;
 
 	if (!sizeof(list = create_list(chests[index], item)))
 	    return notify_fail("That item is not in storage.\n"), 0;

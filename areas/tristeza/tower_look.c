@@ -21,7 +21,7 @@ look_cmd(string str)
 	(sscanf(str, "at %s", str) || sscanf(str, "to %s", str));
 		// Let's skip 'at' or 'to' if present in string.
 
-	if (tower_look && member_array(str, tower_look) >= 0) {
+	if (tower_look && member(tower_look, str) >= 0) {
 		this_player()->tell_me(read_file(CITY_DIR+str));
 		return 1;
 	}

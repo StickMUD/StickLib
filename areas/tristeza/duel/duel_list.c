@@ -80,7 +80,7 @@ int i;
  
    if(!name || !data || sort_by > DUELS || sort_by < RANK) return;
  
-   i = member_array(name, names);
+   i = member(names, name);
    if(i == -1) return; //No name in the list !?!
  
    if(!i) return; //We are the best already.
@@ -165,7 +165,7 @@ int i;
  
     if(!name) return;
  
-    i = member_array(name, names);
+    i = member(names, name);
     if(i == -1) return;
  
     datas[i][RANK] += lvl;
@@ -182,7 +182,7 @@ int i;
  
    if(!name) return;
  
-   if((i = member_array(name, names)) == -1) return;
+   if((i = member(names, name)) == -1) return;
  
    datas[i][VICTORY]++;
    dueld_sort(name, datas[i], KILLS);
@@ -195,12 +195,12 @@ int i;
     
    if(!name) return;
  
-   i = member_array(name, names);
+   i = member(names, name);
 
    if(i == -1) {
        names += ({name});
        datas += ({({0, 0, 0, 1})});
-       i = member_array(name, names);
+       i = member(names, name);
     }
    else datas[i][DUELS]++;
    dueld_sort(name, datas[i], KILLS);

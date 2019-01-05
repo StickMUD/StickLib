@@ -27,7 +27,7 @@ object *worn;
 		if (!(worn = (object*) me -> query_armour("list")))
 			worn =({});
 		while (ob) {
-			if (member_array(ob, worn)<0 && ob->is_armour())
+			if (member(worn, ob)<0 && ob->is_armour())
 				me -> wear(ob, 0);
 			ob = next_inventory(ob);
 		}

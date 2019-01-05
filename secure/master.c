@@ -94,17 +94,6 @@ int check_access(string path, mixed caller, string func, status write);
 #undef AUTOREBOOT
 
 /*
- * Define WORKING_HOURS if you want mortals to be kicked out every workday
- * (that's monday-friday) at 10.00 am. If defined, they will be also warned
- * at frequent intervals from 9.00 9.15 9.30 9.45 9.50 9.55 9.57 9.58 to 9.59.
- *
- * Another part of the 'working hours' system resides at /room/church.c and
- * /lib/player.c, it blocks players from entering the game during working
- * hours. This define does not apply there.
- */
-#undef WORKING_HOURS
-
-/*
  * Define FINGER_WHO if you want the mudlib to automatically write the
  * player list into the .plan file at /ftp/.plan, so that it can be fingered
  * from outside.
@@ -128,11 +117,7 @@ query_reboot_time()
 status
 exists_player(string s)
 {
-#if 0
-    return file_size(sprintf("/data/plr/%s.o", lower_case(s))) > 0;
-#else
     return file_size(sprintf("%s.o", PATH_FOR_PLAYER_SAVE(lower_case(s)))) > 0;
-#endif
 }
 
 mixed *
@@ -337,20 +322,6 @@ set_access_data(string dir, mixed who, string acc)
     _access[dir] = old_data;
     return 0;
 }
-
-#if 0
-mapping
-query_access_data()
-{
-    return copy_mapping(_access);
-}
-
-mapping
-query_coder_data()
-{
-    return copy_mapping(_players);
-}
-#endif
 
 /************************************************************************
 *									*
@@ -803,51 +774,6 @@ time_glass()
 	}
     }
 #endif /* AUTOREBOOT */
-#ifdef WORKING_HOURS
-    if (day != "Sat" && day != "Sun" &&
-      /* The standard holidays //Graah */
-      (member_array(ctime(time())[4..9],
-	  ({
-	    "May 25", /* Another "holy" day shit...temporary. */
-
-	    "May  1", /* Communists' day */
-	    "Dec  6", /* Finland Indepencece Day */
-	    "Dec 24", /* Some religious shit... */
-	    "Dec 25", /* which goes on and on... */
-	    "Dec 26", /* And on... */
-	    "Jan  1", /* 1996, monday */
-	    "Jan  2", /* 1996 temporary */
-	    "Dec 27"  /* Temporary (1995) */
-	  })) == -1)
-    )
-    {
-	if (hour == 9)
-	{
-	    if (member_array (min, ({ 0,15,30,40,45,50,55,57,58,59 })) != -1) {
-		SHOUT ("Armageddon shouts: All mortals will be kicked out in " +
-		  (60-min) + " minute" + (min==60?"!\n":"s!"));
-	    }
-	} else if (hour == 10 && min >= 0 && min <= 10) {
-	    /* Kicked only at 10.00, sometimes let players continue playing...
-	       now it checks them for 10 minutes. //Graah */
-	    object *wh_u;
-	    int wh_i;
-	    for (wh_i = 0, wh_u = users(); wh_i < sizeof(wh_u); wh_i++) {
-		if (!wh_u[wh_i] || wh_u[wh_i]->query_coder_level() ||
-		  wh_u[wh_i]->query_is_testplayer())
-		    continue;
-		wh_u[wh_i]->tell_me(
-		  "Armageddon tells you: I will kick you out now. " +
-		  "Welcome back in 6 hours.");
-		remove_interactive (wh_u[wh_i]);
-	    }
-
-	    /* Throw mortal link deads too */
-	    PURGATORY->bail_out(1);
-
-	}
-    }
-#endif /* WORKING_HOURS */
 }
 
 void
@@ -1221,13 +1147,6 @@ prepare_destruct(object obj)
     inv = all_inventory(obj);
 
     if (sizeof(inv) < 1) return 0;
-
-#if 0
-    dest = environment(obj);
-    if (!dest) dest = find_object(GENERIC_ROOM_VOID);
-    if (!dest)
-	return "Unable to remove stuff from object!";
-#endif
 
     for (i = sizeof(inv) - 1; i >= 0; i--) {
 	DESTRUCT(inv[i]);
@@ -1677,7 +1596,7 @@ log_error(string file, string message)
 		advantages:	transparent to the user
 				independent of wizard count
 		disadvantage:	extra file access at ed invocation
-	An array in the master object, wizards are searched by member_array
+	An array in the master object, wizards are searched by member efun
 		advantage:	easy to implement
 		disadvantage:	performance degradation with high wizard counts
 	An AVL-tree to access wizards by name

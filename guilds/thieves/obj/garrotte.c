@@ -144,13 +144,13 @@ object victim, inv;
 
    lastused = (time() + 3);
 
-   if (this_player()->query_sp() < 30) 
+   if (this_player()->query_sp() < 30)
    {
       notify_fail("You feel too stressed to do this now. Rest a bit first.\n");
       return 0;
    }
 
-   if (member_array(victim, lastvictim) != -1) 
+   if (member(lastvictim, victim) != -1)
    {
       notify_fail(victim->query_name() +
 	    " is aware of you sneaking around with the garrotte.\n");
@@ -159,7 +159,7 @@ object victim, inv;
 
    lastvictim += ({ victim });
 
-   if (sizeof(lastvictim) > 2) 
+   if (sizeof(lastvictim) > 2)
       lastvictim -= ({ lastvictim[0] });
 
    this_player()->add_sp(-30);

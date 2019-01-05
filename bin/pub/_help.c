@@ -15,7 +15,7 @@ object me;
 
         if (arg == ".ACCESS") arg = "NO_SUCH_TOPIC";
 	if (arg && sscanf(arg, "%s/../%s", s, s)) arg = "NO_SUCH_TOPIC";
-	else if (arg && member_array(' ', arg) >= 0) arg = "NO_SUCH_TOPIC";
+	else if (arg && member(arg, ' ') >= 0) arg = "NO_SUCH_TOPIC";
 	else if(!arg || arg == "all")
 	  s = sprintf("Commands: %-=65s\nGeneral:  %-=65s\nMiscellaneous: %-=60s\n",
 	  implode(filter_array(get_dir("/doc/help/commands/"), #'query_access_file), ", "),

@@ -150,7 +150,7 @@ mixed dest2;
     move_object(this_object(), ob);
     else ob = environment();
     dirs = (mixed *)ob->query_dest_dir();
-    dest2 = dirs[member_array(dir, dirs)-1];
+    dest2 = dirs[member(dirs, dir)-1];
     call_out("move_other_gate", 0, ({gate2, dest2}));
     gate2->set_open(open);
     gate2->set_dir(args[3]);
@@ -333,7 +333,7 @@ string nam;
     }
  
    nam=pname();   
-   i = member_array(nam, names);
+   i = member(names, nam);
  
    if(i==-1) {
         names += ({ nam });
@@ -375,7 +375,7 @@ string nam;
       return 1;
      }
    nam=pname();   
-   i = member_array(nam, names);
+   i = member(names, nam);
  
    if(i==-1) {
         names += ({ nam });

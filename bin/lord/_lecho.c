@@ -13,7 +13,7 @@ int lecho_cmd(string str, object who) {
 
 	if((LL < SQUIRE) && !(CODER)) return 0;
 
-        if(!(str) || ((x=member_array(str,({"none","ok","all"}))) == -1))
+        if(!(str) || ((x=member(({"none","ok","all"}), str)) == -1))
                 return notify_fail("Usage: lecho [none,ok,all].\n"),0;
 
         switch(x) {

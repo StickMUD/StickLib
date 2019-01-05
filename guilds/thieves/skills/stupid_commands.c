@@ -274,7 +274,7 @@ int i;
       return 1;
    }
 
-   if ((i = member_array(arg, dd)) == -1 || (sizeof(dd) < i))
+   if ((i = member(dd, arg)) == -1 || (sizeof(dd) < i))
    {
       TM("There's nothing in the direction " + arg + ".\n");
       return 1;

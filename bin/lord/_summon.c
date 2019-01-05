@@ -88,12 +88,7 @@ summon_cmd(string str)
 
   here = environment(TP);
 
-#if 0
-  g = (member_array((string)TP->query_guild(),
-    ({ GN_MAGE, GN_PRIEST, GN_NECROMANCER, GN_HEALER })) != -1);
-#else
   g = 0;
-#endif
 
   // Added "|| !target->query(PLR_ALLOW_SUMMON)". I.e. no summon
   // if summontoggle is not on. Players think the victim is in

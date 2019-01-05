@@ -252,7 +252,7 @@ gc(string arg)
 	return 1;
     }
 
-    if (member_array(Realname(TP), whotook) != -1) {
+    if (member(whotook, Realname(TP)) != -1) {
         write("But you just recently took one!\n");
 	return 1;
     }
@@ -328,7 +328,7 @@ replace(string arg)
     taker = (string)gr->query_taker();
     if (!taker) taker = Realname(TP);
 
-    if (member_array(taker, whotook) != -1)
+    if (member(whotook, taker) != -1)
         whotook -= ({ taker });
 
     return 1;

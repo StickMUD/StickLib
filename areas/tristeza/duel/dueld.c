@@ -124,8 +124,8 @@ new_ld_room(object ob) {
      }
     else {
        if(environment(ob)->query_duel_arena())
-		ob->move_player("X", AREA_TRISTEZA "duel/*generate_cool_off");
-	else ob->set_ld_room(AREA_TRISTEZA "duel/*generate_cool_off");
+	ob->move_player("X", AREA_TRISTEZA "duel/generate_cool_off");
+	else ob->set_ld_room(AREA_TRISTEZA "duel/generate_cool_off");
     }
 }
  
@@ -307,7 +307,7 @@ object corpse;
          if(!i) return 0;
          while(i--) {
  
-            if((ind = member_array(ob, list[i])) != -1) {
+            if((ind = member(list[i], ob)) != -1) {
                  _tellDuelArena(capitalize(list[i][ind+1]) + 
                    " is out of the match.");
                  list[i][ind] = 0;
@@ -315,7 +315,7 @@ object corpse;
                  break;
               }
           }
-    } else if((ind = member_array(ob, list)) != -1) {
+    } else if((ind = member(list, ob)) != -1) {
             _tellDuelArena(capitalize(names[ind]) +
                 " is out of the match.");
             list[ind] = 0;
@@ -417,12 +417,7 @@ int i, mh, ms;
                   }
              }
           }
-  /*
-          _tellDuelists("You are touched by a healing spell. "+
-                  "Your vision blurs and you find yourself from "+
-                  "a familiar place.");
-  
-* */
+
       _tellDuelists("Your vision blurs and you find yourself "+
                     "from a familiar place.");
       } else if(winner && winner == "Nobody")

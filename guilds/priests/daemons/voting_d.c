@@ -153,7 +153,7 @@ valid_vote(object who, string office) {
     if(!who || !query_ip_name(who))
 	ERR("Are you trying to cheat?\n");
 
-    if(who->query_level() < 2)                                          
+    if(who->query_level() < 2)
 	ERR("You have to be at least level 2 to vote.\n");
 
     if (who->query_age() < 17400)
@@ -164,17 +164,17 @@ valid_vote(object who, string office) {
 
     switch(office){
     case VG:
-	if(member_array(RN,vg_voters) >=0)
+	if(member(vg_voters, RN) >=0)
 	    ERR("You have already voted for "+VG+".\n");
 	break;
 
     case PH:
-	if(member_array(RN,ph_voters) >=0)
+	if(member(ph_voters, RN) >=0)
 	    ERR("You have already voted for "+PH+".\n");
 	break;
 
     case PT:
-	if(member_array(RN,pt_voters) >=0)
+	if(member(pt_voters, RN) >=0)
 	    ERR("You have already voted for "+PT+".\n");
 	break;
 

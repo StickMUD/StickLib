@@ -19,10 +19,10 @@ advice_cmd(object who, object sym, string str)
         }
       dir = get_dir(PRIEST_HELP_DIR);
       fname = str + ".help";
-      index = member_array(fname, dir);
+      index = member(dir, fname);
       if(index==-1 && (sym->query_rank() || who->query_coder_level())) {
          fname = str + ".ofc";
-         index = member_array(fname, dir);
+         index = member(dir, fname);
       }
       if(index==-1) {
          notify_fail("No help on that spell. Maybe you should check \

@@ -81,9 +81,9 @@ manage_gm(string arg)
 	  notify_fail("Only the GM can promote Co-Gm's\n");
 	  return 0;
 	}
-      if (member_array(victim,(string *) GM_D->query_enforcers()) != -1)
+      if (member(GM_D->query_enforcers(), victim) != -1)
 	GM_D->remove_enforcer(victim);
-      if (member_array(victim,(string *)GM_D->query_demons()) != -1)
+      if (member(GM_D->query_demons(), victim) != -1)
 	{
 	  owner->tell_me("You can't promote demons!");
 	  return 1;
@@ -96,10 +96,10 @@ manage_gm(string arg)
     if (query_verb() == "promote")
       {
 #ifdef OLD_GOVERNMENT
-	if (member_array(victim,(string *) GM_D->query_co_gm()) != -1)
+	if (member(GM_D->query_co_gm(), victim) != -1)
 	  GM_D->remove_co_gm(victim);
 #endif
-	if (member_array(victim,(string *) GM_D->query_demons()) != -1)
+	if (member(GM_D->query_demons(), victim) != -1)
 	  {
 	    owner->tell_me("You can't promote Demons!");
 	    return 1;
@@ -116,7 +116,7 @@ manage_gm(string arg)
 	      notify_fail("Only the GM can demote Co-Gm's.\n");
 	      return 0;
 	    }
-	  if (member_array(victim,(string *) GM_D->query_co_gm()) == -1)
+	  if (member(GM_D->query_co_gm(), victim) == -1)
 	    {
 	      owner->tell_me(victim + " is not a co-gm.");
 	      return 1;
@@ -127,7 +127,7 @@ manage_gm(string arg)
 #endif
   if (query_verb() == "demote")
     {
-      if (member_array(victim,(string *) GM_D->query_enforcers()) == - 1)
+      if (member(GM_D->query_enforcers(), victim) == - 1)
 	{
 	  owner->tell_me(victim + " is not an enforcer.");
 	  return 1;

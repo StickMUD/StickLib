@@ -16,7 +16,7 @@ absorb_cmd(object who, object sym, string s)
     if(!staff || (environment(staff) != who)) return 0;
     if(!staff->id(u)) return 0;
    
-    if(!t || member_array(t, SP_NAMES) < 0)
+    if(!t || member(SP_NAMES, t) < 0)
         return notify_fail("Absorb what from the " + u + "?\n"),0;
 
     if(amount < 1) return 

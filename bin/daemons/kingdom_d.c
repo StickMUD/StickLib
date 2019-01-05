@@ -22,7 +22,7 @@ status set_kingdom_data(string kingdom, mixed key, mixed arg)
     if (!Kingdoms)
         Kingdoms = ([ ]);
 
-    if (member_array(kingdom, KINGDOMS) < 0)
+    if (member(KINGDOMS, kingdom) < 0)
         return 0;
 
     if (stringp(key))
@@ -44,7 +44,7 @@ status set_kingdom_data(string kingdom, mixed key, mixed arg)
         return 0;
 
     if (stringp(arg) && key == "monarch" && 
-        member_array(arg, ({"king", "queen"})) > -1)
+        member(({"king", "queen"}), arg) > -1)
     {
         Kingdoms[kingdom]["dob"] = time();
         Kingdoms[kingdom]["monarch"] = arg;
@@ -55,11 +55,10 @@ status set_kingdom_data(string kingdom, mixed key, mixed arg)
         return 1;
     }
 
-    if (intp(arg) && member_array(key, ({"revenue", "donate", "borrow"})) > -1)
+    if (intp(arg) && member(({"revenue", "donate", "borrow"}), key) > -1)
         Kingdoms[kingdom][key] += arg;
-    else if (stringp(arg) && 
-        member_array(key, 
-            ({"prince", "princess", "knight", "knightess"})) > -1)
+    else if (stringp(arg) &&
+        member(({"prince", "princess", "knight", "knightess"}), key) > -1)
         Kingdoms[kingdom][key] += ({ arg });
     else
         Kingdoms[kingdom][key] = arg;
@@ -86,13 +85,13 @@ varargs status remove_kingdom_data(string kingdom, mixed key, mixed arg)
     if (key == "dob")
         return 0;
 
-    if (member_array(key, ({"revenue", "donate", "borrow"})) > -1)
+    if (member(({"revenue", "donate", "borrow"}), key) > -1)
     {
         Kingdoms[kingdom][key] = 0;
         return 1;
     }
 
-    if (member_array(key, ({"prince", "princess", "knight", "knightess"})) > -1)
+    if (member(({"prince", "princess", "knight", "knightess"}), key) > -1)
     {
         if (!arg)
             Kingdoms[kingdom][key] = ({ });

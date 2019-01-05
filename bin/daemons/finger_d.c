@@ -70,7 +70,7 @@ string process_kingdom()
     if (!coder_level)
         return (kingdom) ? capitalize(kingdom) : "None";
 
-    if (member_array(kingdom, ({"fire", "wind", "water", "earth", "mudlib"})) != -1)
+    if (member(({"fire", "wind", "water", "earth", "mudlib"}), kingdom) != -1)
         return capitalize(kingdom);
     else
         return "Immortal";

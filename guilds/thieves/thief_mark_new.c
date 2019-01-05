@@ -442,17 +442,17 @@ initialize_guild(string arg)
     if (rn == current_gm) {
 	GM_D->set_gm_last_on();
 	guildmaster = TR_GM;
-    } else if (member_array(rn, current_co_gm) != -1)
+    } else if (member(current_co_gm, rn) != -1)
 	guildmaster = TR_CO_GM;
-    else if (member_array(rn, current_enforcers) != -1)
+    else if (member(current_enforcers, rn) != -1)
 	guildmaster = TR_ENFORCER;
-    else  if (member_array(rn, current_demons) != -1)
+    else  if (member(current_demons, rn) != -1)
 	guildmaster = TR_DEMON;
     else
 	guildmaster = 0;
 #endif
 #ifndef OLD_GOVERNMENT
-    if(current_demons  &&  member_array(rn, current_demons) != -1)
+    if(current_demons  &&  member(current_demons, rn) != -1)
 	guildmaster = TR_DEMON;
 #endif
 
@@ -1423,7 +1423,7 @@ stab_delay(object victim)
 
       // First try. Already in combat? Then we can't stab.
       if (victim->is_fighting(owner) ||
-	  member_array(owner, victim->query_hunted()) != -1)
+	  member(victim->query_hunted(), owner) != -1)
 	return 1;
 
       return 0;
@@ -2044,14 +2044,12 @@ defense of your guild!");
 #endif
 
 #ifdef GN_PRIEST
-    if (member_array((string)ar[0]->query_guild(),
-		     ({ GN_PRIEST })) != -1)
+    if (member(({ GN_PRIEST }), ar[0]->query_guild()) != -1)
       ar[1] = ar[1] * 2;
 #endif
 
 #ifdef GN_NINJA
-    if (member_array((string)ar[0]->query_guild(),
-		     ({ GN_NINJA })) != -1)
+    if (member(({ GN_NINJA }), ar[0]->query_guild()) != -1)
       ar[1] = ((ar[1] * 3) / 2);
 #endif
 

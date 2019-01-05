@@ -83,7 +83,7 @@ private status put_objects(object *item_o, object container_o, object me)
         if (container_o -> refuse_item(item_o[i], me))
             continue;
  
-        if(member_array(item_o[i], keep) != -1)
+        if(member(keep, item_o[i]) != -1)
         {
             msg += sprintf("You keep ahold of the %s.\n",
                 item_o[i]->query_name(0, me));

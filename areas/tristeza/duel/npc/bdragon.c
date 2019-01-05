@@ -345,7 +345,7 @@ int i;
       rooms = (string *)environment()->query_dest_dir();
       if(!rooms) return;
 
-      i=member_array(where, rooms);
+      i=member(rooms, where);
 
       if(i==-1) return;
       i--;

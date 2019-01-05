@@ -34,7 +34,7 @@ remove_guest(string guest) {
 
 status
 query_guest(string guest) {
-    return member_array(guest,guests)>=0;
+    return member(guests, guest)>=0;
 }
 
 
@@ -47,7 +47,7 @@ query_guests() {
         i = sizeof(guests);
         strs = allocate(i);
         while(--i>=0) strs[i] = capitalize(guests[i]);
-        
+
         return "Guests of the Cathedral:" +
             sprintf("\n%-78#s",implode(strs,"\n"));
     }

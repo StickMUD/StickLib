@@ -16,14 +16,14 @@ int i,j;
     arr=m_indices(list);
     for(i=0;i<sizeof(arr);i++) {
 	arr2=m_indices(list[arr[i]]);
-	if (member_array(str,arr2)!=-1) {
+	if (member(arr2, str)!=-1) {
 		write(str+" is in ");
 		write(arr[i]);
 		write("\n");
 		return 1;
 	}
-	
-    }          
-    notify_fail("Command not found.\n");    
+
+    }
+    notify_fail("Command not found.\n");
     return 0;
 }

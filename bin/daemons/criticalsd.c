@@ -84,59 +84,59 @@ critical_hit(object victim, object hitter, int damage, int type, int bonus)
 	    break;
 	}
 
-        if (member_array(wrd[i], ({ "orc", "half-orc", "elf", "giant",
+        if (member(({ "orc", "half-orc", "elf", "giant",
 	     "human", "hobbit", "dwarf", "titan", "zombie",
-	     "ghoul", "skeleton" })) != -1) {
+	     "ghoul", "skeleton" }), wrd[i]) != -1) {
 	    rt = "human";
 	    break;
 	}
 
-	if (member_array(wrd[i], ({ "deer", "mouse", "rat", "goose",
+	if (member(({ "deer", "mouse", "rat", "goose",
 	    "bear", "unicorn", "buffalo", "horse", "camel",
-	    "sheep", "goat", "wolf", "dog", "pig", "aardvark" })) != -1) {
+	    "sheep", "goat", "wolf", "dog", "pig", "aardvark" }), wrd[i]) != -1) {
 	    rt = "animal";
 	    break;
 	}
 
-	if (member_array(wrd[i], ({ "demon", "daemon", "devil" })) != -1) {
+	if (member(({ "demon", "daemon", "devil" }), wrd[i]) != -1) {
 	    rt = "demon";
 	    break;
 	}
 
-	if (member_array(wrd[i], ({ "dragon", "wyvern", "griffon" })) != -1) {
+	if (member(({ "dragon", "wyvern", "griffon" }), wrd[i]) != -1) {
 	    rt = "dragon";
 	    break;
 	}
 
-	if (member_array(wrd[i], ({ "roc", "bird", "cockatrice" })) != -1) {
+	if (member(({ "roc", "bird", "cockatrice" }), wrd[i]) != -1) {
 	    rt = "bird";
 	    break;
 	}
 
-	if (member_array(wrd[i], ({ "snake", "remorhaz" })) != -1) {
+	if (member(({ "snake", "remorhaz" }), wrd[i]) != -1) {
 	    rt = "snake";
 	    break;
 	}
 
-	if (member_array(wrd, ({ "ant", "beetle", "cockroach" })) != -1) {
+	if (member(({ "ant", "beetle", "cockroach" }), wrd[i]) != -1) {
 	    rt = "insect";
 	    break;
 	}
 
-	if (member_array(wrd[i], ({ "spider" })) != -1) {
+	if (member(({ "spider" }), wrd[i]) != -1) {
 	    rt = "arachnid";
 	    break;
 	}
 
-	if (member_array(wrd[i], ({ "cat", "lion", "tiger", "panther",
-	    "puma" })) != -1) {
+	if (member(({ "cat", "lion", "tiger", "panther",
+	    "puma" }), wrd[i]) != -1) {
 	    rt = "feline";
 	    break;
 	}
 
 	/* We hope "cube" is "gelatinous cube"... */
-	if (member_array(wrd[i], ({ "slime", "jelly", "ooze",
-	     "amoeba", "pudding", "cube" })) != -1) {
+	if (member(({ "slime", "jelly", "ooze",
+	     "amoeba", "pudding", "cube" }), wrd[i]) != -1) {
 	    rt = "jelly";
 	    break;
 	}

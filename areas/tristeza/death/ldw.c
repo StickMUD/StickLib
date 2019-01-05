@@ -214,7 +214,7 @@ try the riddles.");
 
 	  c = 0;
 	  for (i = (sizeof(p) - 1); i >= 0; i--)
-	    if (member_array(p[i], riddle_answers[ridnum]) != -1) c++;
+	    if (member(riddle_answers[ridnum], p[i]) != -1) c++;
 
 	  if (c < sizeof(riddle_answers[ridnum]))
 	    {

@@ -21,7 +21,7 @@ nomask status who3_cmd(string arg)
         return 1;
     }
 
-    if (member_array(arg, ({"q", "k", "l", "r", "c", "g", "d"})) == -1)
+    if (member(({"q", "k", "l", "r", "c", "g", "d"}), arg) == -1)
         return notify_fail("Syntax: "+query_verb()+" [ q | k | l | r | c | g | d ]\n"), 0;
 
     switch (arg)
@@ -109,6 +109,6 @@ status filter_water(object ob)
 
 status filter_drifter(object ob)
 {
-    return (member_array((string)ob->query_kingdom(),
-        ({ "fire", "earth", "water", "wind" })) == -1) ? 1 : 0;
+    return (member(({ "fire", "earth", "water", "wind" }),
+	ob->query_kingdom()) == -1) ? 1 : 0;
 }

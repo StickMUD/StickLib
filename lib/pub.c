@@ -146,7 +146,7 @@ order(string str)
     dnum = -1;
 
     for (i = 0; i < sizeof(drinks); i += DDATA_BLOCK)
-	if (member_array(str, drinks[i]) != -1) {
+	if (member(drinks[i], str) != -1) {
 	    dnum = i;
 	    break;
 	}
@@ -256,7 +256,7 @@ fill(string str) {
     dnum = -1;
 
     for (i = 0; i < sizeof(drinks); i += DDATA_BLOCK)
-	if (member_array(tmp2, drinks[i]) != -1) {
+	if (member(drinks[i], tmp2) != -1) {
 	    dnum = i;
 	    break;
 	}

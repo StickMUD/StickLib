@@ -164,7 +164,7 @@ int donate_items_in_list(object *item_list) {
 	    while(i2--)
 		store_list[i2] = (string)store_list[i2]->short();
 	}
-	if(member_array(desc,store_list)<-1){
+	if(member(store_list, desc)<-1){
 	    /* destruct automatically updates the weight */
 	    destruct(ob);
 	} else {
@@ -175,7 +175,7 @@ int donate_items_in_list(object *item_list) {
  "+ob->query_name()+" worth: "+ob->query_value()+".  "+ctime(time())+".\n");
 	    }
 	    longname=explode(desc,"#");
-	    if(member_array("HOB",longname)<0){
+	    if(member(longname, "HOB")<0){
 		CASH_D->from_shop(((int)(ob->query_value())*2)/9+1);
 		ob->set_short(ob->short()+" #HOB#");
 		desc=(string)ob->short();

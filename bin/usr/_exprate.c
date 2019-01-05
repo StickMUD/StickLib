@@ -17,8 +17,8 @@ exprate_cmd(string name)
 
   arr = explode(log,"\n");
 
-  if(member_array(name,({"ninja","priest","fighter","thief", "necromancer",
-                        "healer", "mage"})) > -1) guild = 1;
+  if(member(({"ninja","priest","fighter","thief", "necromancer",
+                        "healer", "mage"}), name) > -1) guild = 1;
 
   for(ctr =0; ctr < sizeof(arr);ctr ++)
   {

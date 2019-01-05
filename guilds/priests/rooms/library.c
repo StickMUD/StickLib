@@ -63,7 +63,7 @@ read_cmd(string str)
    }
 
    fname=str+".text";
-   index=member_array(fname, get_dir(PRIEST_DIR "library/"));
+   index=member(get_dir(PRIEST_DIR "library/"), fname);
    if(index > -1){
       tmp=read_file(PRIEST_DIR "library/"+fname);
       this_player()->more(explode(tmp,"\n"));

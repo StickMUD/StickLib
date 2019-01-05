@@ -60,20 +60,20 @@ mapping getopt(string arg, mixed optlist) {
 
 	/* Interpret flag in subsystem and test if they need arguments */
 	switch (pointerp(optlist) ?
-	    getopt_long(opt, optlist, ret) :
-	    getopt_short(opt, optlist, ret) )
+	  getopt_long(opt, optlist, ret) :
+	  getopt_short(opt, optlist, ret) )
 	{
-	  case -1: // Error in flag
+	case -1: // Error in flag
 	    break;
 
-	  case ':': // Next argument must be string
+	case ':': // Next argument must be string
 	    if (arg == "") {
 		ret[-2] = sprintf("Flag -%s needs a string argument.\n",
-			ret[-4] );
+		  ret[-4] );
 		break;
 	    }
 	    if (sscanf(arg, "'%s'%s", opt, arg) ||
-		sscanf(arg, "\"%s\"%s", opt, arg))
+	      sscanf(arg, "\"%s\"%s", opt, arg))
 	    {
 		if (arg[0] != 0 && arg[0] != ' ') {
 		    ret[-2] = "Illegal ' or \" expression.\n";
@@ -89,12 +89,12 @@ mapping getopt(string arg, mixed optlist) {
 	    ret[ret[-3]] = opt;
 	    break;
 
-	  case ';': // Next argument must be integer
+	case ';': // Next argument must be integer
 	    if (!sscanf(arg, "%d%s", i, opt) ||
-		(opt[0] != 0 && opt[0] != ' '))
+	      (opt[0] != 0 && opt[0] != ' '))
 	    {
 		ret[-2] = sprintf("Flag -%s needs a number argument.\n",
-			ret[-4] );
+		  ret[-4] );
 		break;
 	    }
 	    arg = opt[1..<1];
@@ -118,14 +118,11 @@ private int getopt_short(string opt, string optlist, mapping ret) {
     do {
 	int tmp;
 
-#if 0
-	foundopt = member_array(opt[i], optlist);
-#else
 	tmp = opt[i];
 	foundopt = sizeof(optlist);
 	while (foundopt--)
 	    if (tmp == optlist[foundopt]) break;
-#endif
+
 	if (foundopt == -1) {
 	    ret[-2] = sprintf("Unknow flag -%s\n", opt[i..i]);
 	    return -1;
@@ -139,7 +136,7 @@ private int getopt_short(string opt, string optlist, mapping ret) {
 	if (tmp == ':' || tmp == ';') {
 	    if (i + 1 != len) {
 		ret[-2] = sprintf("Flag -%s must preceed an argument.\n",
-			optlist[foundopt..foundopt]);
+		  optlist[foundopt..foundopt]);
 		return -1;
 	    }
 	    ret[-3] = 1 << foundopt;

@@ -39,12 +39,12 @@ status set_clan_data(string clan, mixed key, mixed arg)
     if (key == "dob")
         return 0;
 
-    if (stringp(arg) && member_array(key, ({"short", "long"})) == -1)
+    if (stringp(arg) && member(({"short", "long"}), key) == -1)
         arg = lower_case(arg);
 
-    if (intp(arg) && member_array(key, ({"revenue", "donate", "borrow"})) > -1)
+    if (intp(arg) && member(({"revenue", "donate", "borrow"}), key) > -1)
         Clans[clan][key] += arg;
-    else if (stringp(arg) && member_array(key, ({"founder", "noble"})) > -1)
+    else if (stringp(arg) && member(({"founder", "noble"}), key) > -1)
         Clans[clan][key] += ({ arg });
     else
         Clans[clan][key] = arg;
@@ -77,7 +77,7 @@ varargs status remove_clan_data(string clan, mixed key, mixed arg)
     if (key == "dob")
         return 0;
 
-    if (member_array(key, ({"revenue", "donate", "borrow"})) > -1)
+    if (member(({"revenue", "donate", "borrow"}), key) > -1)
     {
         Clans[clan][key] = 0;
 
@@ -86,7 +86,7 @@ varargs status remove_clan_data(string clan, mixed key, mixed arg)
         return 1;
     }
 
-    if (member_array(key, ({"founder", "noble"})) > -1)
+    if (member(({"founder", "noble"}), key) > -1)
     {
         if (!arg)
             Clans[clan][key] = ({ });

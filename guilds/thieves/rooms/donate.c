@@ -72,7 +72,7 @@ inventory_cmd(string str)
     ob = first_inventory( (ob ? ob : this_player()) );
     text = ({ "Item", "~~~~" });
     while(ob) {
-        i = (member_array(ob, keeped) >= 0);
+        i = (member(keeped, ob) >= 0);
         if (name = (string)ob->short()) {
             name += ".";
             if (i) text += ({ sprintf("%-32s (keeping)", name) });

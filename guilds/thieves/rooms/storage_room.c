@@ -37,7 +37,7 @@ int accept_object(object ob, string desc)
     {
       if (!poi)
 	poi = (object *)"/guilds/thieves/poison_d"->query_poisoned_things(1);
-      if (member_array(ob, poi) == -1)
+      if (member(poi, ob) == -1)
 	{
 	  this_player()->tell_me(desc + "? Don't donate such crap here!");
 	  return 0;

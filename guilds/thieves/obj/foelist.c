@@ -174,13 +174,13 @@ write_list(string arg)
 	return 0;
     }
 
-    if (member_array(plr, lists[(l == 0 ? 1 : 0)]) != -1) {
+    if (member(lists[(l == 0 ? 1 : 0)], plr) != -1) {
         notify_fail(
 	    "But " + capitalize(plr) + " is already on the other list!\n");
 	return 0;
     }
 
-    if (member_array(plr, lists[l]) != -1) {
+    if (member(lists[l], plr) != -1) {
         notify_fail(
 	    capitalize(plr) + " already is on that list.\n");
 	return 0;
@@ -232,8 +232,8 @@ remove_from_list(string arg)
 	return 0;
     }
 
-    if ((ix = member_array(plr, lists[0])) != -1) l = 0;
-    else if ((ix = member_array(plr, lists[1])) != -1) l = 1;
+    if ((ix = member(lists[0], plr)) != -1) l = 0;
+    else if ((ix = member(lists[1], plr)) != -1) l = 1;
 
     if (ix == -1 || sizeof(lists[l]) < 1) {
         notify_fail(capitalize(plr) + " is not on either list.\n");

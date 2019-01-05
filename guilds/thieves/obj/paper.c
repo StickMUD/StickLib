@@ -71,7 +71,7 @@ signed_by(object who)
 
   n = (string)who->query_real_name();
 
-  if (member_array(n, sig) != -1)
+  if (member(sig, n) != -1)
     {
       who->tell_me("You have already signed that form.");
       return 0;

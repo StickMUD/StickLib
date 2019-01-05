@@ -74,7 +74,7 @@ int i;
 	  break;
 	default:
 	  while(x) {
-	    if (living(x) && member_array(x, (object*) dont_tell_these) < 0) TELL_X(x);
+	    if (living(x) && member((object*) dont_tell_these, x) < 0) TELL_X(x);
 	  }
 	}
 	return i;

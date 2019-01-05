@@ -156,7 +156,7 @@ party_invite(string s, object me)
     {
       for (i--; i >= 0; i--)
 	{
-	  if (member_array(me, p[pins[i]]) != -1)
+	  if (member(p[pins[i]], me) != -1)
 	    {
 	      for (j = sizeof(p[pins[i]]) - 1; j >= 0; j--)
 		if ((int)p[pins[i]][j]->query_level() > max_lvl_in_party)
@@ -231,7 +231,7 @@ int i;
 	  ob = present(name, environment(me));
 	  if (!ob || !ob -> query_short(0, me))
 		return notify_fail("You are about to join but you can't that person here.\n"), 0;
-	  i = member_array(ob, l);
+	  i = member(l, ob);
 	  if (i == -1) return notify_fail("You mixed things up now, who was it again?\n"), 0;
 	}
 	if (!interactive(ob)) return
@@ -316,7 +316,7 @@ int i;
 	id = (int)me->query_party(PARTY_ID);
 	names = (mixed *) PARTY_D->query_party_data(id,"query_real_name", 0);   
 	if (!names) return notify_fail("Something went wrong.\n"), 0;
-	i = member_array(s, names);
+	i = member(names, s);
 	if (i == -1) return notify_fail("No such member in party.\n"), 0;
 	names = (mixed)PARTY_D->query_party(id);
 	PARTY_D->del_party(names[i], id);
@@ -324,7 +324,7 @@ int i;
 	 + " was kicked out of the party.", "Party kick"));
 	return 1;
 }
-     
+
 status
 party_say(string s, object me)
 {

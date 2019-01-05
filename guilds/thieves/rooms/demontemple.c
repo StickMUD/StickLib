@@ -251,8 +251,7 @@ make(string arg)
   notify_fail("Make what?\n");
 
   if (!arg ||
-      member_array(lower_case(arg),
-	({ "ring", "the ring", "obsidian ring" })) == -1)
+      member(({ "ring", "the ring", "obsidian ring" }), lower_case(arg)) == -1)
     {
       if (arg) notify_fail("Make \"" + arg + "\"? Interesting attempt...\n");
       return 0;

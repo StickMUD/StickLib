@@ -94,7 +94,7 @@ ban_me(string myname, int frock_him) {
     object go;
     status flag;
 
-    if(member_array(myname,banned)>=0) {
+    if(member(banned, myname)>=0) {
         if(!frock_him) return 0;
         TP->tell_me("You pray quickly to " GOD_NAME " asking him "
             "to lift the prohabition against "+capitalize(myname)+".");

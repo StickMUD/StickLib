@@ -73,14 +73,14 @@ north_cmd(){
          if((int)Symbol->query_rank()>=VG_RANK) {
             return 0;
          }
-         if(member_array(me,guests)<0) {
+         if(member(guests, me)<0) {
             me->tell_me("Templar tells you: I do not \
 see your name on my copy of the Vicegerant's schedule. \
 Would you like me to ask if he will see you now?");
             return 1;
          }
       }
-      if(member_array(me,guests)>-1){
+      if(member(guests, me)>-1){
          guests-=({me});
          return 0;
       }

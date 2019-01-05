@@ -25,7 +25,7 @@ levels_cmd(string s, object me)
   r -= ({ "lich" });
 
   if (s && s != "lord" &&
-      (rn = member_array(s, r)) == -1)
+      (rn = member(r, s)) == -1)
     {
       notify_fail("Usage: levels [lord, " + implode(r, ", ", " or ") + "].\n");
       return 0;

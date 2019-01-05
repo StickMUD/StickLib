@@ -134,7 +134,7 @@ status add_co_gm(string who)
         restore_object(GUILD_SAVE);
     if (sizeof(co_gm) >= 3)
         return 0;
-    if (member_array(who,co_gm) == -1)
+    if (member(co_gm, who) == -1)
         co_gm += ({ who });
     save_object(GUILD_SAVE);
     BIN_CHANNEL_D->send_channel_message("GUILDMASTER","thief",
@@ -167,7 +167,7 @@ status remove_co_gm(string who)
         return 1;
     if (!co_gm)
         restore_object(GUILD_SAVE);
-    if (member_array(who, co_gm) != -1)
+    if (member(co_gm, who) != -1)
         co_gm -= ({ who });
     save_object(GUILD_SAVE);
     BIN_CHANNEL_D->send_channel_message("GUILDMASTER","thief",
@@ -202,7 +202,7 @@ status add_enforcer(string who)
         return 0;
     if(!enforcers)
         enforcers = ({ });
-    if (member_array(who,enforcers) == -1)
+    if (member(enforcers, who) == -1)
         enforcers += ({ who });
     save_object(GUILD_SAVE);
     BIN_CHANNEL_D->send_channel_message("GUILDMASTER","thief",
@@ -232,7 +232,7 @@ status remove_enforcer(string who)
         return 1;
     if (!enforcers)
         restore_object(GUILD_SAVE);
-    if (member_array(who,enforcers) != -1)
+    if (member(enforcers, who) != -1)
         enforcers -= ({ who });
     save_object(GUILD_SAVE);
     BIN_CHANNEL_D->send_channel_message("GUILDMASTER","thief",
@@ -258,15 +258,15 @@ status add_demon(string who)
  
     if (!who)
         return 0;
-    if (co_gm  &&  member_array(who,co_gm) != -1)
+    if (co_gm  &&  member(co_gm, who) != -1)
         remove_co_gm(who);
-    if (enforcers  &&  member_array(who,enforcers)!=-1)
+    if (enforcers  &&  member(enforcers, who)!=-1)
         remove_enforcer(who);
     if (!demons)
         restore_object(GUILD_SAVE);
     if(!demons)
         demons = ({ });
-    if (member_array(who,demons) == -1)
+    if (member(demons, who) == -1)
         demons += ({ who });
     save_object(GUILD_SAVE);
     BIN_CHANNEL_D->send_channel_message("SKERT",
@@ -295,7 +295,7 @@ status remove_demon(string who)
         return 0;
     if (!demons)
         restore_object(GUILD_SAVE);
-    if (member_array(who,demons) != -1)
+    if (member(demons, who) != -1)
         demons -= ({ who });
     save_object(GUILD_SAVE);
     BIN_CHANNEL_D->send_channel_message("SKERT",
@@ -381,7 +381,7 @@ status add_vote(string topic, string person) {
 status remove_vote(string topic, string person) {
     if(!topic || !person) return 0;
     if(!votes[topic]) return 0;
-    if(member_array(person, votes[topic]) == -1) return 0;
+    if(member(votes[topic], person) == -1) return 0;
     votes[topic] += ({ person });
     save_object(GUILD_SAVE);
     return 1;

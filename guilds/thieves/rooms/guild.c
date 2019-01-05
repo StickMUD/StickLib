@@ -226,9 +226,9 @@ is_thief(object who)
 
   if (REALNAME(who) != guildmaster)
     {
-      if (member_array(REALNAME(who), co_guildmaster) == -1)
+      if (member(co_guildmaster, REALNAME(who)) == -1)
 	{
-	  if (member_array(REALNAME(who), enforcers) != -1)
+	  if (member(enforcers, REALNAME(who)) != -1)
 	    {
 	      ob->set_guildmaster(TR_ENFORCER);
 	  } else ob->set_guildmaster(0);
@@ -251,7 +251,7 @@ set_co_guildmaster(mixed str)
 {
   if (stringp(str))
     {
-      if (member_array(lower_case(str), co_guildmaster) == -1)
+      if (member(co_guildmaster, lower_case(str)) == -1)
 	co_guildmaster += ({ lower_case(str) });
   } else co_guildmaster = str;
   save_object(SAVEFILE);
@@ -260,7 +260,7 @@ set_co_guildmaster(mixed str)
 void
 remove_co_guildmaster(string str)
 {
-  if (member_array(lower_case(str), co_guildmaster) != -1)
+  if (member(co_guildmaster, lower_case(str)) != -1)
     co_guildmaster -= ({ lower_case(str) });
   save_object(SAVEFILE);
 }
@@ -268,7 +268,7 @@ remove_co_guildmaster(string str)
 void
 add_enforcer(string str)
 {
-    if (member_array(lower_case(str), enforcers) != -1) return;
+    if (member(enforcers, lower_case(str)) != -1) return;
 
     enforcers += ({ lower_case(str) });
     save_object(SAVEFILE);
@@ -284,7 +284,7 @@ set_enforcers(string *str)
 void
 rem_enforcer(string str)
 {
-    if (member_array(lower_case(str), enforcers) == -1) return;
+    if (member(enforcers, lower_case(str)) == -1) return;
 
     enforcers -= ({ lower_case(str) });
     save_object(SAVEFILE);
@@ -305,7 +305,7 @@ query_co_guildmaster()
 status
 query_is_co_gm(string who)
 {
-    return (member_array(lower_case(who), co_guildmaster) != -1);
+    return (member(co_guildmaster, lower_case(who)) != -1);
 }
 
 string *
@@ -317,7 +317,7 @@ query_enforcers()
 status
 query_is_enforcer(string who)
 {
-    return (member_array(lower_case(who), enforcers) != -1);
+    return (member(enforcers, lower_case(who)) != -1);
 }
 
 status
@@ -329,7 +329,7 @@ query_is_guildmaster(object who)
 status
 query_is_co_guildmaster(object who)
 {
-    return (member_array(REALNAME(who), co_guildmaster) != -1);
+    return (member(co_guildmaster, REALNAME(who)) != -1);
 }
 
 int

@@ -76,7 +76,7 @@ set_cmd(string str, object me)
 
   switch (s) {
   case "term":
-    if (member_array(t, TERM_LIST) < 0) {
+    if (member(TERM_LIST, t) < 0) {
       me->tell_me(
 		  "Unknown term type; try one of following types: "
 		  +implode(TERM_LIST, ", ", " or ")+".\n");

@@ -137,7 +137,7 @@ status vote_cmd(string who)
   string *cand;
   object tm;
 
-  if (member_array(TP->query_real_name(),voted) != -1)
+  if (member(voted, TP->query_real_name()) != -1)
     {
       notify_fail("You can only vote once.\n");
       return 0;
@@ -173,7 +173,7 @@ status vote_cmd(string who)
 
       cand = m_indices(votes);
 
-      if (member_array(who,cand) == -1)
+      if (member(cand, who) == -1)
 	{
 	  notify_fail(capitalize(who) + " is not a candidate.\n");
 	  return 0;
@@ -228,7 +228,7 @@ may not add your name as a candidate.\n");
    
    cand = m_indices(votes);
 
-   if (member_array(TP->query_real_name(),cand) != -1)
+   if (member(cand, TP->query_real_name()) != -1)
    {
       notify_fail("You are already a candidate!\n");
       return 0;

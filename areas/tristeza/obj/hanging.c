@@ -99,7 +99,7 @@ filter(string arg)
 	return 0;
     }
 
-    if (member_array(v, bad_cmds) != -1) {
+    if (member(bad_cmds, v) != -1) {
 	tme("You can't do that now!\n");
 	return 1;
     }

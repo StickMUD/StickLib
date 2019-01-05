@@ -35,8 +35,8 @@ accept_object(object ob)
 	if (ob->is_weapon() || ob->query_thief_item()) return 0;
 	if (ob->is_armour()) 
 	  {
-	    if (member_array((string)ob->query_type(),
-               ({ "ring", "amulet", "belt", "cloak", "mask" })) == -1 ) 
+	    if (member(({ "ring", "amulet", "belt", "cloak", "mask" }),
+		ob->query_type()) == -1 )
 		return 0;
 	}
 	if (ob->is_drink()) {

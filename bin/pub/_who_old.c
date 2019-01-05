@@ -184,7 +184,7 @@ data_mapper(object ob, mapping map) {
 	    else
 		key = "";
 	} else {
-	    if (member_array(key, COUNTRY_USA) != -1)
+	    if (member(COUNTRY_USA, key) != -1)
 	        key = "us";
 	}
 	break;

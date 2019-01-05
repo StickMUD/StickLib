@@ -10,10 +10,6 @@
 //  into a file.
 */
 
-// Define this if member_array() can have 3rd argument that
-// tells the starting line for the comparisions.
-#undef NEW_MEMBER_ARRAY
-
 // Define this if explode() removes only one of the delimiters
 // from the begining.
 #undef NEW_EXPLODE
@@ -331,38 +327,30 @@ make_diff( string *lines1, string *lines2, int count )
 
     // Remove different lines from file 1
     diff1 = allocate( m = sizeof( tmp = lines1 - lines2 ) );
-#ifdef NEW_MEMBER_ARRAY
-    for( i = j = 0; i < m; i++ ) {
-	diff1[i] = j = member_array( tmp[i], lines1, j+1 );
-    }
-#else
+
     for( i = s12 = 0, j = -1, tmp_lines = lines1; i < m; i++ ) {
 	// Guarding from errors when there are multiple similar 'unique' lines.
-	while( ( diff1[i] = member_array( tmp[i], tmp_lines ) + s12 ) <= j ) {
+	while( ( diff1[i] = member( tmp_lines, tmp[i] ) + s12 ) <= j ) {
 	    tmp_lines = lines1[ (s12=j+1) .. sizeof(lines1)-1 ];
 	}
 	j = diff1[i];
     }
-#endif
+
     // This seems to be best way to do this fast.
     common1 = lines1 - tmp;
     tmp = 0;
 
     // Remove different lines from file 2
     diff2 = allocate( m = sizeof( tmp = lines2 - lines1 ) );
-#ifdef NEW_MEMBER_ARRAY
-    for( i = j = 0; i < m; i++ ) {
-	diff2[i] = j = member_array( tmp[i], lines2, j+1 );
-    }
-#else
+
     for( i = s12 = 0, j = -1, tmp_lines = lines2; i < m; i++ ) {
 	// Guarding from errors when there are multiple similar 'unique' lines.
-	while( ( diff2[i] = member_array( tmp[i], tmp_lines ) + s12 ) <= j ) {
+	while( ( diff2[i] = member( tmp_lines, tmp[i] ) + s12 ) <= j ) {
 	    tmp_lines = lines2[ (s12=j+1) .. sizeof(lines2)-1 ];
 	}
 	j = diff2[i];
     }
-#endif
+
     // This seems to be best way to do this fast.
     common2 = lines2 - tmp;
     tmp = 0;

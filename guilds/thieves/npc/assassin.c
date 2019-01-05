@@ -126,8 +126,7 @@ random_move()
     return;
   }
 
-  if ((i = member_array(where,
-			({ "entry", "thief_pub", "tshop", "inner" }))) != -1) {
+  if ((i = member(({ "entry", "thief_pub", "tshop", "inner" }), where)) != -1) {
     command(({ "east", "south", "north", "west"})[i]);
     return;
   }

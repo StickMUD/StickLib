@@ -73,7 +73,7 @@ int buy(string str) {
     inames = m_indices(items);
     if(!str) return notify_fail("Buy what? \n"), 0;
         str = lower_case(str);
-    if(member_array(str, inames) == -1) {
+    if(member(inames, str) == -1) {
         return notify_fail(capitalize(str)+" is not sold here. \n"), 0;
     }
     purchase = items[str];

@@ -117,8 +117,8 @@ varargs status
 id(string arg, object who)
 {
     return ::id(arg, who) ||
-	member_array(arg, ICECUBE_ID) >= 0 ||
-        member_array(arg, ld_id_list) >= 0;
+	member(ICECUBE_ID, arg) >= 0 ||
+        member(ld_id_list, arg) >= 0;
 }
 
 varargs string
@@ -127,13 +127,13 @@ query_long(string arg, object who)
 object *u, o;
 string *tmp_list;
 int    i;
-	if (arg && member_array(arg, ld_id_list) >= 0) {
+	if (arg && member(ld_id_list, arg) >= 0) {
 	  if (o = find_player(arg)) {
           	return (string) o -> query_long(0, this_player()) +
 		"\nThe ice makes it bit hard to see the details.";
 	  } else return ::query_long(arg, who);
 	}
-	if (member_array(arg, ICECUBE_ID) < 0)
+	if (member(ICECUBE_ID, arg) < 0)
 		return ::query_long(arg, who);
 
 // Now we assume we have who_filter() in player object which

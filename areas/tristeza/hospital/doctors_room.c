@@ -448,7 +448,7 @@ buy(string arg)
       return 0;
     }
 
-    if (member_array(tmp, RACES) == -1) {
+    if (member(RACES, tmp) == -1) {
       this_player()->tell_me(sprintf("Doctor says: I only know races %s.\n", implode(RACES, ", ", " and ")));
       return 1;
     }

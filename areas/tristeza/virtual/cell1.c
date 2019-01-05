@@ -36,19 +36,18 @@ init_room()
 int
 filter(string arg)
 {
-    if (member_array(query_verb(), ({
-	"sit", "rest", "sleep", "snore" })) != -1) {
+    if (member(({"sit", "rest", "sleep", "snore" }), query_verb()) != -1) {
 	this_player()->tell_me("The rough, cold stone is too uncomfortable for that.\n");
 	return 1;
     }
 
-    if (member_array(query_verb(), ({
+    if (member(({
 	"applaud", "bounce", "cackle", "caress", "cheer", "chuckle",
 	"comfort", "curtsey", "dance", "flip", "french", "giggle",
 	"handkiss", "happy", "horny", "hug", "kiss", "lick",
 	"laugh", "love", "nudge", "purr", "smile", "squeeze", "tap",
 	"thank", "tickle", "uraa", "whistle", "wiggle",
-	"wink", "worship", "yodel"})) != -1) {
+	"wink", "worship", "yodel"}), query_verb()) != -1) {
 	    this_player()->tell_me("You feel so depressed. Can't do that.");
 	    return 1;
     }
