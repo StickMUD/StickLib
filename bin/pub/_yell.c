@@ -68,7 +68,7 @@ You should use 'tell' instead until you get to level 2.");
   } else
     str = ({ "Hriibit! Hrriiibit!", "Quack! Croak!" })[random(2)];
 
-  p1 = explode(file_name(environment(me)), "/");
+  p1 = explode(object_name(environment(me)), "/");
   if (sizeof(p1) < 2)
     {
       me->tell_me("You are in so weird a place that yelling is not possible.");
@@ -86,7 +86,7 @@ You should use 'tell' instead until you get to level 2.");
     for (i = x = 0; i < sizeof(u); i++) {
 	if (u[i] == me || !environment(u[i])) continue;
 
-      p2 = explode(file_name(environment(u[i])), "/");
+      p2 = explode(object_name(environment(u[i])), "/");
 
       if (sizeof(p2) < 2) continue;
 

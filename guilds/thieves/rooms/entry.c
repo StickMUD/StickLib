@@ -95,7 +95,7 @@ void init_room()
     int duration, type, sps;
  
     if (TP->query_npc()  &&  !TP->query_ctrl()  &&
-        !sscanf(file_name(TP), GDIR2 + "%~s"))
+        !sscanf(object_name(TP), GDIR2 + "%~s"))
     {
         // Tried to get "ob->query_name"; although ob isn't fetched yet... :-(
         // Kludged by Doomdark 04-apr-95.

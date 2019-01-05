@@ -57,7 +57,7 @@ init_room()
   object ob;
 
   if ((ob = this_player()) && (!interactive(ob) && !ob->query_ctrl() &&
-	(sscanf(file_name(ob), "areas/tristeza/%s", dummy) != 1)))
+	(sscanf(object_name(ob), "areas/tristeza/%s", dummy) != 1)))
     {
       /* tell_room(this_object(), "No monsters allowed in shops!\n"); */
       ob -> run_away();

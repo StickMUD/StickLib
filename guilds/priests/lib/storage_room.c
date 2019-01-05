@@ -254,7 +254,7 @@ init_room() {
     if(query_once_interactive(this_player()) &&
     !this_player()->query_coder_level()) {
        write_file(STEAL_LOG, sprintf("%s %s %s\n",
-       file_name(),
+       object_name(),
         this_player()->query_real_name(), ctime(time())));
     }
 }

@@ -23,7 +23,7 @@ string str;
 	if (!obj)
 		return 0;
 
-	str = file_name(obj);
+	str = object_name(obj);
 	if (sscanf(str, PATH_USER_FNAME "%s",str) )
             str = sprintf("~%s",str);
 	return str;
@@ -331,7 +331,7 @@ cc_cmd(string str, object me)
 		if(ob = find_object(path)){
 			objects = 0;
 
-			if(file_name(ob)!= GENERIC_ROOM_CHURCH_FNAME) {
+			if(object_name(ob)!= GENERIC_ROOM_CHURCH_FNAME) {
 				destination=find_object(GENERIC_ROOM_CHURCH);
 			} else {
 				this_player()->tell_me("Complie:\tCompiling the church selecting new backup room");
@@ -339,11 +339,11 @@ cc_cmd(string str, object me)
 			}
 			if(!destination) {
 				destination=find_object(GENERIC_ROOM_SHOP);
-				if(file_name(ob)==GENERIC_ROOM_SHOP_FNAME)
+				if(object_name(ob)==GENERIC_ROOM_SHOP_FNAME)
 					destination=0;
 				if(!destination){
 					destination=find_object(GENERIC_ROOM_WELL);
-					if(file_name(ob)==GENERIC_ROOM_WELL_FNAME)
+					if(object_name(ob)==GENERIC_ROOM_WELL_FNAME)
 						destination=0;
 				}
 			}

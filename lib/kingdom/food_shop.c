@@ -78,7 +78,7 @@ shop_open(){
     return 1;
 }
 
-string query_food_obj_file_name() { return FOOD_FILE; }
+string query_food_obj_object_name() { return FOOD_FILE; }
 string query_default_food() { return "bread"; }
 void extra_purchase_msg() { }
 
@@ -205,7 +205,7 @@ order(string str){
 	return 1;
     }
 
-    food = clone_object(query_food_obj_file_name());
+    food = clone_object(query_food_obj_object_name());
 
     if (!food) {
 	this_player()->tell_me("Error in creating food!");
@@ -313,7 +313,7 @@ You should tell this to some higher authority.");
     }
 
     for (i = 0; i < amount; i++) {
-	food = clone_object(query_food_obj_file_name());
+	food = clone_object(query_food_obj_object_name());
 
 	if (!food) {
 	    me->tell_me("Error in creating food!");

@@ -79,10 +79,10 @@ If you choose to use unique daemon directly, you do as follows:
     So, another (perhaps better) way to define a unique
     class for your item would be:
 
-    UNIQUED->create_unique(file_name(this_object()), 4);
+    UNIQUED->create_unique(object_name(this_object()), 4);
 
     (if called from inside item's code; otherwise argument for
-    file_name would be something else)
+    object_name would be something else)
 
     Whatever the name you choose for the unique class,
     it doesn't matter much; important thing is that name should
@@ -145,7 +145,7 @@ Let's take a look at how these can be used;
    unique one, even if there was a free slot for it.
    Call looks something like this:
 
-   if (set_unique(file_name(this_object()), UNIQUENESS_PARTIAL, 4, 1)) {
+   if (set_unique(object_name(this_object()), UNIQUENESS_PARTIAL, 4, 1)) {
     ....
    }
 
@@ -193,7 +193,7 @@ unique_weapon/armour.h) (first the latter one as it's shorter):
 void
 create_weapon()
 {
-	if (set_unique(file_name(this_object()), UNIQUENESS_PARTIAL, 5, 1) {
+	if (set_unique(object_name(this_object()), UNIQUENESS_PARTIAL, 5, 1) {
 		set_name("gigantic silver sword");
 		set_id(({ "silver sword", "sword" }));
 		set_long("It looks deadly!");

@@ -136,7 +136,7 @@ sacrifice(str)
 
 #ifdef LOG_EVENTS
    log_file("thief_guild", thief->query_real_name() + " sacrificed " +
-      obj->short() + " (" + file_name(obj) + ") for " + exp + " xp\n");
+      obj->short() + " (" + object_name(obj) + ") for " + exp + " xp\n");
 #endif
    call_other(thief, "add_exp", exp);
    destruct(obj);
@@ -201,7 +201,7 @@ cremate(str) {
 	 " is still alive.\n");
       return 1;
    }
-    if (!sscanf(file_name(ob), (CORPSE_FILE)[1..<1]+"#%s", tmp)) {
+    if (!sscanf(object_name(ob), (CORPSE_FILE)[1..<1]+"#%s", tmp)) {
       write("You can cremate only dead beings.\n");
       return 1;
    }

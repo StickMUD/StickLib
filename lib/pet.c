@@ -446,7 +446,7 @@ status do_show(string arg) {
 string query_auto_load_string() {
     string fname;
     int newFlags;
-    sscanf(file_name(TO), "%s#%~d",fname);
+    sscanf(object_name(TO), "%s#%~d",fname);
     if(petFlags & F_PET_IS_LEASHED)
 	newFlags = petFlags ^ F_PET_IS_LEASHED;
     else

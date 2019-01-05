@@ -54,7 +54,7 @@ make(arg) {
    paikka = environment(me);
 
 #ifdef AREA_KALEVALA
-  if (!paikka || sscanf("/"+file_name(paikka),
+  if (!paikka || sscanf("/"+object_name(paikka),
 	AREA_KALEVALA+"kaleva/forest%s",tmp)!=1) {
 #else
     if (1) {

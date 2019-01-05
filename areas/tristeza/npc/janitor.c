@@ -105,7 +105,7 @@ goto_dump() {
   string room;
 string tmp;
   if(!environment()) return;
-  room=file_name(environment());
+  room=object_name(environment());
 	if (sscanf(room, "%s/tristeza/virtual/S%d_%d", tmp, x, y) < 2)
 		return;
   if(x<X)

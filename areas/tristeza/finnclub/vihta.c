@@ -91,7 +91,7 @@ hit(arg) {
    write(" with " + with + "!\n");
    say(" with " + with + "!\n");
 
-   if ("/"+file_name(environment(target)) == CITY_PATH+"finnclub/sauna") {
+   if ("/"+object_name(environment(target)) == CITY_PATH+"finnclub/sauna") {
       tell_object(target,"Aaaahh!!! That feels GREAT!\n");
       target->heal_self(2 + random(4) + cond);
    }

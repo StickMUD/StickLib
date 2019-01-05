@@ -155,7 +155,7 @@ account you said you were going to pick...?");
 
 	  /* Player home door? */
 #if 0
-	  if (sscanf(file_name(dir),
+	  if (sscanf(object_name(dir),
                "areas/player_homes/comxdoor%s",tmp) == 1)
 	    {
             write_file("/guilds/thieves/BURGLAR",

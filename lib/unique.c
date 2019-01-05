@@ -5,7 +5,7 @@
 // void
 // create_weapon()
 // {
-//	if (set_unique(file_name(this_object()), UNIQUENESS_PARTIAL, 5, 1) {
+//	if (set_unique(object_name(this_object()), UNIQUENESS_PARTIAL, 5, 1) {
 //		set_name("gigantic silver sword");
 //		set_id(({ "silver sword", "sword" }));
 //		set_long("It looks deadly!");

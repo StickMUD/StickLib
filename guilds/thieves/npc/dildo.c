@@ -129,7 +129,7 @@ my_random_move() {
 
  return 1;
    /* Do never leave the guild area... */
-   if (file_name(environment()) == GDIR + "rooms/temple")
+   if (object_name(environment()) == GDIR + "rooms/temple")
       command("east");
 
    n = random(6);

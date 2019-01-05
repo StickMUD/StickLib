@@ -90,7 +90,7 @@ check_beat()
 	attack_object(g->query_attack());
       }
     } else {
-      if (file_name(environment()) != GDIR2 + "rooms/entry") {
+      if (object_name(environment()) != GDIR2 + "rooms/entry") {
 	move_player("to his guardpost#" + GDIR2 + "rooms/entry");
       }
     }

@@ -73,7 +73,7 @@ create() {
     spell_type = SP_SPECIAL;
     check_target = 0;
     funs = ({ #'gen_begin_spell, #'gen_end_spell });
-    sp_name = file_name(this_object());
+    sp_name = object_name(this_object());
     LCALL->create_spell();
     // A kind of kludge:
     if(!finish_cost) finish_cost = cost;
@@ -347,7 +347,7 @@ get_damage(object who, object sym, status pk)
 
 #if 0 // naah... raiding priests is too hard already
     if((s = sym->query_rank()) &&
-      (strstr("/"+file_name(environment(who)), PRIEST_ROOM_DIR)>=0)) {
+      (strstr("/"+object_name(environment(who)), PRIEST_ROOM_DIR)>=0)) {
       dam = (110 + s) * dam / 100;
       if(debugger) str += sprintf("with guild defending bonus: %d", dam);
     }

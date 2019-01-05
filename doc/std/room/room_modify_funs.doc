@@ -140,7 +140,7 @@ DESCRIPTION:	Set room exits. If you have more than one exit in
 		instead of many "add_exit"s.
 
 ARGUMENT(mapping): Exits defined with file names and directions.
-		Type of: ([ exit_str : file_name_str, ... ])
+		Type of: ([ exit_str : object_name_str, ... ])
 		Like: set_exits(([ "north" : "/xxx/room1",
 		"south" : "/xxx/room2" ]));
 
@@ -244,7 +244,7 @@ DESCRIPTION:	Add one new monster to the monster loading list.
 
 ARGUMENTS(string / object / mixed *, string, status):
 		o 1st argument (string or array of mixed types):
-		  string: file_name;  filename of the monster to
+		  string: object_name;  filename of the monster to
 		    be cloned and moved to the room.
 		  object: Monster that has been added by coder
 			during set up of this room. This call only
@@ -299,7 +299,7 @@ DESCRIPTION:	Add one general object to the object loading list.
 
 ARGUMENTS(string / object / mixed *, string, status):
 		o 1st argument (string or array of mixed types):
-		  string: file_name;  filename of the object to
+		  string: object_name;  filename of the object to
 		    be cloned and moved to the room.
 		  object: Object that has been added by coder
 			during set up of this room. This call only
@@ -350,7 +350,7 @@ DESCRIPTION:	Add one static object to the room. Usually this is
 		bulletin board etc.
 
 ARGUMENT(string):
-		o file_name - File name of the object.
+		o object_name - File name of the object.
 
 RETURN(int):	1 for success, 0 for failure.
 ------------------------------------------------------------------

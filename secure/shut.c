@@ -106,7 +106,7 @@ shut(int m)
   // -+ Doomdark +-
 
   if (previous_object() && (
-	(i = strstr(file_name(previous_object()), "secure/master")) == 0
+	(i = strstr(object_name(previous_object()), "secure/master")) == 0
 	|| i == 1))
     {
       //shutdown() needs this_player()

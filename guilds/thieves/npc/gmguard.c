@@ -10,7 +10,7 @@ create_monster()
 {
   string tmp;
 
-  if (file_name(this_object())== GDIR2 + "npc/gmguard")
+  if (object_name(this_object())== GDIR2 + "npc/gmguard")
     return;
 
   set_name("gargantuan guard");

@@ -87,7 +87,7 @@ int teleport_cmd(string str)
 		return 0;
 	}
 
-	if(sscanf(file_name(there),"room/death/%s",tmp))
+	if(sscanf(object_name(there),"room/death/%s",tmp))
 	{
 		notify_fail("There is only one way to get to where "+target->query_pronoun()+" is.\n");
 		return 0;
@@ -131,7 +131,7 @@ int teleport_cmd(string str)
 	TM("Your stomach wrenches as your leap into it.");
 
 	TP->add_sp(-CO_TELEPORT/2);
-	TP->move_player("X#"+file_name(there));
+	TP->move_player("X#"+object_name(there));
 	TP->set_condition(C_STUNNED, 3 + random(4));
 
 	return 1;

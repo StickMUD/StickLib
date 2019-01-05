@@ -172,7 +172,7 @@ tin_cmd(string str)
 
    /* Todo: tinning other foodstuff? */
 
-   if (sscanf(file_name(material), (CORPSE_FILE)[1..<1]+"#%s", tmp) != 1)
+   if (sscanf(object_name(material), (CORPSE_FILE)[1..<1]+"#%s", tmp) != 1)
      {
        notify_fail("Baker says: We can't preserve this material.\n");
        material = 0;

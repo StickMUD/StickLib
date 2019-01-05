@@ -35,7 +35,7 @@ sweat()
       return;
     }
 
-  if ("/"+file_name(environment(environment())) != CITY_PATH+"finnclub/sauna")
+  if ("/"+object_name(environment(environment())) != CITY_PATH+"finnclub/sauna")
     {
       count--;
 

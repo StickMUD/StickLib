@@ -52,7 +52,7 @@ string tmp, tmp2;
 
 	if ((ob = this_player())
           && (ob != present("shopkeeper", this_object())) && ob->query_npc() &&
-	  sscanf(file_name(ob), "%s/tristeza/%s", tmp, tmp2) < 2 )
+	  sscanf(object_name(ob), "%s/tristeza/%s", tmp, tmp2) < 2 )
 		call_out("throw_out", 0, this_player());
 }
 

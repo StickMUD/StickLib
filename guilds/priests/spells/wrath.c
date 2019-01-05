@@ -55,7 +55,7 @@ begin_wrath(object who, mixed data)
    this way. The bad thing is, that wrath pk does less damage against
    monsters than ordinary wrath, but who cares. */
    dmg = get_damage(who, sym, data=="pk");
-   if(strstr("/"+file_name(HERE), PRIEST_ROOM_DIR)>=0) {
+   if(strstr("/"+object_name(HERE), PRIEST_ROOM_DIR)>=0) {
       dmg = 120 * dmg / 100; // more damage when defending the guild
       sym->inform_debugger(sprintf("Max guild defencing damage: %d", dmg));
    }

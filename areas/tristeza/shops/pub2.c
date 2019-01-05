@@ -34,7 +34,7 @@ init_drinks()
 }
 
 string
-query_drink_obj_file_name()
+query_drink_obj_object_name()
 {
 	return DRINK_FILE;
 }

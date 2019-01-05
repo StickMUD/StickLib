@@ -42,7 +42,7 @@ inherit "/basic/id";
                       find_player("kieve")->tell_me(xx);
 
 #define _PLAYER_OBJ ( previous_object()\
-        && (sscanf(file_name( previous_object()),"/std/player#%s",temp_cc)==1)\
+        && (sscanf(object_name( previous_object()),"/std/player#%s",temp_cc)==1)\
         && me == previous_object())
 
 static mapping message; // Mapping of messages that are in the

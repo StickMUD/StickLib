@@ -38,7 +38,7 @@ listob_cmd(string s)
       res = sprintf("%sMaster object is in %s.", res,
 		(query_ip_number(ob2) ?
 		sprintf("PLR(%s)", ob2->query_real_name()) :
-		sprintf("OBJ(%s)", file_name(ob2))));
+		sprintf("OBJ(%s)", object_name(ob2))));
 
    while(i < lim) {
       if((ob = find_object(fname + "#" + i))) {
@@ -48,10 +48,10 @@ listob_cmd(string s)
 	    sh = (string)ob->short();
 	 if(!sh)
 	    sh = "(INVISIBLE OBJECT)";
-	 res = sprintf("%s%s -> %s", res, file_name(ob), sh);
+	 res = sprintf("%s%s -> %s", res, object_name(ob), sh);
 
 	 if((ob2 = environment(ob)))
-	    env = file_name(ob2);
+	    env = object_name(ob2);
 	 else
 	    env = "null";
 	 if(sscanf(env, PATH_USER_FNAME+"%s", fn))

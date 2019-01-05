@@ -76,7 +76,7 @@ heart_beat() {
 		", my demons!\n", ({ this_object() }));
 	    for (i = 0; i < 1 + random(2); i++) {
 	        ob = clone_object(GDIR + "npc/demon");
-		ob->move_player("X#" + file_name(environment()));
+		ob->move_player("X#" + object_name(environment()));
 #if 0
 		tell_room(environment(),
 		   "A nasty-looking demon arrives in a puff of black smoke!\n",

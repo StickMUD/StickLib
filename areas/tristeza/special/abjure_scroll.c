@@ -42,7 +42,7 @@ status read_cmd(string str) {
     for(i=0;i<sizeof(inv);i++) {
         if(inv[i])
             for(j=0;j<sizeof(summoned);j++) {
-		if(strstr("/"+file_name(inv[i]), summoned[j]) != -1) {
+		if(strstr("/"+object_name(inv[i]), summoned[j]) != -1) {
                     if(random(100) < 75) inv[i]->vanish();
 		    break;
 		}

@@ -146,7 +146,7 @@ make(string str)
     ingr = ({ 0,0,0,0 });
 
     if (!(ingr[0] = present("corpse", TP)) ||
-	(sscanf(file_name(ingr[0]), (CORPSE_FILE)[1..<1]+"#%s", tmp1) != 1) ||
+	(sscanf(object_name(ingr[0]), (CORPSE_FILE)[1..<1]+"#%s", tmp1) != 1) ||
 	!ingr[0]->query_was_player() ||
 	((int)ingr[0]->query_orig_level() < 20)) {
         notify_fail("You need a player corpse, level at least 20.\n");
@@ -167,7 +167,7 @@ make(string str)
     }
 
     if (!(ingr[3] = present("small mushroom", TP)) ||
-	(sscanf(file_name(ingr[3]),
+	(sscanf(object_name(ingr[3]),
 	    GDIR + "obj/psilocybe#%s", tmp1) != 1)) {
         notify_fail("You don't have the mushroom.\n");
 	return 0;

@@ -29,7 +29,7 @@ Check 'help starthere'.");
 don't care.");
 	}
 
-	file = file_name(env);
+	file = object_name(env);
 	me->tell_me( ((string)this_player()->set_start_location(file) == file)
 		      ? "Ok. From now on you arrive here at login."
 		      : "Error... please inform admins." );

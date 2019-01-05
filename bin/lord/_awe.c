@@ -55,7 +55,7 @@ awe_cmd(string str)
     return 1;
   }
 
-  if (file_name(environment(target)) == CHURCH_NAME) {
+  if (object_name(environment(target)) == CHURCH_NAME) {
     if(!((int)TP->query_coder_level())) {
       notify_fail("You can't awe anyone here!\n");
       return 0;

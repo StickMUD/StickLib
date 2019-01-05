@@ -185,7 +185,7 @@ brawl_round() {
 spank_beat() {
 #ifdef SAUNA_ONLY
    if (!opp || !me || !present(opp, environment(me)) ||
-       "/"+file_name(environment(me)) != CITY_PATH+"finnclub/sauna") {
+       "/"+object_name(environment(me)) != CITY_PATH+"finnclub/sauna") {
 #else
    if (!opp || !me || !present(opp, environment(me))) {
 #endif

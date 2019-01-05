@@ -50,7 +50,7 @@ check_env(ob) {
     self_dest();
   if(living(ob)) {
     string dummy;
-    if ( strstr(file_name(environment(ob)),"/death/")==-1)
+    if ( strstr(object_name(environment(ob)),"/death/")==-1)
       self_dest();
   }
 }

@@ -24,7 +24,7 @@ void
 start_move()
 {
   if (!environment()
-      || strstr(file_name(environment()), "rooms/joes") < 0)
+      || strstr(object_name(environment()), "rooms/joes") < 0)
     {
       call_other(AREA_TRISTEZA "rooms/joes", "???");
       move_object(this_object(), AREA_TRISTEZA "rooms/joes");

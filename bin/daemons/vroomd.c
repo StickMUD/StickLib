@@ -67,7 +67,7 @@ mixed data;
    if(!data) {
       if(!m_sizeof(roomQueue)) call_out("_vroomUpdate", 300);
       roomQueue += ([ previous_object() : 
-                    ({ file_name(previous_object()), ({ room }) }) ]);
+                    ({ object_name(previous_object()), ({ room }) }) ]);
    }
    else data[1] += ({ room });
     
@@ -93,7 +93,7 @@ vRoomQueryStaleRooms() {
 int i;
 string name;
 
-   name = file_name(previous_object());
+   name = object_name(previous_object());
    i = sizeof(destrQueue);
    while(i--) {
       if(destrQueue[i][0] == name) return 1;

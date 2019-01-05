@@ -2016,7 +2016,7 @@ void hit_victim(mixed ar)
     return;
 
 #ifdef OLD_GOVERNMENT
-  if (sscanf(file_name(environment(owner)),"guilds/thieves/%s",
+  if (sscanf(object_name(environment(owner)),"guilds/thieves/%s",
 	     dummy) == 1 && (string)ar[0]->query_guild() != GN_THIEF)
     {
 	if (guildmaster && guildmaster != TR_DEMON)
@@ -2033,7 +2033,7 @@ defense of your guild!");
     }
 #endif
 #ifndef OLD_GOVERNMENT
-    if(sscanf(file_name(environment(owner)), "guilds/thieves/%s",
+    if(sscanf(object_name(environment(owner)), "guilds/thieves/%s",
 	dummy) == 1 && (string)ar[0]->query_guild() != GN_THIEF)
     {
 	if(guildmaster >= TR_ENFORCER) {
@@ -2079,7 +2079,7 @@ void stab_victim(mixed ar)
 	return;
 
 #ifdef OLD_GOVERNMENT
-    if (sscanf(file_name(environment(owner)),"guilds/thieves/%s",
+    if (sscanf(object_name(environment(owner)),"guilds/thieves/%s",
 	dummy) == 1 && (string)ar[0]->query_guild() != GN_THIEF)
     {
 	if (guildmaster && guildmaster != TR_DEMON)
@@ -2096,7 +2096,7 @@ defense of your guild!");
     }
 #endif
 #ifndef OLD_GOVERNMENT
-    if(sscanf(file_name(environment(owner)), "guilds/thieves/%s",
+    if(sscanf(object_name(environment(owner)), "guilds/thieves/%s",
 	dummy) == 1 && (string)ar[0]->query_guild() != GN_THIEF &&
       guildmaster) {
 	owner->tell_me("You fight extra hard in defense of your guild!");

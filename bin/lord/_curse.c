@@ -53,7 +53,7 @@ int curse_cmd(string str)
     }
 
 // (At least) Tron's cloak:
-   if(!sscanf(file_name(target),"%!s#%~d"))
+   if(!sscanf(object_name(target),"%!s#%~d"))
       return notify_fail(tmp+" can't be cursed.\n"),0;
 
   if(target->is_weapon())

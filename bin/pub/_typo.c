@@ -6,7 +6,7 @@ typo_cmd(string str)
 {
 string who, room, myname;
 	if(!str) return notify_fail("Give an argument.\n"), 0;
-	room = file_name(environment(TP));
+	room = object_name(environment(TP));
 	myname = (string) TP -> query_real_name();
 	log_file("TYPO", "\n" + myname + " (" + room + "):\n" +str + "\n");
 	if (sscanf(room, PATH_USER_FNAME "%s/", who)) log_file(

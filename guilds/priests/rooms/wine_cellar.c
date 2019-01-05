@@ -149,7 +149,7 @@ void open_the_door() {
 
     door_is_open = 1;
     add_exit("north", SECRET_ROOM);
-    SECRET_ROOM->add_exit("south", file_name());
+    SECRET_ROOM->add_exit("south", object_name());
     SECRET_ROOM->set_light_level(LT_DIM);
     call_out(#'close_the_door, 15);
 }

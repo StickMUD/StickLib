@@ -90,7 +90,7 @@ phase_in()
     call_out("phase_out", PHASE_IN_TIME);
     if(!(us = users()) || !sizeof(us)) return;
     door_place = environment(us[(i = random(sizeof(us)))]);
-    if(random(100) < 50 || !door_place || !sscanf(file_name(door_place),
+    if(random(100) < 50 || !door_place || !sscanf(object_name(door_place),
         "room/%s", tmp) || door_place->query(PREVENT_TELEPORT) ||
         us[i]->query_coder_level()) {
         call_other(place[(i = random(sizeof(place)))], "???");

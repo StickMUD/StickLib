@@ -15,7 +15,7 @@ create_monster()
 {
   string tmp;
 
-  if (file_name(this_object()) == GDIR2 + "npc/treasure_guard")
+  if (object_name(this_object()) == GDIR2 + "npc/treasure_guard")
     return;
 
   tmp = ({ "Huge", "Massive", "Strong", "Scarred", "Muscled",

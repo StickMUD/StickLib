@@ -9,7 +9,7 @@ string who, room, myname;
 	if (present(str, environment(this_player())))
 		return notify_fail("Use bug-command to report bugs;\
  it's not a feeling unlike some seem to think...\n"), 0;
-	room = file_name(environment(TP));
+	room = object_name(environment(TP));
 	myname = (string) TP -> query_real_name();
 	log_file("BUGS", "\n" + myname + " (" + room + "):\n" +str + "\n");
 	if (sscanf(room, PATH_USER_FNAME "%s/", who)) log_file(

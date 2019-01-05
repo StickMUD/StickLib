@@ -22,7 +22,7 @@ int shop_cmd()
       return 0;
     }
 
-  if(file_name(environment(TP))!="room/church")
+  if(object_name(environment(TP))!="room/church")
     {
       notify_fail("You must be in the church to do this.\n");
       return 0;

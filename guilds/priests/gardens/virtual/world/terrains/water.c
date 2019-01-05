@@ -23,7 +23,7 @@ create_virtual(){
     set_light_level(LT_LIGHTS);
 
     set_short("Small lake");
-    if(strstr(file_name(), "#") < 0) return;
+    if(strstr(object_name(), "#") < 0) return;
 
 //    set_moving_command("swim", "swims", "swims in");
 // This doesn't work (?!)

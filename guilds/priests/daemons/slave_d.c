@@ -94,7 +94,7 @@ void go_ld(object pl)
     for(i=sizeof(objs); --i>=0;) {
         ob = objs[i];
         if(!ob) continue;
-        data += ({ ob, file_name(environment(ob)) });
+        data += ({ ob, object_name(environment(ob)) });
         ob->move_player("X", PRIEST_ROOM_DIR "oblivion");
     }
     temp_data += ([ pl : had_follow_hook; data]);

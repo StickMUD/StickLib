@@ -49,7 +49,7 @@ status titleshadow() {
 // Just to be sure...
     shd = ob;
     while(shd=shadow(ob,0)) {
-     if(strstr(file_name(shd),"lib/gift/title_shadow")!=-1) shd->end_shadow();
+     if(strstr(object_name(shd),"lib/gift/title_shadow")!=-1) shd->end_shadow();
      else break; // if it wasn't another title_shadow, we had an infinite loop!
      // Chopin
     }
@@ -66,7 +66,7 @@ status titleshadow() {
 
     shd = ob;
     while(shd=shadow(ob,0)) {
-     if(strstr(file_name(shd),"lib/gift/title_shadow")!=-1) shd->end_shadow(); 
+     if(strstr(object_name(shd),"lib/gift/title_shadow")!=-1) shd->end_shadow(); 
      else break;
     }
 
@@ -83,7 +83,7 @@ string query_auto_load() {
   if(title_shadow) active = 1;
   else             active = 0;
 
-  sscanf(file_name(this_object()),"%s#%d",chainname,dummy);
+  sscanf(object_name(this_object()),"%s#%d",chainname,dummy);
 //  if(victim && time>0)
   return chainname+":"+pretit+"#"+active+"#"+mode;
 }

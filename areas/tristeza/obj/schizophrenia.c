@@ -34,7 +34,7 @@ string
 query_auto_load() {
 string s, tmp;
 int i;
-	tmp = file_name(this_object());
+	tmp = object_name(this_object());
 	if (sscanf(tmp, "%s#%d", s, i) == 2) tmp = s;
    return
 	tmp + ":"+symptom+"#"+counter;

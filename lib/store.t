@@ -98,7 +98,7 @@ void create_chests()
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
-	    chest->set_key("storage key", file_name(storage_room));
+	    chest->set_key("storage key", object_name(storage_room));
 	}
 	move_object(chest, storage_room);
 
@@ -112,7 +112,7 @@ void create_chests()
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
-	    chest->set_key("storage key", file_name(storage_room));
+	    chest->set_key("storage key", object_name(storage_room));
 	}
 	move_object(chest, storage_room);
 
@@ -127,7 +127,7 @@ void create_chests()
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
-	    chest->set_key("storage key", file_name(storage_room));
+	    chest->set_key("storage key", object_name(storage_room));
 	}
 	move_object(chest, storage_room);
     }
@@ -139,7 +139,7 @@ void create_chests()
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
-	    chest->set_key("storage key", file_name(storage_room));
+	    chest->set_key("storage key", object_name(storage_room));
 	}
 	move_object(chest, storage_room);
     }
@@ -151,7 +151,7 @@ void create_chests()
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
-	    chest->set_key("storage key", file_name(storage_room));
+	    chest->set_key("storage key", object_name(storage_room));
 	}
 	move_object(chest, storage_room);
     }

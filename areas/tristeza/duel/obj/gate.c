@@ -119,10 +119,10 @@ get_f() {
  
 string a, b;
  
-   if(sscanf(file_name(this_object()), "%s#%s", a, b) == 2)
+   if(sscanf(object_name(this_object()), "%s#%s", a, b) == 2)
       return a;
  
-   return file_name(this_object());
+   return object_name(this_object());
 }   
  
 /*

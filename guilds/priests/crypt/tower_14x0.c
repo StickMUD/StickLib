@@ -55,7 +55,7 @@ hatch on the floor covered by a thick layer of dust.");
 void open_hatch(status from_the_other_side) {
     hatch_is_open = 1;
     add_exit("down", ROOM_UNDER_US);
-    ROOM_UNDER_US->add_exit("up", file_name());
+    ROOM_UNDER_US->add_exit("up", object_name());
     ROOM_UNDER_US->set_light_level(LT_DIM);
     if(from_the_other_side) {
 	tell_here(({

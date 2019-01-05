@@ -117,7 +117,7 @@ random_move()
 
   if (!environment()) return;
 
-  if (sscanf(file_name(environment()), GDIR2 + "rooms/%s", where) != 1) {
+  if (sscanf(object_name(environment()), GDIR2 + "rooms/%s", where) != 1) {
     if (query_invis())
       environment()->tell_here("Someone says: Abracadabra.", this_object());
     else

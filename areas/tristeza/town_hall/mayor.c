@@ -43,7 +43,7 @@ start_travel()
 {
 	remove_call_out("start_travel");
 	if (environment())
-	  if (strstr(file_name(environment()), "mayors_off") >= 0)
+	  if (strstr(object_name(environment()), "mayors_off") >= 0)
 		call_out("travel",1,0);
 	return;
 }
@@ -125,7 +125,7 @@ Secretary giggles inanely.", this_object());
 void
 pub()
 {
-	if (file_name(environment(this_object())) == "room/pub2") {
+	if (object_name(environment(this_object())) == "room/pub2") {
 		init_command("buy firebreather");
 		call_out("leave_pub", 4);
 	}

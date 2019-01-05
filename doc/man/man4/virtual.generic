@@ -33,7 +33,7 @@ like any other LP would.
 
 If, however, the daemon detects that this is a virtual object's filename,
 then any object it returns will now have the filename identifier of
-"/d/Sahara/desert_52,30"... so even file_name(ob) will return that.  What
+"/d/Sahara/desert_52,30"... so even object_name(ob) will return that.  What
 this is useful for is a number of things.  In the case of the desert, rather 
 than write a hundred rooms that all say, "This is barren, dry desert with
 exits in all directions", I can just write a program that clones rooms and

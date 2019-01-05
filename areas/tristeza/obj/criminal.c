@@ -21,7 +21,7 @@ query_auto_load()
 {
 string tmp, s;
 int i;
-	tmp = file_name(this_object());
+	tmp = object_name(this_object());
 	if (sscanf(tmp, "%s#%d", s, i)) tmp = s;
 	return tmp + ":"+crime_time+"#"+crime_level;
 }

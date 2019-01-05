@@ -559,7 +559,7 @@ attacked_by(object ob, int flags) {
 
 status
 attack() {
-    if(file_name(environment()) == "room/church")
+    if(object_name(environment()) == "room/church")
       return 0;
     return ::attack();
 }

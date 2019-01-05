@@ -75,7 +75,7 @@ nomask status who3_cmd(string arg)
                 what = all_inventory(purgatory);
 
                 for (i =  0; i < sizeof(what); i++)
-                    if (file_name(what[i])[0..9] == "lib/player")
+                    if (object_name(what[i])[0..9] == "lib/player")
                         linkdead += ({ capitalize(what[i]->query_real_name()) });
             }
 

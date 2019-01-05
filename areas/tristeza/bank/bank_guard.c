@@ -15,7 +15,7 @@ reset_monster()
     code=random(1000); /* 0-999 */
     if ( note=clone_object(AREA_TRISTEZA+"bank/bank_note"))
        note->set_code(code);
-    if ( strstr(file_name(environment()),GUARD_ROOM)==-1)
+    if ( strstr(object_name(environment()),GUARD_ROOM)==-1)
       move_player("X#"+AREA_TRISTEZA+GUARD_ROOM);
     (AREA_TRISTEZA+GUARD_ROOM)->set_code(code);
 // Players have four seconds time to kill this guard when a reset comes,
@@ -47,7 +47,7 @@ void
 round() 
 {
   remove_call_out("round");
-  if( strstr(file_name(environment()),GUARD_ROOM)!=-1) 
+  if( strstr(object_name(environment()),GUARD_ROOM)!=-1) 
     {
       move_player("through the southern wall#"+AREA_TRISTEZA+BANK);
       call_out("round2",2);
@@ -64,7 +64,7 @@ round2()
 {
   object teller,old_note;
   remove_call_out("round2");
-  if( strstr(file_name(environment()),BANK)!=-1)
+  if( strstr(object_name(environment()),BANK)!=-1)
     {
       teller=present("teller",environment());
       if(!teller)

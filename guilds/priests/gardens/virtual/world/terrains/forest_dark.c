@@ -28,7 +28,7 @@ create_virtual(){
     set_light_level(LT_DIM);
 
     set_short("Dark forest");
-    if(strstr(file_name(), "#") < 0) return;
+    if(strstr(object_name(), "#") < 0) return;
 
     set_virtual_exits(([
 	"north":({0,-1}),

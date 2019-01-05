@@ -71,7 +71,7 @@ inform_surrounding_rooms(object here, string msg) {
         m = room->query_exits();
         // added a check 25-Apr-98 //Chopin
         if(!mappingp(m) || !sizeof(m)) break;
-        t = member(m_values(m), file_name(here));
+        t = member(m_values(m), object_name(here));
         if(t == -1) continue;
         
         exit = m_indices(m)[t];

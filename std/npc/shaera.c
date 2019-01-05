@@ -52,12 +52,12 @@ status monster_died(object p)
   sce->set_kingdom_name(CITY_NAME);
 
   move_object(sce, this_player());
-  UNIQUE_D->create_unique(file_name(sce), 1);
-  if (!UNIQUE_D->query_unique(file_name(sce))) {
+  UNIQUE_D->create_unique(object_name(sce), 1);
+  if (!UNIQUE_D->query_unique(object_name(sce))) {
     destruct(sce);
     return 0;
   }
-  UNIQUE_D->add_unique(file_name(sce), sce);
+  UNIQUE_D->add_unique(object_name(sce), sce);
 
     sce->set_castle_entrance(AREA_EAST "east/to_castle");
     sce->make_king(this_player()->query_real_name());

@@ -173,7 +173,7 @@ get_server() {
     string name;
     string tmp;
 
-    if(sscanf(file_name(this_object()), "%s/virtual/%s", name, tmp) == 2)
+    if(sscanf(object_name(this_object()), "%s/virtual/%s", name, tmp) == 2)
 	return name+"/virtual/server";
     else return 0;
 }
@@ -732,7 +732,7 @@ set_light_level(int i) {
     string s;
     int    j;
 
-    if(sscanf(file_name(this_object()), "%s#%d", s, j) == 2) return;
+    if(sscanf(object_name(this_object()), "%s#%d", s, j) == 2) return;
     ::set_light_level(i);
 }
 #endif

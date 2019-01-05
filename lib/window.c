@@ -60,7 +60,7 @@ object ob;
 	if(!(other_side = present("window", ob))) {
 		other_side = clone_object(SLAVE_WINDOW_FILE);
 		move_object(other_side, ob); }
-	other_side -> set_master(this_object(),file_name(environment()));
+	other_side -> set_master(this_object(),object_name(environment()));
 	return;
 }
 string

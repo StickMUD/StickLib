@@ -97,7 +97,7 @@ insertIntoLocker(string str)
 	if (ob->is_used())
 		return notify_fail(
 "You are using it; remove it first.\n"), 0;
-   if(sscanf(file_name(ob), "%s#%d", obFileName, tmp) < 2)
+   if(sscanf(object_name(ob), "%s#%d", obFileName, tmp) < 2)
       return notify_fail("That's not a valid item.\n"),0;
 // Let's convert obsolete files... if they're used.
 /* No  need to, right now. Perhaps again some day? */

@@ -72,7 +72,7 @@ shop_open()
     return 1;
 }
 
-string query_food_obj_file_name() { return FOOD_FILE; }
+string query_food_obj_object_name() { return FOOD_FILE; }
 string query_default_food() { return "bread"; }
 int check_open() { return shop_open(); }
 void extra_purchase_msg() { }
@@ -204,7 +204,7 @@ order(string str)
     }
 
     if (foods[dnum + 2] != -1 || !stringp(foods[dnum + 3]))
-	food = clone_object(query_food_obj_file_name());
+	food = clone_object(query_food_obj_object_name());
     else
 	food = clone_object(foods[dnum + 3]);
 
@@ -323,7 +323,7 @@ You should tell about this to some higher authority.");
     for (i = 0; i < amount; i++) {
 
 	if (foods[dnum + 2] != -1 || !stringp(foods[dnum + 3]))
-	    food = clone_object(query_food_obj_file_name());
+	    food = clone_object(query_food_obj_object_name());
 	else
 	    food = clone_object(foods[dnum + 3]);
 

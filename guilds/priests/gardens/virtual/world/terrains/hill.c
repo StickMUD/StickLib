@@ -24,7 +24,7 @@ create_virtual(){
     set(ROOM_WD, WD_OUTDOORS);
     set_light_level(LT_LIGHTS);
     set_short("Small hill");
-    if(strstr(file_name(), "#") < 0) return;
+    if(strstr(object_name(), "#") < 0) return;
 
     set_virtual_exits(([
 	"north":({0,-1}),

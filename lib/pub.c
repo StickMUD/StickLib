@@ -53,7 +53,7 @@ pub_open() {
     return 1;
 }
 
-string query_drink_obj_file_name() { return DRINK_FILE; }
+string query_drink_obj_object_name() { return DRINK_FILE; }
 string query_default_drink() { return "beer"; }
 int check_open() { return pub_open(); }
 void extra_purchase_msg() { }
@@ -164,7 +164,7 @@ order(string str)
     }
 
 
-    drink = clone_object(query_drink_obj_file_name());
+    drink = clone_object(query_drink_obj_object_name());
 
     if (!drink || !drink->set_value(drinks[dnum][0] + "#" +
 	drinks[dnum + 2] + "#" + drinks[dnum + 7] +
@@ -291,7 +291,7 @@ fill(string str) {
     }
 
     for (i = 0; i < amount; i++) {
-	drink = clone_object(query_drink_obj_file_name());
+	drink = clone_object(query_drink_obj_object_name());
 
 	if (!drink || !drink->set_value(drinks[dnum][0] + "#" +
 	    drinks[dnum + 2] + "#" + drinks[dnum + 7] +

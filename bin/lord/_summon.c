@@ -119,8 +119,8 @@ summon_cmd(string str)
       return 0;
     }
 
-  if(sscanf(file_name(here),"room/death/%s",tname) ||
-     strstr(file_name(here), "areas/SUE/4_") >= 0)
+  if(sscanf(object_name(here),"room/death/%s",tname) ||
+     strstr(object_name(here), "areas/SUE/4_") >= 0)
     {
       notify_fail("It is not allowed to summon players here.\n");
       return 0;

@@ -294,7 +294,7 @@ int i, n;
     for(i=0; i<n; i++) {
         env = environment(obs[i]);
         if(!env) continue;
-        if(sscanf("/"+file_name(env), rooms_home+"%s", tmp))
+        if(sscanf("/"+object_name(env), rooms_home+"%s", tmp))
 	  {
             if(st == REBOOT) {
               tell_object(obs[i], "VIRTUAL WORLD: Rebooting world NOW!!!\n"+

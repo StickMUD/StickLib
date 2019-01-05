@@ -37,7 +37,7 @@ modify_cost(int c) {
     return c;
 }
 
-string query_drink_obj_file_name() { return DRINK_FILE; }
+string query_drink_obj_object_name() { return DRINK_FILE; }
 string query_default_drink() { return "booze"; }
 
 int

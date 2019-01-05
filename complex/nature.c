@@ -793,7 +793,7 @@ Inform(string s, int outd)
 	if (ob) {
 	    if (!(i = (int)ob->query(ROOM_WD))) {
 		i = WD_NONE;
-		// log_file("WDESC", "NO_WD_SET: " + file_name(ob) + ".\n");
+		// log_file("WDESC", "NO_WD_SET: " + object_name(ob) + ".\n");
 		// No logs please...
 	    }
 	    if (outd == WD_ALL || !u[x]->query_brief_weather())

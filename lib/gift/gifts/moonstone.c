@@ -60,6 +60,6 @@ int catch_feeling(string verb, string arg) {
  
 string query_auto_load() {
     string fname;
-    sscanf(file_name(this_object()), "%s#%~d", fname);
+    sscanf(object_name(this_object()), "%s#%~d", fname);
     return fname+":";
 }

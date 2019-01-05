@@ -15,7 +15,7 @@ create_armour()
   set_type("amulet");
   set_weight(1);
   set_ac(1);
-  if (set_unique(file_name(this_object()), UNIQUENESS_PARTIAL, 2, 1))
+  if (set_unique(object_name(this_object()), UNIQUENESS_PARTIAL, 2, 1))
     {
 	set_name("amulet of the forsaken");
 	set_short("Amulet of the Forsaken");

@@ -19,7 +19,7 @@ extra_look()
 string query_auto_load() {
   int    dummy;
   string chainname;
-  sscanf(file_name(this_object()),"%s#%d",chainname,dummy);
+  sscanf(object_name(this_object()),"%s#%d",chainname,dummy);
   return chainname+":";
 
 }
