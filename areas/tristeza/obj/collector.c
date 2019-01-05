@@ -87,7 +87,7 @@ status empty(string x)
    if (!count)
       return notify_fail("The collector is empty.\n"), 0;
  
-    if (file_name(environment(this_player())) == GENERIC_ROOM_SHOP_FNAME)
+    if (object_name(environment(this_player())) == GENERIC_ROOM_SHOP_FNAME)
     {
         this_player()->tell_me("You sell all the bottles from the "+
             "collector.\nYou get "+ count*10 +" coins.");
