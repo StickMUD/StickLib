@@ -3,10 +3,10 @@
 
 # No log files
 *.log 
-/log/*
+log/*
 
 # No coder directories
-/home/*
+home/*
 
 # No files intended to be shared with the Internet
-/www/*
+www/*
