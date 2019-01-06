@@ -1,55 +1,69 @@
-#include <config.h>
+// Shows the list of pending call_outs
+//
+// Syntax: calls [-a] [filter]
+//
+//   -a     : sort alphabetically (default is by remaining delay)
+//   filter :  will only show items that contain the filter text
+//
 
-#define SPC35 "                                   "
-#define SPC20 "                    "
+status is_greater(mixed *a, mixed *b) {
+    return object_name(a[0])>object_name(b[0]);
+}
 
-status
-calls_cmd(string str, object me)
+status calls_cmd(string str, object me)
 {
-   mixed *call_array;
-   string s, s1, s2, *res, tmp;
-   int i, num;
+    string s, s1, s2, tmp;
 
-   if(!(call_array = call_out_info()))
-      return notify_fail("#Calls: got 0 from call_out_info().\n"),0;
-   i = 0;
-   num = sizeof(call_array);
-   res = ({"#Calls: Pending call_outs:\nObject"+extract(SPC35, 6)+
-	" Function"+extract(SPC20, 8)+" Delay\t Argument(s)"});
-   while(i < num) {
-      s = "";
-      if(!call_array[i]) {
-	 if(!str)
-	    res += ({"#Calls: item "+i+" lost."});
-	 i++;
-	 continue;
-      }
-      if(call_array[i][0]) tmp = object_name(call_array[i][0]);
-      else tmp = "NA";
-      if(str && sscanf(tmp,"%s"+str+"%s",s1,s2) < 2) {
-         i++;
-         continue;
-      }
-	if (!strstr(tmp, PATH_USER_FNAME))
-		tmp = "~" + tmp[sizeof(PATH_USER_FNAME)..];
-      s += sprintf("%-35s", tmp)+" ";
-      s += sprintf("%-20s", (tmp = (string)call_array[i][1]))+" ";
-      s += call_array[i][2]+"\t ";
-      if(sizeof(call_array[i]) == 4) {
-         if(intp(call_array[i][3]) || stringp(call_array[i][3]))
-            s += call_array[i][3];
-         else if(objectp(call_array[i][3]))
+    if (!me && !(me=this_player())) return 0;
+
+    mixed *call_array = call_out_info();
+
+    if(!call_array)
+	return notify_fail("#Calls: got 0 from call_out_info().\n"),0;
+
+    string *txt = ({"Total of "+sizeof(call_array)+" pending call_outs:"});
+    txt += ({sprintf("%-50s %-22s %s", "Object", "Function", "Delay\t Arg(s)") });
+    txt += ({ sprintf("%'='89s", "" ) });
+
+    if (str) {
+	int flag = 0;
+	if (str=="-a") { flag = 1; str = 0; }
+	else if (sscanf(str, "-a %s", str)) flag = 1;
+	if (flag) call_array = sort_array(call_array, #'is_greater);//'
+    }
+
+    foreach( mixed item : call_array)
+    {
+	tmp = objectp(item[0]) ? object_name(item[0]) : sprintf("%O", item[0]);
+	if (str && sscanf(tmp,"%s"+str+"%s",s1,s2) < 2)  continue;
+
+	if (tmp[0..7] == "players/") tmp = "~"+tmp[8..];
+
+	if (closurep(item[1])) {
+	    if (sscanf(to_string(item[1]), "#'%s->%s()%!s", s1, s2)==2) item[1] = s2;
+	}
+
+	s = sprintf("%-50s %-22s %d\t ", tmp,
+	  stringp(item[1]) ? item[1] : sprintf("%O", item[1]), item[2]);
+
+	if (sizeof(item) < 4) {
+	    txt += ({ s+"0" });
+	    continue;
+	}
+
+	if (intp(item[3]) || stringp(item[3]))
+	    s += item[3];
+	else if(objectp(item[3]))
 	    s += "(Object)";
-         else if(mappingp(call_array[i][3]))
-	    s += "(Mapping)";
-         else
-	    s += "(Array)";
-      } else
-         s += "0";
-      res += ({s});
-      i++;
-   }
-   res += ({"#Calls: total of "+num+" pending call_outs."});
-   this_player()->more(res);
-   return 1;
+	else if(mappingp(item[3]))
+	    s += "(["+sizeof(item[3])+"])";
+	else
+	    s += "({"+sizeof(item[3])+"})";
+
+	txt += ({ s });
+    }
+
+    txt += ({ sprintf("%'='89s", "" ) });
+    me->more(txt);
+    return 1;
 }

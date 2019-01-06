@@ -1,3 +1,5 @@
+#include "/sys/object_info.h"
+
 status
 shadows_cmd(string arg, object me)
 {
@@ -16,7 +18,7 @@ int i;
       return 1;
     }
 	orig = ob;
-  while(ob=shadow(ob,0))
+  while(ob=object_info(ob, OI_SHADOW_PREV))
     {
 	if (!i++) me->tell_me(sprintf("Objects shadowing object '%O' are:", orig));
       this_player()->tell_me(sprintf("%O",ob));

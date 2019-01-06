@@ -183,7 +183,7 @@ string *
 output_diff( string *lines1, string *lines2, mixed *diff, int count )
 {
     string *output;
-    int i, max, idx;
+    int i, max, idx, end;
     int s1, s2, c1, c2, j;
 
     if( !( max = sizeof( diff ) ) ) {
@@ -201,7 +201,7 @@ output_diff( string *lines1, string *lines2, mixed *diff, int count )
 	}
 
 	do {
-	    int k, f1, f2, mode, end;
+	    int k, f1, f2, mode;
 
 	    // Find the starting and end lines of a single run.
 	    if( (s1 = diff[i][0] - count) < 0 ) s1 = 0;

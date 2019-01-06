@@ -1,3 +1,5 @@
+#include "/sys/interactive_info.h"
+
 #include <lord.h>
 #include <room_defs.h>
 #include <player_defs.h>
@@ -107,7 +109,7 @@ summon_cmd(string str)
       return 0;
     }
 
-  if(!query_ip_number(target))
+  if(!interactive_info(target, II_IP_NUMBER))
     {
       notify_fail(tname+" is currently link-dead.\n");
       return 0;

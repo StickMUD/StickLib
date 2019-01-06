@@ -1,5 +1,7 @@
 // A finger with some additional information.
 
+#include "/sys/interactive_info.h"
+
 #include <daemons.h>
 #include <cmd.h>
 #include <mud_name.h>
@@ -43,7 +45,7 @@ fin_cmd(string s)
    object ob;
 
    if(!CHECK) return 0;
-   if(!query_ip_number(this_player()))
+   if(!interactive_info(this_player(), II_IP_NUMBER))
       return 0;
 // Restricted info like email, so:
    if((int)this_player()->query_coder_level() < LVL_COADMIN)
@@ -110,7 +112,7 @@ PKs: %d.\nMax str/dex/int/con/fat: %d/%d/%d/%d/%d.  Max hp/sp/fp: \
 
       if(interactive(ob))
          res = sprintf("%s%s is currently logged in from %s.\n",
-		res, capitalize(name), query_ip_name(ob));
+		res, capitalize(name), interactive_info(ob, II_IP_NAME));
       else
          res = sprintf("%s%s is currently linkdead. (%s)\n", res, capitalize(name),
 		called_from_ip_name);

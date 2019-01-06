@@ -34,8 +34,8 @@
 
 mapping invited;
 
-static private string print_status(mixed x);
-static private string party_show(mixed list);
+private string print_status(mixed x);
+private string party_show(mixed list);
 
 
 void
@@ -56,7 +56,7 @@ int i;
 string tit;
 
   parties = (mixed)PARTY_D->query_parties();
-  if (!parties || !(i = m_sizeof(parties))) {
+  if (!parties || !(i = sizeof(parties))) {
       me->tell_me("There are no parties active at the moment.");
       return 1;
     }
@@ -397,7 +397,7 @@ title [str]..............Set session title.\n\
 	return 1;
 }
 
-static private string
+private string
 print_status(mixed list)
 {
 int i, j;
@@ -422,7 +422,7 @@ string txt;
 \nTotal %26d\n", texp);
 	return txt;
 }
-   
+
 status
 party_status(string s, object me)
 {
@@ -455,7 +455,7 @@ int id, i;
 	return 1;
 }
 
-static private string
+private string
 party_show(mixed list)
 {
   int i, j;

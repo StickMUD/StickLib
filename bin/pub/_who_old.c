@@ -11,6 +11,8 @@
  * 14-Oct-97 Graah	Show % at who g and who r (only players counted)
  */
 
+#include "/sys/interactive_info.h"
+
 #include <cmd.h>
 #include <driver.h>
 #include <guild.h>
@@ -176,7 +178,7 @@ data_mapper(object ob, mapping map) {
     /* Global selector because we can't send more data to function */
     switch (who_mode) {
     case WHO_C:
-        tmp = explode(query_ip_name(ob), ".");
+        tmp = explode(interactive_info(ob, II_IP_NAME), ".");
         key = lower_case(tmp[sizeof(tmp) - 1]);
         if (key[0] < 'a' || key[0] > 'z') {
 	    if (tmp[0] == "130" && tmp[1] == "238" && tmp[2] == "197")
@@ -291,17 +293,17 @@ show_percents(mapping map, object me)
 nomask void
 show_who_special(int mode, object me)
 {
-mapping map;
+mapping _map;
 string  *keys;
 int     i;
 string key, header;
 
     who_mode = mode;
-    map = ([]);
-	map_array(who_filter(users(), me, 0),
-        "data_mapper", this_object(), map);
+    _map = ([]);
+	map(who_filter(users(), me, 0),
+        "data_mapper", this_object(), _map);
 
-    if (!m_sizeof(map)) {
+    if (!sizeof(_map)) {
         if (mode == WHO_F)
 	    TP->tell_me("No followers in the game currently.");
 	else if (mode == WHO_D)
@@ -310,7 +312,7 @@ string key, header;
 	return;
     }
 
-    keys = sort_array(m_indices(map), #'>);
+    keys = sort_array(m_indices(_map), #'>);
 
     for (i = 0; i < sizeof(keys); i++) {
 
@@ -330,12 +332,12 @@ string key, header;
 	}
 
         write(sprintf("%-24s%-=54s\n", header + ":",
-		implode(sort_array(map[key], #'>), ", ", " and ")
+		implode(sort_array(_map[key], #'>), ", ", " and ")
 		    + "."
 		));
     }
 
-  if (who_mode == WHO_G) show_percents(map, me);
+  if (who_mode == WHO_G) show_percents(_map, me);
 }
 
 
@@ -346,7 +348,7 @@ string *s;
 int    i, il;
 
     s = sort_array(
-         map_array(who_filter(users(), me, 0),
+         map(who_filter(users(), me, 0),
 	     "who_mapper", this_object()),
 	#'>);
 
@@ -372,7 +374,7 @@ int    i, il;
                 (string)bng->query_title();
 	}
         if(!interactive(bng)) str += "(link dead)";
-        else if (query_idle(bng) > 300)
+        else if (interactive_info(bng, II_IDLE) > 300)
             str += " (idle)";
 
         if ((il = (int)bng->query_invis()))
@@ -436,7 +438,7 @@ who_old_cmd(string arg, object me)
 	return 1;
     case 'l':
         call_other(PURGATORY, "??");
-        s = map_array(
+        s = map(
 		who_filter(
                         all_inventory(find_object(PURGATORY)),
 			me, 0), "who_mapper", this_object());
@@ -458,7 +460,7 @@ who_old_cmd(string arg, object me)
 #endif
     case 'q':
 	s = sort_array(
-	    map_array(
+	    map(
 		who_filter(users(), me, 0),
 		"who_mapper", this_object()),
 	  #'>);

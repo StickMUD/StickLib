@@ -18,9 +18,9 @@ object me;
 	else if (arg && member(arg, ' ') >= 0) arg = "NO_SUCH_TOPIC";
 	else if(!arg || arg == "all")
 	  s = sprintf("Commands: %-=65s\nGeneral:  %-=65s\nMiscellaneous: %-=60s\n",
-	  implode(filter_array(get_dir("/doc/help/commands/"), #'query_access_file), ", "),
-	  implode(filter_array(get_dir("/doc/help/topics/"), #'query_access_file), ", "),
-	  implode(filter_array(get_dir("/doc/help/bonus/"), #'query_access_file), ", ") );
+	  implode(filter(get_dir("/doc/help/commands/"), #'query_access_file), ", "),
+	  implode(filter(get_dir("/doc/help/topics/"), #'query_access_file), ", "),
+	  implode(filter(get_dir("/doc/help/bonus/"), #'query_access_file), ", ") );
 
 	if (!s) s = read_file ("/doc/help/commands/"+arg);
 	if (!s) s = read_file ("/doc/help/topics/"+arg);

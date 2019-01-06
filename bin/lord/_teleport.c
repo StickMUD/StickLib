@@ -1,3 +1,5 @@
+#include "/sys/interactive_info.h"
+
 #include <lord.h>
 #include <conditions.h>
 #include <room_defs.h>
@@ -75,7 +77,7 @@ int teleport_cmd(string str)
 		return 0;
 	}
 
-	if(!query_ip_number(target))
+	if(!interactive_info(target, II_IP_NUMBER))
 	{
 		notify_fail(tmp+" is currently link-dead.\n");
 		return 0;

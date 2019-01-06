@@ -1,5 +1,7 @@
 // List cloned objects
 // Haw 260497
+#include "/sys/interactive_info.h"
+
 
 #include <cmd.h>
 #include <config.h>
@@ -36,13 +38,13 @@ listob_cmd(string s)
 	i, lim, fname);
    if((ob = find_object(fname)) && (ob2 = environment(ob)))
       res = sprintf("%sMaster object is in %s.", res,
-		(query_ip_number(ob2) ?
+		(interactive_info(ob2, II_IP_NUMBER) ?
 		sprintf("PLR(%s)", ob2->query_real_name()) :
 		sprintf("OBJ(%s)", object_name(ob2))));
 
    while(i < lim) {
       if((ob = find_object(fname + "#" + i))) {
-	 if(query_ip_number(ob))
+	 if(interactive_info(ob, II_IP_NUMBER))
 	    sh = capitalize((string)ob->query_real_name());
 	 else if(!(sh = (string)ob->query_short()))
 	    sh = (string)ob->short();
@@ -57,7 +59,7 @@ listob_cmd(string s)
 	 if(sscanf(env, PATH_USER_FNAME+"%s", fn))
 	    env = "~" + fn;
 	 res = sprintf("%s\n-- is in %s.\n", res,
-		(query_ip_number(ob2) ?
+		(interactive_info(ob2, II_IP_NUMBER) ?
 		sprintf("PLR(%s)", ob2->query_real_name()) :
 		sprintf("OBJ(%s)", env)));
 

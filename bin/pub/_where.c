@@ -10,7 +10,7 @@
 #define WHERE_ALL_LVL   58
 
 /* Prototypes */
-void show_where(string n, object x, int a, int b);
+string show_where(string n, object x, int a, int b);
 void where_people(object me, int lvl1, int lvl2);
 int where_map(object ob, int lvl1, int lvl2);
 

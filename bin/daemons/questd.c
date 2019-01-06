@@ -492,7 +492,7 @@ status list_single_quest(int qnum)
     qlist = m_indices(quests);
     if(qnum > sizeof(qlist))
         return 0;
-    qlist = filter_array(qlist, #'filter_func, this_player());
+    qlist = filter(qlist, #'filter_func, this_player());
     qlist = sort_array(qlist, #'sort_func);
     this_player()->tell_me(sprintf("%s\n%s",
         query_short(qlist[qnum-1]), query_hint(qlist[qnum-1])));

@@ -3,6 +3,9 @@
 // Sends audible bell to the poor victim.
 
 #pragma strict_types
+
+#include "/sys/interactive_info.h"
+
 #include <cmd.h>
 #include <invis_levels.h>
 
@@ -36,7 +39,7 @@ ping_cmd(string s, object me) {
   }
 
 // Let's try to prevent some of the abuse... --Haw
-   if((query_idle(target) < 120) && // 2min idle
+   if((interactive_info(target, II_IDLE) < 120) && // 2min idle
       !me->query_coder_level())
       return notify_fail("Why, (s)he isn't even idle?\n"),0;
 

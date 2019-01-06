@@ -45,11 +45,11 @@ nomask status who3_cmd(string arg)
             call_other(do_find_object("/bin/pub/_who_old"), "who_cmd", "d");
             break;
         case "k":
-            earth = filter_array(users(), #'filter_earth, this_object());
-            fire = filter_array(users(), #'filter_fire, this_object());
-            wind = filter_array(users(), #'filter_wind, this_object());
-            water = filter_array(users(), #'filter_water, this_object());
-            drifters = filter_array(users(), #'filter_drifter, this_object());
+            earth = filter(users(), #'filter_earth, this_object());
+            fire = filter(users(), #'filter_fire, this_object());
+            wind = filter(users(), #'filter_wind, this_object());
+            water = filter(users(), #'filter_water, this_object());
+            drifters = filter(users(), #'filter_drifter, this_object());
 
             if (sizeof(earth))
                 TP->tell_me("\nEarth: "+

@@ -26,7 +26,7 @@
 
  *************************************************/
 
-nomask static private status
+nomask private status
 _validUser(string o)
 {
   int x;

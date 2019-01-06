@@ -94,7 +94,7 @@ int memstat_cmd(string str)
 		} else {
 			name=sprintf("Unable to locate: %s.\n",str);
 		}
-	
+
 		notify_fail(name);
 		return 0;
 	}
@@ -106,8 +106,8 @@ int memstat_cmd(string str)
 
 	printf(tmp,name,object_name(obj));
 
-	debug_info(1,obj);
-	
+	//debug_info(1,obj);
+
 	return 1;
 }
 

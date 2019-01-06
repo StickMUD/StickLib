@@ -1,3 +1,5 @@
+#include "/sys/interactive_info.h"
+
 #include <config.h>
 #include <daemons.h>
 #include <std_lib>
@@ -106,7 +108,7 @@ string process_login()
     {
         if (interactive(ob))
         {
-            i = query_idle(ob) / 60;
+            i = interactive_info(ob, II_IDLE) / 60;
             if (i)
             {
                 tmp = " (idle "+ i; 

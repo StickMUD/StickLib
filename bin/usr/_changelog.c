@@ -9,8 +9,7 @@
 
 #define LOG_DIR "/log/changelog/"
 #define ALL_LOG LOG_DIR "all"
-#define LOGS ({ GN_NINJA, GN_PRIEST, GN_MAGE, GN_FIGHTER, GN_THIEF, \
-GN_NECROMANCER, GN_HEALER, "lib" })
+#define LOGS ({ GN_PRIEST, GN_THIEF, "lib" })
 
 #define LAST_AMOUNT 5
 

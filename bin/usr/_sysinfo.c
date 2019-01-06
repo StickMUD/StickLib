@@ -1,4 +1,6 @@
 /* (Starbyt's code) */
+#include "/sys/driver_info.h"
+
 #include <cmd.h>
 #include <mud_name.h>
 
@@ -14,7 +16,8 @@ sysinfo_cmd()
     write("LP " + version() + ".\n")
 #endif
     write(ctime(time()) + "\n");
-    write(query_load_average() + "\n");
+    write(driver_info(DI_LOAD_AVERAGE_COMMANDS) + " commands.\n");
+    write(driver_info(DI_LOAD_AVERAGE_LINES) + " lines.\n");
     write(sizeof(users()) + " interactives.\n");
     write(sizeof(call_out_info()) + " callouts pending.\n");
     write((int)nature()->query_sizeof_req() + " timerequests pending.\n");
