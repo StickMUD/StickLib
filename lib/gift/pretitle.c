@@ -7,6 +7,8 @@
 // NOTE:  These babies WILL cost a LOT!
 //        == 1 million to buy the object + 100 000 per one letter in pretitle.
 
+#include "/sys/object_info.h"
+
 #include <treasure.h>
 #define TIT_SHADOW "/lib/gift/title_shadow"
 
@@ -48,7 +50,7 @@ status titleshadow() {
 
 // Just to be sure...
     shd = ob;
-    while(shd=shadow(ob,0)) {
+    while(shd=object_info(ob, OI_SHADOW_PREV)) {
      if(strstr(object_name(shd),"lib/gift/title_shadow")!=-1) shd->end_shadow();
      else break; // if it wasn't another title_shadow, we had an infinite loop!
      // Chopin
@@ -65,7 +67,7 @@ status titleshadow() {
     title_shadow = 0;
 
     shd = ob;
-    while(shd=shadow(ob,0)) {
+    while(shd=object_info(ob, OI_SHADOW_PREV)) {
      if(strstr(object_name(shd),"lib/gift/title_shadow")!=-1) shd->end_shadow(); 
      else break;
     }
@@ -84,7 +86,7 @@ string query_auto_load() {
   else             active = 0;
 
   sscanf(object_name(this_object()),"%s#%d",chainname,dummy);
-//  if(victim && time>0)
+
   return chainname+":"+pretit+"#"+active+"#"+mode;
 }
 
@@ -99,8 +101,6 @@ void init_arg(string arg) {
   if(u) {
     // This will not work for coders..
     call_out( "pass_along", 1, pretit, mode );
-//    title_shadow = clone_object(TIT_SHADOW);
-//    title_shadow->do_shadow(environment(this_object()), pretit, mode);
   }
 }
 

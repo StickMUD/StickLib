@@ -2,13 +2,7 @@
 
 #define P20(X)  (oldsp - (X))/5     /* 20% , oldsp > X */
 
-#if 0
-#define LOG_CHEAT(x, y, z) \
-     write_file("/log/focus_cheat", \
-   capitalize(x)+" used "+y+" sp and got "+z+" sp back from it (20%) \n")
-#else
-#define	LOG_CHEAT(x, y, z)	;
-#endif
+#define	LOG_CHEAT(x, y, z);
 
 private int oldsp, zz;
 private object owner;
@@ -16,7 +10,7 @@ private object owner;
 void
 init_stone() {
     oldsp=zz=0;
-    set_heart_beat(1);
+    configure_object(ob, OC_HEART_BEAT, 1);
 }
 
 void
@@ -46,7 +40,7 @@ int hp;
 	    }
 
 	    sp = (int)owner->query_sp();
-	    if(sp < oldsp) 
+	    if(sp < oldsp)
                hp = (int)owner->query_hp();
 	    {
 	      if(!random(10))
@@ -67,5 +61,4 @@ suddenly explodes!!!\n");
 	    }
 	    oldsp = sp;
 	}
-
 }

@@ -7,6 +7,8 @@
  AUTHOR:  Tron
  ***********************************************/
 
+#include "/sys/configuration.h"
+
 #include <config.h>
 #include <mud_name.h>
 #include <generic_rooms.h>
@@ -14,17 +16,15 @@
 string name;
 int qnumber;
 
-
 nomask void
 create() {
-
-    enable_commands();
+    configure_object(this_object(), OC_COMMANDS_ENABLED, 1);
 }
 
 nomask status
 query_prevent_shadow() { return 1; }
 
-nomask string 
+nomask string
 valid_read(string str) {
     string tmp;
 
@@ -52,7 +52,7 @@ tell_me(string s) {
 }
 
 nomask string
-short() { 
+short() {
 
     if(!name) return "Guest"; 
     else return capitalize(name);
@@ -110,7 +110,7 @@ nomask status
 query_can_see() { return 1; }
 
 nomask status
-test_dark() { 
+test_dark() {
     if(set_light(0) > 0) return 0;
     else return 1;
 }
@@ -121,7 +121,7 @@ query_level() { return 1; }
 nomask int
 query_guest() { return qnumber; }
 
-nomask static private void
+nomask private void
 _guestInfo(status leaves) {
     object *o;
     int i;
@@ -159,8 +159,7 @@ initialize() {
     qnumber = max + 1;
     name = sprintf("%s%d", "guest", qnumber);
 
-    //enable_commands();
-    set_heart_beat(1);
+    configure_object(this_object(), OC_HEART_BEAT, 1);
 
     add_action("guest_say", "say");
     add_action("guest_tell", "tell");
@@ -172,10 +171,9 @@ initialize() {
     _guestInfo(0);
     cat("/data/login/NEWS");
     move_object(this_object(), GENERIC_ROOM_CHURCH);
-
 }
 
-nomask private static string
+nomask private string
 _allowedStr(string s) {
     int i;
     string tmp;
@@ -205,8 +203,6 @@ guest_look(string s) {
 
 nomask status
 guest_say(string s) {
-
-
     if(!s) { notify_fail("Say what?\n");
 	return 0;
     }
@@ -233,7 +229,7 @@ guest_tell(string s) {
     }
 
     ob = find_player(who);
-    if(!ob) { 
+    if (!ob) {
 	notify_fail("No such player, sorry.\n");
 	return 0;
     }
@@ -250,7 +246,6 @@ guest_tell(string s) {
 
 nomask status
 guest_quit() {
-
     write("Come back soon, but next time as a player :).\n");
     destruct(this_object());
     _guestInfo(1);
@@ -259,18 +254,16 @@ guest_quit() {
 
 nomask status
 guest_help(string s) {
-
     if(!s) s = "all";
     return (status)"/bin/pub/_help"->help_cmd(s);
 }
 
 nomask void
 heart_beat() {
-
     if(!interactive(this_object())) {
-	destruct(this_object());
+	configure_object(this_object(), OC_HEART_BEAT, 0);
 	tell_room(environment(), "Purple Dragon arrives and stomps poor "+
 	  capitalize(name)+ " under its foot.\n");
-	set_heart_beat(0);
+	destruct(this_object());
     }
 }

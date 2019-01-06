@@ -31,6 +31,8 @@
 *									*
 ************************************************************************/
 
+#include "/sys/interactive_info.h"
+
 #include <conditions.h>
 #include <disease.h>
 #include <stats.h>
@@ -40,7 +42,7 @@
 #define HIS ((string)victim->Possessive())
 #define HIM ((string)victim->Objective())
 #define NOT_INVIS (!victim->query_invis())
-#define NOT_LD (query_ip_number(victim))
+#define NOT_LD (interactive_info(victim, II_IP_NUMBER))
 #define TV(x) victim -> tell_me(x)
 #define EM(x) xsay(NAME + " " + (x))
 

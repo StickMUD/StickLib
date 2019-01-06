@@ -400,7 +400,7 @@ mixed m;
    m = explode(s, "\n");
    
    map_memory += ([file:m]);
-   if(m_sizeof(map_memory) >= memory) 
+   if(sizeof(map_memory) >= memory) 
        map_memory = m_delete(map_memory, m_indices(map_memory)[0]);
  
    return m;

@@ -11,7 +11,7 @@
 *								*
 ****************************************************************/
 
-#include "/std/configuration.h"
+#include "/sys/configuration.h"
 
 inherit "/basic/id";
 

@@ -23,6 +23,8 @@
 //                                                              //
 //****************************************************************
 
+#include "/sys/object_info.h"
+
 #include <mail_defs.h>
 #include <daemons.h>
 #include "/secure/coders.h"
@@ -104,7 +106,7 @@ void reset()
 	return;
     x = first_inventory(environment());
     while (x) {
-	if (query_once_interactive(x))
+	if (object_info(x, OI_ONCE_INTERACTIVE))
 	    return;
 	x = next_inventory(x);
     }

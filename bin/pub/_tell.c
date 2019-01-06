@@ -14,6 +14,7 @@
 #pragma strict_types
 
 #include "/sys/interactive_info.h"
+#include "/sys/object_info.h"
 
 #include <living_defs.h>
 #include <coder_levels.h>
@@ -154,7 +155,8 @@ tell_cmd(string str)
     }
 
 // Link dead?
-	if (!interactive_info(ob, II_IP_NUMBER) && !ob->query(LIV_IS_NPC)) {
+	if (object_info(ob, OI_ONCE_INTERACTIVE) &&
+	    !interactive_info(ob, II_IP_NUMBER) && !ob->query(LIV_IS_NPC)) {
         tp->tell_me(sprintf("%s is currently link dead (and cannot hear you).",
             capitalize(it)));
         return 1;
@@ -217,7 +219,7 @@ if (query_verb() == "reply") {
        }
             msg = sprintf("%s tells you: %s", (string)tp->query_real_name(), msg);
       }
-        if(interactive_info(ob, II_IP_NUMBER) && interactive_info(ob, II_IDLE) > 300)
+        if (object_info(ob, OI_ONCE_INTERACTIVE) && interactive_info(ob, II_IP_NUMBER) && interactive_info(ob, II_IDLE) > 300)
          {
             tmp=sprintf("Ok, but %s has been idle for %s.", capitalize(it),
                 secs2string(interactive_info(ob, II_IDLE)));

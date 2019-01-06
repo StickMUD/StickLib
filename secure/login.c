@@ -41,7 +41,7 @@ int set_env(mixed value, mixed arg);
 #include "/basic/player/client.c"
 
 #define TELL_ME(x)      tell_object(this_object(),(x))
-#define LOGIN_GUEST     "lib/guest"
+#define LOGIN_GUEST     "std/obj/guest"
 #define LOGIN_FILE      "secure/login"
 #define LOGIN_DUMMY	"secure/dummy"
 

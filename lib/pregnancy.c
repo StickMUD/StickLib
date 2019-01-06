@@ -1,3 +1,5 @@
+#include "/sys/object_info.h"
+
 #include <treasure.h>
 
 #include <conditions.h>
@@ -20,7 +22,7 @@ create_treasure()
   set_invis(IL_TOTALLY_INVISIBLE);
   set_short("Pregnancy");
   counter = -1;
-  set_heart_beat(1);
+  configure_object(this_object(), OC_HEART_BEAT, 1);
 }
 
 int query_counter() { return counter; }

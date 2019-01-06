@@ -7,6 +7,8 @@
 // New AI: Player ghost wanders around, seeking its owner.
 // 17-Jul-97 / Graah: Even more intelligent.
 
+#include "/sys/object_info.h"
+
 #include <npc.h>
 #include <room_defs.h>
 
@@ -107,22 +109,14 @@ heart_beat()
   if (!owner ||
       !(oe = find_player(owner)))
     {
-/* And what on earth was this supposed to do? -+ Doomdark 26-Dec-97 +- */
-/* (if (.. !oe) ... oe->xxx() ?????) */
-#if 0
-      if (oe->query_dead() &&
-	  ob &&
-	  (environment() != ob))
-#else
 	if (ob && environment() != ob)
-#endif
 	{
 	  move_player("Vfades away#", ob);
 	  return;
 	}
 
       if (environment() != origenv) move_player("Vfades away#", origenv);
-      set_heart_beat(0);
+      configure_object(this_object(), OC_HEART_BEAT, 0);
       if (!owner) set_keep_hb(-52);
       return;
     }

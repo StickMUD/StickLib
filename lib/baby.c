@@ -1,3 +1,5 @@
+#include "/sys/object_info.h"
+
 inherit "/basic/id";
 
 #include <conditions.h>
@@ -127,7 +129,7 @@ create()
   set_long("This is your little cute baby! You could 'feed' it if you want.");
   check_size();
   counter = -1;
-  set_heart_beat(1);
+  configure_object(this_object(), OC_HEART_BEAT, 1);
 }
 
 void

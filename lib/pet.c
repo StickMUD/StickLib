@@ -32,6 +32,8 @@
     Darkelf -- Buy food to feed them?
 */
 
+#include "/sys/object_info.h"
+
 #include <treasure.h>
 #include "pet_defs.h"
 
@@ -104,13 +106,13 @@ void set_pet_chats(int chance, string *str) {
     // until we have the chats, we don't need the heart_beat, so we'll
     // save on the calls.
     if(chats  &&  sizeof(chats)) {
-	set_heart_beat(1);
+	configure_object(this_object(), OC_HEART_BEAT, 1);
 	petFlags |= F_PET_HAS_HB;
     }
     else {
 	if(petFlags & F_PET_HAS_HB)
 	    petFlags ^= F_PET_HAS_HB;
-	set_heart_beat(0);
+	configure_object(this_object(), OC_HEART_BEAT, 0);
     }
     return;
 }
@@ -170,7 +172,7 @@ void heart_beat() {
     }
     if(!chats  ||  !sizeof(chats)  ||  !chat_chance) {
 	petFlags ^= F_PET_HAS_HB;
-	set_heart_beat(0);
+	configure_object(this_object(), OC_HEART_BEAT, 0);
 	return;
     }
 

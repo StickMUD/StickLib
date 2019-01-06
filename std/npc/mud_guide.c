@@ -1,3 +1,6 @@
+#include "/sys/interactive_info.h"
+#include "/sys/object_info.h"
+
 #include <npc.h>
 #include <mud_name.h>
 
@@ -31,7 +34,7 @@ Type 'follow guide' for a guided tour to the village, and 'follow' to quit it.")
 void
 init_monster()
 {
-	if (this_player() && query_once_interactive(this_player()))
+	if (this_player() && object_info(this_player(), OI_ONCE_INTERACTIVE))
   add_action("follow","follow");
 }
 
@@ -49,7 +52,7 @@ travel(int nr)
   string message,action;
   int time_to_next;
   remove_call_out("travel");
-  if (!follower || !query_ip_number(follower)) {
+  if (!follower || !interactive_info(follower, II_IP_NUMBER)) {
     // follower quitted or went ld
     this_object()->move_player("Vsighs and teleports to temple yard.",
 			       "/room/church");

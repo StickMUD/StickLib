@@ -17,6 +17,8 @@
 	   -+ Doomdark +-
 ******************************************************/
 
+#include "/sys/object_info.h"
+
 #include <nroom.h>
 #include <player_defs.h>
 #include <daemons.h>
@@ -231,11 +233,11 @@ init_room()
 	add_action("virtual_move", moving_command);
     }
 
-    if (!(virtualFlags & F_VIRTUAL_HB_ENABLED) || 
+    if (!(virtualFlags & F_VIRTUAL_HB_ENABLED) ||
       (virtualFlags & F_VIRTUAL_HB_ON)) return;
 
     virtualFlags |= F_VIRTUAL_HB_ON;
-    set_heart_beat(1); 
+    configure_object(this_object(), OC_HEART_BEAT, 1);
 }
 
 /***********************************************
@@ -332,7 +334,7 @@ add_random_object(string objec) {
 
 *******************************************/
 
-nomask private static void
+nomask private void
 add_exit(string dir, string file) {
     string str;
 
@@ -366,7 +368,7 @@ set_virtual_exits(mapping dir)
     dir_names = m_indices(dir);
     dir_dest  = m_values(dir);
 
-    n = m_sizeof(dir);
+    n = sizeof(dir);
     for(i=0; i<n; i++) {
 	x = X + dir_dest[i][0];
 	y = Y + dir_dest[i][1];
@@ -435,7 +437,7 @@ set_hb(int i)
 	// hb_enabled = i;
 	// hb = 0;
 	virtualFlags &= (~(F_VIRTUAL_HB_ENABLED | F_VIRTUAL_HB_ON));
-	set_heart_beat(0);
+	configure_object(this_object(), OC_HEART_BEAT, 0);
     }
 
     return 1;
@@ -672,7 +674,7 @@ long(string n, object who)
 nomask void
 heart_beat()
 {
-    object ob;          
+    object ob;
     object ob2;
 
     ob = first_inventory(this_object());
@@ -683,10 +685,10 @@ heart_beat()
 	else if(living(ob)) break;
 
 	ob = next_inventory(ob);
-    }            
+    }
     if (!ob) {
 	virtualFlags &= (~F_VIRTUAL_HB_ON);
-	set_heart_beat(0);
+	configure_object(this_object(), OC_HEART_BEAT, 0);
 	return;
     }
 

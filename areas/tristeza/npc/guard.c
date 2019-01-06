@@ -48,7 +48,7 @@ create_guard()
   set_money(random(150));
 
   /* Guards are Good now - because killing them must be Evil. //Graah */
-  set_al(20 + random(200));
+  set_alignment(20 + random(200));
 
   if (random(100) < 15)
     {
