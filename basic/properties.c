@@ -8,21 +8,21 @@ private int weight, value;
 
 public void
 set_weight(int x) {
-	weight = x;
+    weight = x;
 }
 
 public void
 set_value(int x) {
-	value = x;
+    value = x;
 }
 
 public int
 query_weight() {
-	return weight;
+    return weight;
 }
 
 public int
 query_value() {
-	return value;
+    return value;
 }
 

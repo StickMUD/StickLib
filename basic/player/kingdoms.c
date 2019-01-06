@@ -7,8 +7,8 @@ status set_kingdom(string arg)
 {
     if (!arg)
     {
-        kingdom = 0;
-        return 1;
+	kingdom = 0;
+	return 1;
     }
 
     kingdom = lower_case(arg);
@@ -18,13 +18,13 @@ status set_kingdom(string arg)
 varargs mixed query_kingdom(string arg)
 {
     if (!kingdom)
-        kingdom = 0;
+	kingdom = 0;
 
     if (!arg)
-        return kingdom;
+	return kingdom;
 
     if (stringp(arg))
-        return (kingdom == arg) ? 1 : 0;
+	return (kingdom == arg) ? 1 : 0;
 
     return 0;
 }

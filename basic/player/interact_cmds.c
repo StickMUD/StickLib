@@ -93,8 +93,8 @@ communicate(string str)
     }
 
     environment()->tell_here(({
-        ":%<me.capname>% " + dummy + ": " + str,
-        // Can't use sprintf because of % marks in SSF string
+	":%<me.capname>% " + dummy + ": " + str,
+	// Can't use sprintf because of % marks in SSF string
 	":%<me.capname>% says something, but you can't hear %<me.objective>%!",
       }), ({ LIV_CAN_HEAR, LIV_CAN_SEE }),0,this_object(),this_object(),0,0);
 
@@ -132,7 +132,7 @@ whisper_cmd(string str)
     //   if (dump_esc(msg)) return 1;
     if (query_intoxication()) msg = mumble(msg);
     ob->tell_me(({
-        ":%<me.capname>% whispers to you: " + msg,
+	":%<me.capname>% whispers to you: " + msg,
 	":%<me.capname>% seems to whisper something to you, but \
 you can't hear anything!",
       }), ({ LIV_CAN_HEAR, LIV_CAN_SEE }),0,this_object(),0,0);

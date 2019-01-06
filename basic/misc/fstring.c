@@ -143,18 +143,10 @@ mixed misc, *tmp2;
 			misc = explode(s, "+");
 			for (j = 0; j < sizeof(misc); j++)
 			  misc[j] = _ansi_codes[misc[j]];
-#if 0
-			tmp2[i] = sprintf("\e[%sm", implode(misc, ";"));
-#else
 			tmp2[i] = sprintf("%c[%sm", 0x1B, implode(misc, ";"));
-#endif
 		} else {
 			if (misc = _ansi_codes[s])
-#if 0
-				tmp2[i] = sprintf("\e[%sm", misc);
-#else
 				tmp2[i] = sprintf("%c[%sm", 0x1B, misc);
-#endif
 			else
 				tmp2[i] = 0;	// -> erroneous code or something...
 		}

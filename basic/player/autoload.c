@@ -28,7 +28,7 @@ e) query_auto_load() can either return strings in the old format or an
 Well, it still isn't perfect, but it is a great deal better than the
 old solution.
 
-                          Reimer Behrends
+			  Reimer Behrends
 
 -------------------------------------------------------------------------------
 
@@ -42,60 +42,60 @@ mixed auto_load;	/* Special automatically loaded objects. */
 
 void
 load_auto_obj(mixed arr) {
-  string file, err;
-  mixed argument;
-  int i;
+    string file, err;
+    mixed argument;
+    int i;
 
-  if (stringp(arr)) /* compatibility */
-    arr = explode(arr, "^!");
+    if (stringp(arr)) /* compatibility */
+	arr = explode(arr, "^!");
 
-  if (pointerp(arr))
-    /* I changed the way for-loop is done for speed //Frobozz */
-    for (i=sizeof(arr)-1; i>=0; i--) {
-      if (stringp(arr[i])) {
-	if (sscanf(arr[i],"%s:%s",file,argument)!=2) {
-	  file = arr[i];
-	  argument = 0;
+    if (pointerp(arr))
+	/* I changed the way for-loop is done for speed //Frobozz */
+	for (i=sizeof(arr)-1; i>=0; i--) {
+	    if (stringp(arr[i])) {
+		if (sscanf(arr[i],"%s:%s",file,argument)!=2) {
+		    file = arr[i];
+		    argument = 0;
+		}
+	    }
+	    else
+	    if (pointerp(arr[i]) && sizeof(arr[i]) && stringp(arr[i][0])) {
+		file = arr[i][0];
+		argument = arr[i][1..sizeof(arr[i])];
+	    }
+	    else {
+		write("Auto load array entry corrupt.\n");
+		continue;
+	    }
+	    err = catch(load_single_auto_obj(file, argument));
+	    if (err) {
+		write("Couldn't load auto load object.\n");
+		log_file("AUTOLOAD", file+":"+err);
+		continue;
+	    }
 	}
-      }
-      else
-	if (pointerp(arr[i]) && sizeof(arr[i]) && stringp(arr[i][0])) {
-	  file = arr[i][0];
-	  argument = arr[i][1..sizeof(arr[i])];
-	}
-	else {
-	  write("Auto load array entry corrupt.\n");
-	  continue;
-	}
-      err = catch(load_single_auto_obj(file, argument));
-      if (err) {
-	write("Couldn't load auto load object.\n");
-	log_file("AUTOLOAD", file+":"+err);
-	continue;
-      }
-    }
 }
 
 void
 load_single_auto_obj(string file, mixed argument) {
-  object ob;
-  ob = clone_object(file);
-  ob->init_arg(argument);
-  move_object(ob, this_object());
+    object ob;
+    ob = clone_object(file);
+    ob->init_arg(argument);
+    move_object(ob, this_object());
 }
 
 void
 compute_auto_str() {
-  object ob;
-  mixed data;
+    object ob;
+    mixed data;
 
-  auto_load = ({});
-  ob = first_inventory(this_object());
-  while(ob) {
-    data = 0;
-    catch(data = (mixed)ob->query_auto_load());
-    ob = next_inventory(ob);
-    if (stringp(data) || pointerp(data))
-      auto_load += ({ data });
-  }
+    auto_load = ({});
+    ob = first_inventory(this_object());
+    while(ob) {
+	data = 0;
+	catch(data = (mixed)ob->query_auto_load());
+	ob = next_inventory(ob);
+	if (stringp(data) || pointerp(data))
+	    auto_load += ({ data });
+    }
 }

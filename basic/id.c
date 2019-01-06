@@ -87,19 +87,19 @@ void
 set_name(string str)
 {
     if (stringp(str)) {
-      string foo;
+	string foo;
 	id_name = str;
-	    if (member( ({ 'a', 'e', 'i', 'o', 'u' }), str[0]) < 0 ||
+	if (member( ({ 'a', 'e', 'i', 'o', 'u' }), str[0]) < 0 ||
 
-// Words beginning with these letters are (usually) pronounced like beginning
-// with consonants, so they will have an "a" as an article.
+	  // Words beginning with these letters are (usually) pronounced like beginning
+	  // with consonants, so they will have an "a" as an article.
 
-	    sscanf(str, "eu%s", foo) || sscanf(str, "uni%s",foo)
-	    || sscanf(str, "us%s",foo)) short_desc = "A "+str;
-	    else short_desc = "An "+str;
+	  sscanf(str, "eu%s", foo) || sscanf(str, "uni%s",foo)
+	  || sscanf(str, "us%s",foo)) short_desc = "A "+str;
+	else short_desc = "An "+str;
     } else id_name = 0;
 
-	if (!id_list) id_list = ({ });
+    if (!id_list) id_list = ({ });
 }
 
 // Set the id of an item. Should be an array. For compatibility reasons
@@ -108,42 +108,42 @@ set_name(string str)
 void
 set_id(mixed arg)
 {
-	if (pointerp(arg))
-		id_list = arg;
-	else if (arg) {
-		if (id_list) id_list += ({ arg });
-		else id_list = ({ arg });
-	} else {
-		id_list = ({ });
-		return;
-	}
-// This should not be needed; 'set_name' should be called before set_id.
-	if (!id_name) id_name = id_list[0];
+    if (pointerp(arg))
+	id_list = arg;
+    else if (arg) {
+	if (id_list) id_list += ({ arg });
+	else id_list = ({ arg });
+    } else {
+	id_list = ({ });
+	return;
+    }
+    // This should not be needed; 'set_name' should be called before set_id.
+    if (!id_name) id_name = id_list[0];
 }
 
 // Description	: This function only adds more ids, unlike set_id().
 void
 add_id(mixed arg)
 {
-  int s, i;
+    int s, i;
 
-  if (!pointerp(id_list)) id_list = ({});
+    if (!pointerp(id_list)) id_list = ({});
 
-  // Adding many ids at once
-  if (pointerp(arg))
+    // Adding many ids at once
+    if (pointerp(arg))
     {
-      // Remove duplicate ids
-      s = sizeof(id_list);
-      if (s > 0)
-	for (i = (s - 1); i >= 0; i--)
-	  if (member(arg, id_list[i]) >= 0) arg -= ({ id_list[i] });
+	// Remove duplicate ids
+	s = sizeof(id_list);
+	if (s > 0)
+	    for (i = (s - 1); i >= 0; i--)
+		if (member(arg, id_list[i]) >= 0) arg -= ({ id_list[i] });
 
-      if (sizeof(arg) > 0) id_list += arg;
-      return;
+	if (sizeof(arg) > 0) id_list += arg;
+	return;
     }
 
-  if (stringp(arg))
-    if (member(id_list, arg) == -1) id_list += ({ arg });
+    if (stringp(arg))
+	if (member(id_list, arg) == -1) id_list += ({ arg });
 }
 
 // Avoid returning THE id_list - don't ask why :)  /Graah
@@ -154,26 +154,26 @@ string query_id_str() { return implode(id_list, "#"); }
 static nomask
 string *query_id_list()
 {
-  return id_list;
+    return id_list;
 }
 
 void
 set_short(mixed str)
 {
-	short_desc = str;
+    short_desc = str;
 }
 
 void
 set_long(mixed str)
 {
-  long_desc = str;
+    long_desc = str;
 }
 
 void
 set_invis(int i)
 {
-	if (intp(i)) invis_level = i;
-	else if (i) invis_level = 1;
+    if (intp(i)) invis_level = i;
+    else if (i) invis_level = 1;
 }
 
 /****************************************************************
@@ -185,40 +185,40 @@ set_invis(int i)
 varargs public string
 query_name(int mode, object who)
 {
-	if (invis_level && (!intp(mode) || mode < invis_level)) return "something";
-// Living.c has its own query_name, so this doesn't have to worry about
-// living things.
-	return id_name;
+    if (invis_level && (!intp(mode) || mode < invis_level)) return "something";
+    // Living.c has its own query_name, so this doesn't have to worry about
+    // living things.
+    return id_name;
 }
 
 varargs string
 query_short(int mode, object who)
 {
-	if (invis_level && (!intp(mode) || mode < invis_level)) return 0;
-	if (invis_level) {
-		if (invis_level >= IL_INVISIBLE) {
-		  if (invis_level >= IL_TOTALLY_INVISIBLE)
-			return sprintf("%s <totally invisible>",
-                          funcall(short_desc, mode, who));
-		  else return sprintf("%s <invisible>",
-                          funcall(short_desc, mode, who));
-		} else if (invis_level >= IL_HIDING) {
-		  if (invis_level >= IL_HIDDEN)
-		     return sprintf("%s <hidden>",
-                          funcall(short_desc, mode, who));
-		  else return sprintf("%s <hiding>",
-                          funcall(short_desc, mode, who));
-		} else return sprintf("%s <sneaking>",
-                          funcall(short_desc, mode, who));
-	}
-	return funcall(short_desc, mode, who);
+    if (invis_level && (!intp(mode) || mode < invis_level)) return 0;
+    if (invis_level) {
+	if (invis_level >= IL_INVISIBLE) {
+	    if (invis_level >= IL_TOTALLY_INVISIBLE)
+		return sprintf("%s <totally invisible>",
+		  funcall(short_desc, mode, who));
+	    else return sprintf("%s <invisible>",
+		  funcall(short_desc, mode, who));
+	} else if (invis_level >= IL_HIDING) {
+	    if (invis_level >= IL_HIDDEN)
+		return sprintf("%s <hidden>",
+		  funcall(short_desc, mode, who));
+	    else return sprintf("%s <hiding>",
+		  funcall(short_desc, mode, who));
+	} else return sprintf("%s <sneaking>",
+	      funcall(short_desc, mode, who));
+    }
+    return funcall(short_desc, mode, who);
 }
 
 varargs string
 query_long(string id, object who)
 {
-	if (long_desc) return funcall(long_desc, id, who);
-	else return "You see nothing unusual.";
+    if (long_desc) return funcall(long_desc, id, who);
+    else return "You see nothing unusual.";
 }
 
 int query_invis() { return invis_level; }
@@ -233,9 +233,9 @@ int query_invis() { return invis_level; }
 varargs public status
 id(string s, int invis_to_see, object who)
 {
-	if (invis_level && intp(invis_to_see) && invis_to_see < invis_level)
-		return 0;
-	return s == id_name || (id_list && member(id_list, s) >= 0);
+    if (invis_level && intp(invis_to_see) && invis_to_see < invis_level)
+	return 0;
+    return s == id_name || (id_list && member(id_list, s) >= 0);
 }
 
 // save_variables() and restore_variables() for saving items over reboot.
@@ -243,24 +243,24 @@ id(string s, int invis_to_see, object who)
 mapping
 save_variables()
 {
-	return ([
-		"id_name" : id_name
-// We have to take care that mappings won't be saved... :-/
-		,"short_desc" : (stringp(short_desc) ? short_desc : 0)
-		,"long_desc" : (stringp(long_desc) ? long_desc : 0)
-		,"id_list" : id_list
-		,"invis_level" : invis_level
-	]);
+    return ([
+      "id_name" : id_name
+      // We have to take care that mappings won't be saved... :-/
+      ,"short_desc" : (stringp(short_desc) ? short_desc : 0)
+      ,"long_desc" : (stringp(long_desc) ? long_desc : 0)
+      ,"id_list" : id_list
+      ,"invis_level" : invis_level
+    ]);
 }
 
 void
 restore_variables(mapping var)
 {
-	id_name = var["id_name"];
-	short_desc = var["short_desc"];
-	long_desc = var["long_desc"];
-	id_list = var["id_list"];
-	invis_level = var["invis_level"];
+    id_name = var["id_name"];
+    short_desc = var["short_desc"];
+    long_desc = var["long_desc"];
+    id_list = var["id_list"];
+    invis_level = var["invis_level"];
 }
 
 /******* compatibility functions ******/

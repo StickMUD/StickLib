@@ -60,7 +60,7 @@ more(mixed str)
 static void
 even_more(string cmd)
 {
-string text;
+    string text;
     int show, page;
 
     page = PAGESIZE;
@@ -68,22 +68,22 @@ string text;
     page -= 2;
 
     switch (cmd[0]) {
-      case '1'..'9':
+    case '1'..'9':
 	sscanf(cmd, "%d", show);
 	more_line = show - 1;
 	write("skipping...\n");
 	break;
-      case 'b':
+    case 'b':
 	more_line -= 2*page;
 	show = 1;
 	break;
-      case ' ': case 0:
+    case ' ': case 0:
 	show = 1;
 	break;
-      case 'q': case 'Q':
+    case 'q': case 'Q':
 	more_line = more_last;
 	break;
-      case 'h': case '?':
+    case 'h': case '?':
 	write("----\t-------------------------------\n\
 <enter>\tnext page\n\
 b\tprevious page\n\
@@ -95,31 +95,31 @@ q,Q\tquit more\n\
 /<r.e>\tsearch for <r.e> regular expression\n\
 n\tsearch for next occurrance of last r.e\n\
 ----\t-------------------------------\n"
-	      );
+	);
 	break;
-      case '=':
+    case '=':
 	printf("File: '%s' Line: %d/%d\n",
-	       more_file ? more_file : "--internal--",
-	       more_line, more_last);
+	  more_file ? more_file : "--internal--",
+	  more_line, more_last);
 	break;
-      case '/': case 'n':
+    case '/': case 'n':
 	if (cmd[1])
-		more_regexp = cmd[1..<1];
+	    more_regexp = cmd[1..<1];
 	show = more_search(more_regexp);
 	break;
-      default:
+    default:
 	write("Unknown command.\n");
     }
     if (more_line < 0) more_line = 0;
     if (show) {
 	int i, sz;
 
-        if (more_file &&
-            (more_line < more_pos || more_line >= more_pos + MAXLINES)) {
+	if (more_file &&
+	  (more_line < more_pos || more_line >= more_pos + MAXLINES)) {
 	    show = load_more_file( (more_line / MAXLINES) * MAXLINES );
 	}
 	if (show) {
-		text = "";
+	    text = "";
 	    for (i = page, sz = sizeof(more_text); i--;) {
 		if (more_line - more_pos >= sz && !load_more_file(more_line)) {
 		    more_line = more_last;
@@ -127,7 +127,7 @@ n\tsearch for next occurrance of last r.e\n\
 		}
 		text += more_text[(more_line++) - more_pos] + "\n";
 	    }
-		tell_me(text, 1);
+	    tell_me(text, 1);
 	}
     }
     if (more_line >= more_last) {
@@ -147,31 +147,31 @@ private int
 load_more_file(int line)
 {
     string tmp;
- 
+
     if (!more_file || (more_last > 0 && line >= more_last))
-        return 0;
- 
+	return 0;
+
     more_text = 0;
     // Kludge:
     if (!strstr(more_file, "//"))
-        more_file = more_file[1..];
- 
+	more_file = more_file[1..];
+
     if(!tmp = read_file(more_file, line+1))
     {
-        if(file_size(more_file) >= 75000)
-            tell_me("***TRUNCATING FILE OVER 75,000 BYTES***");
-        if(!tmp = read_file(more_file, line+1, MAXLINES)  ||  tmp == "")
-            return 0;
+	if(file_size(more_file) >= 75000)
+	    tell_me("***TRUNCATING FILE OVER 75,000 BYTES***");
+	if(!tmp = read_file(more_file, line+1, MAXLINES)  ||  tmp == "")
+	    return 0;
     }
- 
+
     more_text = explode(":\n" + tmp, "\n");
     // Following line changed from -1 to -2  --Colt
     // Neat. And now it skips last line... :-p -+ Doomdark +-
     more_text = more_text[1..<1];
     more_pos = line;
     if (!more_last) {
-        more_last = sizeof(more_text);
-        if (more_last == MAXLINES) more_last = file_lines(more_file);
+	more_last = sizeof(more_text);
+	if (more_last == MAXLINES) more_last = file_lines(more_file);
     }
     return 1;
 }
@@ -183,15 +183,15 @@ more_search(string str)
 	string *match;
 
 	match = regexp(more_text[(more_line-more_pos)..sizeof(more_text)-1],
-		       str);
+	  str);
 	if (!match) {
 	    write("Illegal pattern\n");
 	    return 0;
 	}
 	if (sizeof(match)) {
 	    more_line = member(
-		more_text[(more_line-more_pos)..sizeof(more_text)-1], match[0])
-		+ more_line;
+	      more_text[(more_line-more_pos)..sizeof(more_text)-1], match[0])
+	    + more_line;
 	    return 1;
 	}
 	if (more_file) {

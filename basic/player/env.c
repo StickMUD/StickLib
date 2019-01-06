@@ -13,10 +13,10 @@ int
 set_env (mixed env, mixed val)
 {
     if (!Env)
-       Env = ([ ]);
+	Env = ([ ]);
 
     if (!val)
-        Env = m_delete (Env, env);
+	Env = m_delete (Env, env);
     else {
 	if (!intp(val) && !stringp(val)) return 0;
 	Env[env] = val;
@@ -28,7 +28,7 @@ mixed
 query_env (mixed env)
 {
     if (!env || !Env)
-        return Env;
+	return Env;
 
     return Env[env];
 }
@@ -62,8 +62,8 @@ term_reset() {
 
 string  /* bright text on. vt100 and ansi: bold */
 term_bright_on() {
-/* temp fix */
-     if (!Env) Env = ([ ]);
+    /* temp fix */
+    if (!Env) Env = ([ ]);
     switch (Env["term"]) {
     case "ansi": case "vt100": return "\033[1m";
     default: return ""; }
@@ -72,17 +72,17 @@ term_bright_on() {
 string
 term_bright_off() {
     switch (Env["term"]) {
-      case "ansi": case "vt100": return "\033[0m";
-      default: return "";
+    case "ansi": case "vt100": return "\033[0m";
+    default: return "";
     }
 }
 
 string /* dim txet. */
 term_dim_on() {
     switch (Env["term"]) {
-      case "vt100": return "\033[2m";
-      case "ansi":  return "\033[35m"; /* ansi simulates dim with blue */
-      default: return ""; }
+    case "vt100": return "\033[2m";
+    case "ansi":  return "\033[35m"; /* ansi simulates dim with blue */
+    default: return ""; }
 }
 
 string
@@ -96,11 +96,11 @@ term_dim_off() {
 string
 bright_text(string s)
 {
-	return term_bright_on() + s + term_bright_off();
+    return term_bright_on() + s + term_bright_off();
 }
 
 string
 dim_text(string s)
 {
-	return term_dim_on() + s + term_dim_off();
+    return term_dim_on() + s + term_dim_off();
 }

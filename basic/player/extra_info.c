@@ -7,8 +7,8 @@ status set_spouse(string arg)
 {
     if (!arg)
     {
-        spouse = 0;
-        return 1;
+	spouse = 0;
+	return 1;
     }
 
     spouse = lower_case(arg);
@@ -18,13 +18,13 @@ status set_spouse(string arg)
 varargs mixed query_spouse(string arg)
 {
     if (!spouse)
-        spouse = 0;
+	spouse = 0;
 
     if (!arg)
-        return spouse;
+	return spouse;
 
     if (stringp(arg))
-        return (spouse == arg) ? 1 : 0;
+	return (spouse == arg) ? 1 : 0;
 
     return 0;
 }
@@ -33,8 +33,8 @@ status set_rlname(string arg)
 {
     if (!arg)
     {
-        rlname = 0;
-        return 1;
+	rlname = 0;
+	return 1;
     }
 
     rlname = capitalize(arg);
@@ -44,13 +44,13 @@ status set_rlname(string arg)
 varargs mixed query_rlname(string arg)
 {
     if (!rlname)
-        rlname = 0;
+	rlname = 0;
 
     if (!arg)
-        return rlname;
+	return rlname;
 
     if (stringp(arg))
-        return (rlname == arg) ? 1 : 0;
+	return (rlname == arg) ? 1 : 0;
 
     return 0;
 }
@@ -59,8 +59,8 @@ status set_location(string arg)
 {
     if (!arg)
     {
-        location = 0;
-        return 1;
+	location = 0;
+	return 1;
     }
 
     location = capitalize(arg);
@@ -70,13 +70,13 @@ status set_location(string arg)
 varargs mixed query_location(string arg)
 {
     if (!location)
-        location = 0;
+	location = 0;
 
     if (!arg)
-        return location;
+	return location;
 
     if (stringp(arg))
-        return (location == arg) ? 1 : 0;
+	return (location == arg) ? 1 : 0;
 
     return 0;
 }
@@ -85,8 +85,8 @@ status set_birthday(string arg)
 {
     if (!arg)
     {
-        birthday = 0;
-        return 1;
+	birthday = 0;
+	return 1;
     }
 
     birthday = arg;
@@ -96,13 +96,13 @@ status set_birthday(string arg)
 varargs mixed query_birthday(string arg)
 {
     if (!birthday)
-        birthday = 0;
+	birthday = 0;
 
     if (!arg)
-        return birthday;
+	return birthday;
 
     if (stringp(arg))
-        return (birthday == arg) ? 1 : 0;
+	return (birthday == arg) ? 1 : 0;
 
     return 0;
 }
@@ -111,8 +111,8 @@ status set_webpage(string arg)
 {
     if (!arg)
     {
-        webpage = 0;
-        return 1;
+	webpage = 0;
+	return 1;
     }
 
     webpage = lower_case(arg);
@@ -122,13 +122,13 @@ status set_webpage(string arg)
 varargs mixed query_webpage(string arg)
 {
     if (!webpage)
-        webpage = 0;
+	webpage = 0;
 
     if (!arg)
-        return webpage;
+	return webpage;
 
     if (stringp(arg))
-        return (webpage == arg) ? 1 : 0;
+	return (webpage == arg) ? 1 : 0;
 
     return 0;
 }
@@ -137,8 +137,8 @@ status set_icq(string arg)
 {
     if (!arg)
     {
-        icq = 0;
-        return 1;
+	icq = 0;
+	return 1;
     }
 
     icq = arg;
@@ -148,13 +148,13 @@ status set_icq(string arg)
 varargs mixed query_icq(string arg)
 {
     if (!icq)
-        icq = 0;
+	icq = 0;
 
     if (!arg)
-        return icq;
+	return icq;
 
     if (stringp(arg))
-        return (icq == arg) ? 1 : 0;
+	return (icq == arg) ? 1 : 0;
 
     return 0;
 }

@@ -30,64 +30,64 @@ static int spell_cost, spell_dam;
 void
 zap_object(object ob)
 {
-	ob -> attacked_by(this_object());
-	environment() -> tell_here(query_name(0,this_object())
-	+ " summons a flash from the sky.",this_object());
-	tell_me("You summon a flash from the sky.");
-	experience += (int) ob -> hit_player(100000);
-	tell_me("There is a big clap of thunder!\n\n");
+    ob -> attacked_by(this_object());
+    environment() -> tell_here(query_name(0,this_object())
+      + " summons a flash from the sky.",this_object());
+    tell_me("You summon a flash from the sky.");
+    experience += (int) ob -> hit_player(100000);
+    tell_me("There is a big clap of thunder!\n\n");
 }
 
 void
 missile_object(object ob)
 {
-	if (spell_points < 10) {
-		tell_me("Too low on power.");
-		return 0;
-	}
+    if (spell_points < 10) {
+	tell_me("Too low on power.");
+	return 0;
+    }
 
-	if (!attack_object(ob, 1)) {
-		tell_me("Can't cast magic missile!");
-		return 0;
-	}
-	spell_name = "magic missile";
-	spell_dam = random(20);
-	spell_cost = 10;
+    if (!attack_object(ob, 1)) {
+	tell_me("Can't cast magic missile!");
+	return 0;
+    }
+    spell_name = "magic missile";
+    spell_dam = random(20);
+    spell_cost = 10;
 }
 
 void
 shock_object(object ob)
 {
-	if (spell_points < 15) {
-		tell_me("Too low on power.");
-		return 0;
-	}
+    if (spell_points < 15) {
+	tell_me("Too low on power.");
+	return 0;
+    }
 
-	if (!attack_object(ob, 1)) {
-		tell_me("Can't cast shock!");
-		return 0;
-	}
+    if (!attack_object(ob, 1)) {
+	tell_me("Can't cast shock!");
+	return 0;
+    }
 
-	spell_name = "shock";
-	spell_dam = random(30);
-	spell_cost = 15;
+    spell_name = "shock";
+    spell_dam = random(30);
+    spell_cost = 15;
 }
 
 void
 fire_ball_object(object ob)
 {
-	if (spell_points < 20) {
-		tell_me("Too low on power.");
-		return 0;
-	}
+    if (spell_points < 20) {
+	tell_me("Too low on power.");
+	return 0;
+    }
 
-	if (!attack_object(ob, 1)) {
-		tell_me("Can't cast fireball!");
-		return 0;
-	}
-	spell_name = "fire ball";
-	spell_dam = random(40);
-	spell_cost = 20;
+    if (!attack_object(ob, 1)) {
+	tell_me("Can't cast fireball!");
+	return 0;
+    }
+    spell_name = "fire ball";
+    spell_dam = random(40);
+    spell_cost = 20;
 }
 
 /* Hope this works: one can now add more combat spells easily.
@@ -97,13 +97,13 @@ fire_ball_object(object ob)
 void
 initiate_spell(object ob, string spn, int spd, int spc)
 {
-	if (!ob) return;
-	if (spell_points < spc) {
-		tell_me("Too low on power.");
-		return;
-	}
-	if (!attack_object(ob, 1)) return 0;
-	spell_name = spn;
-	spell_dam = spd;
-	spell_cost = spc;
+    if (!ob) return;
+    if (spell_points < spc) {
+	tell_me("Too low on power.");
+	return;
+    }
+    if (!attack_object(ob, 1)) return 0;
+    spell_name = spn;
+    spell_dam = spd;
+    spell_cost = spc;
 }

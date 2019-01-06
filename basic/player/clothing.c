@@ -33,7 +33,7 @@ set_clothes(mapping c)
     if (!clothes) init_clothes();
 
     if (mappingp(c)) clothes = c;
-/* Added this so we won't set other values than mappings. */
+    /* Added this so we won't set other values than mappings. */
 }
 
 /*
@@ -51,17 +51,9 @@ wear_clothes(string cn, string s, int value, int weight)
 	return 0;
     }
 
-/* We don't have to check this (?) */
-#if 0
-    if (member((string *)CLOTHING_D->query_cloth_types(), cn) == -1) {
-	TOBJ->tell_me("You can't wear any \"" + cn + "\"!\n");
-	return 0;
-    }
-#endif
-
     TOBJ->tell_me("You wear " + s + ".");
     environment(TOBJ) -> tell_here(TNAME +
-	" wears " + s + ".", TOBJ);
+      " wears " + s + ".", TOBJ);
 
     clothes[cn] = ({ s, value, weight });
 
@@ -71,36 +63,36 @@ wear_clothes(string cn, string s, int value, int weight)
 int
 strip_clothes(string cn)
 {
-  object ob;
-  string tmp;
+    object ob;
+    string tmp;
 
-  if (!clothes) init_clothes();
+    if (!clothes) init_clothes();
 
-  tmp = lower_case(cn);
-  if ((tmp == "verkkopaita") || (tmp == "paita")) tmp = "shirt";
-  else if ((tmp == "verkkarit") || (tmp == "suomi-verkkarit")) tmp = "dress";
+    tmp = lower_case(cn);
+    if ((tmp == "verkkopaita") || (tmp == "paita")) tmp = "shirt";
+    else if ((tmp == "verkkarit") || (tmp == "suomi-verkkarit")) tmp = "dress";
 
-  if (!clothes[cn])
+    if (!clothes[cn])
     {
-      if (!clothes[tmp])
+	if (!clothes[tmp])
 	{
-	  notify_fail("You aren't wearing any " + cn + ".\n");
-	  return 0;
+	    notify_fail("You aren't wearing any " + cn + ".\n");
+	    return 0;
 	}
 
-      cn = tmp;
+	cn = tmp;
     }
 
     ob = clone_object(CLOTHING_FILE);
 
     if (!ob) {
-        notify_fail("You can't, it's cursed!\n");
+	notify_fail("You can't, it's cursed!\n");
 	return 0;
     }
 
     TOBJ->tell_me("You take off " + clothes[cn][0] + ".");
     environment(TOBJ) -> tell_here(TNAME +
-	" takes off " + clothes[cn][0] + ".", TOBJ);
+      " takes off " + clothes[cn][0] + ".", TOBJ);
 
     ob->set_name(cn);
     ob->set_short(clothes[cn][0]);
@@ -112,14 +104,14 @@ strip_clothes(string cn)
 
     // Kludge these buggy clothes
     if (clothes[cn][0] == "Verkkopaita")
-      ob->add_id(({ "verkkopaita", "paita" }));
+	ob->add_id(({ "verkkopaita", "paita" }));
     else if (clothes[cn][0] == "Suomi-verkkarit")
-      ob->add_id(({ "suomi-verkkarit", "verkkarit" }));
+	ob->add_id(({ "suomi-verkkarit", "verkkarit" }));
 
     if (!TOBJ->add_weight(clothes[cn][2])) {
-        TOBJ->tell_me("Oops, it's too heavy. You have to drop it.");
+	TOBJ->tell_me("Oops, it's too heavy. You have to drop it.");
 	environment(TOBJ) -> tell_here(TNAME +
-	    " drops " + cn + ".\n", TOBJ);
+	  " drops " + cn + ".\n", TOBJ);
 	move_object(ob, environment(TOBJ));
     } else move_object(ob, TOBJ);
 
@@ -140,28 +132,28 @@ describe_clothing()
     s = sizeof(ind);
 
     if (s < 1) {
-//        write("Nothing.\n");
+	//        write("Nothing.\n");
 	return;
     }
 
     for (i = 0; i < s; i++)
-        write(capitalize(clothes[ind[i]][0]) + " (worn).\n");
+	write(capitalize(clothes[ind[i]][0]) + " (worn).\n");
 }
 
 string
 query_clothing_text()
 {
-int i, s;
-mixed c;
-string txt;
-	if (!clothes ||
-		!(c = m_values(clothes)) ||
-            !(s = sizeof(c))
-//           ) return "Nothing.";
-		) return "";
+    int i, s;
+    mixed c;
+    string txt;
+    if (!clothes ||
+      !(c = m_values(clothes)) ||
+      !(s = sizeof(c))
+      //           ) return "Nothing.";
+    ) return "";
 
-	for (i = 0, txt = ""; i < s; i++)
-		txt += c [i] [0] + " (worn).\n";
-	if ((i = sizeof(txt)) > 1)
-		return txt[0..i-2];
+    for (i = 0, txt = ""; i < s; i++)
+	txt += c [i] [0] + " (worn).\n";
+    if ((i = sizeof(txt)) > 1)
+	return txt[0..i-2];
 }

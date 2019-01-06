@@ -31,81 +31,71 @@ static int _value_plr_client;	// Client player is using, if any.
 int
 query_client()
 {
-	return _value_plr_client;
+    return _value_plr_client;
 }
 
 int
 set_client(mixed val)
 {
-mixed x;
- if (intp(val))
-  x = val;
-	else if (member(CLIENT_MURDER_ID, val) >= 0)
-		x = CLIENT_MURDER;
-	else if (!val || member(CLIENT_NONE_ID, val) >= 0)
-		x = CLIENT_NONE;
-	else return -1;
-	return (_value_plr_client = x);
+    mixed x;
+    if (intp(val))
+	x = val;
+    else if (member(CLIENT_MURDER_ID, val) >= 0)
+	x = CLIENT_MURDER;
+    else if (!val || member(CLIENT_NONE_ID, val) >= 0)
+	x = CLIENT_NONE;
+    else return -1;
+    return (_value_plr_client = x);
 }
 
 mixed
 do_client_command(string cmd, string arg)
 {
-mixed val;
-mixed x, y;
+    mixed val;
+    mixed x, y;
 
-  if (arg)
+    if (arg)
 	arg = lower_case(arg);
 
-  switch (cmd) {
-  case "set":
-  case "SET":
+    switch (cmd) {
+    case "set":
+    case "SET":
 
 	if (sscanf(arg, "%s=%s", arg, val) < 2)
-		return sprintf("ERROR: Client-program sent an invalid set-string: '%s'.",
-			arg);
+	    return sprintf("ERROR: Client-program sent an invalid set-string: '%s'.",
+	      arg);
 	switch (arg) {
 	case "screen":
-		if (sscanf(val, "%d%t%d", x, y) < 2 &&
-		  sscanf(val, "%d,%.0t%d", x, y) < 2)
-			return sprintf("ERROR: Client-program tried to set screen size\
+	    if (sscanf(val, "%d%t%d", x, y) < 2 &&
+	      sscanf(val, "%d,%.0t%d", x, y) < 2)
+		return sprintf("ERROR: Client-program tried to set screen size\
  to an invalid value: '%s'.", val);
-		if (x < TELL_MIN_X)
-			x = TELL_MIN_X;
-		if (y < TELL_MIN_Y)
-			y = TELL_MIN_Y;
-#if 0
-		set_player_value(VAL_PLR_SCREEN_X, x);
-		set_player_value(VAL_PLR_SCREEN_Y, y);
-#else
-/* StickMUD-way is: */
-		set_env("columns", x);
-		set_env("rows", y);
-#endif
-		break;
+	    if (x < TELL_MIN_X)
+		x = TELL_MIN_X;
+	    if (y < TELL_MIN_Y)
+		y = TELL_MIN_Y;
+
+	    set_env("columns", x);
+	    set_env("rows", y);
+
+	    break;
 
 	case "client":
 
-		if (set_client(val) < 0)
-			return sprintf("ERROR: Trying to set an unknown\
+	    if (set_client(val) < 0)
+		return sprintf("ERROR: Trying to set an unknown\
  value ('%s') for attribute 'client'.", val);
-		break;
+	    break;
 
 	default:
-		return sprintf("ERROR: Client program tried to set an unknown value: '%s'."
-		,arg);
+	    return sprintf("ERROR: Client program tried to set an unknown value: '%s'."
+	      ,arg);
 	}
 	break;
-  default:
+    default:
 	if (arg)
-	  return sprintf("ERROR: Client-program sent an unknown command: '%s %s'.",
-		cmd, arg);
+	    return sprintf("ERROR: Client-program sent an unknown command: '%s %s'.",
+	      cmd, arg);
 	return sprintf("ERROR: Client-program sent an unknown command: '%s'.", cmd);
-  }
-
-#if 0
-  if (arg)
-	return sprintf("DEBUG: Succesfully executed client-command '%s %s'.", cmd, arg);
-  return sprintf("DEBUG: Succesfully executed client-command '%s'.", cmd);
-#endif
+    }
 }

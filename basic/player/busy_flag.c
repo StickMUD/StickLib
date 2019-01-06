@@ -17,5 +17,5 @@ static int busy_flag;
 int
 add_busy_flag(int flag)
 {
-	return (busy_flag += flag);	// Kludged even more by Doomdark.
+    return (busy_flag += flag);	// Kludged even more by Doomdark.
 }

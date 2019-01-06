@@ -24,12 +24,7 @@ string query_desc() { return desc; }
 string
 query_title()
 {
-string s;
-#if 0
-	if (partyId && (s = query_party(PARTY_TITLE)))
-		return sprintf("%s [Party: %s]", title, s);
-#endif
-	return title;
+    return title;
 }
 
 // Set-functions:
@@ -40,21 +35,21 @@ static status
 desc_cmd(string str)
 {
     if (str=="clear" || str=="none" || str=="remove") {
-        tell_me("Description cleared.");
-        desc = 0;
-        return 1;
+	tell_me("Description cleared.");
+	desc = 0;
+	return 1;
     }
 
     tell_me("Your description is:\n" + (desc ? desc : "none"));
 
     if (str != "set")
-       tell_me(
-"Use command 'desc set' to set your description, and 'desc clear' to\
+	tell_me(
+	  "Use command 'desc set' to set your description, and 'desc clear' to\
  get rid of it.");
     else {
-       tell_me(
-"Set your description (max. 5 lines). Type ** to end, and ~q to cancel.\n"+
-"Note that each line may have a maximum of 79 characters.");
+	tell_me(
+	  "Set your description (max. 5 lines). Type ** to end, and ~q to cancel.\n"+
+	  "Note that each line may have a maximum of 79 characters.");
 	tell_me("]",1);
 	desc_set = "";
 	desc_ln = 0;
@@ -68,8 +63,8 @@ static void
 descset(string str)
 {
     if (str == "~q") {
-       tell_me("Canceled desc set.");
-       return;
+	tell_me("Canceled desc set.");
+	return;
     }
 
     if (str == "**" || desc_ln > 5) {
@@ -79,8 +74,8 @@ descset(string str)
     }
 
     if (sizeof(str) > 79) {
-       tell_me("Too long line - it was truncated.");
-       str = str[0..79];
+	tell_me("Too long line - it was truncated.");
+	str = str[0..79];
     }
 
 
@@ -97,26 +92,26 @@ descset(string str)
 int
 set_title(string t)
 {
-int i;
-string tit;
+    int i;
+    string tit;
 
-	if (!t) {
-		tell_me("Your title is " + title + ".");
-		return 1;
-	}
-	if (t == "empty" || t == "none" || t == "clear") {
-		title = 0;
-		return 1;
-	}
-
-	if (sizeof(t) > 60)
-		t = t[0..59];	// Max 60 characters
-
-	tit = "";
-	for (i = 0; i < sizeof(t); i++)
-	if (lower_case(t[i..i]) >= " " && lower_case(t) <= "z")
-		tit += t[i..i];
-
-	title = tit;
+    if (!t) {
+	tell_me("Your title is " + title + ".");
 	return 1;
+    }
+    if (t == "empty" || t == "none" || t == "clear") {
+	title = 0;
+	return 1;
+    }
+
+    if (sizeof(t) > 60)
+	t = t[0..59];	// Max 60 characters
+
+    tit = "";
+    for (i = 0; i < sizeof(t); i++)
+	if (lower_case(t[i..i]) >= " " && lower_case(t) <= "z")
+	    tit += t[i..i];
+
+    title = tit;
+    return 1;
 }

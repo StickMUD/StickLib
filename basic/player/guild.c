@@ -38,10 +38,10 @@ varargs void tell_me(string s, status a, status b);
 
 // Some variables defined in /basic/living/guild.c!
 string guild_object_name;	// Filename of our guild object.
-				// This is cloned when player logs in.
+// This is cloned when player logs in.
 static mapping guild_commands;	// Commands guild object has.
 string guild_save;		// Data guild object wants to save.
-				// Can be other than string too.
+// Can be other than string too.
 static int guild_melee_damage_rate;	// How well this guild does damage...
 static int guild_ac_rate;		// Does this guild add to ac rate?
 
@@ -54,25 +54,25 @@ static int guild_ac_rate;		// Does this guild add to ac rate?
 public mixed
 query_guild_save()
 {
-	return guild_save;
+    return guild_save;
 }
 
 public object
 query_guild_object()
 {
-	return guild_object;
+    return guild_object;
 }
 
 public string
 query_guild_object_name()
 {
-	return guild_object_name;
+    return guild_object_name;
 }
 
 mapping
 query_guild_commands()
 {
-	return guild_commands;
+    return guild_commands;
 }
 
 /****************************************************************
@@ -84,36 +84,36 @@ query_guild_commands()
 public void
 set_guild(string g)
 {
-	if (!(guild = g)) {
-		guild_melee_damage_rate = guild_ac_rate = guild_object
-		= guild_save = guild_object_name = GuildFlags =
-		GuildHooks = 0;
-	}
+    if (!(guild = g)) {
+	guild_melee_damage_rate = guild_ac_rate = guild_object
+	= guild_save = guild_object_name = GuildFlags =
+	GuildHooks = 0;
+    }
 }
 
 public void
 set_guild_save(mixed s)
 {
-	guild_save = s;
+    guild_save = s;
 }
 
 public void
 set_guild_object(object ob)
 {
-	guild_object = ob;
+    guild_object = ob;
 }
 
 public void
 set_guild_object_name(string s)
 {
-	guild_object_name = s;
+    guild_object_name = s;
 }
 
 void
 set_guild_commands(mapping m)
 {
-  if (!m || mappingp(m))
-    guild_commands = m;
+    if (!m || mappingp(m))
+	guild_commands = m;
 }
 
 // With this you can set either a single hook or all hooks!
@@ -121,45 +121,45 @@ set_guild_commands(mapping m)
 varargs void
 set_guild_hook(mixed a, mixed b)
 {
-  int i, *x;
-  mixed *y;
+    int i, *x;
+    mixed *y;
 
 #ifdef GUILDLESS
-  // Testplayers and coders are still in guild.
-  if (!this_object()->query_coder_level() &&
+    // Testplayers and coders are still in guild.
+    if (!this_object()->query_coder_level() &&
       !this_object()->query_is_testplayer())
-    return;
+	return;
 #endif
 
-  if (mappingp(a)) {
-    GuildHooks = ([ ]);
-    x = m_indices(a);
-    y = m_values(a);
-    i = sizeof(x);
-    while (--i >= 0) {
-      if (y[i]) {
-	GuildFlags |= (1 << x[i]);
-	GuildHooks[x[i]] = y[i];
-      } else {
-	GuildFlags &= (~(1 << x[i]));
-	GuildHooks[x[i]] = 0;
-      }
+    if (mappingp(a)) {
+	GuildHooks = ([ ]);
+	x = m_indices(a);
+	y = m_values(a);
+	i = sizeof(x);
+	while (--i >= 0) {
+	    if (y[i]) {
+		GuildFlags |= (1 << x[i]);
+		GuildHooks[x[i]] = y[i];
+	    } else {
+		GuildFlags &= (~(1 << x[i]));
+		GuildHooks[x[i]] = 0;
+	    }
+	}
+    } else {
+	if (!intp(a)) return;
+	if (!a) {
+	    GuildFlags = GuildHooks = 0;
+	    return;
+	}
+	if (!b)
+	    GuildFlags &= (~(1 << a));
+	else
+	    GuildFlags |= (1 << a);
+	GuildHooks[a] = b;
     }
-  } else {
-    if (!intp(a)) return;
-    if (!a) {
-      GuildFlags = GuildHooks = 0;
-      return;
-    }
-    if (!b)
-      GuildFlags &= (~(1 << a));
-    else
-      GuildFlags |= (1 << a);
-    GuildHooks[a] = b;
-  }
 
-  // We need to update this too.  -+ 10-mar-95, Doomdark +-
-  _busy = GuildHooks[G_HOOK_PREVENT_ATTACK];
+    // We need to update this too.  -+ 10-mar-95, Doomdark +-
+    _busy = GuildHooks[G_HOOK_PREVENT_ATTACK];
 }
 
 /****************************************************************
@@ -175,18 +175,18 @@ set_guild_hook(mixed a, mixed b)
 public int
 guild_melee_damage_rate(int dmg)
 {
-  object gob;
-  int r;
+    object gob;
+    int r;
 
 #ifdef GUILDLESS
-  // Testplayers and coders are still in guild.
-  if (!this_object()->query_coder_level() &&
+    // Testplayers and coders are still in guild.
+    if (!this_object()->query_coder_level() &&
       !this_object()->query_is_testplayer())
-    return dmg;
+	return dmg;
 #endif
 
-  if (guild_melee_damage_rate) return guild_melee_damage_rate * dmg / 100;
-  return dmg;
+    if (guild_melee_damage_rate) return guild_melee_damage_rate * dmg / 100;
+    return dmg;
 }
 
 /****************************************************************
@@ -198,30 +198,30 @@ guild_melee_damage_rate(int dmg)
 void
 initialize_guild()
 {
-  string s;
+    string s;
 
-  if (!stringp(guild_object_name)) return;
-  if ((s = catch(guild_object = clone_object(guild_object_name))) ||
+    if (!stringp(guild_object_name)) return;
+    if ((s = catch(guild_object = clone_object(guild_object_name))) ||
       !guild_object) {
-    tell_me(
-"Error in initializing your guild object. Please report this to either\
+	tell_me(
+	  "Error in initializing your guild object. Please report this to either\
  your guild coder, or (co)admins."+(s ? ("\nError code: \""+s+"\"") : ""));
-  } else {
-    // UGH! Have to be paranoid for buggy init() and initialize_guild()s... :-/
-    if (catch(move_object(guild_object, this_object())) ||
-	catch(guild_object->initialize_guild(guild_save))) {
-      tell_me("ERROR: Problems with initializing guild object!");
     } else {
-      guild_commands = (mapping) guild_object -> query_guild_commands();
+	// UGH! Have to be paranoid for buggy init() and initialize_guild()s... :-/
+	if (catch(move_object(guild_object, this_object())) ||
+	  catch(guild_object->initialize_guild(guild_save))) {
+	    tell_me("ERROR: Problems with initializing guild object!");
+	} else {
+	    guild_commands = (mapping) guild_object -> query_guild_commands();
+	}
     }
-  }
 }
 
 void
 save_guild(int msg)
 {
-  if (guild_object) {
-    guild_save = (string) guild_object -> query_guild_save();
-    if (msg) tell_me("Saving guild data.");
-  }
+    if (guild_object) {
+	guild_save = (string) guild_object -> query_guild_save();
+	if (msg) tell_me("Saving guild data.");
+    }
 }

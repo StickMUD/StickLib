@@ -3,8 +3,8 @@
 static string *newmmsgout,*newmmsgin; /* arrays of new messages when going
 					 invis/vis */
 reset_msg() {
-/* New messages when going invis/vis for high lords and wizards, some guilds
-   may want to use these too */
+    /* New messages when going invis/vis for high lords and wizards, some guilds
+       may want to use these too */
     newmmsgin=({
       "arrives in a puff of smoke",
       "returns in the existence",
