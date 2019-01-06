@@ -10,11 +10,11 @@ static object guild_object;
 string
 query_guild()
 {
-	return guild;
+    return guild;
 }
 
 void
 set_guild(string s)
 {
-	guild = s;
+    guild = s;
 }

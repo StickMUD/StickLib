@@ -52,14 +52,11 @@ query_random_luck()
     /* Let's be paranoid with this. Game has crashed with this stuff. */
     /* Unlucky? */
     if (l < 0) {
-        l = -l;
+	l = -l;
 	return (-(random(l)));
     }
     /* Lucky? */
     else if (l > 0) return random(l);
 
     return 0;
-#if 0
-    return (1 - random(3)); /* Luck zero - actual adjustment -1, 0 or 1 */
-#endif
 }

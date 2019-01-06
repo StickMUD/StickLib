@@ -16,59 +16,59 @@ status query_defend_master() { return defend_master; }
 status
 set_master(object ob)
 {
-  if (!ob)
+    if (!ob)
     {
-      if (master) master->remove_pet(this_object());
-      master = 0;
-      return 0;
+	if (master) master->remove_pet(this_object());
+	master = 0;
+	return 0;
     }
 
-  if (ob == this_object()) return 0; /* Can't be its own master */
+    if (ob == this_object()) return 0; /* Can't be its own master */
 
-  /* Don't allow loops! They jam attacking and moving. */
-  if (ob && ((object)ob->query_master() == this_object()))
+    /* Don't allow loops! They jam attacking and moving. */
+    if (ob && ((object)ob->query_master() == this_object()))
     {
-      /* There isn't any proper error message efun for these... */
-      write("Monster tried to be a master of its own master!\n");
-      return 0;
+	/* There isn't any proper error message efun for these... */
+	write("Monster tried to be a master of its own master!\n");
+	return 0;
     }
 
-  master = ob;
-  follow_master = 1;
-  defend_master = 1;
+    master = ob;
+    follow_master = 1;
+    defend_master = 1;
 
-  return (status)master->add_pet(this_object());
+    return (status)master->add_pet(this_object());
 }
 
 status
 add_pet(object ob)
 {
-  int i;
-  object *p;
+    int i;
+    object *p;
 
-  if (!ob) return 0;
-  if (!pointerp(pets)) pets = ({});
-  if (member(pets, ob) == -1) pets += ({ ob });
+    if (!ob) return 0;
+    if (!pointerp(pets)) pets = ({});
+    if (member(pets, ob) == -1) pets += ({ ob });
 
-  p = ({});
+    p = ({});
 
-  for (i = sizeof(pets) - 1; i >= 0; i--)
+    for (i = sizeof(pets) - 1; i >= 0; i--)
     {
-      if (pets[i] && living(pets[i])) p += ({ pets[i] });
+	if (pets[i] && living(pets[i])) p += ({ pets[i] });
     }
 
-  pets = p;
+    pets = p;
 
-  return 1;
+    return 1;
 }
 
 status
 remove_pet(object ob)
 {
-  if (!pointerp(pets)) return 0;
-  if (member(pets, ob) == -1) return 0;
-  pets -= ({ ob });
-  return 1;
+    if (!pointerp(pets)) return 0;
+    if (member(pets, ob) == -1) return 0;
+    pets -= ({ ob });
+    return 1;
 }
 
 void set_follow_master(status x) { follow_master = x; }

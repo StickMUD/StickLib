@@ -1812,14 +1812,3 @@ forget_hunted()
 	}
     }
 }
-
-/****************************************************************
-*								*
-*	 Compatibility-section... NOT to be USED!		*
-*								*
-****************************************************************/
-
-// Use 'is_npc()' instead.
-status query_npc() { return liv_Flags & F_LIV_IS_NPC; }
-
-#include "/basic/living/debug.c"

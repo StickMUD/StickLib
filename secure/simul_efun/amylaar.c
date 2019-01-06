@@ -34,7 +34,7 @@ static int RebootTime;
 
 void show_fortune()
 {
-  write("Fortune is not available at the moment.\n");
+    write("Fortune is not available at the moment.\n");
 }
 
 void localcmd() {
@@ -52,13 +52,6 @@ string version() {
     return __VERSION__;
 }
 
-#if 0
-// Nope. Let's let it be like it should.
-mapping m_delete(mapping m, mixed key) {
-    return efun::m_delete(copy(m), key);
-}
-#endif
-
 /* Hmmh. An old outdated simulated efun. Is there any use
  * for it?
  */
@@ -66,13 +59,16 @@ void add_worth(int value, object ob) {
     mixed old;
 #ifdef COMPAT_FLAG
     switch (explode(object_name(previous_object()), "/")[0]) {
+#if 0
+    }
+#endif
 #else
     switch (explode(object_name(previous_object()), "/")[1]) {
 #endif
-	case "bin":
-	case "lib":
-      case "std":
-      case "room":
+    case "bin":
+    case "lib":
+    case "std":
+    case "room":
 	break;
     }
     if (!ob) {
@@ -80,7 +76,7 @@ void add_worth(int value, object ob) {
 	    return;
     }
     if (intp(old = get_extra_wizinfo(ob)))
-        set_extra_wizinfo(ob, old + value);
+	set_extra_wizinfo(ob, old + value);
 }
 
 #if 0
@@ -91,9 +87,9 @@ void wizlist(string name) {
     mixed *b;
 
     if (!name) {
-        name = this_player()->query_real_name();
-        if (!name)
-            return;
+	name = this_player()->query_real_name();
+	if (!name)
+	    return;
     }
     a = transpose_array(wizlist_info());
     cmds = a[WL_COMMANDS];
@@ -104,32 +100,32 @@ void wizlist(string name) {
     a[0] = a[WL_COMMANDS];
     a[WL_COMMANDS] = cmds;
     if ((pos = member(a[WL_NAME], name)) < 0 && name != "ALL")
-        return;
+	return;
     b = allocate(sizeof(cmds));
     for (i = sizeof(cmds); i;) {
-        b[<i] = i;
-        total_cmd += cmds[--i];
+	b[<i] = i;
+	total_cmd += cmds[--i];
     }
     a = transpose_array(a + ({b}) );
     if (name != "ALL") {
-        if (pos + 18 < sizeof(cmds)) {
-            a = a[pos-2..pos+2]+a[<15..];
-        } else if (pos < sizeof(cmds) - 13) {
-            a = a[pos-2..];
-        } else {
-            a = a[<15..];
-        }
+	if (pos + 18 < sizeof(cmds)) {
+	    a = a[pos-2..pos+2]+a[<15..];
+	} else if (pos < sizeof(cmds) - 13) {
+	    a = a[pos-2..];
+	} else {
+	    a = a[<15..];
+	}
     }
     write("\nWizard top score list\n\n");
     if (total_cmd == 0)
-        total_cmd = 1;
+	total_cmd = 1;
     for (i = sizeof(a); i; ) {
-        b = a[<i--];
-        printf("%-15s %5d %2d%% (%d)\t[%4dk,%5d] %6d %d\n",
-          b[WL_NAME], b[WL_COMMANDS], b[WL_COMMANDS] * 100 / total_cmd, b[<1],
-          b[WL_EVAL_COST] / 1000,
-          b[WL_HEART_BEATS], b[WL_EXTRA], b[WL_ARRAY_TOTAL]
-        );
+	b = a[<i--];
+	printf("%-15s %5d %2d%% (%d)\t[%4dk,%5d] %6d %d\n",
+	  b[WL_NAME], b[WL_COMMANDS], b[WL_COMMANDS] * 100 / total_cmd, b[<1],
+	  b[WL_EVAL_COST] / 1000,
+	  b[WL_HEART_BEATS], b[WL_EXTRA], b[WL_ARRAY_TOTAL]
+	);
     }
     printf("\nTotal         %7d     (%d)\n\n", total_cmd, sizeof(cmds));
 }
@@ -142,16 +138,16 @@ varargs void wizlist(string name)
     mixed *b;
 
     if (!name) {
-        name = this_player()->query_real_name();
-        if (!name)
-        {
-            write("Need to provide a name or 'ALL' to the wizlist function.\n");
-            return;
-        }
+	name = this_player()->query_real_name();
+	if (!name)
+	{
+	    write("Need to provide a name or 'ALL' to the wizlist function.\n");
+	    return;
+	}
     }
     a = transpose_array(wizlist_info());
     cmds = a[WL_COMMANDS];
-        a[WL_COMMANDS] = a[0];
+    a[WL_COMMANDS] = a[0];
     a[0] = cmds;
 
     a = unmkmapping(apply(#'mkmapping, a));
@@ -161,44 +157,44 @@ varargs void wizlist(string name)
 
     if ((pos = member(a[WL_NAME], name)) < 0 && name != "ALL")
     {
-        write("No wizlist info for '"+name+"' found.\n");
-        return;
+	write("No wizlist info for '"+name+"' found.\n");
+	return;
     }
     b = allocate(sizeof(cmds));
     for (i = sizeof(cmds); i;) {
-        b[<i] = i;
-        total_cmd += cmds[--i];
+	b[<i] = i;
+	total_cmd += cmds[--i];
     }
     a = transpose_array(a + ({b}) );
     if (name != "ALL") {
-        if (pos + 18 < sizeof(cmds)) {
-            a = a[pos-2..pos+2]+a[<15..];
-        } else if (pos < sizeof(cmds) - 13) {
-            a = a[pos-2..];
-        } else {
-            a = a[<15..];
-        }
+	if (pos + 18 < sizeof(cmds)) {
+	    a = a[pos-2..pos+2]+a[<15..];
+	} else if (pos < sizeof(cmds) - 13) {
+	    a = a[pos-2..];
+	} else {
+	    a = a[<15..];
+	}
     }
     write("\nWizard top score list\n\n");
     if (total_cmd == 0)
-        total_cmd = 1;
+	total_cmd = 1;
     for (i = sizeof(a); i; ) {
-        b = a[<i--];
-        if (b[WL_GIGACOST] > 1000)
-            printf("%-15s %5d %2d%% (%d)\t[%d%4dk,%5d] %6d %d\n",
-              b[WL_NAME], b[WL_COMMANDS],
-              b[WL_COMMANDS] * 100 / total_cmd, b[<1],
-              b[WL_GIGACOST] / 1000,
-              b[WL_COST] / 1000 + (b[WL_GIGACOST] % 1000) * 1000000000,
-              b[WL_HEART_BEATS], b[WL_EXTRA], b[WL_ARRAY_TOTAL]
-            );
-    else
-            printf("%-15s %5d %2d%% (%d)\t[%4dk,%5d] %6d %d\n",
-              b[WL_NAME], b[WL_COMMANDS],
-              b[WL_COMMANDS] * 100 / total_cmd, b[<1],
-              b[WL_COST] / 1000 + (b[WL_GIGACOST] % 1000) * 1000000000,
-              b[WL_HEART_BEATS], b[WL_EXTRA], b[WL_ARRAY_TOTAL]
-            );
+	b = a[<i--];
+	if (b[WL_GIGACOST] > 1000)
+	    printf("%-15s %5d %2d%% (%d)\t[%d%4dk,%5d] %6d %d\n",
+	      b[WL_NAME], b[WL_COMMANDS],
+	      b[WL_COMMANDS] * 100 / total_cmd, b[<1],
+	      b[WL_GIGACOST] / 1000,
+	      b[WL_COST] / 1000 + (b[WL_GIGACOST] % 1000) * 1000000000,
+	      b[WL_HEART_BEATS], b[WL_EXTRA], b[WL_ARRAY_TOTAL]
+	    );
+	else
+	    printf("%-15s %5d %2d%% (%d)\t[%4dk,%5d] %6d %d\n",
+	      b[WL_NAME], b[WL_COMMANDS],
+	      b[WL_COMMANDS] * 100 / total_cmd, b[<1],
+	      b[WL_COST] / 1000 + (b[WL_GIGACOST] % 1000) * 1000000000,
+	      b[WL_HEART_BEATS], b[WL_EXTRA], b[WL_ARRAY_TOTAL]
+	    );
     }
     printf("\nTotal         %7d     (%d)\n\n", total_cmd, sizeof(cmds));
 }
@@ -226,9 +222,9 @@ exclude_array(mixed *arr, int from, int to)
  * Warning:       elements in the array will have been reshuffled somewhat.
  */
 public mixed * exclude_element (mixed *arr, int index) {
-        arr[index] = arr[0];
-        // return slice_array (arr, 1, sizeof (arr));
-        return arr[1..sizeof (arr)];
+    arr[index] = arr[0];
+    // return slice_array (arr, 1, sizeof (arr));
+    return arr[1..sizeof (arr)];
 }
 
 /*************************************************************************/
@@ -263,9 +259,9 @@ break_string(string str, int width, int indent)
 	indstr = "";
     gCol = indent;
     brkarg = ({ width, indstr });
-  
+
     return indstr + 
-	implode(map(explode(str+" "," "),"brk",this_object(),brkarg)," ");
+    implode(map(explode(str+" "," "),"brk",this_object(),brkarg)," ");
 }
 
 static string brk(string word, mixed *width_indstr)
@@ -292,25 +288,16 @@ static string brk(string word, mixed *width_indstr)
 public void
 update_actions()
 {
-  int objs;
+    int objs;
 
-  if (environment(previous_object()))
-    previous_object()->move(environment(previous_object()),1);
-  filter(all_inventory(previous_object()),"move_inv",previous_object());
+    if (environment(previous_object()))
+	previous_object()->move(environment(previous_object()),1);
+    filter(all_inventory(previous_object()),"move_inv",previous_object());
 }
 
 static void move_inv(object ob) { if (living(ob)) ob->move(previous_object(),1); }
 
 /*************************************************************************/
-
-
-/* Functions below are useful but should probably not be made into efuns
-*/
-
-#if 0
-string creator(object ob) { return (string)SECURITY->creator_object(ob); }
-string domain(object ob) { return (string)SECURITY->domain_object(ob); }
-#endif
 
 
 static void dump_elem(mixed sak, string tab);
@@ -323,18 +310,18 @@ static void dump_elem(mixed sak, string tab);
 public varargs void 
 dump_array(mixed *a, string tab)
 {
-  int n,m;
+    int n,m;
 
-  if (!tab) tab = "";
-  if (!pointerp(a)) {
-    write(a); return;
-  }
-  else write("\n");
-  m=sizeof(a);
-  n=0;
-  while (n<m) {
-    write(tab+"["+n+"] = "); dump_elem(a[n],tab); n+=1;
-  }
+    if (!tab) tab = "";
+    if (!pointerp(a)) {
+	write(a); return;
+    }
+    else write("\n");
+    m=sizeof(a);
+    n=0;
+    while (n<m) {
+	write(tab+"["+n+"] = "); dump_elem(a[n],tab); n+=1;
+    }
 }
 
 status is_clone(mixed ob) {
@@ -343,11 +330,11 @@ status is_clone(mixed ob) {
 
 static void dump_elem(mixed sak, string tab)
 {
-  if (pointerp(sak)) {
-    write("Array: \n"); dump_array(sak,tab+"   ");
-  }
-  else write(sak);
-  write("\n");
+    if (pointerp(sak)) {
+	write("Array: \n"); dump_array(sak,tab+"   ");
+    }
+    else write(sak);
+    write("\n");
 }
 
 int file_time(string path)
@@ -364,18 +351,18 @@ mixed snoop(mixed snoopee) {
     int result;
 
     if (snoopee && interactive_info(snoopee, II_SNOOP_NEXT)) {
-        write("Busy.\n");
-        return 0;
+	write("Busy.\n");
+	return 0;
     }
     result = snoopee ? efun::snoop(this_player(), snoopee)
-                     : efun::snoop(this_player());
+    : efun::snoop(this_player());
     switch (result) {
-	case -1:
-	    write("Busy.\n");
-	case  0:
-	    write("Failed.\n");
-	case  1:
-	    write("Ok.\n");
+    case -1:
+	write("Busy.\n");
+    case  0:
+	write("Failed.\n");
+    case  1:
+	write("Ok.\n");
     }
     if (result > 0) return snoopee;
 }
@@ -391,6 +378,9 @@ nomask void set_this_player(object x) { }
 #endif
 
 mapping living_name_m, name_living_m;
+
+mapping query_living_name_m() { return copy(living_name_m); }
+mapping query_name_living_m() { return copy(name_living_m); }
 
 #ifndef _MASTER_C
 void start_simul_efun() {
@@ -442,8 +432,8 @@ static void clean_simul_efun() {
 }
 
 /* disable symbol_function('set_living_name, SIMUL_EFUN_OBJECT) */
-#if 0
-protected void set_living_name(string name) {
+void set_living_name(string name)
+{
     string old;
     mixed a;
     int i;
@@ -471,37 +461,6 @@ protected void set_living_name(string name) {
     }
     name_living_m[name] = previous_object();
 }
-#else
-void set_living_name(string name)
-{
-    string old;
-    mixed a;
-    int i;
-
-    if (old = living_name_m[previous_object()]) {
-        if (pointerp(a = name_living_m[old])) {
-            a[member(a, previous_object())] = 0;
-        } else {
-            efun::m_delete(name_living_m, old);
-        }
-    }
-    living_name_m[previous_object()] = name;
-    if (a = name_living_m[name]) {
-        if (!pointerp(a)) {
-            name_living_m[name] = ({a, previous_object()});
-                        return;
-        }
-    /* Try to reallocate entry from destructed object */
-        if ((i = member(a, 0)) >= 0) {
-            a[i] = previous_object();
-            return;
-        }
-    name_living_m[name] = a + ({previous_object()});
-        return;
-    }
-    name_living_m[name] = previous_object();
-}
-#endif
 
 object find_living(string name) {
     mixed *a, r;
@@ -546,24 +505,24 @@ object find_player(string name) {
 void
 cindent(string name)
 {
-  return;
+    return;
 #if 0
     string valid;
 
     valid = funcall(
-	bind_lambda(#'call_other, previous_object()),
-	__MASTER_OBJECT__,
-	"valid_write",
-	name,
+      bind_lambda(#'call_other, previous_object()),
+      __MASTER_OBJECT__,
+      "valid_write",
+      name,
 #if __EFUN_DEFINED__(geteuid)
-	geteuid(previous_object()),
+      geteuid(previous_object()),
 #else
-	0,
+      0,
 #endif
-	"cindent", previous_object()
+      "cindent", previous_object()
     );
     if (valid)
-    send_erq(ERQ_FORK, "indent_wrapper " + (stringp(valid) ? valid : name));
+	send_erq(ERQ_FORK, "indent_wrapper " + (stringp(valid) ? valid : name));
 #endif
 }
 
@@ -571,26 +530,26 @@ cindent(string name)
 int
 query_uptime()
 {
-	if (!RebootTime) RebootTime = (int) MASTER->query_reboot_time();
-	return time() - RebootTime;
+    if (!RebootTime) RebootTime = (int) MASTER->query_reboot_time();
+    return time() - RebootTime;
 }
 
 int
 set_hide(object x)
 {
-  return 0;
+    return 0;
 }
 
 int
 clear_hide(object x)
 {
-  return 0;
+    return 0;
 }
 
 int
 query_next_reset(object z)
 {
-	return random(1800);	// Ain't we evil!!! -+ Doomdark +-
+    return random(1800);	// Ain't we evil!!! -+ Doomdark +-
 }
 /* TODO as efuns! */
 string upper_case(string str) { return str; }

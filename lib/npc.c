@@ -786,8 +786,7 @@ create()
     liv_Flags = F_LIV_IS_NPC;
     wander = possessed_by = spell_chance = breath_attack = 0;
     damage_type = DT_SLASH;
-    configure_object(previous_object(), OC_COMMANDS_ENABLED, 1);
-    efun::set_this_player(this_object());
+    configure_object(this_object(), OC_COMMANDS_ENABLED, 1);
     set_master(0);
     create_living();
 

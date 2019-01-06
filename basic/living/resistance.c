@@ -30,50 +30,50 @@ static mapping Resistances;	// Mapping holding info about resistances:
 int
 set_resistance(int res, int value)
 {
-  if(!res || !value)
-    return 0;
-  if(!Resistances) Resistances = ([]);
-  if(value > MAX_RES) value = MAX_RES;
-  if(res == DT_PHYS)
+    if(!res || !value)
+	return 0;
+    if(!Resistances) Resistances = ([]);
+    if(value > MAX_RES) value = MAX_RES;
+    if(res == DT_PHYS)
     {
-      Resistances[DT_CUT] = Resistances[DT_IMPALE] = Resistances[DT_CRUSH]=
-      Resistances[DT_IMPACT] = Resistances[DT_BITE] = Resistances[DT_CLAW]=
-      Resistances[DT_STAB] = Resistances[DT_PHYS] = value;
+	Resistances[DT_CUT] = Resistances[DT_IMPALE] = Resistances[DT_CRUSH]=
+	Resistances[DT_IMPACT] = Resistances[DT_BITE] = Resistances[DT_CLAW]=
+	Resistances[DT_STAB] = Resistances[DT_PHYS] = value;
     }
-  else
-    Resistances[res] = value;
-  return 1;
+    else
+	Resistances[res] = value;
+    return 1;
 }
 
 mixed
 query_resistance(int res)
 {
-  if(!Resistances) return 0;;
-  return Resistances[res];
+    if(!Resistances) return 0;;
+    return Resistances[res];
 }
 
 varargs int
 add_resistance(int res, int delta)
 {
-  int value;
+    int value;
 
-  if(!Resistances) Resistances = ([]);
-  value = Resistances[res] + delta;
-  if(value > MAX_RES) value = MAX_RES;
+    if(!Resistances) Resistances = ([]);
+    value = Resistances[res] + delta;
+    if(value > MAX_RES) value = MAX_RES;
 
-  if(res == DT_PHYS)
+    if(res == DT_PHYS)
     {
-      Resistances[DT_CUT] = Resistances[DT_IMPALE] = Resistances[DT_CRUSH]=
-      Resistances[DT_IMPACT] = Resistances[DT_BITE] = Resistances[DT_CLAW]=
-      Resistances[DT_STAB] = Resistances[DT_PHYS] = value;
+	Resistances[DT_CUT] = Resistances[DT_IMPALE] = Resistances[DT_CRUSH]=
+	Resistances[DT_IMPACT] = Resistances[DT_BITE] = Resistances[DT_CLAW]=
+	Resistances[DT_STAB] = Resistances[DT_PHYS] = value;
     }
-  else
-  Resistances[res] = value;
-  return 1;
+    else
+	Resistances[res] = value;
+    return 1;
 }
 
 mapping
 query_resistances()
 {
-  return Resistances;
+    return Resistances;
 }

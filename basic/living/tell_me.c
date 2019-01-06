@@ -20,10 +20,10 @@ tell_me(string str, status no_wrap, status update_wrap) {
 
     if ((liv_Flags & F_LIV_IS_NPC) && s_columns < 2) {
 
-// Let's check s_columns so monsters can use line-wrap, but usually won't.
-// If wrapping is needed (coder controlling monster etc.), set the value
-// of s_wrap to desired value and update the s_wrap string, or call this
-// with udpate_wrap on.
+	// Let's check s_columns so monsters can use line-wrap, but usually won't.
+	// If wrapping is needed (coder controlling monster etc.), set the value
+	// of s_wrap to desired value and update the s_wrap string, or call this
+	// with udpate_wrap on.
 
 	if (!str || !this_object()) return;
 	if (no_wrap) tell_object(this_object(), str);
@@ -59,8 +59,8 @@ tell_me(string str, status no_wrap, status update_wrap) {
     }
 
     /* Kludge, but has to do 'til tell_me's won't use linefeeds anymore. */
-	if (sizeof(str) > 1 && str[<1] == '\n')
-		str = str[0..<2];
+    if (sizeof(str) > 1 && str[<1] == '\n')
+	str = str[0..<2];
 
     if(s_wrap) tell_object(this_object(), sprintf(s_wrap, str));
     else tell_object(this_object(), str+"\n"); 
