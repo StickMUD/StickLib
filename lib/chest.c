@@ -76,13 +76,13 @@ void reset_container()
 varargs string query_short(mixed arg1, mixed arg2)
 {
     return ::query_short() +
-	(chest_closed > 0 ? " (closed)" : " (open)");
+    (chest_closed > 0 ? " (closed)" : " (open)");
 }
 
 varargs string query_long(mixed arg1, mixed arg2)
 {
     return ::query_long() + "\nIt is " + 
-	(chest_closed > 0 ? "closed." : "open.");
+    (chest_closed > 0 ? "closed." : "open.");
 }
 
 void set_closed(status arg)
@@ -232,7 +232,7 @@ status unlock_cmd(string arg)
 	return notify_fail("You don't have the key!\n"), 0;
 
     if ((string)key->query_code() != chest_code && 
-	(string)key->query_code() != MASTER_KEY)
+      (string)key->query_code() != MASTER_KEY)
 	return notify_fail("The key does not fit in this " + name + "!"), 0;
 
     this_player()->tell_me("Click!\nYou unlock the " + name + ".");
@@ -260,7 +260,7 @@ status lock_cmd(string arg)
 	return notify_fail("You don't have the key!\n"), 0;
 
     if ((string)key->query_code() != chest_code && 
-	(string)key->query_code() != MASTER_KEY)
+      (string)key->query_code() != MASTER_KEY)
 	return notify_fail("The key does not fit in this " + name + "!"), 0;
 
     if (!chest_closed)

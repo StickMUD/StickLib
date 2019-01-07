@@ -19,13 +19,13 @@ static object origenv;
 void
 create_monster()
 {
-  set_id(({ "player_ghost", "ghost" }));
-  set_race("ghost");
-  set(LIV_UNDEAD);
-  set_gender(G_NEUTER);
-  set_dead_ob(this_object());
-  set_wander(0);
-  set_keep_hb(1);
+    set_id(({ "player_ghost", "ghost" }));
+    set_race("ghost");
+    set(LIV_UNDEAD);
+    set_gender(G_NEUTER);
+    set_dead_ob(this_object());
+    set_wander(0);
+    set_keep_hb(1);
 }
 
 set_wc(arg) { weapon_class = arg; }
@@ -42,119 +42,119 @@ is_player_ghost() { return 1; }
 /* We remember our killer. We won't attack a NPC however. */
 extra_aggressive(ob)
 {
-  if (killer && ob &&
+    if (killer && ob &&
       killer == (string)ob->query_real_name() && !ob->is_npc())
     {
-      tell_room(environment(), query_name() + " " +
-		({ "screams", "wails", "howls" })[random(3)] + " " +
-		({ "shrilly", "loudly", "ghastly" })[random(3)] +
-		" when noticing its " +
-		({ "slayer", "killer" })[random(2)] + "!\n");
-      return 1;
+	tell_room(environment(), query_name() + " " +
+	  ({ "screams", "wails", "howls" })[random(3)] + " " +
+	  ({ "shrilly", "loudly", "ghastly" })[random(3)] +
+	  " when noticing its " +
+	  ({ "slayer", "killer" })[random(2)] + "!\n");
+	return 1;
     }
 
-  return 0;
+    return 0;
 }
 
 int
 monster_died(object this_npc, object killer)
 {
-  object ob;
+    object ob;
 
-  if (owner && killer &&
+    if (owner && killer &&
       (ob = find_player(owner)) &&
       (ob != killer) &&
       ((int)ob->query_level() < (random(101) + random(101))))
-    ob->tell_me("Your Ghost tells you: " +
-capitalize((string)killer->query_real_name()) + " killed me!");
+	ob->tell_me("Your Ghost tells you: " +
+	  capitalize((string)killer->query_real_name()) + " killed me!");
 
-  owner = 0;
+    owner = 0;
 
-  return 0;
+    return 0;
 }
 
 object
 hades()
 {
-  object oe;
+    object oe;
 
-  oe = find_object("/room/hades");
-  if (!oe)
+    oe = find_object("/room/hades");
+    if (!oe)
     {
-      call_other("/room/hades", "???");
-      oe = find_object("/room/hades");
+	call_other("/room/hades", "???");
+	oe = find_object("/room/hades");
     }
 
-  return oe;
+    return oe;
 }
 
 void
 heart_beat()
 {
-  object oe, ob;
-  mapping ex;
-  string toroom, *exd;
-  int s;
+    object oe, ob;
+    mapping ex;
+    string toroom, *exd;
+    int s;
 
-  ::heart_beat();
+    ::heart_beat();
 
-  if (!origenv) origenv = environment();
+    if (!origenv) origenv = environment();
 
-  // Fight on?
-  if (attackers) return;
+    // Fight on?
+    if (attackers) return;
 
-  ob = hades();
+    ob = hades();
 
-  // Owner? In game? Don't clear it - owner may return.
-  if (!owner ||
+    // Owner? In game? Don't clear it - owner may return.
+    if (!owner ||
       !(oe = find_player(owner)))
     {
 	if (ob && environment() != ob)
 	{
-	  move_player("Vfades away#", ob);
-	  return;
+	    move_player("Vfades away#", ob);
+	    return;
 	}
 
-      if (environment() != origenv) move_player("Vfades away#", origenv);
-      configure_object(this_object(), OC_HEART_BEAT, 0);
-      if (!owner) set_keep_hb(-52);
-      return;
+	if (environment() != origenv) move_player("Vfades away#", origenv);
+	configure_object(this_object(), OC_HEART_BEAT, 0);
+	if (!owner) set_keep_hb(-52);
+	return;
     }
 
-  if ((environment() == ob) && origenv)
+    if ((environment() == ob) && origenv)
     {
-      move_player("Vfades away#", origenv);
-      return;
+	move_player("Vfades away#", origenv);
+	return;
     }
 
-  if (random(100) < 97) return;
+    if (random(100) < 97) return;
 
-  // No env or already here?
-  if (!(oe = environment(oe)) ||
+    // No env or already here?
+    if (!(oe = environment(oe)) ||
       oe == environment()) return;
 
-  // Owner in teleport-to proof room, or in guild?
-  // Then don't go there.
-  if (oe->query(PREVENT_TELEPORT_TO) ||
+    // Owner in teleport-to proof room, or in guild?
+    // Then don't go there.
+    if (oe->query(PREVENT_TELEPORT_TO) ||
       oe->query(ROOM_GUILD)) return;
 
-  // Find random exit of room - we never appear in the _same_ room
-  // than the owner.
-  if (!mappingp(ex = (mapping)oe->query_exits())) return;
-  if ((s = sizeof(exd = m_indices(ex))) < 1) return;
-  if (!stringp(toroom = (string)oe->query_exit(exd[random(s)]))) return;
+    // Find random exit of room - we never appear in the _same_ room
+    // than the owner.
+    if (!mappingp(ex = (mapping)oe->query_exits())) return;
+    if ((s = sizeof(exd = m_indices(ex))) < 1) return;
+    if (!stringp(toroom = (string)oe->query_exit(exd[random(s)]))) return;
 
-  oe = find_object(toroom);
-  if (!oe)
+    oe = find_object(toroom);
+    if (!oe)
     {
-      // Avoid stopping beat...
-      catch(call_other(toroom, "???"));
-      if (!(oe = find_object(toroom))) return;
+	// Avoid stopping beat...
+	catch(call_other(toroom, "???"));
+	if (!(oe = find_object(toroom))) return;
     }
 
-  // Everything is ok, now finally move!
-  move_player("V" +
-	      ({ "fades away", "shifts through the ground",
-		   "slowly levitates away", "flies away" })[random(4)],
-		   oe);
+    // Everything is ok, now finally move!
+    move_player("V" +
+      ({ "fades away", "shifts through the ground",
+	"slowly levitates away", "flies away" })[random(4)],
+      oe);
 }

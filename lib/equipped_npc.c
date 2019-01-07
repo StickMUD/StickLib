@@ -63,67 +63,67 @@ status pick_call_on;
 
 status
 add_weapon(mixed fname, string id_name, mixed *init_data,
-int pick_delay, mixed pick_msg)
+  int pick_delay, mixed pick_msg)
 {
-object ob;
-int i, size;
-mixed *x;
-// We can use an array there no prob... If so, one element is chosen
-// randomly
-	if (pointerp(fname))
-		fname = fname[random(sizeof(fname))];
-	if (closurep(fname)) {
-		fname = funcall(fname);
-// You can skip equipping by returning 0 from the closure...
-		if (!fname) return 0;
+    object ob;
+    int i, size;
+    mixed *x;
+    // We can use an array there no prob... If so, one element is chosen
+    // randomly
+    if (pointerp(fname))
+	fname = fname[random(sizeof(fname))];
+    if (closurep(fname)) {
+	fname = funcall(fname);
+	// You can skip equipping by returning 0 from the closure...
+	if (!fname) return 0;
+    }
+    if (objectp(fname)) ;
+    else if (!fname) {
+	if (!pointerp(init_data)) return 0;
+	// Let's be sure we'll init it somehow if using std weapon(s).
+	ob = clone_object(WEAPON_FILE);
+    } else if (!stringp(fname)) return 0;
+    else if (fname[0] != '/')
+	ob = (object) WEAPON_SERVER -> make_weapon(fname);
+    else ob = clone_object(fname);
+
+    // We can initialize our weapon here. Array used as init_data, is of form:
+    // ({ call1, call2, ... }) where each call is an array, with any number of
+    // elements depending on amount of args call takes. So, something like:
+    // ({ "set_name", "big sword" }) etc. 1st element is the function to call,
+    // and rest (if any) are arguments to the function call.
+
+    if (pointerp(init_data)) {
+	for (i = 0, size = sizeof(init_data); i < size; i++) {
+	    if (!pointerp(x = init_data[i])) continue;
+	    if (sizeof(x) < 2) call_other(ob, x[0]);
+	    else apply(#'call_other, ob, x[0]
+		  , x[1..]);
 	}
-	if (objectp(fname)) ;
-	else if (!fname) {
-		if (!pointerp(init_data)) return 0;
-// Let's be sure we'll init it somehow if using std weapon(s).
-		ob = clone_object(WEAPON_FILE);
-	} else if (!stringp(fname)) return 0;
-	else if (fname[0] != '/')
-		ob = (object) WEAPON_SERVER -> make_weapon(fname);
-	else ob = clone_object(fname);
+    }
 
-// We can initialize our weapon here. Array used as init_data, is of form:
-// ({ call1, call2, ... }) where each call is an array, with any number of
-// elements depending on amount of args call takes. So, something like:
-// ({ "set_name", "big sword" }) etc. 1st element is the function to call,
-// and rest (if any) are arguments to the function call.
+    move_object(ob, this_object());
+    wield(ob, 1);
 
-	if (pointerp(init_data)) {
-	  for (i = 0, size = sizeof(init_data); i < size; i++) {
-		if (!pointerp(x = init_data[i])) continue;
-		if (sizeof(x) < 2) call_other(ob, x[0]);
-		else apply(#'call_other, ob, x[0]
-, x[1..]);
-	  }
+    // If we use pick_delay (ie. it's a positive number), this npc picks up
+    // any identical weapon in the room where it's first moved. Usually this
+    // is left from "previous" same kind of npc.
+
+    if (pick_delay) {
+	if (!id_name && stringp(fname))
+	    id_name = fname;
+
+	if (!pick_items)
+	    pick_items = ({ ({ id_name, pick_delay, pick_msg }) });
+	else 
+	    pick_items += ({ ({ id_name, pick_delay, pick_msg }) });
+	if (!pick_call_on) {
+	    pick_call_on = 1;
+	    call_out("_check_pick", pick_delay, 0);
 	}
+    }
 
-	move_object(ob, this_object());
-	wield(ob, 1);
-
-// If we use pick_delay (ie. it's a positive number), this npc picks up
-// any identical weapon in the room where it's first moved. Usually this
-// is left from "previous" same kind of npc.
-
-	if (pick_delay) {
-		if (!id_name && stringp(fname))
-			id_name = fname;
-
-		if (!pick_items)
-			pick_items = ({ ({ id_name, pick_delay, pick_msg }) });
-		else 
-			pick_items += ({ ({ id_name, pick_delay, pick_msg }) });
-		if (!pick_call_on) {
-			pick_call_on = 1;
-			call_out("_check_pick", pick_delay, 0);
-		}
-	}
-
-	return 1;
+    return 1;
 }
 
 // This works like previous function, except that it makes armours.
@@ -132,56 +132,56 @@ mixed *x;
 
 status
 add_armour(mixed fname, string id_name, mixed *init_data,
-int pick_delay, mixed pick_msg)
+  int pick_delay, mixed pick_msg)
 {
-object ob;
-int i, size;
-mixed *x;
-	if (!intp(pick_delay))
-		raise_error(sprintf("Error in %s: non-integer argument for\
+    object ob;
+    int i, size;
+    mixed *x;
+    if (!intp(pick_delay))
+	raise_error(sprintf("Error in %s: non-integer argument for\
  pick delay in add_armour() on /lib/equipped_npc.c.\n",
-object_name(this_object())));
-	if (pointerp(fname))
-		fname = fname[random(sizeof(fname))];
-	if (closurep(fname)) {
-		fname = funcall(fname);
-// You can skip equipping by returning 0 from the closure...
-		if (!fname) return 0;
+	    object_name(this_object())));
+    if (pointerp(fname))
+	fname = fname[random(sizeof(fname))];
+    if (closurep(fname)) {
+	fname = funcall(fname);
+	// You can skip equipping by returning 0 from the closure...
+	if (!fname) return 0;
+    }
+    if (objectp(fname)) ;
+    else if (!fname) {
+	if (!pointerp(init_data)) return 0;
+	ob = clone_object(ARMOUR_FILE);
+    } else if (!stringp(fname)) return 0;
+    else if (fname[0] != '/')
+	ob = (object) ARMOUR_SERVER -> make_armour(fname);
+    else ob = clone_object(fname);
+
+    if (pointerp(init_data)) {
+	for (i = 0, size = sizeof(init_data); i < size; i++) {
+	    if (!pointerp(x = init_data[i])) continue;
+	    if (sizeof(x) < 2) call_other(ob, x[0]);
+	    else apply(#'call_other, ob, x[0], x[1..]);
 	}
-	if (objectp(fname)) ;
-	else if (!fname) {
-		if (!pointerp(init_data)) return 0;
-		ob = clone_object(ARMOUR_FILE);
-	} else if (!stringp(fname)) return 0;
-	else if (fname[0] != '/')
-		ob = (object) ARMOUR_SERVER -> make_armour(fname);
-	else ob = clone_object(fname);
+    }
 
-	if (pointerp(init_data)) {
-	  for (i = 0, size = sizeof(init_data); i < size; i++) {
-		if (!pointerp(x = init_data[i])) continue;
-		if (sizeof(x) < 2) call_other(ob, x[0]);
-		else apply(#'call_other, ob, x[0], x[1..]);
-	  }
+    move_object(ob, this_object());
+    wear(ob, 1);
+
+    if (pick_delay) {
+	if (!id_name && stringp(fname))
+	    id_name = fname;
+	if (!pick_items)
+	    pick_items = ({ ({ id_name, pick_delay, pick_msg }) });
+	else 
+	    pick_items += ({ ({ id_name, pick_delay, pick_msg }) });
+	if (!pick_call_on) {
+	    pick_call_on = 1;
+	    call_out("_check_pick", pick_delay, 0);
 	}
+    }
 
-	move_object(ob, this_object());
-	wear(ob, 1);
-
-	if (pick_delay) {
-		if (!id_name && stringp(fname))
-			id_name = fname;
-		if (!pick_items)
-			pick_items = ({ ({ id_name, pick_delay, pick_msg }) });
-		else 
-			pick_items += ({ ({ id_name, pick_delay, pick_msg }) });
-		if (!pick_call_on) {
-			pick_call_on = 1;
-			call_out("_check_pick", pick_delay, 0);
-		}
-	}
-
-	return 1;
+    return 1;
 }
 
 // This works like previous functions, except that it makes general objects.
@@ -191,82 +191,82 @@ object_name(this_object())));
 
 status
 add_object(mixed fname, string id_name, mixed *init_data,
-int pick_delay, mixed pick_msg)
+  int pick_delay, mixed pick_msg)
 {
-object ob;
-int i, size;
-mixed *x;
-	if (pointerp(fname))
-		fname = fname[random(sizeof(fname))];
-	if (closurep(fname)) {
-		fname = funcall(fname);
-// You can skip equipping by returning 0 from the closure...
-		if (!fname) return 0;
+    object ob;
+    int i, size;
+    mixed *x;
+    if (pointerp(fname))
+	fname = fname[random(sizeof(fname))];
+    if (closurep(fname)) {
+	fname = funcall(fname);
+	// You can skip equipping by returning 0 from the closure...
+	if (!fname) return 0;
+    }
+    if (objectp(fname)) ;
+    if (!fname) {
+	if (!pointerp(init_data)) return 0;
+	ob = clone_object(TREASURE_FILE);
+    } else if (!stringp(fname)) return 0;
+    else ob = clone_object(fname);
+
+    if (init_data && pointerp(init_data)) {
+	for (i = 0, size = sizeof(init_data); i < size; i++) {
+	    if (!pointerp(x = init_data[i])) continue;
+	    if (sizeof(x) < 2) call_other(ob, x[0]);
+	    else apply(#'call_other, ob, x[0], x[1..]);
 	}
-	if (objectp(fname)) ;
-	if (!fname) {
-		if (!pointerp(init_data)) return 0;
-		ob = clone_object(TREASURE_FILE);
-	} else if (!stringp(fname)) return 0;
-	else ob = clone_object(fname);
+    }
 
-	if (init_data && pointerp(init_data)) {
-	  for (i = 0, size = sizeof(init_data); i < size; i++) {
-		if (!pointerp(x = init_data[i])) continue;
-		if (sizeof(x) < 2) call_other(ob, x[0]);
-		else apply(#'call_other, ob, x[0], x[1..]);
-	  }
+    move_object(ob, this_object());
+
+    if (pick_delay) {
+	if (!id_name && stringp(fname))
+	    id_name = fname;
+	if (!pick_items)
+	    pick_items = ({ ({ id_name, pick_delay, pick_msg }) });
+	else 
+	    pick_items += ({ ({ id_name, pick_delay, pick_msg }) });
+	if (!pick_call_on) {
+	    pick_call_on = 1;
+	    call_out("_check_pick", pick_delay, 0);
 	}
+    }
 
-	move_object(ob, this_object());
-
-	if (pick_delay) {
-		if (!id_name && stringp(fname))
-			id_name = fname;
-		if (!pick_items)
-			pick_items = ({ ({ id_name, pick_delay, pick_msg }) });
-		else 
-			pick_items += ({ ({ id_name, pick_delay, pick_msg }) });
-		if (!pick_call_on) {
-			pick_call_on = 1;
-		call_out("_check_pick", pick_delay, 0);
-		}
-	}
-
-	return 1;
+    return 1;
 }
 
 void
 _check_pick(int eq_nr)
 {
-object ob;
-mixed *x;
-int i, size;
-	if (!environment()) return;
-	if (!pointerp(x = pick_items[eq_nr])) return;
-	if (!x[0]) return;
-	if (ob = present(x[0], environment())) {
+    object ob;
+    mixed *x;
+    int i, size;
+    if (!environment()) return;
+    if (!pointerp(x = pick_items[eq_nr])) return;
+    if (!x[0]) return;
+    if (ob = present(x[0], environment())) {
 #if 0
-// Better do destructing bit later...
-		destruct(ob);
+	// Better do destructing bit later...
+	destruct(ob);
 #endif
-// Let's then print msg if one is specified...
-		if (environment())
-		if (stringp(x[2]))
-			environment()->tell_here(x[2], this_object());
-		else if (pointerp(x[2]))
-			environment()->tell_here(x[2][random(sizeof(x[2]))],
-			  this_object());
-		destruct(ob);
-// So, let's check if there's more of this eq...
-		call_out("_check_pick", x[1], i);
-	} else {
-		size = sizeof(pick_items);
-		while (++eq_nr < size) {
-			if ((i = pick_items[i][1]) > 0) {
-				call_out("_check_pick", i, eq_nr);
-				break;
-			}
-		}
-	}	
+	// Let's then print msg if one is specified...
+	if (environment())
+	    if (stringp(x[2]))
+		environment()->tell_here(x[2], this_object());
+	    else if (pointerp(x[2]))
+		environment()->tell_here(x[2][random(sizeof(x[2]))],
+		  this_object());
+	destruct(ob);
+	// So, let's check if there's more of this eq...
+	call_out("_check_pick", x[1], i);
+    } else {
+	size = sizeof(pick_items);
+	while (++eq_nr < size) {
+	    if ((i = pick_items[i][1]) > 0) {
+		call_out("_check_pick", i, eq_nr);
+		break;
+	    }
+	}
+    }	
 }

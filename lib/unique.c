@@ -39,42 +39,42 @@ private int uniqueness_type;
 int
 set_unique(string class, int level, int available, int always_available)
 {
-int i;
-	uniqueness_type = level;
-	uniqueness_level = UNIQUENESS_NONE;
+    int i;
+    uniqueness_type = level;
+    uniqueness_level = UNIQUENESS_NONE;
 
-	if (level == UNIQUENESS_NONE)
-		return 0;
+    if (level == UNIQUENESS_NONE)
+	return 0;
 
-	UNIQUE_D -> create_unique(class, available);
+    UNIQUE_D -> create_unique(class, available);
 
-	if (!(i = (int) UNIQUE_D -> query_unique(class)))
-		return 0;
+    if (!(i = (int) UNIQUE_D -> query_unique(class)))
+	return 0;
 
-// No 'available slots'; ie. all unique items of this class already in use.
-// So, we can't add any more.
+    // No 'available slots'; ie. all unique items of this class already in use.
+    // So, we can't add any more.
 
-	if (random(available + 1) >= (i + always_available))
-		return 0;
+    if (random(available + 1) >= (i + always_available))
+	return 0;
 
-// Also, as its harder to get unique items, when class is partially full,
-// we'll add randomization... You can configure this with argument
-// 'always_available'. It specifies how many items we get with
-// 'first try'... Ie. if it's 1, we'll always get unique item first time,
-// but after that it's possible we won't get new one even if there were
-// available slots.
+    // Also, as its harder to get unique items, when class is partially full,
+    // we'll add randomization... You can configure this with argument
+    // 'always_available'. It specifies how many items we get with
+    // 'first try'... Ie. if it's 1, we'll always get unique item first time,
+    // but after that it's possible we won't get new one even if there were
+    // available slots.
 
-// Otherwise, we're ready to become unique...
+    // Otherwise, we're ready to become unique...
 
-	uniqueness_level = level;
-	UNIQUE_D -> add_unique(class, this_object());
-	return i;
+    uniqueness_level = level;
+    UNIQUE_D -> add_unique(class, this_object());
+    return i;
 }
 
 varargs int
 query_unique(int mode)
 {
-	if (!mode)
-		return uniqueness_level;
-	return uniqueness_type;
+    if (!mode)
+	return uniqueness_level;
+    return uniqueness_type;
 }

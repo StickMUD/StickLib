@@ -10,7 +10,7 @@ protected int set_light(int n)
     int result;
 
     foreach(object ob: ({env}) + deep_inventory(env))
-        result += ob->query_own_light();
+    result += ob->query_own_light();
 
     return result;
 }

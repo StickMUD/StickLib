@@ -34,9 +34,9 @@ int query_max_weight() { return max_weight; }
 varargs string
 query_long(string what, object who)
 {
-	if (!first_inventory()) return
-		::query_long(what, who) + "\nYou can put things in it.";
-	return ::query_long(what, who);
+    if (!first_inventory()) return
+	::query_long(what, who) + "\nYou can put things in it.";
+    return ::query_long(what, who);
 }
 
 /****************************************************************
@@ -59,23 +59,23 @@ void set_read(string str) { read_msg = str; }
 status
 add_weight(int w)
 {
-	if (local_weight + w > max_weight) return 0;
-	local_weight += w;
-	return 1;
+    if (local_weight + w > max_weight) return 0;
+    local_weight += w;
+    return 1;
 }
 // We _should_ check if all the stuff fits in here but... *shrug*
 // -+ Doomdark (is feeling lazy) +-
 status recount_weight()
 {
-object ob;
+    object ob;
 
-	local_weight = 0;
-	ob = first_inventory();
-	while (ob) {
-		local_weight += (int) ob->query_weight();
-		ob = next_inventory(ob);
-	}
-	return 1;
+    local_weight = 0;
+    ob = first_inventory();
+    while (ob) {
+	local_weight += (int) ob->query_weight();
+	ob = next_inventory(ob);
+    }
+    return 1;
 }
 
 status can_put_and_get(string s) { return 1; }
@@ -83,18 +83,18 @@ status get() { return 1; }
 
 status prevent_insert()
 {
-	if (local_weight > 0) {
-	        if (this_player()) this_player() -> tell_me(
-"You can't when there are things in the " + query_name(0, this_player()) + ".");
+    if (local_weight > 0) {
+	if (this_player()) this_player() -> tell_me(
+	      "You can't when there are things in the " + query_name(0, this_player()) + ".");
 	return 1;
-	}
-	return 0;
+    }
+    return 0;
 }
 
 status
 read_cmd(string str)
 {
-	if (this_player()) this_player() -> tell_me(read_msg);
+    if (this_player()) this_player() -> tell_me(read_msg);
 }
 
 
@@ -102,15 +102,15 @@ read_cmd(string str)
 void
 create()
 {
-	if (function_exists("reset_container"))
-		used_functions |= RESET_USED;
-  this_object()->create_container();
+    if (function_exists("reset_container"))
+	used_functions |= RESET_USED;
+    this_object()->create_container();
 }
 
 // And so was reset...
 void
 reset()
 {
-  if (used_functions & RESET_USED)
+    if (used_functions & RESET_USED)
 	this_object()->reset_container();
 }

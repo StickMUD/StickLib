@@ -28,13 +28,13 @@ int is_clothing() { return 1; }
 void
 create()
 {
-  set_short("mouldy rotten socks");
-  set_long("They smell absolutely horrible!");
-  set_id(({ "cloth", "clothing", "sock", "mouldy", "rotten" }));
+    set_short("mouldy rotten socks");
+    set_long("They smell absolutely horrible!");
+    set_id(({ "cloth", "clothing", "sock", "mouldy", "rotten" }));
 
-  value = 0;
+    value = 0;
 
-  this_object()->create_cloth();
+    this_object()->create_cloth();
 }
 
 void set_cloth_type(string n) { cn = n; }

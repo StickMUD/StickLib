@@ -286,25 +286,25 @@ query_pretitle()
 {
     if (coder_level)
     {
-        if(coder_level < 0)
-            return "Testchar ";
-        if(coder_level < LVL_APPRENTICE)
-            return "Divided ";
-        if(coder_level < LVL_NOVICE)
-            return "Apprentice Wizard ";
-        if(coder_level < LVL_CODER)
-            return "Novice Wizard ";
-        if(coder_level < LVL_SENIOR)
-            return "Wizard ";
-        if(coder_level < LVL_ELDER)
-            return "Senior Wizard ";
-        if(coder_level < LVL_ARCH)
-            return "Elder Wizard ";
-        if(coder_level < LVL_COADMIN)
-            return "Arch Wizard ";
-        if(coder_level < LVL_ADMIN)
-            return "Co-Admin ";
-        return "Admin ";
+	if(coder_level < 0)
+	    return "Testchar ";
+	if(coder_level < LVL_APPRENTICE)
+	    return "Divided ";
+	if(coder_level < LVL_NOVICE)
+	    return "Apprentice Wizard ";
+	if(coder_level < LVL_CODER)
+	    return "Novice Wizard ";
+	if(coder_level < LVL_SENIOR)
+	    return "Wizard ";
+	if(coder_level < LVL_ELDER)
+	    return "Senior Wizard ";
+	if(coder_level < LVL_ARCH)
+	    return "Elder Wizard ";
+	if(coder_level < LVL_COADMIN)
+	    return "Arch Wizard ";
+	if(coder_level < LVL_ADMIN)
+	    return "Co-Admin ";
+	return "Admin ";
     }
     if (level > 121) return "Cheater";
     else if (level > 24)
@@ -327,15 +327,15 @@ query_mailaddr()
 nomask status
 query_can_quit()
 {
-  // Not during a fight or when mortally wounded
-  if (is_fighting() || query_hp() < 0) return 0;
+    // Not during a fight or when mortally wounded
+    if (is_fighting() || query_hp() < 0) return 0;
 
-  // Also not when poisoned by those nasty thieves! /Graah
+    // Also not when poisoned by those nasty thieves! /Graah
 #if 0
-  if (call_other("/guilds/thieves/poison_d",
-		 "is_poisoned", this_object())) return 0;
+    if (call_other("/guilds/thieves/poison_d",
+	"is_poisoned", this_object())) return 0;
 #endif
-  return 1;
+    return 1;
 }
 
 mixed
@@ -362,15 +362,15 @@ query_name(int mode, object x, status non_cap)
     // Now we can decide what to return depending on who's asking!
     if (ghost) return NAME_OF_GHOST;
     if (INVIS_LEVEL && intp(mode) && mode < INVIS_LEVEL)
-        return non_cap ? "someone" : "Someone";
+	return non_cap ? "someone" : "Someone";
     // Also, invisibility levels are taken into account as well.
     if (disguise_level && (!intp(mode) || mode < IL_INVISIBLE)) {
-        if(disguise_mess) return non_cap ? disguise_mess :
-            capitalize(disguise_mess);
-        // We have to capitalize disguise_mess so that same string can
-        // be used as id too! // Chopin 21-May-98
-        if(!race) return non_cap ? "human" : "Human";
-        else return non_cap ? race : capitalize(race);
+	if(disguise_mess) return non_cap ? disguise_mess :
+	    capitalize(disguise_mess);
+	// We have to capitalize disguise_mess so that same string can
+	// be used as id too! // Chopin 21-May-98
+	if(!race) return non_cap ? "human" : "Human";
+	else return non_cap ? race : capitalize(race);
     }
     return cap_name;
 }
@@ -602,9 +602,9 @@ set_quest_string(string q)
 void set_bank_money(int amt)
 {
     if(object_name(previous_object()) != (GENERIC_ROOM_BANK)[1..<1])
-        return 0;
+	return 0;
     if(amt < 0)
-        amt = 0;
+	amt = 0;
     bank_money = amt;
 }
 
@@ -619,10 +619,10 @@ add_exp(int e)
 {
     int c;
 
-// Level/xp limit is lifted again. But this will return if high
-// level guys rush all to join mages, the only level-based guild.
-// If anyone detects that kind of cheating, change to #if 1
-// /Graah
+    // Level/xp limit is lifted again. But this will return if high
+    // level guys rush all to join mages, the only level-based guild.
+    // If anyone detects that kind of cheating, change to #if 1
+    // /Graah
 #if 0
     //
     // Temporary limitation to prevent ridiculous levels,
@@ -634,19 +634,19 @@ add_exp(int e)
     // if (level >= 90 && e > 0) return;
     //
     if ((e > 0) &&
-	(exp_times >= 2) &&
-	(experience >= 617661762))  // Askur's current exp :)
-      return;
+      (exp_times >= 2) &&
+      (experience >= 617661762))  // Askur's current exp :)
+	return;
 #endif
 
     // Over 200k to one person at a time! /Graah
     // However, if there are mega-monsters, and you want more exp,
     // you can always party. Everyone in party could get that 200k!
     if ((query_coder_level() == 0) &&
-   // Hope no one minds that I added the following line, but I thought it
-  // might help if one could add lots of experience to one's testplayer *-(|:U)
-  // Enjorlas
-    (query_testplayer() == 0) &&
+      // Hope no one minds that I added the following line, but I thought it
+      // might help if one could add lots of experience to one's testplayer *-(|:U)
+      // Enjorlas
+      (query_testplayer() == 0) &&
       (e > 200000))
 	e = 200000;
 
@@ -724,10 +724,10 @@ add_soaked(int i)
 void add_bank_money(int amt)
 {
     if(object_name(previous_object()) != (GENERIC_ROOM_BANK)[1..<1])
-        return 0;
+	return 0;
     // We'll leave all the logging to the bank.
     if(bank_money + amt < 0)
-        amt = -bank_money;
+	amt = -bank_money;
 
     bank_money += amt;
 }
@@ -874,7 +874,7 @@ prompt_path()
     string p;
 
     if (strstr(p, PATH_USER_FNAME) == 0) {
-        sscanf(p, PATH_USER_FNAME "%s", p);
+	sscanf(p, PATH_USER_FNAME "%s", p);
 	return sprintf("stick:~%s> ", p);
     }
     return sprintf("stick:/%s> ", p);
@@ -908,7 +908,7 @@ prompt_time()
 nomask void
 initialize(string str, string passwd, int passtime,
   int lvl, string maddr, int gen, status interactive_copy,
-	mapping attrs)
+  mapping attrs)
 {
     string tmp;
     int n, i, j;
@@ -920,13 +920,13 @@ initialize(string str, string passwd, int passtime,
 
     if (tmp != SWITCH_OB_FNAME && (sscanf(tmp, "%s#%d", tmp, n) < 2 ||
 	tmp != LOGIN_OB_FNAME))
-		return;
+	return;
 
     set_connection_charset(_charset, 0);
     set(LIV_NIGHT, NATURE_D->query_night());
 
-	// New: Let's make sure they are passed; if not, we'll default
-	// to the old values in use.
+    // New: Let's make sure they are passed; if not, we'll default
+    // to the old values in use.
     if (passwd)
 	password = passwd; //password change possible when LD ++Tron
     if (passwd_time)
@@ -943,7 +943,7 @@ initialize(string str, string passwd, int passtime,
     } else {
 	//not link dead.
 	if (lvl != -1) {
-		if (!restore_object(PATH_FOR_PLAYER_SAVE(str))) {
+	    if (!restore_object(PATH_FOR_PLAYER_SAVE(str))) {
 		destruct(this_object());
 		return;
 	    }
@@ -957,9 +957,9 @@ initialize(string str, string passwd, int passtime,
 	    }
 	    infravision = query_infravision();
 
-	// This can be used for updating player objects when there
-	// are big incompatible changes...
-	// For now, it's dummy thing:
+	    // This can be used for updating player objects when there
+	    // are big incompatible changes...
+	    // For now, it's dummy thing:
 	    if (Version == 0) {
 		Version = 1;
 	    }
@@ -983,14 +983,14 @@ initialize(string str, string passwd, int passtime,
 	}
 
 	name = str;		//Restore name +
-        if(passwd)
-	password     = passwd;	//password here so that they won't get messed up.
-        if(passwd_time)
-	passwd_time     = passtime;
+	if(passwd)
+	    password     = passwd;	//password here so that they won't get messed up.
+	if(passwd_time)
+	    passwd_time     = passtime;
 
 	if (name == "guest") init_guest();
-// No need to init any more:
-//	init_quicktyper();
+	// No need to init any more:
+	//	init_quicktyper();
 	weapon_class = query_race_stat(RACE_NATURAL_WC); // race.c
 	armour_class = query_race_stat(RACE_NATURAL_AC);
 	dead = ghost;
@@ -1003,25 +1003,25 @@ initialize(string str, string passwd, int passtime,
 	set_living_name(name);
     }
 
-/* If login-module wanted to pass us some data: */
+    /* If login-module wanted to pass us some data: */
     if (attrs) {
-//tell_me(sprintf("DEBUG: attrs=%O.", attrs));
+	//tell_me(sprintf("DEBUG: attrs=%O.", attrs));
 	if (i = attrs["window_x"]) {
-	  if (i < TELL_MIN_X)
+	    if (i < TELL_MIN_X)
 		i = TELL_MIN_X;
-	  set_env("columns", i);
+	    set_env("columns", i);
 	}
 	if (j = attrs["window_y"]) {
-	  if (j < TELL_MIN_Y)
+	    if (j < TELL_MIN_Y)
 		j = TELL_MIN_Y;
-	  set_env("rows", j);
+	    set_env("rows", j);
 	}
 	if (i || j) {
-	  tell_me(sprintf("DEBUG: Screen size set to %d x %d.",i,j));
+	    tell_me(sprintf("DEBUG: Screen size set to %d x %d.",i,j));
 	}
 	// else tell_me("DEBUG: No window size passed.");
 	i = set_client(attrs["client"]);
-//tell_me(sprintf("DEBUG: Client id %d (0 means none).", i));
+	//tell_me(sprintf("DEBUG: Client id %d (0 means none).", i));
     }
 
     // move to start here
@@ -1042,8 +1042,8 @@ initialize(string str, string passwd, int passtime,
 
     if (!this_object())
 	return; // Shouldn't happen in the perfect world. However, 
-		// login room may dest us if we're not allowed to
-		// enter or so
+    // login room may dest us if we're not allowed to
+    // enter or so
 
     set(PLR_TIME_TO_SAVE, age + 500);
     set(PLR_LOGIN_TIME, time());
@@ -1178,10 +1178,10 @@ initialize(string str, string passwd, int passtime,
 	}
     }
 
-   CHANNEL_D->check_channels(myself);
+    CHANNEL_D->check_channels(myself);
 
     // Common for LD and normal login
-   tell_me(MAIL_D->query_mail(name, 0));
+    tell_me(MAIL_D->query_mail(name, 0));
 
     // Argh! Amylaar certainly hates this func:
     if (interactive_info(this_object(), II_IP_NUMBER) != called_from_ip && called_from_ip)
@@ -1196,13 +1196,13 @@ initialize(string str, string passwd, int passtime,
     } else if(query_condition(C_UNCONSCIOUS) == -1)
 	set_condition(C_UNCONSCIOUS, 0);
 
-	set_condition(RESISTANCE(C_STUNNED), -1);
+    set_condition(RESISTANCE(C_STUNNED), -1);
     race_update();
 
     player_initialized = 1;
-	if (_value_plr_client == CLIENT_MURDER) {
-		PRINT_INV
-	}
+    if (_value_plr_client == CLIENT_MURDER) {
+	PRINT_INV
+    }
 }
 
 // Called by command 'save'
@@ -1431,9 +1431,9 @@ heart_beat()
       interactive_info(this_object(), II_IDLE) >= (2 * 60 * 60))
     {
 	tell_me("You've been idle for 2 hours. Now, get out.");
-//	save_me(2);
-//	destruct(this_object());
-        command("quit");
+	//	save_me(2);
+	//	destruct(this_object());
+	command("quit");
 	return;
     }
 
@@ -1468,8 +1468,8 @@ heart_beat()
 		case 4: tell_me("Suddenly with a perfectly good reason you get a terrible headache."); break;
 		default: tell_me("Suddenly with a perfectly good reason you get a pounding headache."); break;
 		}
-//		if ((hit_point -= 3) < 1)
-                if ((hit_point > 0)  &&  (hit_point -= 3) < 1)
+		//		if ((hit_point -= 3) < 1)
+		if ((hit_point > 0)  &&  (hit_point -= 3) < 1)
 		    hit_point = 1;
 	    }
 	} else if (headache && !(--headache))
@@ -1609,27 +1609,27 @@ heart_beat()
 	// NEW: optional fourth parameter is action's duration
 	if (pointerp(tmp[0]) && sizeof(tmp[0]) > 3) {
 	    if (--tmp[0][3] > 0) {
-	        i--;
-	        continue;
+		i--;
+		continue;
 	    }
 	}
 	tmp = query(PLR_COMBAT_QUEUE);
 	if (pointerp(tmp) && sizeof(tmp) > 1) {
-	  if (to_object(tmp[1])) {
-	    if (sizeof(tmp) > 2) {
-		if (funcall(tmp[1], this_object(), &(tmp[2])))
-		{
-		    if (attackers) i = 0;
-		    else i--;
-		}
-	    } else {
-		if (funcall(tmp[1], this_object(), 0))
-		{
-		    if (attackers) i = 0;
-		    else i--;
+	    if (to_object(tmp[1])) {
+		if (sizeof(tmp) > 2) {
+		    if (funcall(tmp[1], this_object(), &(tmp[2])))
+		    {
+			if (attackers) i = 0;
+			else i--;
+		    }
+		} else {
+		    if (funcall(tmp[1], this_object(), 0))
+		    {
+			if (attackers) i = 0;
+			else i--;
+		    }
 		}
 	    }
-	  }
 	}
 	else if (to_object(tmp) && funcall(tmp, this_object(), 0))
 	{
@@ -1660,8 +1660,8 @@ heart_beat()
 	    last_hp = hit_point;
 	    last_fp = fatigue_points;
 	    last_sp = spell_points;
-            tell_me(sprintf("< HP %d/%d | SP %d/%d "+
-                "| FP %d/%d >\n",
+	    tell_me(sprintf("< HP %d/%d | SP %d/%d "+
+		"| FP %d/%d >\n",
 		hit_point, max_hp,
 		spell_points, max_sp,
 		fatigue_points, max_fp), TELL_NO_WRAP);
@@ -1724,7 +1724,7 @@ inform_us(string what)
     string r;
 
     ulist = users();
-   what = sprintf("[Inform] %s %s.", cap_name, what);
+    what = sprintf("[Inform] %s %s.", cap_name, what);
     troll = (query_race() == "troll" || query_race() == "dark elf");
 
     for(i = sizeof(ulist) - 1; i >= 0; i--) {
@@ -1860,7 +1860,7 @@ second_life(status pk, status nicemk, object killer_ob, object corpse)
 You can see your own dead body from above.\n");
 
     if(!query_testplayer())
-        move_object(death_mark = clone_object(DEATH_MARK), this_object());
+	move_object(death_mark = clone_object(DEATH_MARK), this_object());
 
     // See /basic/living/death.c, we are "still dying" when this is set.
     // This is required when they quit and do other hacks during death.
@@ -1870,9 +1870,9 @@ You can see your own dead body from above.\n");
     if (level > 19 && !query_testplayer())
     {
 	inform_us("just died");
-     }
-       dirty_stamp = 0;
-       liv_Flags &= (~F_LIV_OK_TO_PK);
+    }
+    dirty_stamp = 0;
+    liv_Flags &= (~F_LIV_OK_TO_PK);
     // NEW! Let's also inform guild object about dying! -+ Doomdark 11-oct-95 +-
     if (guild_object)
 	guild_object->guild_member_died(this_object());
@@ -1985,7 +1985,7 @@ save_me(int flag)
     compute_auto_str();
     last_saved = time(); // "Left the game 1 D ago." etc...
 
-	save_object(PATH_FOR_PLAYER_SAVE(name));
+    save_object(PATH_FOR_PLAYER_SAVE(name));
 }
 
 nomask int

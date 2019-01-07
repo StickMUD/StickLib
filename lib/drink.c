@@ -89,9 +89,9 @@ string query_info() { return info; }
 int
 query_value()
 {
-	if (full > 0)
-		return container_value + value * full;
-	return container_value;
+    if (full > 0)
+	return container_value + value * full;
+    return container_value;
 }
 
 int query_strength() { return strength; }
@@ -148,28 +148,28 @@ void set_liquid(string s) { liquid_name = s; }
 int
 set_value(int arg)
 {
-string name, kludge;
-int    heal; /* no longer used, directly from strength */
+    string name, kludge;
+    int    heal; /* no longer used, directly from strength */
 
-/* See? */
+    /* See? */
 
-	if (intp(arg)) {
-		value = arg;
-		return arg;
-	}
+    if (intp(arg)) {
+	value = arg;
+	return arg;
+    }
 
-	if (sscanf(arg, "%s#%s#%s#%d#%d#%d", name, kludge, drinker_mess,
-		heal, value, strength) != 6) return 0;
+    if (sscanf(arg, "%s#%s#%s#%d#%d#%d", name, kludge, drinker_mess,
+	heal, value, strength) != 6) return 0;
 
-	if (!container) container = name;
-	set_name(name);
-	set_short(kludge);
-	set_long(capitalize(kludge) + ".");
+    if (!container) container = name;
+    set_name(name);
+    set_short(kludge);
+    set_long(capitalize(kludge) + ".");
 
-/* Somehow beer, for example, sold at 19 gp, but was bought at 18. */
-	value = ((value * 2) / 3);
+    /* Somehow beer, for example, sold at 19 gp, but was bought at 18. */
+    value = ((value * 2) / 3);
 
-	return 1;
+    return 1;
 }
 
 /****************************************************************
@@ -183,48 +183,48 @@ status get() { return 1; }
 status
 drop(status silent)
 {
-	if (full < 1 && !unbreakable && !(_flags & F_CALL_DONE)) {
-		call_out("my_destruct", 1);
-		_flags |= F_CALL_DONE;
-	}
+    if (full < 1 && !unbreakable && !(_flags & F_CALL_DONE)) {
+	call_out("my_destruct", 1);
+	_flags |= F_CALL_DONE;
+    }
 
-        return silent;  // Added to fix bug
+    return silent;  // Added to fix bug
 }
 
 varargs status
 id(string s, object who)
 {
-	return s == container || ::id(s);
+    return s == container || ::id(s);
 }
 
 void
 init()
 {
-	if (_flags & F_INIT_USED)
-		this_object() -> init_drink();
+    if (_flags & F_INIT_USED)
+	this_object() -> init_drink();
 }
 
 void
 reset(int arg)
 {
-	if (arg) {
-		if (_flags & F_RESET_USED)
-			this_object() -> reset_drink();
-	} else {
-		set_weight(full = max_full = 1);
-		unbreakable = no_heal = keep_short = 0;
-		drinker_mess = "Gloink Glurk Glburp.";
-		container = "bottle";
-		container_value = 10;
-		if (function_exists("reset_drink"))
-			_flags |= F_RESET_USED;
-		if (function_exists("init_drink"))
-			_flags |= F_INIT_USED;
-		if (function_exists("extra_drink"))
-			_flags |= F_EXTRA_DRINK;
-		this_object() -> create_drink();
-		_tmp_cl = ({ #'begin_drink, #'end_drink });
-	}
+    if (arg) {
+	if (_flags & F_RESET_USED)
+	    this_object() -> reset_drink();
+    } else {
+	set_weight(full = max_full = 1);
+	unbreakable = no_heal = keep_short = 0;
+	drinker_mess = "Gloink Glurk Glburp.";
+	container = "bottle";
+	container_value = 10;
+	if (function_exists("reset_drink"))
+	    _flags |= F_RESET_USED;
+	if (function_exists("init_drink"))
+	    _flags |= F_INIT_USED;
+	if (function_exists("extra_drink"))
+	    _flags |= F_EXTRA_DRINK;
+	this_object() -> create_drink();
+	_tmp_cl = ({ #'begin_drink, #'end_drink });
+    }
 }
 
 /****************************************************************
@@ -236,29 +236,29 @@ reset(int arg)
 varargs string
 query_long(string s, object who)
 {
-int d;
-mixed txt;
-string n;
+    int d;
+    mixed txt;
+    string n;
 
-	txt = ::query_long(s, who);
+    txt = ::query_long(s, who);
 
-	if (liquid_name) n = liquid_name;
-	else n = query_name();
+    if (liquid_name) n = liquid_name;
+    else n = query_name();
 
-	if (full > 0) {
-		if (full >= max_full) txt += "\nIt is full of " + n;
-		else {
-			d = ((100 * full) / max_full);
-			if (d > 80) txt += "\nIt is almost full of " + n;
-			else if (d > 60) txt += "\nIt is more than a half filled with " + n;
-			else if (d > 40) txt += "\nIt is about half full of " + n;
-			else if (d > 20) txt += "\nIt is less than a half filled with " + n;
-			else txt += "\nThere's only a small amount of " + n + " left";
-		}
-        	txt += ".";
+    if (full > 0) {
+	if (full >= max_full) txt += "\nIt is full of " + n;
+	else {
+	    d = ((100 * full) / max_full);
+	    if (d > 80) txt += "\nIt is almost full of " + n;
+	    else if (d > 60) txt += "\nIt is more than a half filled with " + n;
+	    else if (d > 40) txt += "\nIt is about half full of " + n;
+	    else if (d > 20) txt += "\nIt is less than a half filled with " + n;
+	    else txt += "\nThere's only a small amount of " + n + " left";
 	}
-	else txt += "\nIt's empty.";
-	return txt;
+	txt += ".";
+    }
+    else txt += "\nIt's empty.";
+    return txt;
 }
 
 /****************************************************************
@@ -270,13 +270,13 @@ string n;
 status
 prevent_insert()
 {
-	return 0; /* .... */
+    return 0; /* .... */
 
-	if (full) {
-		if (this_player()) this_player() -> tell_me(
-"You don't want to ruin the " + query_name(0, this_player()) + ".");
-		return 1;
-	}
+    if (full) {
+	if (this_player()) this_player() -> tell_me(
+	      "You don't want to ruin the " + query_name(0, this_player()) + ".");
+	return 1;
+    }
 }
 
 
@@ -286,112 +286,112 @@ prevent_insert()
 int
 make_empty(string msg_me, string msg_other, int heal, object me)
 {
-	if (!me && !(me = this_player()))
-		return 0;
-	me->tell_me(msg_me, 0, 0, me, this_object(), this_object());
-	if (environment(me))
-		environment(me)->tell_here(msg_other, 0, 0, me, me,
-			this_object(), this_object());
-	if (!no_heal)
-		me -> heal_self(heal);
+    if (!me && !(me = this_player()))
+	return 0;
+    me->tell_me(msg_me, 0, 0, me, this_object(), this_object());
+    if (environment(me))
+	environment(me)->tell_here(msg_other, 0, 0, me, me,
+	  this_object(), this_object());
+    if (!no_heal)
+	me -> heal_self(heal);
 
-        if (--full > 0) return 1;
+    if (--full > 0) return 1;
 
-	if (!keep_short) {
-/* a small change to save some memory */
-		if (container == "bottle") {
-			set_name("empty bottle");
-			set_short("empty bottle"); /* Got rid of 'an' /Graah */
-		} else {
-			set_name("empty " + container);
-			set_short("empty " + container); /* likewise */
-		}
+    if (!keep_short) {
+	/* a small change to save some memory */
+	if (container == "bottle") {
+	    set_name("empty bottle");
+	    set_short("empty bottle"); /* Got rid of 'an' /Graah */
+	} else {
+	    set_name("empty " + container);
+	    set_short("empty " + container); /* likewise */
 	}
+    }
 
-	return 1;
+    return 1;
 }
 
 int
 begin_drink(object plr)
 {
-	if (!full || !plr) return 0;
-	plr->tell_me(sprintf("You raise the %s to your lips...", container));
-	environment(plr)->tell_here(sprintf("%s raises %s to %s lips...",
-		(string) plr->query_name(0, plr), container,
-		(string) plr->Possessive()), plr);
-	return 1;
+    if (!full || !plr) return 0;
+    plr->tell_me(sprintf("You raise the %s to your lips...", container));
+    environment(plr)->tell_here(sprintf("%s raises %s to %s lips...",
+	(string) plr->query_name(0, plr), container,
+	(string) plr->Possessive()), plr);
+    return 1;
 }
 
 int
 end_drink(object plr)
 {
-string p_name, str;
-int p_lev;
-	if (!plr)
-		return 0;
-	// AARGH! Endless drink with !full   -Graah
-	if (full < 1) {
-		plr->tell_me(sprintf("... and notice that the %s is empty!",
-			container));
-		return 0;
-	}
+    string p_name, str;
+    int p_lev;
+    if (!plr)
+	return 0;
+    // AARGH! Endless drink with !full   -Graah
+    if (full < 1) {
+	plr->tell_me(sprintf("... and notice that the %s is empty!",
+	    container));
+	return 0;
+    }
 
-	p_name = (string)plr->query_name(0, plr);
-	p_lev = (int) plr->query_level();
-	if (soft_drink) {
-	  if (p_lev * 8 < strength)
+    p_name = (string)plr->query_name(0, plr);
+    p_lev = (int) plr->query_level();
+    if (soft_drink) {
+	if (p_lev * 8 < strength)
 	    return make_empty(
-"This is much too much for you to drink! You drool most of it on the ground.",
-		sprintf("%s tries to drink %s but drools most of it on the\
+	      "This is much too much for you to drink! You drool most of it on the ground.",
+	      sprintf("%s tries to drink %s but drools most of it on the\
  ground.", p_name, query_name(0, plr)), p_lev, plr);
-	} else {
-	  if (strength >= 12 && p_lev < 10)
+    } else {
+	if (strength >= 12 && p_lev < 10)
 	    return make_empty("You sputter liquid all over the room.",
-		sprintf("%s tries to drink %s but coughs and sputters it all\
+	      sprintf("%s tries to drink %s but coughs and sputters it all\
  over you.", p_name, query_name(0, plr)), 4, plr);
-	  else if (strength >= 8 && p_lev < 5)
+	else if (strength >= 8 && p_lev < 5)
 	    return make_empty("You throw it all up.",
-		sprintf("%s tries to drink %s but throws up.",
-p_name, query_name(0, plr)), 2, plr);
-	}
+	      sprintf("%s tries to drink %s but throws up.",
+		p_name, query_name(0, plr)), 2, plr);
+    }
 
-	if (!call_other(plr, (soft_drink ? "drink_soft" : "drink_alco"), strength))
-	{
-		return 1;
-	}
-
-	if (plr->query_invis()) str = "You hear some slurping.";
-	else if (drinking_mess) str = drinking_mess;
-	else str = sprintf("%s drinks %s.", p_name, query_name(0, plr));
-
-	make_empty(drinker_mess, str, (strength>1) ? (strength * 2 - 4) : 0, plr);
-
-	if (_flags & F_EXTRA_DRINK)
-		this_object()->extra_drink();
-
+    if (!call_other(plr, (soft_drink ? "drink_soft" : "drink_alco"), strength))
+    {
 	return 1;
+    }
+
+    if (plr->query_invis()) str = "You hear some slurping.";
+    else if (drinking_mess) str = drinking_mess;
+    else str = sprintf("%s drinks %s.", p_name, query_name(0, plr));
+
+    make_empty(drinker_mess, str, (strength>1) ? (strength * 2 - 4) : 0, plr);
+
+    if (_flags & F_EXTRA_DRINK)
+	this_object()->extra_drink();
+
+    return 1;
 }
 
 varargs status
 drink_cmd(string str, object me)
 {
-	if (!me && !(me = this_player())) return 0;
+    if (!me && !(me = this_player())) return 0;
 
-	if (!full) {
-		me -> tell_me(sprintf(
-"You try to sip from empty %s.", container));
-		return 1;
-	}
-
-	if (lords_only && (int)me->query_level() < 20
-	&& !this_player()->query_coder_level()) {
-		me -> tell_me("This drink is for Lords only, you cannot drink it.");
-		return 1;
-	}
-
-	if ((int) this_player()->set(PLR_COMBAT_QUEUE, _tmp_cl) == 1)
-		begin_drink(me);
+    if (!full) {
+	me -> tell_me(sprintf(
+	    "You try to sip from empty %s.", container));
 	return 1;
+    }
+
+    if (lords_only && (int)me->query_level() < 20
+      && !this_player()->query_coder_level()) {
+	me -> tell_me("This drink is for Lords only, you cannot drink it.");
+	return 1;
+    }
+
+    if ((int) this_player()->set(PLR_COMBAT_QUEUE, _tmp_cl) == 1)
+	begin_drink(me);
+    return 1;
 }
 
 /* Don't bother to add_action, nor check the syntax; these have
@@ -400,11 +400,11 @@ drink_cmd(string str, object me)
 varargs status
 read_cmd(string s, object me)
 {
-	if (!me && !(me = this_player())) return 0;
-	if (!read_msg) return notify_fail("You can't see any writing on the "
-		+ query_name(0, me)+"."), 0;
-	me -> tell_me(read_msg);
-	return 1;
+    if (!me && !(me = this_player())) return 0;
+    if (!read_msg) return notify_fail("You can't see any writing on the "
+	  + query_name(0, me)+"."), 0;
+    me -> tell_me(read_msg);
+    return 1;
 }
 
 int
@@ -418,21 +418,21 @@ min_cost() { return 4 * strength + (strength * strength) / 10; }
 void
 my_destruct(status silent)
 {
-object ob;
-int    i;
-	_flags &= (~F_CALL_DONE);
-	ob = this_object();
-	if (!environment() || environment(environment())) return;
-	while (ob = environment(ob))
-		if (interactive(ob))
-			return;
-	if (!silent && (i = random(240)) > 120) {
-		call_out("my_destruct", i, 1);
-		return;
-	}
+    object ob;
+    int    i;
+    _flags &= (~F_CALL_DONE);
+    ob = this_object();
+    if (!environment() || environment(environment())) return;
+    while (ob = environment(ob))
+	if (interactive(ob))
+	    return;
+    if (!silent && (i = random(240)) > 120) {
+	call_out("my_destruct", i, 1);
+	return;
+    }
 
-	if (!silent)
-		environment() -> tell_here(sprintf(
-"The %s breaks as it is dropped down.", container));
-	destruct(this_object());
+    if (!silent)
+	environment() -> tell_here(sprintf(
+	    "The %s breaks as it is dropped down.", container));
+    destruct(this_object());
 }

@@ -197,7 +197,7 @@ varargs string
 query_name(int mode, object x, status non_cap)
 {
     if (INVIS_LEVEL && (!intp(mode) || mode < INVIS_LEVEL))
-        return non_cap ? "someone" : "Someone";
+	return non_cap ? "someone" : "Someone";
     return non_cap ? name : cap_name;
 }
 
@@ -224,8 +224,8 @@ query_attack()
 {
     int i;
 
-   // Sometimes this happens, got to test. /Graah
-   if (!environment()) return 0;
+    // Sometimes this happens, got to test. /Graah
+    if (!environment()) return 0;
 
     while (i < attackers) {
 	if (attacker[i] && present(attacker[i], environment()))
@@ -241,7 +241,7 @@ query_alt_attack()
 {
     int i;
 
-	if (!environment()) return 0;
+    if (!environment()) return 0;
     while (i < attackers) {
 	if (attacker[i] && present(attacker[i], environment())) {
 	    while (++i < attackers)
@@ -356,45 +356,45 @@ set_attacker(object ob)
 varargs status
 set_rest(status arg, status silent)
 {
-  string b;
+    string b;
 
-  if (silent) {
-    liv_Flags = arg ? ((liv_Flags | F_LIV_RESTING) & (~F_LIV_SITTING))
-      : (liv_Flags & (~F_LIV_RESTING));
-    return arg;
-  }
-  if (liv_Flags & F_LIV_SITTING) return 0;
-  if (!arg) {
-    tell_me("You stop resting.");
-    if (!INVIS_LEVEL && environment())
-      environment() -> tell_here(sprintf("%s stops resting and \
+    if (silent) {
+	liv_Flags = arg ? ((liv_Flags | F_LIV_RESTING) & (~F_LIV_SITTING))
+	: (liv_Flags & (~F_LIV_RESTING));
+	return arg;
+    }
+    if (liv_Flags & F_LIV_SITTING) return 0;
+    if (!arg) {
+	tell_me("You stop resting.");
+	if (!INVIS_LEVEL && environment())
+	    environment() -> tell_here(sprintf("%s stops resting and \
 clambers to %s feet.", MY_NAME(this_object()), Possessive()), this_object());
-  } else {
-/* I hate this: Starks Jan 28, 1999
-    b =  ({
-      "acromions", "ankle bones", "ankles", "arm-bone", "auditory ossicles",
-      "bones", "bones", "bones", "bones", "bones",
-      "breastbone", "capitate bones", "carpal bones", "clavicle", "coccygeal bone",
-      "costal cartilages", "cuboid bones", "distal interphalangeal joints", "elbow joints", "elbow-bone",
-      "fibulas", "finger bones", "frontal bone", "greater multangular bones", "hip bone",
-      "humeral articulations", "humeruses", "iliac bones", "intervertebral disks", "jaw bone",
-      "kneecaps", "mandibles", "medial malleoluses", "metacarpal bones", "metacarpophalangeal joints",
-      "metatarsal bones", "nasal bone", "navicular bones", "proximal interphalangeal joints", "pubic bone",
-      "radius bones", "rib bones", "sacral bone", "scaphoid bones", "scapulas",
-      "shin bones", "shoulder blade", "skeleton", "skull", "spinal column",
-      "sternum", "tarsal bones", "thigh bones", "toe bones", "toe bones",
-      "vertebral arches", "vertebras", "vomer", "zygomatic bones",
-    }) [random(59)];
-*/
-  b = "bones";
-    tell_me("You rest your tired " + b + ".");
-    if (!INVIS_LEVEL && environment())
-      environment() -> tell_here(sprintf("%s rests %s tired " + b + ".",
-	MY_NAME(this_object()), Possessive()), this_object());
-  }
-  liv_Flags = arg ? ((liv_Flags | F_LIV_RESTING) & (~F_LIV_SITTING))
+    } else {
+	/* I hate this: Starks Jan 28, 1999
+	    b =  ({
+	      "acromions", "ankle bones", "ankles", "arm-bone", "auditory ossicles",
+	      "bones", "bones", "bones", "bones", "bones",
+	      "breastbone", "capitate bones", "carpal bones", "clavicle", "coccygeal bone",
+	      "costal cartilages", "cuboid bones", "distal interphalangeal joints", "elbow joints", "elbow-bone",
+	      "fibulas", "finger bones", "frontal bone", "greater multangular bones", "hip bone",
+	      "humeral articulations", "humeruses", "iliac bones", "intervertebral disks", "jaw bone",
+	      "kneecaps", "mandibles", "medial malleoluses", "metacarpal bones", "metacarpophalangeal joints",
+	      "metatarsal bones", "nasal bone", "navicular bones", "proximal interphalangeal joints", "pubic bone",
+	      "radius bones", "rib bones", "sacral bone", "scaphoid bones", "scapulas",
+	      "shin bones", "shoulder blade", "skeleton", "skull", "spinal column",
+	      "sternum", "tarsal bones", "thigh bones", "toe bones", "toe bones",
+	      "vertebral arches", "vertebras", "vomer", "zygomatic bones",
+	    }) [random(59)];
+	*/
+	b = "bones";
+	tell_me("You rest your tired " + b + ".");
+	if (!INVIS_LEVEL && environment())
+	    environment() -> tell_here(sprintf("%s rests %s tired " + b + ".",
+		MY_NAME(this_object()), Possessive()), this_object());
+    }
+    liv_Flags = arg ? ((liv_Flags | F_LIV_RESTING) & (~F_LIV_SITTING))
     : (liv_Flags & (~F_LIV_RESTING));
-  return arg;
+    return arg;
 }
 
 varargs status
@@ -496,7 +496,7 @@ test_dark()
 	case 4: // Dwarves!
 	    // notify_fail("It's too dark here!\n");
 	    // return 6 * night;
-	// this should return 0 instead 7, right?
+	    // this should return 0 instead 7, right?
 	    return 0;
 	default:
 	    return 0;
@@ -821,11 +821,11 @@ currently attack other players, nor can they attack you.");
 	// that allow cheat training - we want to catch and punish
 	// the cheaters with this :) /Graah
 	if (query_guild() == GN_HEALER)
-	  log_file("ATTACK_HEALER",
-		   sprintf("%s attacked %s at %s in %s\n",
-			   capitalize((string)ob->query_real_name()),
-			   cap_name,
-			   ctime(time())[4..15], object_name(environment(ob))));
+	    log_file("ATTACK_HEALER",
+	      sprintf("%s attacked %s at %s in %s\n",
+		capitalize((string)ob->query_real_name()),
+		cap_name,
+		ctime(time())[4..15], object_name(environment(ob))));
 #endif
 
 	if (!dirty_stamp && environment()->query(NO_PK)) {
@@ -851,12 +851,12 @@ currently attack other players, nor can they attack you.");
 	if (!dirty_stamp)
 	    set(LIV_OK_TO_PK);
 	else
-	  {
+	{
 	    // Dirty stamp shouldn't be set on char who is already
 	    // dead. /Graah
 	    if (!dead)
-	      dirty_stamp = age + TIME_TO_STAY_DIRTY;
-	  }
+		dirty_stamp = age + TIME_TO_STAY_DIRTY;
+	}
 
 	/* How about enemy... let's be sure he/she can be attacked too! */
 	if (!(enemy_flags & F_LIV_OK_TO_PK))
@@ -1147,14 +1147,14 @@ hit_player(int dam, int t, mixed hc, object enemy)
 	    enemy_player = 1;
     }
 
-   if(enemy_player && (query(LIV_FLAGS) & F_LIV_IS_PLAYER) && dam > 0) {
-     if(dam > 900) dam = 225;
-     else {
-      float dam2;
-        dam2 = dam/2.0 - (dam/60.0 * dam/60.0);
-       dam = to_int(dam2);
-     }
-   }
+    if(enemy_player && (query(LIV_FLAGS) & F_LIV_IS_PLAYER) && dam > 0) {
+	if(dam > 900) dam = 225;
+	else {
+	    float dam2;
+	    dam2 = dam/2.0 - (dam/60.0 * dam/60.0);
+	    dam = to_int(dam2);
+	}
+    }
     orig_dam = dam;
     // First, let's update attacker list and call attacked_by, which may
     // be masked by NPCs.
@@ -1257,7 +1257,7 @@ hit_player(int dam, int t, mixed hc, object enemy)
     // Chopin 3-May-98
     if (query_can_move()
 #ifdef GN_HEALER
-	|| guild == GN_HEALER
+      || guild == GN_HEALER
 #endif
     )
     {
@@ -1266,11 +1266,11 @@ hit_player(int dam, int t, mixed hc, object enemy)
 	  interactive(this_object()) &&
 	  (interactive_info(this_object(), II_IDLE) < IDLE_LIMIT_FOR_DODGE
 #ifdef GN_HEALER
-	  || guild == GN_HEALER
+	    || guild == GN_HEALER
 #endif
-	) && (((int)this_object()->query_skill(SK_DODGE) == SKILL_NO_EXIST) ||
-		query_condition(C_NO_DODGE)) &&
-		(func = GuildHooks[G_HOOK_HIT_PLAYER])) {
+	  ) && (((int)this_object()->query_skill(SK_DODGE) == SKILL_NO_EXIST) ||
+	    query_condition(C_NO_DODGE)) &&
+	  (func = GuildHooks[G_HOOK_HIT_PLAYER])) {
 	    if (to_object(func) && intp(x = funcall(func, dam, t, hc, enemy)))
 		dam = x;
 	}
@@ -1283,56 +1283,56 @@ hit_player(int dam, int t, mixed hc, object enemy)
     // So, they are too slow to avoid hits: hits go through armor.
     z = query_stat(ST_DEX);
     if ((z >= 10) ||
-	(level < 15) ||
-	((level - z) < (10 + random(10))))
-      // AC softens hit in any case. :-p (even if we can't move)
-      dam -= y;
-	if(t > DT_FORCE) {
+      (level < 15) ||
+      ((level - z) < (10 + random(10))))
+	// AC softens hit in any case. :-p (even if we can't move)
+	dam -= y;
+    if(t > DT_FORCE) {
 	if((int)this_object()->query_skill(SK_M_DEFENSE) != SKILL_NO_EXIST)
-		if(this_object()->query_skill_hook(SK_M_DEFENSE, 0)) {
-			dodge = (int)this_object()->use_skill(SK_M_DEFENSE,
-				SK_TRAIN_STD, ({
-				dam, t, hc, enemy }));
-				if(dodge > HOOK_RESOLVED)
-					dam -= dodge;
-				dodge = 0;
-			}
+	    if(this_object()->query_skill_hook(SK_M_DEFENSE, 0)) {
+		dodge = (int)this_object()->use_skill(SK_M_DEFENSE,
+		  SK_TRAIN_STD, ({
+		    dam, t, hc, enemy }));
+		if(dodge > HOOK_RESOLVED)
+		    dam -= dodge;
+		dodge = 0;
+	    }
+    }
+    if(t <= DT_PHYS && t > DT_FORCE && !query_condition(C_STUNNED)
+      && !query_condition(C_NO_DODGE)) {
+	// Armour just gets in the way
+	// But strength is a factor, too
+	if(c = sizeof(query_armour("weight")))
+	{
+	    while(c--)
+		aw += query_armour("weight")[c];
+	    aw -= (query_stat(ST_STR)/8);
+	    if(aw < 0) aw = 0;
 	}
-	if(t <= DT_PHYS && t > DT_FORCE && !query_condition(C_STUNNED)
-		&& !query_condition(C_NO_DODGE)) {
-		// Armour just gets in the way
-		// But strength is a factor, too
-		if(c = sizeof(query_armour("weight")))
-		{
-			while(c--)
-				aw += query_armour("weight")[c];
-			aw -= (query_stat(ST_STR)/8);
-			if(aw < 0) aw = 0;
-		}
-		if(query_fp() < COST_FOR_ASKILL + (aw/4) ||
-		query_condition(C_UNCONSCIOUS) ||
-		query_condition(C_STUNNED))
-			dodge = SKILL_NO_EXIST;
-		else
-	dodge = (int)this_object()->use_skill(SK_DODGE,
-		SK_TRAIN_X_HARD);
+	if(query_fp() < COST_FOR_ASKILL + (aw/4) ||
+	  query_condition(C_UNCONSCIOUS) ||
+	  query_condition(C_STUNNED))
+	    dodge = SKILL_NO_EXIST;
+	else
+	    dodge = (int)this_object()->use_skill(SK_DODGE,
+	      SK_TRAIN_X_HARD);
 	if(dodge > SKILL_NO_EXIST)
-		if(add_fp(-(COST_FOR_ASKILL + (aw/4))) <
-			(COST_FOR_ASKILL + (aw/4)))
-			tell_me(
-			"Your last attempt at dodging has worn you out."
-			);
+	    if(add_fp(-(COST_FOR_ASKILL + (aw/4))) <
+	      (COST_FOR_ASKILL + (aw/4)))
+		tell_me(
+		  "Your last attempt at dodging has worn you out."
+		);
 	if(dodge > 0) {
-		dodge = dodge * (int)this_object()->query_skill_lev("dodge");
-		dodge = to_int((float)dodge/2);
-		dodge -= aw;
-		// Small bonus for dex
-		dam += (query_stat(ST_DEX) / 10);
-		if(dodge < 0) dodge = 0;
-		dam -= dodge;
-		if(dam < 0) dam = 0;
-		}
+	    dodge = dodge * (int)this_object()->query_skill_lev("dodge");
+	    dodge = to_int((float)dodge/2);
+	    dodge -= aw;
+	    // Small bonus for dex
+	    dam += (query_stat(ST_DEX) / 10);
+	    if(dodge < 0) dodge = 0;
+	    dam -= dodge;
+	    if(dam < 0) dam = 0;
 	}
+    }
 
 
     // There is something weird in the following piece of code so I
@@ -1353,7 +1353,7 @@ hit_player(int dam, int t, mixed hc, object enemy)
     //the guilds implement it in their own code.
     // Bull 27. 7. 1998
     if( !( enemy->query_npc() ) )
-      dam = TUNE_GENERAL_DAMAGE(dam);
+	dam = TUNE_GENERAL_DAMAGE(dam);
 
     // We always do at least 1 point of damage, if we hit.
 
@@ -1366,9 +1366,9 @@ hit_player(int dam, int t, mixed hc, object enemy)
     // it here so that the real damage that is done can be told
     // to the hitter (but before this object possibly dies)
     // Chopin 3-May-98
-    
+
     if(closurep(hc) && to_object(hc))
-        funcall(hc, this_object(), dam, t, orig_dam);
+	funcall(hc, this_object(), dam, t, orig_dam);
 
     old_hp = hit_point;
     hit_point -= dam;
@@ -1376,31 +1376,31 @@ hit_player(int dam, int t, mixed hc, object enemy)
     // Hobbits are sneaky! //Graah
     // Uhhhh?!?!?! -+ Doomdark +-
 
-   // old_hp should prevent multiple mort-messages +- Flagg
+    // old_hp should prevent multiple mort-messages +- Flagg
 
     if (hit_point < 0 && us_player) {
-      // We are nearly dead. Terminal unconsciousness.
+	// We are nearly dead. Terminal unconsciousness.
 	last_attacker = enemy;
 	name_of_last_attacker = (string) enemy->query_real_name();
-      // give message only once ...
-        if (old_hp >= 0){
-	   set_condition(C_UNCONSCIOUS | C_FORCE_FLAG, -1);
-	   tell_me("You are mortally wounded and fall down, unconscious!");
-	   environment() -> tell_here(sprintf("%s is mortally wounded and\
+	// give message only once ...
+	if (old_hp >= 0){
+	    set_condition(C_UNCONSCIOUS | C_FORCE_FLAG, -1);
+	    tell_me("You are mortally wounded and fall down, unconscious!");
+	    environment() -> tell_here(sprintf("%s is mortally wounded and\
  falls down.", MY_NAME(this_object())), this_object());
-      // Let's make enemies skip us for a second... 8-)
-	   x = 0;
-	   while (x < attackers) {
-	       if (attacker[x] && present(attacker[x], environment()))
-		   attacker[x]->stop_fight(this_object(), 1);
-	        x++;
-	  }
-      // Let's inform guild object about going mortally wounded as well!
-	  if ((GuildFlags & (1 << G_HOOK_GO_MORT))
-	   && (func = GuildHooks[G_HOOK_GO_MORT])) {
-	      funcall(func, this_object(), enemy);
-	  }
-	 }
+	    // Let's make enemies skip us for a second... 8-)
+	    x = 0;
+	    while (x < attackers) {
+		if (attacker[x] && present(attacker[x], environment()))
+		    attacker[x]->stop_fight(this_object(), 1);
+		x++;
+	    }
+	    // Let's inform guild object about going mortally wounded as well!
+	    if ((GuildFlags & (1 << G_HOOK_GO_MORT))
+	      && (func = GuildHooks[G_HOOK_GO_MORT])) {
+		funcall(func, this_object(), enemy);
+	    }
+	}
     }
 
     if ((!us_player && (hit_point < 0))
@@ -1459,7 +1459,7 @@ drop_things_in_panic()
 
     // Change this algorithm if it is too cruel or too nice /Graah
     num = random(12) +
-	  random(sizeof(inv) / 2) - random(dx / 2);
+    random(sizeof(inv) / 2) - random(dx / 2);
 
     // Spill coins
     if (num > 1 && !random(4) && money > 10) {
@@ -1479,22 +1479,22 @@ drop_things_in_panic()
     }
 
     if (num > 1) for (i = sizeof(inv)-1; i >= 0; i--) {
-      x = random(sizeof(inv));
-      // Worn and wielded (= used) things are not dropped easily.
-      if (present(inv[x], this_object())
-	  && !inv[x]->is_used()
-	  && !inv[x]->drop()) {
-	tell_me(sprintf("You dropped %s while fleeing.", get_short(inv[x])));
-	environment() -> tell_here(sprintf("%s dropped %s while fleeing.",
-MY_NAME(this_object()), (string)inv[x]->query_name(0, this_object())),
-				   this_object());
-	move_object(inv[x], environment());
-	call_other(environment(),
-		   "extra_move_object", inv[x], environment());
-	add_weight(-((int) inv[x] -> query_weight()));
-	return;
-      }
-    }
+	    x = random(sizeof(inv));
+	    // Worn and wielded (= used) things are not dropped easily.
+	    if (present(inv[x], this_object())
+	      && !inv[x]->is_used()
+	      && !inv[x]->drop()) {
+		tell_me(sprintf("You dropped %s while fleeing.", get_short(inv[x])));
+		environment() -> tell_here(sprintf("%s dropped %s while fleeing.",
+		    MY_NAME(this_object()), (string)inv[x]->query_name(0, this_object())),
+		  this_object());
+		move_object(inv[x], environment());
+		call_other(environment(),
+		  "extra_move_object", inv[x], environment());
+		add_weight(-((int) inv[x] -> query_weight()));
+		return;
+	    }
+	}
 }
 
 void
@@ -1671,7 +1671,7 @@ force_us(string cmd)
 status
 frog_curse(status arg)
 {
-string r;
+    string r;
     if (arg) {
 	if (frog) return 1;
 	tell_me("You turn into a frog!");
@@ -1684,10 +1684,10 @@ string r;
 	recount_weight();
 	return 1;
     }
-   r = query_race();
-	if (!r) r = "human";
+    r = query_race();
+    if (!r) r = "human";
     if (query_gender() != G_NEUTER)
-        tell_me(sprintf("You turn into a %s once again.", r));
+	tell_me(sprintf("You turn into a %s once again.", r));
     else tell_me("You turn into a worm once again.");
     return (frog = 0);
 }

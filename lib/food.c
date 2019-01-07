@@ -86,8 +86,8 @@ int min_cost();
 int
 query_value() 
 {
-	if (value) return (value * full);
-	else return (min_cost() * full);
+    if (value) return (value * full);
+    else return (min_cost() * full);
 }
 int query_strength() { return strength; }
 string query_eating_mess() { return eating_mess; }
@@ -102,8 +102,8 @@ is_food() { return 1; }	/* Yup! */
 varargs string
 query_long(string s, object who)
 {
-string t;
-	return ::query_long(s, who) + "\n" + how_much_left() + ".";
+    string t;
+    return ::query_long(s, who) + "\n" + how_much_left() + ".";
 }
 
 /****************************************************************
@@ -144,27 +144,27 @@ status get() { return 1; }
 void
 init()
 {
-	if (functions_used & INIT_USED) this_object() -> init_food();
+    if (functions_used & INIT_USED) this_object() -> init_food();
 }
 
 void
 reset(int arg)
 {
-	if (arg) {
-		if (functions_used & RESET_USED) this_object() -> reset_food();
-		return;
-	}
-	if (function_exists("reset_food")) functions_used |= RESET_USED;
-	if (function_exists("init_food")) functions_used |= INIT_USED;
+    if (arg) {
+	if (functions_used & RESET_USED) this_object() -> reset_food();
+	return;
+    }
+    if (function_exists("reset_food")) functions_used |= RESET_USED;
+    if (function_exists("init_food")) functions_used |= INIT_USED;
 
-	max_full = full = 1;
-	set_weight(1);
-	no_heal = 0;
-	eater_mess = "Yum yum yum.";
+    max_full = full = 1;
+    set_weight(1);
+    no_heal = 0;
+    eater_mess = "Yum yum yum.";
 
-	set_name("food");
+    set_name("food");
 
-	this_object()->create_food();
+    this_object()->create_food();
 }
 
 /****************************************************************
@@ -176,32 +176,32 @@ reset(int arg)
 #if 0
 /* Sure we can bag 'em. But perhaps option set_no_insert or something? */
 prevent_insert() {
-	this_player() -> tell_me("But that would spoil your " + query_name() + "!");
-	return 1;
+    this_player() -> tell_me("But that would spoil your " + query_name() + "!");
+    return 1;
 }
 #endif
 
 string
 how_much_left()
 {
-int d;
-string str;
+    int d;
+    string str;
 
-	if (full) {
-		if (max_full > 0) d = ((full * 100) / max_full); else d = 100;
+    if (full) {
+	if (max_full > 0) d = ((full * 100) / max_full); else d = 100;
 
-		str = "There is ";
+	str = "There is ";
 
-		if (max_full == 1 || d > 80) str += "plenty";
-		else if (d > 60) str += "more than a half";
-		else if (d > 40) str += "about half";
-		else if (d > 20) str += "less than a half";
-		else str += "only a small piece";
+	if (max_full == 1 || d > 80) str += "plenty";
+	else if (d > 60) str += "more than a half";
+	else if (d > 40) str += "about half";
+	else if (d > 20) str += "less than a half";
+	else str += "only a small piece";
 
-		str += " of it remaining";
-	} else str = "There is none of it left";
+	str += " of it remaining";
+    } else str = "There is none of it left";
 
-	return str;
+    return str;
 }
 
 /* Note: No need to check the argument string as it is already
@@ -211,73 +211,73 @@ string str;
 varargs status
 eat_cmd(string str)
 {
-object ob;
+    object ob;
 
     if (full < 1) {
-        this_player() -> tell_me(
-"The food was spoiled and rotten. You throw it away.");
-        if (environment()) environment()->add_weight(-(query_weight()));
-        destruct(this_object());
+	this_player() -> tell_me(
+	  "The food was spoiled and rotten. You throw it away.");
+	if (environment()) environment()->add_weight(-(query_weight()));
+	destruct(this_object());
 	return 1;
     }
 
     if ((int) TP->query_level() * 8 < strength) {
 	this_player() -> tell_me(
-"You realize, even before trying, that you'll never be able to eat all this.");
+	  "You realize, even before trying, that you'll never be able to eat all this.");
 	return 1;
     }
 
     if (!TP->eat_food(strength)) return 1;
 
-/* Food is food, not healing. Healing is reduced to one tenth of
- * the original, if there is any. //Graah
- * Not quite right...now is based on bulk of eater. Make it 
- * worthwhile for some races.-Kelgath
- */
+    /* Food is food, not healing. Healing is reduced to one tenth of
+     * the original, if there is any. //Graah
+     * Not quite right...now is based on bulk of eater. Make it 
+     * worthwhile for some races.-Kelgath
+     */
 
     if (!no_heal) TP->heal_self(strength / ((int) TP->query_race_stat(RACE_EAT_VALUE)));
 
     TP->tell_me(eater_mess, 0,
-        0, TP, this_object(), this_object());
+      0, TP, this_object(), this_object());
     if (TP->query_invis())
 	environment(TP)-> tell_here(
-({"You hear someone munching something delicious.",
-  "You hear: *munch* *rousk* *burb*\n"}) [random(2)], TP);
+	  ({"You hear someone munching something delicious.",
+	    "You hear: *munch* *rousk* *burb*\n"}) [random(2)], TP);
     else if (eating_mess) environment(TP) -> tell_here(
-        eating_mess, 0, 0, TP,
-        this_player(), this_object(), this_object());
+	  eating_mess, 0, 0, TP,
+	  this_player(), this_object(), this_object());
     else environment(TP) -> tell_here(
-(string) TP->query_name(0, TP) + " eats " + query_name(0, TP) + ".",TP);
+	  (string) TP->query_name(0, TP) + " eats " + query_name(0, TP) + ".",TP);
 
-	if(is_poisoned){
-		TP->tell_me("ACK! It you shouldn't have eaten this. \
+    if(is_poisoned){
+	TP->tell_me("ACK! It you shouldn't have eaten this. \
 You feel very sick, as if you've been poisoned.");
-		environment(TP)->tell_here(TP->query_name()+
-" looks very ill all of the sudden.",TP);
-		TP->set_condition(C_POISONED,(random(60)+1));
-	}
+	environment(TP)->tell_here(TP->query_name()+
+	  " looks very ill all of the sudden.",TP);
+	TP->set_condition(C_POISONED,(random(60)+1));
+    }
 
 
     this_object()->extra_eat();
 
     if (--full < 1) {
 	TP -> tell_me( ({
-	  "You gormandized it all.",
-	  "That was the last bit of it.",
-	  "You devoured the whole thing.",
-	  "You fat glutton, you ate all of it!"})[random(4)]);
+	    "You gormandized it all.",
+	    "That was the last bit of it.",
+	    "You devoured the whole thing.",
+	    "You fat glutton, you ate all of it!"})[random(4)]);
 	if (environment()) environment()->add_weight(-(query_weight()));
 	destruct(this_object());
 	return 1;
     }
 
-/* Rye bread may VERY RARELY have enough of that fungi to cause
- * ergotism; the 'Fire of Holy Antonius'.
- */
+    /* Rye bread may VERY RARELY have enough of that fungi to cause
+     * ergotism; the 'Fire of Holy Antonius'.
+     */
     if (id("rye") && id("bread") && (random(100) < 2)) {
-        if (!present("disease", TP)) {
+	if (!present("disease", TP)) {
 	    if (ob = clone_object(DISEASE_FILE)) {
-	        move_object(ob, TP);
+		move_object(ob, TP);
 		ob->set_disease("ergotism");
 	    }
 	}
@@ -295,6 +295,6 @@ void extra_eat() { }
 int
 min_cost()
 {
-	return 4 * strength + (strength * strength) / 10 -
-	   (no_heal * 2 * strength);
+    return 4 * strength + (strength * strength) / 10 -
+    (no_heal * 2 * strength);
 }

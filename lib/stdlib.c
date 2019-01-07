@@ -12,44 +12,44 @@
 string
 _secs2string (int i)
 {
-     int t;
-     string s;
+    int t;
+    string s;
 
-     s = "";
+    s = "";
 
-     t = i % 60;
-     i = i / 60;
-     if (t) s = " " + t + " second" + ADD_S(t);
-     t = i % 60;
-     i = i / 60;
-     if (t) s = " " + t + " minute" + ADD_S(t) + s;
-     t = i % 24;
-     i = i / 24;
-     if (t) s = " " + t + " hour" + ADD_S(t) + s;
-     if (i) s = " " + i + " day" + ADD_S(i) + s;
-     if (s == "") return "0 seconds";
-	return s[1..<1];
+    t = i % 60;
+    i = i / 60;
+    if (t) s = " " + t + " second" + ADD_S(t);
+    t = i % 60;
+    i = i / 60;
+    if (t) s = " " + t + " minute" + ADD_S(t) + s;
+    t = i % 24;
+    i = i / 24;
+    if (t) s = " " + t + " hour" + ADD_S(t) + s;
+    if (i) s = " " + i + " day" + ADD_S(i) + s;
+    if (s == "") return "0 seconds";
+    return s[1..<1];
 }
 
 /* _secs2sstring:   int seconds to   "20h 30m 20s" etc */
 string
 _secs2sstring (int i)
 {
-     int t;
-     string s;
+    int t;
+    string s;
 
-     s = "";
+    s = "";
 
-     t = i % 60;
-     i = i / 60;
-     if (t) s = " " + t + "s";
-     t = i % 60;
-     i = i / 60;
-     if (t) s = " " + t + "m" + s;
-     t = i % 24;
-     i = i / 24;
-     if (t) s = " " + t + "h" + s;
-     if (i) s = " " + i + "D" + s;
-     if (s == "") return "0s";
-	return s[1..<1];
+    t = i % 60;
+    i = i / 60;
+    if (t) s = " " + t + "s";
+    t = i % 60;
+    i = i / 60;
+    if (t) s = " " + t + "m" + s;
+    t = i % 24;
+    i = i / 24;
+    if (t) s = " " + t + "h" + s;
+    if (i) s = " " + i + "D" + s;
+    if (s == "") return "0s";
+    return s[1..<1];
 }
