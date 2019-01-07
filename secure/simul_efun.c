@@ -21,46 +21,46 @@ int interactivep(object ob) { return interactive(ob); }
 nomask string
 creator_file(string str)
 {
-  string *xstr;
+    string *xstr;
 
-  xstr = explode(str + "/", "/");
+    xstr = explode(str + "/", "/");
 
-// No objects in /
-  if (sizeof(xstr) < 2) return 0;
+    // No objects in /
+    if (sizeof(xstr) < 2) return 0;
 
-  switch (xstr[0])
+    switch (xstr[0])
     {
-// Independent wizards (old style): Return the name of the wizard.
-      case "players":
+	// Independent wizards (old style): Return the name of the wizard.
+    case "players":
 	if (sizeof(xstr) >= 3) return xstr[1];
 	return 0;
-      /*
-       * Independent coders and domains: return coder / domain name.
-       */
-      case "u":
+	/*
+	 * Independent coders and domains: return coder / domain name.
+	 */
+    case "u":
 	if (sizeof(xstr) >= 4) return xstr[2];
 	return 0;
-      case "areas":
-		if (sizeof(xstr) > 2)
-			return xstr[1];
+    case "areas":
+	if (sizeof(xstr) > 2)
+	    return xstr[1];
 
-      /*
-       * /secure or /bin return root uid.
-       */
-      case "secure":
-      case "bin":
+	/*
+	 * /secure or /bin return root uid.
+	 */
+    case "secure":
+    case "bin":
 	return ROOT_UID;
 
-      /*
-       * No cloning or loading from /ftp.
-       */
-      case "ftp":
+	/*
+	 * No cloning or loading from /ftp.
+	 */
+    case "ftp":
 	return 0;
     }
-  /*
-   * All else: return backbone uid.
-   */
-  return BACKBONE_UID;
+    /*
+     * All else: return backbone uid.
+     */
+    return BACKBONE_UID;
 }
 #endif /* !AMYLAAR */
 
@@ -72,7 +72,7 @@ creator_file(string str)
 object
 master_object()
 {
-  return find_object(MASTER_OB);
+    return find_object(MASTER_OB);
 }
 
 /* Function name:   nature
@@ -82,8 +82,8 @@ master_object()
 object
 nature()
 {
-  catch(call_other("bin/daemons/nature_d", "lfun_not_exist"));
-  return find_object("bin/daemons/nature_d");
+    catch(call_other("bin/daemons/nature_d", "lfun_not_exist"));
+    return find_object("bin/daemons/nature_d");
 }
 
 /* Another addition.. will be put some day into the gd */
@@ -97,8 +97,8 @@ nature()
 string
 compile(string path)
 {
-  if(find_object(path)) return "Already compiled\n"; /* destr? */
-  return catch(call_other(path, "load_me_if_i_wasnt_hi_mom"));
+    if(find_object(path)) return "Already compiled\n"; /* destr? */
+    return catch(call_other(path, "load_me_if_i_wasnt_hi_mom"));
 }
 
 #include "/secure/simul_efun/get_object.c"

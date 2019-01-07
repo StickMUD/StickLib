@@ -13,13 +13,13 @@ log_file(string file,string str)
 
     if (sizeof(regexp(({file}), "/")) || file[0] == '.' || sizeof(file) > 30 )
     {
-        write("Illegal file name to log_file("+file+")\n");
-        return;
+	write("Illegal file name to log_file("+file+")\n");
+	return;
     }
 
 #ifdef AMYLAAR
     if ( sizeof(st = get_dir(file_name,2) ) && st[0] > MAX_LOG_SIZE) {
-      catch(rename(file_name, file_name + ".old")); /* No panic if failure */
+	catch(rename(file_name, file_name + ".old")); /* No panic if failure */
     }
 #endif
 

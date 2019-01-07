@@ -40,14 +40,14 @@ create()
     }
 
     crtypes = ([
-	CR_DISTURBANCE: "disturbance",
-	CR_THEFT: "theft",
-	CR_SMUGGLING: "smuggling",
-	CR_BURGLARY: "burglary",
-        CR_ASSAULT: "assault",
-	CR_MANSLAUGHTER: "manslaughter",
-	CR_WITCHCRAFT: "witchcraft",
-	CR_MURDER: "murder"
+      CR_DISTURBANCE: "disturbance",
+      CR_THEFT: "theft",
+      CR_SMUGGLING: "smuggling",
+      CR_BURGLARY: "burglary",
+      CR_ASSAULT: "assault",
+      CR_MANSLAUGHTER: "manslaughter",
+      CR_WITCHCRAFT: "witchcraft",
+      CR_MURDER: "murder"
     ]);
 }
 
@@ -72,7 +72,7 @@ crime_type(string n)
     ind = m_indices(crtypes);
 
     for (i = sizeof(ind) - 1; i >= 0; i--)
-        if (crtypes[ind[i]][0..6] == n[0..6])
+	if (crtypes[ind[i]][0..6] == n[0..6])
 	    return ind[i];
 
     return -1;
@@ -99,12 +99,12 @@ add_crime(object ob, int c)
 
 	if (ct >= 0) {
 	    switch(c) {
-		case CR_THEFT: crit = (3 * 60 * 30); break;
-		case CR_BURGLARY: crit = (4 * 60 * 30); break;
-		case CR_ASSAULT: crit = (5 * 60 * 30); break;
-		case CR_MANSLAUGHTER: crit = (7 * 60 * 30); break;
-		case CR_MURDER: crit = (8 * 60 * 30); break;
-		default: crit = (4 * 60 * 30); break;
+	    case CR_THEFT: crit = (3 * 60 * 30); break;
+	    case CR_BURGLARY: crit = (4 * 60 * 30); break;
+	    case CR_ASSAULT: crit = (5 * 60 * 30); break;
+	    case CR_MANSLAUGHTER: crit = (7 * 60 * 30); break;
+	    case CR_MURDER: crit = (8 * 60 * 30); break;
+	    default: crit = (4 * 60 * 30); break;
 	    }
 
 	    ob->set_crime_count(ct + crit);
@@ -129,8 +129,8 @@ find_witness(object ob)
 
     for (i = 0; i < sizeof(inv); i++) {
 	if ((living(inv[i])) &&
-	    (ob != inv[i]) &&
-	    (is_NPC_witness(inv[i]))) return inv[i];
+	  (ob != inv[i]) &&
+	  (is_NPC_witness(inv[i]))) return inv[i];
     }
 
     return 0;
@@ -153,9 +153,9 @@ find_player_witnesses(object ob)
 
     for (i = 0; i < sizeof(inv); i++) {
 	if ((living(inv[i])) &&
-	    (ob != inv[i]) &&
-	    (!inv[i]->query_npc()))
-		wits += ({ (string)inv[i]->query_real_name() });
+	  (ob != inv[i]) &&
+	  (!inv[i]->query_npc()))
+	    wits += ({ (string)inv[i]->query_real_name() });
     }
 
     return wits;
@@ -175,24 +175,24 @@ purge_crimes()
 
 	if (((cdata(i, CD_TIME) + cdata(i, CD_CRIME) * 1800)) > t) {
 	    ncr += ([ n: crimes[i] ]);
-	    n++;
-	}
+	n++;
     }
+}
 
-    crime_id = n;
-    crimes = ncr;
+crime_id = n;
+crimes = ncr;
 
-    save_object(SAVEFILE);
+save_object(SAVEFILE);
 }
 
 /*
- * Function   :	nomask void crime(object c, int what)
- * Description:	c has made a crime - test if there are any witnesses
- * Arguments  :	c	: criminal (living object)
- *		what	: what is his/her/its crime
- * Returns    :	
- *
- */
+* Function   :	nomask void crime(object c, int what)
+* Description:	c has made a crime - test if there are any witnesses
+* Arguments  :	c	: criminal (living object)
+*		what	: what is his/her/its crime
+* Returns    :	
+*
+*/
 nomask void
 crime(object c, int what)
 {
@@ -201,9 +201,9 @@ crime(object c, int what)
     int i, s;
 
     if ((npc = find_witness(c))) {
-        tell_room(environment(npc), (string)npc->query_name() +
-	    " yells: I noticed your crime, " +
-	    (string)c->query_name() + "!\n");
+	tell_room(environment(npc), (string)npc->query_name() +
+	  " yells: I noticed your crime, " +
+	  (string)c->query_name() + "!\n");
 	add_crime(c, what);
 	return; /* Won't need player witnesses. */
     }
@@ -213,12 +213,12 @@ crime(object c, int what)
     if (wits && (s = sizeof(wits)) > 0) {
 	for (i = 0; i < s; i++) {
 	    crimes += ([
-		crime_id: ({
-			wits[i],
-			(string)c->query_real_name(),
-			what,
-			time() })
-		]);
+	      crime_id: ({
+		wits[i],
+		(string)c->query_real_name(),
+		what,
+		time() })
+	    ]);
 	    crime_id++;
 	}
 
@@ -258,9 +258,9 @@ accuse(object who, string whom, int what)
 	 * and not done it already? */
 
 	if ((cdata(i, CD_WITNESS) == n) &&
-	    (cdata(i, CD_CRIMINAL) == whom) &&
-	    (cdata(i, CD_CRIME) == what) &&
-	    (cdata(i, CD_TIME) != -1)) {
+	  (cdata(i, CD_CRIMINAL) == whom) &&
+	  (cdata(i, CD_CRIME) == what) &&
+	  (cdata(i, CD_TIME) != -1)) {
 
 	    /* This must not be an old crime (max. hour per crime level) */
 	    if (((cdata(i, CD_TIME) + cdata(i, CD_CRIME) * 1800)) > t) {
@@ -274,7 +274,7 @@ accuse(object who, string whom, int what)
     }
 
     if (flag) {
-        purge_crimes();
+	purge_crimes();
 	return 0;
     }
 
@@ -298,17 +298,17 @@ check_crimes(object ob)
 	if (!crimes[i]) continue;
 
 	if ((cdata(i, CD_CRIMINAL) == n) &&
-	    (cdata(i, CD_TIME) == -1)) {
+	  (cdata(i, CD_TIME) == -1)) {
 
 	    if ((int)ob->query_crime_level() < cdata(i, CD_CRIME)) {
 		add_crime(ob, cdata(i, CD_CRIME));
 		ob->tell_me(sprintf("\n\n%-=75s\n\n",
- "Judge tells you: You were accused for " +
-  upper_case(crime_name(cdata(i, CD_CRIME))) +
- ", and found guilty! Surrender to nearest City Guard."));
+		    "Judge tells you: You were accused for " +
+		    upper_case(crime_name(cdata(i, CD_CRIME))) +
+		    ", and found guilty! Surrender to nearest City Guard."));
 
 #if 0
-	/* If we want a log file, write into it here */
+		/* If we want a log file, write into it here */
 #endif
 
 	    }
@@ -327,15 +327,15 @@ list_crimes()
     int i;
 
     for (i = 0; i < crime_id; i++) {
-        if (!crimes[crime_id]) continue;
+	if (!crimes[crime_id]) continue;
 
 	write(sprintf("%-13s accused of %s by %s, %s\n",
 	    capitalize(cdata(i, CD_CRIMINAL)),
 	    crime_name(cdata(i, CD_CRIME)),
 	    capitalize(cdata(i, CD_WITNESS)),
 	    (cdata(i, CD_TIME > 0) ?
-	     ctime(cdata(i, CD_TIME > 0)) :
-	     "Time/code " + cdata(i, CD_TIME > 0))));
+	      ctime(cdata(i, CD_TIME > 0)) :
+	      "Time/code " + cdata(i, CD_TIME > 0))));
 
     }
 }

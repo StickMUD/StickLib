@@ -17,26 +17,26 @@
 object
 present4(string Id, object where, object who, int iflags)
 {
-int i, x, c;
-object ob;
-	if (!stringp(Id)) return 0;
-// Id can contain trailing number ("object 2" and alike)...
-	if (Id[<1] >= '0' && Id[<1] <= '9') {
-	  x = sizeof(Id);
-		while (--x && (c = Id[x]) >= '0' && c <= '9')
-			i = i * 10 + (c - '0');
-		while (x && Id[x] == ' ')	// Let's also skip spaces...
-			x--;
-		Id = Id[0..x];
-		i--;
+    int i, x, c;
+    object ob;
+    if (!stringp(Id)) return 0;
+    // Id can contain trailing number ("object 2" and alike)...
+    if (Id[<1] >= '0' && Id[<1] <= '9') {
+	x = sizeof(Id);
+	while (--x && (c = Id[x]) >= '0' && c <= '9')
+	    i = i * 10 + (c - '0');
+	while (x && Id[x] == ' ')	// Let's also skip spaces...
+	    x--;
+	Id = Id[0..x];
+	i--;
+    }
+    ob = first_inventory(where);
+    while (ob) {
+	if (ob != who && ob->id(Id, iflags, who)) {
+	    if (!i--)
+		return ob;
 	}
-	ob = first_inventory(where);
-	while (ob) {
-		if (ob != who && ob->id(Id, iflags, who)) {
-			if (!i--)
-				return ob;
-		}
-		ob = next_inventory(ob);
-	}
-	return 0;
+	ob = next_inventory(ob);
+    }
+    return 0;
 }

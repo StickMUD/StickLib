@@ -18,7 +18,7 @@ get_object( string str, object player )
     } else {
 	obpath = ({ str });
     }
-	
+
     // Check the first argument
     do {
 	if (player) {
@@ -30,8 +30,8 @@ get_object( string str, object player )
 	    }
 	}
 
-//	if (what = present(str, previous_object())) break;
- 
+	//	if (what = present(str, previous_object())) break;
+
 	if (what = find_player(str)) break;
 	if (what = find_living(str)) break;
 
@@ -42,7 +42,7 @@ get_object( string str, object player )
 
 	if (what = find_object(str)) break;
 	if (!sscanf(str, "%s#", str)
-	    && (file_size(str) >= 0 || file_size(str + ".c") >= 0))
+	  && (file_size(str) >= 0 || file_size(str + ".c") >= 0))
 	{
 	    catch( call_other( str, "??" ) );
 	    what = find_object( str );
@@ -60,7 +60,7 @@ get_object( string str, object player )
 	    continue;
 	}
 	if ((sscanf(str, "i%d", i) || sscanf(str, "%d", i))
-	    && i >= 1 && sizeof(tmp = all_inventory(what)) >= i)
+	  && i >= 1 && sizeof(tmp = all_inventory(what)) >= i)
 	{
 	    what = tmp[i-1];
 	    continue;

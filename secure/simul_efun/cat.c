@@ -13,29 +13,29 @@
 varargs int cat(string file, int start, int num)
 {
     if (extern_call())
-        efun::set_this_object(efun::previous_object());
+	efun::set_this_object(efun::previous_object());
 
     int more;
 
     if (num < 0 || !efun::this_player())
-        return 0;
+	return 0;
 
     if (!start)
-        start = 1;
+	start = 1;
 
     if (!num || num > CAT_MAX_LINES) {
-        num = CAT_MAX_LINES;
-        more = efun::sizeof(efun::read_file(file, start+num, 1));
+	num = CAT_MAX_LINES;
+	more = efun::sizeof(efun::read_file(file, start+num, 1));
     }
 
     string txt = efun::read_file(file, start, num);
     if (!txt)
-        return 0;
+	return 0;
 
     efun::tell_object(efun::this_player(), txt);
 
     if (more)
-        efun::tell_object(efun::this_player(), "*****TRUNCATED****\n");
+	efun::tell_object(efun::this_player(), "*****TRUNCATED****\n");
 
     return efun::sizeof(txt & "\n");
 }

@@ -9,17 +9,17 @@
 int
 mkdir(string path)
 {
-int x;
+    int x;
     if(!MASTER_OB->check_access(path, this_interactive(), "mkdir", 1))
-        return 0;
+	return 0;
 
     if(efun::mkdir(path)) {
 	if (this_interactive()) {
-	MASTER_OB->set_access_data(path,
-		this_interactive()->query_real_name(), "owner");
-	MASTER_OB->set_access_data(path, 0, "r");
+	    MASTER_OB->set_access_data(path,
+	      this_interactive()->query_real_name(), "owner");
+	    MASTER_OB->set_access_data(path, 0, "r");
 	}
-        return 1;
+	return 1;
     }
     return 0;
 }

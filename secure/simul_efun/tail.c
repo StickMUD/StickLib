@@ -10,21 +10,21 @@
 varargs int tail(string file)
 {
     if (extern_call())
-        set_this_object(previous_object());
+	set_this_object(previous_object());
 
     if (!stringp(file) || !this_player())
-        return 0;
+	return 0;
     string txt = read_bytes(file, -(TAIL_MAX_BYTES + 80), (TAIL_MAX_BYTES + 80));
     if (!stringp(txt))
-        return 0;
+	return 0;
 
     // cut off first (incomplete) line
     int index = strstr(txt, "\n");
     if (index > -1) {
-        if (index + 1 < sizeof(txt))
-            txt = txt[index+1..];
-        else
-            txt = "";
+	if (index + 1 < sizeof(txt))
+	    txt = txt[index+1..];
+	else
+	    txt = "";
     }
 
     tell_object(this_player(), txt);

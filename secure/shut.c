@@ -29,30 +29,30 @@ int shout_counter, yell;
 void
 Shout(string str)
 {
-  object *ob;
-  int i;
+    object *ob;
+    int i;
 
-  ob = users();
-  for (i = sizeof(ob)-1; i >= 0; i--)
-    if(ob[i]) ob[i] -> tell_me(str);
+    ob = users();
+    for (i = sizeof(ob)-1; i >= 0; i--)
+	if(ob[i]) ob[i] -> tell_me(str);
 }
 
 void
 create()
 {
-  ::reset();
-  set_name("armageddon");
-  set_level(40);
-  set_wc(50);
-  set_ac(50);
-  set_short("Armageddon the game crasher");
-  set_long("He looks like he enjoys to stop the game.");
-  set_id("shut");
-  set_keep_hb(-2000000000);
-  set_ep(1);
-  added = 0;
-  seconds = -1;
-  call_out("move_to_church",1);
+    ::reset();
+    set_name("armageddon");
+    set_level(40);
+    set_wc(50);
+    set_ac(50);
+    set_short("Armageddon the game crasher");
+    set_long("He looks like he enjoys to stop the game.");
+    set_id("shut");
+    set_keep_hb(-2000000000);
+    set_ep(1);
+    added = 0;
+    seconds = -1;
+    call_out("move_to_church",1);
 }
 
 move_to_church() { move_player("X", GENERIC_ROOM_CHURCH); }
@@ -60,22 +60,22 @@ move_to_church() { move_player("X", GENERIC_ROOM_CHURCH); }
 string
 desc_time(int s)
 {
-  string d;
+    string d;
 
-  d = "";
+    d = "";
 
-  if (s > 59)
+    if (s > 59)
     {
-      d = s / 60 + " minutes ";
-      s = s % 60;
+	d = s / 60 + " minutes ";
+	s = s % 60;
     }
 
-  if (s != 0)
-    d += s + " seconds";
+    if (s != 0)
+	d += s + " seconds";
 
-  if (d == "") d = "infinite time";
+    if (d == "") d = "infinite time";
 
-  return d;
+    return d;
 }
 
 void abort_shutdown()
@@ -84,14 +84,14 @@ void abort_shutdown()
     // so we'll destruct ourselves to remove it.
 
     if (this_interactive() &&
-	(int)this_interactive()->query_coder_level() < LVL_CODER)
+      (int)this_interactive()->query_coder_level() < LVL_CODER)
     {
 	if (this_interactive())
-	  this_interactive()->tell_me(
-	    "Not allowed for coders under level 75.");
+	    this_interactive()->tell_me(
+	      "Not allowed for coders under level 75.");
 	return;
     }
- 
+
     Shout(cap_name+" shouts: I will come back for you all - Later!");
     destruct(this_object());
     return;
@@ -100,84 +100,84 @@ void abort_shutdown()
 void
 shut(int m)
 {
-  int i;
+    int i;
 
-  // Hmm. Let's not prevent this if it's master object calling us.
-  // -+ Doomdark +-
+    // Hmm. Let's not prevent this if it's master object calling us.
+    // -+ Doomdark +-
 
-  if (previous_object() && (
+    if (previous_object() && (
 	(i = strstr(object_name(previous_object()), "secure/master")) == 0
 	|| i == 1))
     {
-      //shutdown() needs this_player()
-      disable_commands();
+	//shutdown() needs this_player()
+	disable_commands();
 	enable_commands();
     }
-  else
+    else
     if (this_interactive() &&
-	(int)this_interactive()->query_coder_level() < LVL_CODER)
-      {
+      (int)this_interactive()->query_coder_level() < LVL_CODER)
+    {
 	if (this_interactive())
-	  this_interactive()->tell_me(
-	    "Not allowed for coders under level 75.");
+	    this_interactive()->tell_me(
+	      "Not allowed for coders under level 75.");
 	return;
-      }
-
-  if (!intp(m))
-    {
-      write("Bad argument\n");
-      return;
     }
 
-  if (m < 1)
+    if (!intp(m))
     {
-      write("No time given\n");
-      return;
-    }
-
-  set_long("He is firmly concentrated on counting.");
-
-  if (seconds > 0)
-    {
-      write("There is already a shutdown in process, " +
-	    desc_time(seconds) + ".\n");
-      if (m * 60 < seconds)
+	write("Bad argument\n");
 	return;
-      else
-	write("Ok, getting the new (longer) time...\n");
     }
 
-  while (remove_call_out("cont_shouting") >= 0);
-
-  if (!added)
+    if (m < 1)
     {
-      STORE->set_money(STORE->query_money()+ADD_MONEY_FOR_SHOP);
-      STORE1->set_money(STORE1->query_money()+ADD_MONEY_FOR_SHOP);
-      STORE2->set_money(STORE2->query_money()+ADD_MONEY_FOR_SHOP);
-      Shout("Armageddon shouts: Shops just got their tax refund!\n");
-      added = 1;
+	write("No time given\n");
+	return;
     }
 
-  if (this_interactive())
-    log_file("SHUT",
-      this_interactive()->query_real_name()+" at "+ctime(time())+"\n");
+    set_long("He is firmly concentrated on counting.");
 
-  orig_seconds = seconds = m * 60;
-  shout_counter = 0;
+    if (seconds > 0)
+    {
+	write("There is already a shutdown in process, " +
+	  desc_time(seconds) + ".\n");
+	if (m * 60 < seconds)
+	    return;
+	else
+	    write("Ok, getting the new (longer) time...\n");
+    }
 
-  call_out("cont_shouting", 2);
+    while (remove_call_out("cont_shouting") >= 0);
+
+    if (!added)
+    {
+	STORE->set_money(STORE->query_money()+ADD_MONEY_FOR_SHOP);
+	STORE1->set_money(STORE1->query_money()+ADD_MONEY_FOR_SHOP);
+	STORE2->set_money(STORE2->query_money()+ADD_MONEY_FOR_SHOP);
+	Shout("Armageddon shouts: Shops just got their tax refund!\n");
+	added = 1;
+    }
+
+    if (this_interactive())
+	log_file("SHUT",
+	  this_interactive()->query_real_name()+" at "+ctime(time())+"\n");
+
+    orig_seconds = seconds = m * 60;
+    shout_counter = 0;
+
+    call_out("cont_shouting", 2);
 }
 
 status
 query_shutdown_in_process()
 {
-  return (seconds > 0);
+    return (seconds > 0);
 }
 
 int
 query_seconds()
 {
-  return seconds;
+    return seconds;
 }
 
 int transport_offer;
@@ -185,98 +185,98 @@ int transport_offer;
 void
 heart_beat()
 {
-  object *u;
-  int new_delay, i;
+    object *u;
+    int new_delay, i;
 
-  ::heart_beat();
+    ::heart_beat();
 
-  // seconds -1 or lower: no shutdown in process.
-  if (seconds < 0) return;
+    // seconds -1 or lower: no shutdown in process.
+    if (seconds < 0) return;
 
-  seconds -= 2;
+    seconds -= 2;
 
-  if (seconds <= 0)
+    if (seconds <= 0)
     {
-      Shout(cap_name + " shouts: I will reboot now.\n\
+	Shout(cap_name + " shouts: I will reboot now.\n\
 Game Driver shouts: Yes! Do it! Now!\n\
 With a deafening boom, reality finally shatters under the pressure. \
 You spin through the holocaust of the crumbling world, until there is \
 nothing left but a silent void.");
 
-      // First force link-deaders to sell their stuff and quit //Rincewind
-      catch(call_other(GENERIC_ROOM_PURGATORY, "bail_out"));
+	// First force link-deaders to sell their stuff and quit //Rincewind
+	catch(call_other(GENERIC_ROOM_PURGATORY, "bail_out"));
 
-      // And then let's force save on others.
-      u = users();
-      i = 0;
-      while (i < sizeof(u)) {
-	if (interactive(u[i])) u[i]->save_me(0);
-	i++;
-      }
+	// And then let's force save on others.
+	u = users();
+	i = 0;
+	while (i < sizeof(u)) {
+	    if (interactive(u[i])) u[i]->save_me(0);
+	    i++;
+	}
 
-      shutdown();
-      return;
+	shutdown();
+	return;
     }
 
-  // Transport offer came at 240, too late...
-  if (seconds <= 480 && !transport_offer)
+    // Transport offer came at 240, too late...
+    if (seconds <= 480 && !transport_offer)
     {
-      Shout(cap_name + " shouts: Tell me if you want a trip to the shop!");
-      transport_offer = 1;
+	Shout(cap_name + " shouts: Tell me if you want a trip to the shop!");
+	transport_offer = 1;
     }
 
-  set_long("He is firmly concentrated on counting. \
+    set_long("He is firmly concentrated on counting. \
 He says: Shutdown in " + desc_time(seconds) + ".");
 
-  if (--yell <= 0)
+    if (--yell <= 0)
     {
-      Shout(sprintf("%s shouts: Game reboot in %s.",
-		    cap_name, desc_time(seconds)));
-      if ((yell = (seconds / 10)) < 2) yell = 2;
+	Shout(sprintf("%s shouts: Game reboot in %s.",
+	    cap_name, desc_time(seconds)));
+	if ((yell = (seconds / 10)) < 2) yell = 2;
     }
 }
 
 void
 cont_shouting()
 { 
-// New messages by Dolandar
-  Shout(({
-    "You hear dogs howling in the distance.",
-    "The horizon starts to glow with a fiery red glow.",
-    "The red glow spreads higher into the sky. The birds have stopped\
+    // New messages by Dolandar
+    Shout(({
+	"You hear dogs howling in the distance.",
+	"The horizon starts to glow with a fiery red glow.",
+	"The red glow spreads higher into the sky. The birds have stopped\
  singing and an unnatural silence has spread over the land.",
-    "The magnificent red glare covers the whole sky, making everything\
+	"The magnificent red glare covers the whole sky, making everything\
  appear somehow unreal in the bright red light.",
-    "The sky flares in all shades of red and yellow as if the flames\
+	"The sky flares in all shades of red and yellow as if the flames\
  of the sun were burning the world. You feel the temperature rising.",
-    "There is a sudden drop in temperature and you feel an unnatural chill\
+	"There is a sudden drop in temperature and you feel an unnatural chill\
  descending upon you. Frost forms on pools and a wind starts to blow.",
-    "The wind increases in force as the temperature continues to lower.\
+	"The wind increases in force as the temperature continues to lower.\
  The sky still flares unnaturally, but the light is vanishing, as if sucked\
  by the ground itself.", 
-    "A low rumble, like distant thunder shakes your bones. Unlike thunder\
+	"A low rumble, like distant thunder shakes your bones. Unlike thunder\
  it does not end, however, but continues to grow in volume.",
-    "You see the scenery around you stretch, as if torn by some great force.\
+	"You see the scenery around you stretch, as if torn by some great force.\
  The low rumble still continues.",
-    "With a terrifying scream, a large rift opens in the air beside you.\
+	"With a terrifying scream, a large rift opens in the air beside you.\
  It seems to suck all the remaining light, and as you turn to escape you\
  see the whole world being stretched into unnatural forms.",
-    "The rumbling noise gradually increases to the point where you can't\
+	"The rumbling noise gradually increases to the point where you can't\
  help shielding your ears against the unearthly screaming. Raw energy\
  fluctuates around you, tearing matter and destroying reality.",
-    })[shout_counter++]);
-  if (shout_counter<=10)
-    call_out("cont_shouting", orig_seconds / 12);
+      })[shout_counter++]);
+    if (shout_counter<=10)
+	call_out("cont_shouting", orig_seconds / 12);
 }
 
 catch_tell(str)
 {
-  string who, what;
-  object ob;
+    string who, what;
+    object ob;
 
-  if(!transport_offer) return;
-  if(sscanf(str,"%s tells you: %s", who, what) != 2) return;
-  this_player()->move_player("X", AREA_TRISTEZA+"shops/shop");
+    if(!transport_offer) return;
+    if(sscanf(str,"%s tells you: %s", who, what) != 2) return;
+    this_player()->move_player("X", AREA_TRISTEZA+"shops/shop");
 }
 
 /* Taken from new death by Graah */
@@ -284,11 +284,11 @@ catch_tell(str)
 int
 hit_player(int dam, int dtype, int hc, object enemy)
 {
-  return ::hit_player(0, dtype, hc, enemy);
+    return ::hit_player(0, dtype, hc, enemy);
 }
 
 int
 death(int mode, object who)
 {
-  return 0;
+    return 0;
 }
