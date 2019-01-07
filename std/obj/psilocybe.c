@@ -23,5 +23,5 @@ query_info()
 extra_eat()
 {
     if (!this_player()->query_condition(C_HALLUCINATING))
-        this_player()->set_condition(C_HALLUCINATING, 60 + random(50));
+	this_player()->set_condition(C_HALLUCINATING, 60 + random(50));
 }

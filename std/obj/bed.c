@@ -46,7 +46,7 @@ pregnancy(object mother, object father)
     // Here we check if mother becomes pregnant!
     if (random(100) > 23) return;
 #ifndef NO_TROJAN
-	return;
+    return;
 #endif
 
     ob = clone_object("/lib/pregnancy");
@@ -67,7 +67,7 @@ query(int x)
     if (member(({ OUT_CITY , PREVENT_TELEPORT_TO,
 	  ALLOW_TELEPORT_FROM, PREVENT_TELEPORT,
 	  ROOM_GUILD, NO_PK
-			     }), x) != -1) return 1;
+	}), x) != -1) return 1;
 
     if (x == ROOM_PREVENT_WHERE) return 0;
 
@@ -147,16 +147,16 @@ void
 init()
 {
 #if 0
-  // Stupid necromancer shit crashes the game. How nice.
-  if (environment()
+    // Stupid necromancer shit crashes the game. How nice.
+    if (environment()
       && this_player()
       && (environment(this_player()) == this_object())
       && this_player()->is_npc())
     {
-      write((string)this_player()->query_name()
-	    + " is kicked out of the bed.\n");
-      move_object(this_player(), environment());
-      return;
+	write((string)this_player()->query_name()
+	  + " is kicked out of the bed.\n");
+	move_object(this_player(), environment());
+	return;
     }
 #endif
 
@@ -262,13 +262,13 @@ don't you try with someone of the opposite sex...?");
     else { m = ob; f = TP; }
 
     if ((cob = present4("chastity", ob, TP, IL_TOTALLY_INVISIBLE))
-	|| (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
-      {
+      || (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
+    {
 	m->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here((string)m->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ m }));
+	  + (string)cob->query_name() + "!", ({ m }));
 	return 1;
-      }
+    }
 
     m->tell_me("You slide your massive cock into " +
       (string)f->query_name() +
@@ -315,13 +315,13 @@ don't you try with someone of the opposite sex...?");
     }
 
     if ((cob = present4("chastity", ob, TP, IL_TOTALLY_INVISIBLE))
-	|| (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
-      {
+      || (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
+    {
 	TP->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here((string)TP->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ TP }));
+	  + (string)cob->query_name() + "!", ({ TP }));
 	return 1;
-      }
+    }
 
     if ((int)TP->query_gender() != 2)
     {
@@ -400,13 +400,13 @@ don't you try with someone of the opposite sex...?");
     else { m = ob; f = TP; }
 
     if ((cob = present4("chastity", ob, TP, IL_TOTALLY_INVISIBLE))
-	|| (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
-      {
+      || (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
+    {
 	m->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here((string)m->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ m }));
+	  + (string)cob->query_name() + "!", ({ m }));
 	return 1;
-      }
+    }
 
     f->tell_me("You slide down on " + (string)m->query_name() +
       "'s mighty dick.");
@@ -453,13 +453,13 @@ don't you try with someone of the opposite sex...?");
     else { m = ob; f = TP; }
 
     if ((cob = present4("chastity", ob, TP, IL_TOTALLY_INVISIBLE))
-	|| (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
-      {
+      || (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
+    {
 	m->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here((string)m->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ m }));
+	  + (string)cob->query_name() + "!", ({ m }));
 	return 1;
-      }
+    }
 
     f->tell_me("You turn around " + (string)m->query_name() +
       ". Then you lie down upon him, \
@@ -510,12 +510,12 @@ suck_fcn(string str)
     her = (string)TP->query_possessive();
 
     if (cob = present4("chastity", ob, TP, IL_TOTALLY_INVISIBLE))
-      {
+    {
 	TP->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here(TP->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ TP }));
+	  + (string)cob->query_name() + "!", ({ TP }));
 	return 1;
-      }
+    }
 
     TP->tell_me("You take " + (string)ob->query_name() +
       "'s cock in your mouth \
@@ -563,12 +563,12 @@ hand_fcn(string str)
     }
 
     if (cob = present4("chastity", ob, TP, IL_TOTALLY_INVISIBLE))
-      {
+    {
 	TP->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here((string)TP->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ TP }));
+	  + (string)cob->query_name() + "!", ({ TP }));
 	return 1;
-      }
+    }
 
     her = (string)TP->query_possessive();
 
@@ -618,13 +618,13 @@ assfuck_fcn(string str)
     }
 
     if ((cob = present4("chastity", ob, TP, IL_TOTALLY_INVISIBLE))
-	|| (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
-      {
+      || (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE)))
+    {
 	TP->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here((string)TP->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ TP }));
+	  + (string)cob->query_name() + "!", ({ TP }));
 	return 1;
-      }
+    }
 
     TP->tell_me("You go on fucking " +
       (string)ob->query_name() + " in the ass. You sink \
@@ -685,12 +685,12 @@ bre_fuck(string str)
     }
 
     if (cob = present4("chastity", TP, ob, IL_TOTALLY_INVISIBLE))
-      {
+    {
 	TP->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here((string)TP->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ TP }));
+	  + (string)cob->query_name() + "!", ({ TP }));
 	return 1;
-      }
+    }
 
     TP->tell_me("You turn " + (string)ob->query_name() +
       " around so that she lies on her back. \
@@ -796,12 +796,12 @@ finger_fcn(string str)
     }
 
     if (cob = present4("chastity", ob, TP, IL_TOTALLY_INVISIBLE))
-      {
+    {
 	TP->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here((string)TP->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ TP }));
+	  + (string)cob->query_name() + "!", ({ TP }));
 	return 1;
-      }
+    }
 
     TP->tell_me("You put your finger into " + (string)ob->query_name() +
       "'s wet pussy. You slowly start to move the finger in \
@@ -848,12 +848,12 @@ lick_fcn(string str)
     }
 
     if (cob = present4("chastity", ob, TP, IL_TOTALLY_INVISIBLE))
-      {
+    {
 	TP->tell_me("You are stopped by " + (string)cob->query_name() + "!");
 	tell_here((string)TP->query_name() + " is stopped by "
-		  + (string)cob->query_name() + "!", ({ TP }));
+	  + (string)cob->query_name() + "!", ({ TP }));
 	return 1;
-      }
+    }
 
     TP->tell_me("You lick " + (string)ob->query_name() +
       "'s wet pussy.");

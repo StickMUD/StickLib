@@ -49,25 +49,25 @@ status unlight_cmd(string str);
 void
 create_treasure()
 {
-  set_name("torch of darkness");
-  set_id(({ "torch", "darkness", "dark_torch" }));
-  set_weight(1);
-  set_value(1000);
-  set_size(({ 4, 45, 4 }));
-  amount_of_fuel = 2000;
-  light_level = LIGHT_LEVEL;
-  held = 0;
+    set_name("torch of darkness");
+    set_id(({ "torch", "darkness", "dark_torch" }));
+    set_weight(1);
+    set_value(1000);
+    set_size(({ 4, 45, 4 }));
+    amount_of_fuel = 2000;
+    light_level = LIGHT_LEVEL;
+    held = 0;
 }
 
 void
 init()
 {
-  if (!living(environment(this_object()))) held = 0;
-  if (is_lighted && !held)
-    unlight_cmd("torch");
-  add_action("remove_cmd", "remove");
-  add_action("remove_cmd", "unwield");
-  add_action("hold_cmd", "hold");
+    if (!living(environment(this_object()))) held = 0;
+    if (is_lighted && !held)
+	unlight_cmd("torch");
+    add_action("remove_cmd", "remove");
+    add_action("remove_cmd", "unwield");
+    add_action("hold_cmd", "hold");
 }
 
 
@@ -79,21 +79,21 @@ init()
 
 status is_torch() { return 1; }
 status is_held() { return held; }
- 
+
 varargs string
 query_long(string what, object me)
 {
-  if (!is_lighted) return ::query_long(what, me);
-  return ::query_long(what, me) + (is_lighted?"\nIt is lit.":"");
+    if (!is_lighted) return ::query_long(what, me);
+    return ::query_long(what, me) + (is_lighted?"\nIt is lit.":"");
 }
 varargs string
 query_short(int mode, object me)
 {
-  string str;
-  str = ::query_short(mode, me);
-  if (held) str += " (held)";
-  if (is_lighted) str += " (lit)";
-  return str;
+    string str;
+    str = ::query_short(mode, me);
+    if (held) str += " (held)";
+    if (is_lighted) str += " (lit)";
+    return str;
 }
 
 int query_value() { return (-light_level * amount_of_fuel) / 60; }
@@ -118,14 +118,14 @@ void set_light_level(int x) { light_level = x; }
 
 status prevent_insert(object who)
 {
-  if (is_lighted) 
+    if (is_lighted) 
     {
 	if (!who) who = previous_object();
-        who->tell_me("You can't, because "
-		+query_name(0, who)+" is lit!");
-        return 1;
+	who->tell_me("You can't, because "
+	  +query_name(0, who)+" is lit!");
+	return 1;
     }
-  return 0;
+    return 0;
 }
 
 /***************************************************************/
@@ -134,27 +134,27 @@ status prevent_insert(object who)
 status
 light_cmd(string str)
 {
-  if ( !held )
+    if ( !held )
     {
-      TP->tell_me("You can't light a "+query_name()
-		  +" that you aren't holding!");
-      return 1;
+	TP->tell_me("You can't light a "+query_name()
+	  +" that you aren't holding!");
+	return 1;
     }
-  if (is_lighted)
+    if (is_lighted)
     {
-      TP -> tell_me("It is already lighted.");
-      return 1;
+	TP -> tell_me("It is already lighted.");
+	return 1;
     }
 
-  is_lighted = 1;
-  call_out("out_of_fuel", amount_of_fuel * 2);
-  set_light(light_level);
-  TP->tell_me("You light the "+query_name()+".");
-  environment(TP)->tell_here((string)TP->query_name()+
-			     " lights a "+ query_name() + ".", TP);
-  amount_of_fuel = 0;
+    is_lighted = 1;
+    call_out("out_of_fuel", amount_of_fuel * 2);
+    set_light(light_level);
+    TP->tell_me("You light the "+query_name()+".");
+    environment(TP)->tell_here((string)TP->query_name()+
+      " lights a "+ query_name() + ".", TP);
+    amount_of_fuel = 0;
 
-  return 1;
+    return 1;
 }
 /****************************************************************/
 /****************************************************************/
@@ -163,41 +163,41 @@ light_cmd(string str)
 status
 unlight_cmd(string str)
 {
-  int i;
-  if (!id(str)) return 0;
-  if (!is_lighted) 
+    int i;
+    if (!id(str)) return 0;
+    if (!is_lighted) 
     {
-      if (TP) TP->tell_me("It isn't even lighted yet.");
-      return 1;
+	if (TP) TP->tell_me("It isn't even lighted yet.");
+	return 1;
     }
-  i = remove_call_out("out_of_fuel");
-  if(i > 2000) i = 2000;
-  if (i == -1)
+    i = remove_call_out("out_of_fuel");
+    if(i > 2000) i = 2000;
+    if (i == -1)
     {
-      notify_fail(
-	"There's something strange with it...it doesn't go out...\n");
-      return 0;
-          }
-  amount_of_fuel = i*3/4;     /* Was i / 2. -Doomdark. */
-  is_lighted = 0;
-  if (set_light(-light_level) >= 0) 
-    {
-      if (TP) {
-	TP->tell_me("The darkness ends.");
-	environment(TP)->tell_here(TP->query_name()
-				   +" turns off a "+query_name()+".",TP);
-      }
+	notify_fail(
+	  "There's something strange with it...it doesn't go out...\n");
+	return 0;
     }
-  else 
+    amount_of_fuel = i*3/4;     /* Was i / 2. -Doomdark. */
+    is_lighted = 0;
+    if (set_light(-light_level) >= 0) 
     {
-      if (TP) {
-	TP->tell_me("You extinguish the "+query_name()+".");
-	environment(TP)->tell_here(TP->query_name()
-				   + " extinguishes a "+query_name()+".", TP);
-      }
+	if (TP) {
+	    TP->tell_me("The darkness ends.");
+	    environment(TP)->tell_here(TP->query_name()
+	      +" turns off a "+query_name()+".",TP);
+	}
+    }
+    else 
+    {
+	if (TP) {
+	    TP->tell_me("You extinguish the "+query_name()+".");
+	    environment(TP)->tell_here(TP->query_name()
+	      + " extinguishes a "+query_name()+".", TP);
+	}
     }
 
-  return 1;
+    return 1;
 }
 
 /****************************************************************/
@@ -206,36 +206,36 @@ unlight_cmd(string str)
 status
 hold_cmd(string str)
 {
-  object *ob;
-  int i;
- 
-  if (!id(str))
+    object *ob;
+    int i;
+
+    if (!id(str))
     {
-      notify_fail("Hold what?\n");
-      return 0;
+	notify_fail("Hold what?\n");
+	return 0;
     }
 
-  if (!present(this_object(), TP))
+    if (!present(this_object(), TP))
     {
-      notify_fail("You are not carrying it.\n");
-      return 0;
+	notify_fail("You are not carrying it.\n");
+	return 0;
     }
- 
-  /* Fucking cheaters! */
-  ob = all_inventory(TP);
- 
-  for (i = sizeof(ob) - 1; i >= 0; i--)
-    if (ob[i]->is_torch() && ob[i]->is_held())
-      {
-        TP->tell_me("You are already holding something!");
-        return 1;
-      }
- 
-  TP->tell_me("Ok. You hold " + query_name() + ".");
-  environment(TP)->tell_here((string)TP->query_name() +
-                             " holds " + query_name() + ".", ({ TP }));
-  held = 1;
-  return 1;
+
+    /* Fucking cheaters! */
+    ob = all_inventory(TP);
+
+    for (i = sizeof(ob) - 1; i >= 0; i--)
+	if (ob[i]->is_torch() && ob[i]->is_held())
+	{
+	    TP->tell_me("You are already holding something!");
+	    return 1;
+	}
+
+    TP->tell_me("Ok. You hold " + query_name() + ".");
+    environment(TP)->tell_here((string)TP->query_name() +
+      " holds " + query_name() + ".", ({ TP }));
+    held = 1;
+    return 1;
 }
 
 
@@ -245,15 +245,15 @@ hold_cmd(string str)
 void
 out_of_fuel()
 {
-  object ob;
+    object ob;
 
-  ob = environment();
-  while (environment(ob)) ob = environment(ob);
-  if (ob)
-    ob->tell_here("The "+query_name()+" stops emitting darkness.");
-  set_light(-light_level);
-  if (living(ob=environment())) ob->add_weight(-(query_weight()));
-  destruct(this_object());
+    ob = environment();
+    while (environment(ob)) ob = environment(ob);
+    if (ob)
+	ob->tell_here("The "+query_name()+" stops emitting darkness.");
+    set_light(-light_level);
+    if (living(ob=environment())) ob->add_weight(-(query_weight()));
+    destruct(this_object());
 }
 
 
@@ -263,24 +263,24 @@ out_of_fuel()
 status
 unwield(object me, object wielder)
 {
-  if (me!=this_object() || !wielder) return 0;
-  if ( is_lighted ) unlight_cmd("torch");
-  return 0;
+    if (me!=this_object() || !wielder) return 0;
+    if ( is_lighted ) unlight_cmd("torch");
+    return 0;
 }
 
 status
 remove_cmd(string str)
 {
-  if (!id(str)) return 0;
-  if (!held)
+    if (!id(str)) return 0;
+    if (!held)
     {
-      notify_fail("You aren't even holding it.");
-      return 0;
+	notify_fail("You aren't even holding it.");
+	return 0;
     }
-  held = 0;
-  if (is_lighted) unlight_cmd("torch");
-  TP->tell_me("Ok.");
-  return 1;
+    held = 0;
+    if (is_lighted) unlight_cmd("torch");
+    TP->tell_me("Ok.");
+    return 1;
 }
 
 
@@ -292,13 +292,13 @@ remove_cmd(string str)
 
 status
 light(string str) { /* Not to be used anymore, use 'light_cmd' instead. */
-        return light_cmd(str);
+    return light_cmd(str);
 }
 status
 extinguish(string str) { /* Not to be used anymore, use 'unlight_cmd' instead. */
-        return unlight_cmd(str);
+    return unlight_cmd(str);
 }
 status
 unlight(string str) {  /* Not to be used anymore, use 'unlight_cmd' instead. */
-        return unlight_cmd(str);
+    return unlight_cmd(str);
 }

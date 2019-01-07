@@ -3,9 +3,9 @@
 void
 create_treasure()
 {
-	set_name("newspaper");
-	set_id(({ "news", "paper" }));
-	set_short("A newspaper");
+    set_name("newspaper");
+    set_id(({ "news", "paper" }));
+    set_short("A newspaper");
 }
 
 long() {
@@ -15,8 +15,8 @@ long() {
 status
 read_cmd(string str)
 {
-	environment(this_player())->tell_here(sprintf("%s reads the newspaper.",
-		(string)this_player()->query_name()));
+    environment(this_player())->tell_here(sprintf("%s reads the newspaper.",
+	(string)this_player()->query_name()));
     long();
     return 1;
 }

@@ -33,7 +33,7 @@ do_shout() {
     if (time() < start_time + 3600) {
 	write("You can't shout with a sore throat !\n");
 	say(call_other(this_player(), "query_name") +
-	    " makes croaking sounds.\n");
+	  " makes croaking sounds.\n");
 	return 1;
     } else {
 	destruct(this_object());

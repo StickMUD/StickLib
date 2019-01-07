@@ -33,7 +33,7 @@ init()
 	return;
     }
     else if(this_player()->query(LIV_OK_TO_PK) &&
-// A temporary kludge, just to make it work at least somehow.
+      // A temporary kludge, just to make it work at least somehow.
       !this_player()->query_ghost() &&
       !this_player()->id("armageddon") &&
       !this_player()->id("zippy") && !this_player()->id("mud_guide") &&

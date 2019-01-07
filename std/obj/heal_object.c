@@ -27,61 +27,61 @@ int x;
 void
 create()
 {
-  set_name("heal ob");
-  set_short("Heal Object");
-  set_invis(IL_TOTALLY_INVISIBLE);
+    set_name("heal ob");
+    set_short("Heal Object");
+    set_invis(IL_TOTALLY_INVISIBLE);
 }
 
 init() {
-  add_action("quit","quit");
-  master=environment(); /* No wiz interference here! */
-//  set_heart_beat(1);
-  destruct_other_heal_obs();
+    add_action("quit","quit");
+    master=environment(); /* No wiz interference here! */
+    //  set_heart_beat(1);
+    destruct_other_heal_obs();
 }
 
 get() { return 1; }
 drop() { return 1; }
 
 destruct_me() {
-  destruct(this_object());
-  return 1;
+    destruct(this_object());
+    return 1;
 }
 
 #if 0
 heart_beat()
 {
-  x++;
+    x++;
 
-  if(!master || !environment(master) ||
-	!master->query_sit() ||
-     (!present("wooden bench",environment(master)) &&
-      !environment(master)->id("lord_throne") &&
-	)) {
-    destruct_me();
-    return;
-  }
+    if(!master || !environment(master) ||
+      !master->query_sit() ||
+      (!present("wooden bench",environment(master)) &&
+	!environment(master)->id("lord_throne") &&
+      )) {
+	destruct_me();
+	return;
+    }
 
-  destruct_other_heal_obs();
+    destruct_other_heal_obs();
 
-  /* Graah: sick and poisoned don't heal here... */
-  if (!master->query_condition(C_POISONED) &&
+    /* Graah: sick and poisoned don't heal here... */
+    if (!master->query_condition(C_POISONED) &&
       !master->query_condition(C_SICK) &&
       !(x % (int)master->query(PLR_TIME_TO_HEAL))
-      )
-    master->heal_self(2);
+    )
+	master->heal_self(2);
 }
 #endif
 
 quit() {
-  destruct_me();
-  return 0;
+    destruct_me();
+    return 0;
 }
 
 destruct_other_heal_obs() {
-  object *env;
-  int i;
-  env=all_inventory(environment());
-  for(i=sizeof(env)-1;i>=0;i--)
-    if(env[i]->id("heal ob") && env[i]!=this_object())
-      env[i]->destruct_me();
+    object *env;
+    int i;
+    env=all_inventory(environment());
+    for(i=sizeof(env)-1;i>=0;i--)
+	if(env[i]->id("heal ob") && env[i]!=this_object())
+	    env[i]->destruct_me();
 }

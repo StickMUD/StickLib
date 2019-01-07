@@ -7,7 +7,7 @@ id(str) {
 
 short() {
     if (tied_to)
-        return "a rope tied to " + tied_to;
+	return "a rope tied to " + tied_to;
     return "a rope";
 }
 string query_short() {
@@ -30,7 +30,7 @@ query_value() { return 15; }
 
 get() {
     if (tied_to) {
-        write("The rope is tied to " + tied_to + ".\n");
+	write("The rope is tied to " + tied_to + ".\n");
 	return 0;
     }
     return 1;
@@ -52,15 +52,15 @@ tie(str) {
     if (!str)
 	return 0;
     if (tied_to) {
-        write("It is already tied to " + tied_to + ".\n");
+	write("It is already tied to " + tied_to + ".\n");
 	return 1;
     }
     if (sscanf(str, "%s to %s", t1, t2) != 2)
-        return 0;
+	return 0;
     if (!id(t1))
 	return 0;
     if (t2 == "me") {
-        write("Why would you do that ?\n");
+	write("Why would you do that ?\n");
 	return 1;
     }
     ob = present(t2, this_player());
@@ -75,7 +75,7 @@ tie(str) {
 	return 1;
     }
     if (!call_other(ob, "tie", t2)) {
-        write("You can't tie the rope to " + t2 + ".\n");
+	write("You can't tie the rope to " + t2 + ".\n");
 	return 1;
     }
     /* Is he carrying the rope ? */
@@ -87,19 +87,19 @@ tie(str) {
     tied_to_ob = ob;
     write("Ok.\n");
     say(call_other(this_player(), "query_name") + " ties rope to " +
-	t2 + ".\n");
+      t2 + ".\n");
     return 1;
 }
 
 untie(str) {
     if (!id(str))
-        return 0;
+	return 0;
     if (!tied_to) {
-        write("It is not tied to anything.\n");
+	write("It is not tied to anything.\n");
 	return 1;
     }
     if (!call_other(tied_to_ob, "untie")) {
-        write("You fail.\n");
+	write("You fail.\n");
 	return 1;
     }
     write("Ok.\n");

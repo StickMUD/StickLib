@@ -20,38 +20,38 @@ nomask public varargs string resolve_path(string path, object player) {
     int    i, max;
 
     switch (path[0]) {
-    /* Resolve tilde paths */
-      case '~':
+	/* Resolve tilde paths */
+    case '~':
 	if (sscanf(path, "~%s/%s", base, path) != 2) {
 	    base = path[1..<1];
 	    path = "";
 	}
 	switch (base[0]) {
-	  case 0:
+	case 0:
 	    if (!player || !(base = REAL_NAME(player)))
 		return PATHERROR;
 	    /* fall through */
-	  case 'a'..'z':
+	case 'a'..'z':
 	    xpath = XUSERPATH(base);
 	    break;
 #ifdef XDOMAINPATH
-	  case 'A'..'Z':
+	case 'A'..'Z':
 	    xpath = XDOMAINPATH(base);
 	    break;
 #endif
-	  default:
+	default:
 	    return PATHERROR;
 	}
 	break;
 
-    /* Check for '/' starting paths */
-      case '/':
+	/* Check for '/' starting paths */
+    case '/':
 	xpath = ({ });
 	break;
 
-    /* Resolve "here" & "env" to player location */
-      case 'e':
-      case 'h':
+	/* Resolve "here" & "env" to player location */
+    case 'e':
+    case 'h':
 	if (player && (path == "here" || path == "env")) {
 	    if (environment(player)) {
 		path = object_name(environment(player));
@@ -62,8 +62,8 @@ nomask public varargs string resolve_path(string path, object player) {
 	}
 	/* fall through */
 
-    /* Use current working directory */
-      default:
+	/* Use current working directory */
+    default:
 	if (player) base = GET_PATH(player);
 	xpath = base ? explode(base, "/") : ({ });
     }
@@ -74,16 +74,16 @@ nomask public varargs string resolve_path(string path, object player) {
     max = sizeof(xpath += explode(path + "/", "/")) - 1;
     while (i <= max) {
 	switch (xpath[i]) {
-	  case "":
+	case "":
 	    if (i == max) {
 		i++;
 		break;
 	    }
-	  case ".":
+	case ".":
 	    xpath = xpath[0..i-1] + xpath[i+1..max];
 	    max--;
 	    break;
-	  case "..":
+	case "..":
 	    xpath = xpath[0..i-2] + xpath[i+1..max];
 	    if (i) {
 		i--; max -= 2;
@@ -91,7 +91,7 @@ nomask public varargs string resolve_path(string path, object player) {
 		max--;
 	    }
 	    break;
-	  default:
+	default:
 	    i++;
 	}
     }

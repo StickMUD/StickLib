@@ -49,10 +49,10 @@ hb()
     sscanf(time_str[11..12], "%d", p);  /* Let's use p as temporary variable */
     if(time_str[4..9] != dlist[DAYS - 1])
     {
-        tmp = allocate(i = TIMEPARTS);
-        while(i--) tmp[i] = allocate(4);
-        list  = list[1..(DAYS-1)]  + ({ tmp });
-        dlist = dlist[1..(DAYS-1)] + ({ time_str[4..9] });
+	tmp = allocate(i = TIMEPARTS);
+	while(i--) tmp[i] = allocate(4);
+	list  = list[1..(DAYS-1)]  + ({ tmp });
+	dlist = dlist[1..(DAYS-1)] + ({ time_str[4..9] });
     }
 
     /* Count wizards/mortals present and update list */
@@ -67,8 +67,8 @@ hb()
     /* Check if the graph has to be saved */
     if (time() >= save_time)
     {
-        save_object(SAVENAME);
-        save_time = time() + SAVETIME;
+	save_object(SAVENAME);
+	save_time = time() + SAVETIME;
     }
 }
 
@@ -91,17 +91,17 @@ create(int x)
     move_object(this_object(), DEST);
     if (!restore_object(SAVENAME))
     {
-        int i, j;
+	int i, j;
 
-        list = allocate(DAYS);
-        dlist = allocate(DAYS);
-        for (i = 0; i < DAYS; ++i)
-        {
-            dlist[i] = "--- --";
-            list[i] = allocate(TIMEPARTS);
-            for(j = 0; j < TIMEPARTS; ++j)
-                list[i][j] = allocate(4);
-        }
+	list = allocate(DAYS);
+	dlist = allocate(DAYS);
+	for (i = 0; i < DAYS; ++i)
+	{
+	    dlist[i] = "--- --";
+	    list[i] = allocate(TIMEPARTS);
+	    for(j = 0; j < TIMEPARTS; ++j)
+		list[i][j] = allocate(4);
+	}
     }
     save_time = time() + SAVETIME;
     call_out("hb", FIRST_UPD);
@@ -120,29 +120,29 @@ long(string arg)
     /* Look at week/week list */
     if (arg=="week" || arg=="week list")
     {
-        string *str_list;
+	string *str_list;
 
-        write("Day      " + implode(dlist, "    ") + "\n");
-        write("         C  m  .   C  m  .   C  m  .   C  m  .   C  m  .   C  m  .   C  m  .\n");
-        str_list = allocate(DAYS);
-        do
-        {
-            for(i = 0; i < DAYS; ++i)
-            {
-                tmp = list[i][line];
-                if (c = tmp[3])
-                {
-                    w = (c/2+tmp[0])/c;
-                    p = (c/2+tmp[1])/c-w;
-                    m = tmp[2];
-                    str_list[i] = sprintf("%2d%3d%3d", w, p, m);
-                } else
-                    str_list[i] = " -  -  -";
-            }
+	write("Day      " + implode(dlist, "    ") + "\n");
+	write("         C  m  .   C  m  .   C  m  .   C  m  .   C  m  .   C  m  .   C  m  .\n");
+	str_list = allocate(DAYS);
+	do
+	{
+	    for(i = 0; i < DAYS; ++i)
+	    {
+		tmp = list[i][line];
+		if (c = tmp[3])
+		{
+		    w = (c/2+tmp[0])/c;
+		    p = (c/2+tmp[1])/c-w;
+		    m = tmp[2];
+		    str_list[i] = sprintf("%2d%3d%3d", w, p, m);
+		} else
+		    str_list[i] = " -  -  -";
+	    }
 	    write(sprintf("%s:%@10s\n", TIMESTRINGS[line], str_list));
-        }
-        while (++line < TIMEPARTS);
-        return;
+	}
+	while (++line < TIMEPARTS);
+	return;
     }
 
     /* Look at graph/user graph */
@@ -155,15 +155,15 @@ long(string arg)
     write("------------------------------------------------------------------------------\n");
     do
     {
-        for (w = m = c = i = 0; i < DAYS; ++i)
-        {
-            tmp = list[i][line];
-            w += tmp[0]; p += tmp[1]; c += tmp[3];
-            if (tmp[2]>m) m = tmp[2];
-        }
-        if (c) { w = (c/2+w)/c; p = (c/2+p)/c; } else { w = p = m = 0; }
-        write(sprintf("%s:  %-55.55s%3d%4d%4d%4d\n",
-            TIMESTRINGS[line],
+	for (w = m = c = i = 0; i < DAYS; ++i)
+	{
+	    tmp = list[i][line];
+	    w += tmp[0]; p += tmp[1]; c += tmp[3];
+	    if (tmp[2]>m) m = tmp[2];
+	}
+	if (c) { w = (c/2+w)/c; p = (c/2+p)/c; } else { w = p = m = 0; }
+	write(sprintf("%s:  %-55.55s%3d%4d%4d%4d\n",
+	    TIMESTRINGS[line],
 #ifndef SHORTGRAPH
 	    (m ? sprintf("%*'C's%*'m's%*'.'s ",
 		w, "", p-w, "", m-p, "")  : "-"),
@@ -172,11 +172,11 @@ long(string arg)
 #define SM (SHORTGRAPH-1)
 	    (m ? sprintf("%*'C's%*'m's%*'.'s ",
 		(w+SM)/SG, "", (p+SM)/SG-(w+SM)/SG, "", (m+SM)/SG-(p+SM)/SG, "")
-		: "-"),
+	      : "-"),
 #undef SG
 #undef SM
 #endif
-            w, p-w, p, m));
+	    w, p-w, p, m));
     }
     while (++line < TIMEPARTS);
     write("------------------------------------------------------------------------------\n");

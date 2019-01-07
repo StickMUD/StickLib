@@ -16,17 +16,17 @@ set_hint(string h)
 void
 create()
 {
-	set_short("A quest");
-	set_long("It's an unnamed quest.");
-	set_name("quest");
-	set_id(({ "quest" }));	// Just to be sure we'll have this as id.
-	this_object()->create_quest();
+    set_short("A quest");
+    set_long("It's an unnamed quest.");
+    set_name("quest");
+    set_id(({ "quest" }));	// Just to be sure we'll have this as id.
+    this_object()->create_quest();
 }
 
 varargs string
 query_long(string s, object who)
 {
-	return "This is the quest '" + query_name() + "':\n"+hint_string;
+    return "This is the quest '" + query_name() + "':\n"+hint_string;
 }
 
 string hint() { return hint_string; }

@@ -30,29 +30,29 @@ void set_usage(int x) { usage = x; }
 void
 create()
 {
-  string tmp;
+    string tmp;
 
-  tmp = ({ "leather", "cloth", "old", "dirty", "frayed", "mouldy",
-	     "damp" })[random(7)];
+    tmp = ({ "leather", "cloth", "old", "dirty", "frayed", "mouldy",
+      "damp" })[random(7)];
 
-  set_max_weight(6);
-  set_size(({ 50, 75, 75 }));
-  set_weight(1);
-  set_name(tmp + " bag");
-  set_long("It's just a normal "+tmp+" bag.");
-  set_id(({ "bag" }));
-  set_value(12);
-  set_usage(0);
-  if (function_exists("reset_bag"))
+    set_max_weight(6);
+    set_size(({ 50, 75, 75 }));
+    set_weight(1);
+    set_name(tmp + " bag");
+    set_long("It's just a normal "+tmp+" bag.");
+    set_id(({ "bag" }));
+    set_value(12);
+    set_usage(0);
+    if (function_exists("reset_bag"))
 	used_functions |= RESET_USED;
-  this_object() -> create_bag();
+    this_object() -> create_bag();
 }
 
 void
 reset()
 {
-	if (used_functions & RESET_USED)
-		this_object()->reset_bag();
+    if (used_functions & RESET_USED)
+	this_object()->reset_bag();
 }
 
 
@@ -63,8 +63,8 @@ int query_usage() { return usage; }
 varargs status
 can_put_and_get(string s)
 {
-object *baginv, env, own;
-int i;
+    object *baginv, env, own;
+    int i;
 
     if (random(20) > 3) return 1;
 
@@ -73,27 +73,27 @@ int i;
     if (!(env = environment())) return 1;
 
     if (living(env)) {
-        own = env;
+	own = env;
 	if (!(env = environment(own))) return 1;
     }
 
     if (!own) own = this_player();
 
     if (own)
-        own->tell_me("Oops. "+capitalize(query_short())+" is so old that it is destroyed.");
+	own->tell_me("Oops. "+capitalize(query_short())+" is so old that it is destroyed.");
 
     if ((baginv = all_inventory(this_object())) && (i = sizeof(baginv))) {
-        for (i--; i >= 0; i--) move_object(baginv[i], env);
+	for (i--; i >= 0; i--) move_object(baginv[i], env);
 	if (own) {
 	    own->tell_me("The contents are scattered into the room!");
 	    env -> tell_here("The contents of "+(string)
-		own->query_name(0, own)+" worn-out " + query_name(0,own) +
-		" are scattered around the place.", own);
+	      own->query_name(0, own)+" worn-out " + query_name(0,own) +
+	      " are scattered around the place.", own);
 	}
     }
 
-	if (living(environment())) environment() -> add_weight(
-		- (query_weight()));
+    if (living(environment())) environment() -> add_weight(
+	  - (query_weight()));
 
     destruct(this_object());
     return 0;
@@ -103,12 +103,12 @@ int i;
 status
 refuse_item(object ob)
 {
-  if (!ob && !(ob = previous_object())) return 0;
-  if (ob->id("wand")) {
+    if (!ob && !(ob = previous_object())) return 0;
+    if (ob->id("wand")) {
 	this_player() -> tell_me(capitalize((string)ob->query_name(0,this_player()))
-		+ " is too long to fit in the "+query_name(0, this_player())+"!");
+	  + " is too long to fit in the "+query_name(0, this_player())+"!");
 	return 1;
     }
 
-  return 0;
+    return 0;
 }

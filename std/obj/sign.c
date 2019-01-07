@@ -12,38 +12,38 @@ string no_get_msg;		// Msg player gets if he/she tries to take this.
 void
 create()
 {
-	set_long("It seems to have some writing on it. Maybe you should read it?");
-	this_object()->create_sign();
+    set_long("It seems to have some writing on it. Maybe you should read it?");
+    this_object()->create_sign();
 }
 
 status
 get(status x)
 {
-	if (!x && no_get_msg)
-		this_player()->tell_me(no_get_msg);
-	return 0;
+    if (!x && no_get_msg)
+	this_player()->tell_me(no_get_msg);
+    return 0;
 }
 
 status
 read_cmd(string s)
 {
-	if (read_msg) {
-		this_player()->tell_me(read_msg);
-		environment(this_player()) -> tell_here((string)
-this_player()->query_name() + " reads the "+query_name()+".", this_player());
-		return 1;
-	}
-	return 0;
+    if (read_msg) {
+	this_player()->tell_me(read_msg);
+	environment(this_player()) -> tell_here((string)
+	  this_player()->query_name() + " reads the "+query_name()+".", this_player());
+	return 1;
+    }
+    return 0;
 }
 
 void
 set_read_msg(string s)
 {
-	read_msg = s;
+    read_msg = s;
 }
 
 void
 set_no_get_msg(string s)
 {
-	no_get_msg = s;
+    no_get_msg = s;
 }

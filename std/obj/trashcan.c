@@ -60,7 +60,7 @@ toss(string str)
 	  "You toss the whining brat in the trash. How cruel of you. "
 	);
 	destruct(item);
-       this_player()->set_luck(-5+(-random(3)));
+	this_player()->set_luck(-5+(-random(3)));
 	return 1;
     }
     if(item -> drop() || !item->short()) {
@@ -71,7 +71,7 @@ toss(string str)
     // Nice money cheat: getting lord level forms or others and tossing...
     move_object(item,"/room/void");
     if (!item->id("form"))
-      this_player() -> add_money(TOSS_RECEIVE);
+	this_player() -> add_money(TOSS_RECEIVE);
     destruct(item);
     this_player() -> tell_me("You tossed it.");
     environment(this_player()) -> tell_here(
