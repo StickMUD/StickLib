@@ -61,121 +61,121 @@ object query_attack();
 status
 attack()
 {
-  int tmp, enemy_flags, x;
-  mixed whit;
-  object ob;
-  string name_of_attacker, my_name, txt;
-  status do_tell;
+    int tmp, enemy_flags, x;
+    mixed whit;
+    object ob;
+    string name_of_attacker, my_name, txt;
+    status do_tell;
 
-  if (!attackers)
-    return 0;
+    if (!attackers)
+	return 0;
 
-  do_tell = npc_Flags & F_NPC_CONTROLLED;
+    do_tell = npc_Flags & F_NPC_CONTROLLED;
 
-  ob = query_attack();
-  if (!ob) {
-    update_attackers(1);
-    if (attackers) ob = attacker[0];
-  } else if (!present(ob, environment())) {
-    stop_fight(ob);
-    if (!hunted) hunted = ({});
-    // Start hunting enemy, if he/she/it fled.
-    name_of_attacker = (string) ob->query_name(0,this_object());
-    if (member(hunted, ob) < 0) {
-      if (do_tell && name_of_attacker != "Someone" &&
-	  name_of_attacker != "someone")
-	tell_me(sprintf("You are now hunting %s.", name_of_attacker));
-      start_hunting(ob);
+    ob = query_attack();
+    if (!ob) {
+	update_attackers(1);
+	if (attackers) ob = attacker[0];
+    } else if (!present(ob, environment())) {
+	stop_fight(ob);
+	if (!hunted) hunted = ({});
+	// Start hunting enemy, if he/she/it fled.
+	name_of_attacker = (string) ob->query_name(0,this_object());
+	if (member(hunted, ob) < 0) {
+	    if (do_tell && name_of_attacker != "Someone" &&
+	      name_of_attacker != "someone")
+		tell_me(sprintf("You are now hunting %s.", name_of_attacker));
+	    start_hunting(ob);
+	}
+
+	update_attackers(1);
+	if (attackers) ob = attacker[0];
     }
 
-    update_attackers(1);
-    if (attackers) ob = attacker[0];
-  }
+    if (!attackers) return 0;
 
-  if (!attackers) return 0;
+    name_of_attacker = (string) ob->query_name(0, this_object());
 
-  name_of_attacker = (string) ob->query_name(0, this_object());
+    if (liv_Flags & F_LIV_RESTING)
+	set_rest(0);
+    if (liv_Flags & F_LIV_SITTING)
+	set_sit(0);
 
-  if (liv_Flags & F_LIV_RESTING)
-    set_rest(0);
-  if (liv_Flags & F_LIV_SITTING)
-    set_sit(0);
+    enemy_flags = (int) ob->query(LIV_FLAGS);
 
-  enemy_flags = (int) ob->query(LIV_FLAGS);
-
-  // Check if we are able to attack
-  if (!query_can_move()) {
-    tell_me("You cannot fight back!");
-    return 1;
-  }
-
-  my_name = query_name(0, ob);
-
-  if (name_of_weapon) {
-    whit = (mixed) funcall(HitFunc, ob);
-    if (!ob) return 1;
-  }
-
-  if ((string) whit != "miss") {
-
-    if (name_of_weapon && ob) {
-      funcall(ExtraHitFunc, ob);
+    // Check if we are able to attack
+    if (!query_can_move()) {
+	tell_me("You cannot fight back!");
+	return 1;
     }
 
-    if (!ob) return 1;
+    my_name = query_name(0, ob);
 
-    // Str & dex is modified by weapon.c now...
-    if((x = whit + query_wc()) < 1)
-      x = 1;
+    if (name_of_weapon) {
+	whit = (mixed) funcall(HitFunc, ob);
+	if (!ob) return 1;
+    }
 
-    // New: Hit Class (accuracy) of the weapon considered
-    //
-    // Attack type (2nd argument) is currently 0 */
+    if ((string) whit != "miss") {
 
-    tmp = (int) ob -> hit_player(random(x + 1),
-				 damage_type, hit_class, this_object());
-  } else tmp = x = 0;
+	if (name_of_weapon && ob) {
+	    funcall(ExtraHitFunc, ob);
+	}
 
-  if (tmp <= 0) {
+	if (!ob) return 1;
 
-    // Try to prevent 'You missed' after the foe is dead
-    // Added new ways to "miss" (told to player)
-    // 25.2.1992 //Frobozz&&Elena
-    // And again some new ways //Frobozz 29.8.1993
+	// Str & dex is modified by weapon.c now...
+	if((x = whit + query_wc()) < 1)
+	    x = 1;
 
-    if (ob) {
+	// New: Hit Class (accuracy) of the weapon considered
+	//
+	// Attack type (2nd argument) is currently 0 */
 
-      if (do_tell)
-	tell_me(sprintf("You miss %s.", name_of_attacker), TELL_TYPE_MISSING);
+	tmp = (int) ob -> hit_player(random(x + 1),
+	  damage_type, hit_class, this_object());
+    } else tmp = x = 0;
 
-      // These are still quite boring, should we put new messages here too?
-      // //Frobozz
+    if (tmp <= 0) {
 
-      if (!(txt = query_name(0, ob))) txt = "Someone";
-      if (environment())
-	environment() -> tell_here(sprintf("%s missed %s.",
-	  txt, name_of_attacker), ({ob,this_object()}));
-      if (ob)
-	ob -> tell_me(sprintf("%s missed you.", txt), TELL_TYPE_MISSED_BY);
-    } 
-    return 1;
-  }
+	// Try to prevent 'You missed' after the foe is dead
+	// Added new ways to "miss" (told to player)
+	// 25.2.1992 //Frobozz&&Elena
+	// And again some new ways //Frobozz 29.8.1993
 
-  if (ob && !ob->query_ghost())
+	if (ob) {
+
+	    if (do_tell)
+		tell_me(sprintf("You miss %s.", name_of_attacker), TELL_TYPE_MISSING);
+
+	    // These are still quite boring, should we put new messages here too?
+	    // //Frobozz
+
+	    if (!(txt = query_name(0, ob))) txt = "Someone";
+	    if (environment())
+		environment() -> tell_here(sprintf("%s missed %s.",
+		    txt, name_of_attacker), ({ob,this_object()}));
+	    if (ob)
+		ob -> tell_me(sprintf("%s missed you.", txt), TELL_TYPE_MISSED_BY);
+	} 
+	return 1;
+    }
+
+    if (ob && !ob->query_ghost())
     {
 
-      if (do_tell)
-	tell_me(sprintf("You hit %s (damage %d, of which %d taken).",
-			name_of_attacker, x, tmp), TELL_TYPE_HITTING);
+	if (do_tell)
+	    tell_me(sprintf("You hit %s (damage %d, of which %d taken).",
+		name_of_attacker, x, tmp), TELL_TYPE_HITTING);
 
-      COMBAT_D->npc_hit_desc(this_object(), ob, tmp);
+	COMBAT_D->npc_hit_desc(this_object(), ob, tmp);
 
-      return 1;
+	return 1;
     }
 
-  stop_fight(ob);
-  tell_me(sprintf("You killed %s.", name_of_attacker));
+    stop_fight(ob);
+    tell_me(sprintf("You killed %s.", name_of_attacker));
 
-  // Let's return 1, we'll still check enemies next round.
-  return 1;
+    // Let's return 1, we'll still check enemies next round.
+    return 1;
 }

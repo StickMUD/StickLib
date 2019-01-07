@@ -13,8 +13,8 @@ int emote_cmd(string str) {
 		}
 	    }
 	    tell_room(environment(this_player()),
-		sprintf("%s %-=65s\n", (string)this_player()->query_name(),
-		    str ));
+	      sprintf("%s %-=65s\n", (string)this_player()->query_name(),
+		str ));
 	}
 	return 1;
     }

@@ -75,148 +75,148 @@ static mapping _ansi_codes;
 mixed
 make_format_string(string x)
 {
-string *tmp, s, func;
-int i, j, bit_flags, func_flags;
-mixed misc, *tmp2;
+    string *tmp, s, func;
+    int i, j, bit_flags, func_flags;
+    mixed misc, *tmp2;
 
-	if (!stringp(x) || !sizeof(x))
-		return x;
-	if (x[0] == ':') x = x[1..];
-	tmp = explode(x, "%");
+    if (!stringp(x) || !sizeof(x))
+	return x;
+    if (x[0] == ':') x = x[1..];
+    tmp = explode(x, "%");
 
-// If this isn't a SSF, let's return the original string!
-	if ((i = sizeof(tmp)) == 1 && tmp[0][0] != '<')
-		return x;
+    // If this isn't a SSF, let's return the original string!
+    if ((i = sizeof(tmp)) == 1 && tmp[0][0] != '<')
+	return x;
 
-// Now let's remove empty strings, if there are some.
-	while (i--)
-        if (!sizeof(tmp[i])) {
-            tmp[i] = 0;
-            bit_flags++;
-        }
-	if (bit_flags)
-		tmp -= ({ 0 });
+    // Now let's remove empty strings, if there are some.
+    while (i--)
+	if (!sizeof(tmp[i])) {
+	    tmp[i] = 0;
+	    bit_flags++;
+	}
+    if (bit_flags)
+	tmp -= ({ 0 });
 
-	tmp2 = allocate(sizeof(tmp));
+    tmp2 = allocate(sizeof(tmp));
 
-// Now, the main parse loop!
+    // Now, the main parse loop!
     i = -1;
     while (++i < sizeof(tmp)) {
-        if (tmp[i][0] != '<' || !sscanf(tmp[i], "<%s>", s))
-		continue;
+	if (tmp[i][0] != '<' || !sscanf(tmp[i], "<%s>", s))
+	    continue;
 	tmp[i] = 0;
-// Because of the syntax, we have to parse the functions first:
-        bit_flags = 0;
-        while (sscanf(s, "%s(%s)", func, s) == 2) {
-            switch (func) {
-                case "cap":
-                    bit_flags |= SSF_CAPITALIZE; break;
-                case "lower":
-                    bit_flags |= SSF_LOWER_CASE; break;
-                case "upper":
-                    bit_flags |= SSF_UPPER_CASE; break;
-            }
-        }
-
-	if (sscanf(s, "%d", misc)) {
-		bit_flags = misc << (SSF_MISC_SHIFT);
-	} else {
-// *sigh* This can still be a 'non-SSF'...
-	        if (sscanf(s, "%s.%s", func, s) < 2) continue;
-
-// Now, let's check which object we're referencing:
-	  switch (func) {
-            case "me":
-                bit_flags |= SSF_ME; break;
-            case "him":
-                bit_flags |= SSF_HIM; break;
-            case "it":
-                bit_flags |= SSF_IT; break;
-	    case "ansi":
-/* Hmmh. With ansi, we need to do some other nasty stuff as well... */
-// Let's kludge in the codes...
-		if (!_ansi_codes) {
-			_ansi_codes = (mapping) ANSI_D->query_ansi_codes();
-		}
-// Are there more than 1 ANSI-code to be used?
-		if (member(s, '+') >= 0) {
-			misc = explode(s, "+");
-			for (j = 0; j < sizeof(misc); j++)
-			  misc[j] = _ansi_codes[misc[j]];
-			tmp2[i] = sprintf("%c[%sm", 0x1B, implode(misc, ";"));
-		} else {
-			if (misc = _ansi_codes[s])
-				tmp2[i] = sprintf("%c[%sm", 0x1B, misc);
-			else
-				tmp2[i] = 0;	// -> erroneous code or something...
-		}
-// ... and there it was, ANSI-handling.
-		bit_flags = 0;
-	  }
-
-/* This line is only used for ANSIs for now; later on it may be used for other
- * things as well...
- */
-	  if (!bit_flags) continue;
-
-// And, finally, which data item we want to obtain:
-          switch (s) {
-		case "name":
-			bit_flags |= SSF_NAME; break;
-		case "capname":
-			bit_flags |= SSF_CAP_NAME; break;
-		case "real_name":
-			bit_flags |= SSF_REAL_NAME; break;
-		case "short_desc":
-			bit_flags |= SSF_SHORT_DESC; break;
-		case "long_desc":
-			bit_flags |= SSF_LONG_DESC; break;
-		case "pronoun":
-			bit_flags |= SSF_PRONOUN; break;
-		case "objective":
-			bit_flags |= SSF_OBJECTIVE; break;
-		case "possessive":
-			bit_flags |= SSF_POSSESSIVE; break;
-		case "race":
-			bit_flags |= SSF_RACE; break;
-		case "guild":
-			bit_flags |= SSF_GUILD; break;
-		case "gen_possessive":
-			bit_flags |= SSF_GEN_POSSESSIVE; break;
-		case "ending_s":
-			bit_flags |= SSF_ENDING_S; break;
-		case "ending_es":
-			bit_flags |= SSF_ENDING_ES; break;
-		case "ending_ies":
-			bit_flags |= SSF_ENDING_IES; break;
-		default:
-			raise_error("invalid MSS-string");
-	  }
+	// Because of the syntax, we have to parse the functions first:
+	bit_flags = 0;
+	while (sscanf(s, "%s(%s)", func, s) == 2) {
+	    switch (func) {
+	    case "cap":
+		bit_flags |= SSF_CAPITALIZE; break;
+	    case "lower":
+		bit_flags |= SSF_LOWER_CASE; break;
+	    case "upper":
+		bit_flags |= SSF_UPPER_CASE; break;
+	    }
 	}
 
-// Now, let's set this descriptor (though we may have to change this later!).
-        tmp2[i] = bit_flags;
+	if (sscanf(s, "%d", misc)) {
+	    bit_flags = misc << (SSF_MISC_SHIFT);
+	} else {
+	    // *sigh* This can still be a 'non-SSF'...
+	    if (sscanf(s, "%s.%s", func, s) < 2) continue;
 
-// And, to be more efficient when 'executing' the SSF; let's check if we could
-// use a 'shared' string!!! (reduces amount of call_others considerably; only
-// 1 call_other / query_name / object etc.)
+	    // Now, let's check which object we're referencing:
+	    switch (func) {
+	    case "me":
+		bit_flags |= SSF_ME; break;
+	    case "him":
+		bit_flags |= SSF_HIM; break;
+	    case "it":
+		bit_flags |= SSF_IT; break;
+	    case "ansi":
+		/* Hmmh. With ansi, we need to do some other nasty stuff as well... */
+		// Let's kludge in the codes...
+		if (!_ansi_codes) {
+		    _ansi_codes = (mapping) ANSI_D->query_ansi_codes();
+		}
+		// Are there more than 1 ANSI-code to be used?
+		if (member(s, '+') >= 0) {
+		    misc = explode(s, "+");
+		    for (j = 0; j < sizeof(misc); j++)
+			misc[j] = _ansi_codes[misc[j]];
+		    tmp2[i] = sprintf("%c[%sm", 0x1B, implode(misc, ";"));
+		} else {
+		    if (misc = _ansi_codes[s])
+			tmp2[i] = sprintf("%c[%sm", 0x1B, misc);
+		    else
+			tmp2[i] = 0;	// -> erroneous code or something...
+		}
+		// ... and there it was, ANSI-handling.
+		bit_flags = 0;
+	    }
 
-        func_flags = bit_flags & SSF_FUNCTIONS;
-        bit_flags &= (SSF_OBJECTS | SSF_DATA);
-        if (!bit_flags)
-		continue;       // _Shouldn't_ happen... but just in case.
+	    /* This line is only used for ANSIs for now; later on it may be used for other
+	     * things as well...
+	     */
+	    if (!bit_flags) continue;
+
+	    // And, finally, which data item we want to obtain:
+	    switch (s) {
+	    case "name":
+		bit_flags |= SSF_NAME; break;
+	    case "capname":
+		bit_flags |= SSF_CAP_NAME; break;
+	    case "real_name":
+		bit_flags |= SSF_REAL_NAME; break;
+	    case "short_desc":
+		bit_flags |= SSF_SHORT_DESC; break;
+	    case "long_desc":
+		bit_flags |= SSF_LONG_DESC; break;
+	    case "pronoun":
+		bit_flags |= SSF_PRONOUN; break;
+	    case "objective":
+		bit_flags |= SSF_OBJECTIVE; break;
+	    case "possessive":
+		bit_flags |= SSF_POSSESSIVE; break;
+	    case "race":
+		bit_flags |= SSF_RACE; break;
+	    case "guild":
+		bit_flags |= SSF_GUILD; break;
+	    case "gen_possessive":
+		bit_flags |= SSF_GEN_POSSESSIVE; break;
+	    case "ending_s":
+		bit_flags |= SSF_ENDING_S; break;
+	    case "ending_es":
+		bit_flags |= SSF_ENDING_ES; break;
+	    case "ending_ies":
+		bit_flags |= SSF_ENDING_IES; break;
+	    default:
+		raise_error("invalid MSS-string");
+	    }
+	}
+
+	// Now, let's set this descriptor (though we may have to change this later!).
+	tmp2[i] = bit_flags;
+
+	// And, to be more efficient when 'executing' the SSF; let's check if we could
+	// use a 'shared' string!!! (reduces amount of call_others considerably; only
+	// 1 call_other / query_name / object etc.)
+
+	func_flags = bit_flags & SSF_FUNCTIONS;
+	bit_flags &= (SSF_OBJECTS | SSF_DATA);
+	if (!bit_flags)
+	    continue;       // _Shouldn't_ happen... but just in case.
 
 	j = -1;
 	while (++j < i) {
-            if ((tmp2[j] & (SSF_OBJECTS | SSF_DATA | SSF_MISC_MASK)) == bit_flags) {
-// Gotcha! Now let's mark this one uses "shared string"...
-// Also, we need to mark the original string; when processing SSF, we have to
-// take it into account (because of upper/lower_case-funcs and such)
-                tmp2[i] = (j & SSF_SHARED_MASK) | SSF_SHARED_COPY | func_flags;
-                tmp2[j] |= SSF_SHARED_ORIGINAL;
-                break;
-            }
-        }
+	    if ((tmp2[j] & (SSF_OBJECTS | SSF_DATA | SSF_MISC_MASK)) == bit_flags) {
+		// Gotcha! Now let's mark this one uses "shared string"...
+		// Also, we need to mark the original string; when processing SSF, we have to
+		// take it into account (because of upper/lower_case-funcs and such)
+		tmp2[i] = (j & SSF_SHARED_MASK) | SSF_SHARED_COPY | func_flags;
+		tmp2[j] |= SSF_SHARED_ORIGINAL;
+		break;
+	    }
+	}
     }
 
     return ({ tmp, tmp2 });
@@ -235,121 +235,121 @@ mixed misc, *tmp2;
 
 string
 interpret_format_string(mixed format_string, int effects_on, int ansi_count,
-string* ext_data, object me, object him, object it)
+  string* ext_data, object me, object him, object it)
 {
-	int i, j, bit_flags;
-	mixed strs, flags;
-	object ob;
+    int i, j, bit_flags;
+    mixed strs, flags;
+    object ob;
 
-	strs = format_string[0];
-	flags = format_string[1];
-	
-	i = -1;
-	while (++i < sizeof(strs)) {
-		if (!(bit_flags = flags[i])) continue;
-		if (!intp(bit_flags)) {
-			// Ah-ha. So we have an ANSI-code string here...
-			if (effects_on) {
-				strs[i] = bit_flags;
-					ansi_count++;
-			}
-			flags[i] = 0;
-			continue;
-		}
+    strs = format_string[0];
+    flags = format_string[1];
 
-// First let's check if this is a "shared string" copy; if so, we can do this
-// in fast way:
+    i = -1;
+    while (++i < sizeof(strs)) {
+	if (!(bit_flags = flags[i])) continue;
+	if (!intp(bit_flags)) {
+	    // Ah-ha. So we have an ANSI-code string here...
+	    if (effects_on) {
+		strs[i] = bit_flags;
+		ansi_count++;
+	    }
+	    flags[i] = 0;
+	    continue;
+	}
 
-		if (bit_flags & SSF_SHARED_COPY) {
-			bit_flags &= (~SSF_SHARED_COPY);
-			strs[i] = strs[bit_flags & SSF_SHARED_MASK];
-			continue;
-		}
+	// First let's check if this is a "shared string" copy; if so, we can do this
+	// in fast way:
 
-// First we have to decide which object's data is needed:
-		switch (bit_flags & SSF_OBJECTS) {
-			case SSF_ME:	ob = me; break;
-			case SSF_HIM:	ob = him; break;
-			case SSF_IT:	ob = it; break;
-			default:		ob = 0;
-		}
-		
-// If we do use "external" data we'll do:
-		if (!ob) {
-			j = (bit_flags & SSF_MISC_MASK) >> SSF_MISC_SHIFT;
-			if(pointerp(ext_data) && sizeof(ext_data) > j)
-				strs[i] = ext_data[j];
-			else
-				strs[i] = "ERROR";
-			continue;
-		}
+	if (bit_flags & SSF_SHARED_COPY) {
+	    bit_flags &= (~SSF_SHARED_COPY);
+	    strs[i] = strs[bit_flags & SSF_SHARED_MASK];
+	    continue;
+	}
+
+	// First we have to decide which object's data is needed:
+	switch (bit_flags & SSF_OBJECTS) {
+	case SSF_ME:	ob = me; break;
+	case SSF_HIM:	ob = him; break;
+	case SSF_IT:	ob = it; break;
+	default:		ob = 0;
+	}
+
+	// If we do use "external" data we'll do:
+	if (!ob) {
+	    j = (bit_flags & SSF_MISC_MASK) >> SSF_MISC_SHIFT;
+	    if(pointerp(ext_data) && sizeof(ext_data) > j)
+		strs[i] = ext_data[j];
+	    else
+		strs[i] = "ERROR";
+	    continue;
+	}
 
 #if defined(PLAYER_C) || defined(NPC_C)
-		if (ob == this_object())
-		switch (bit_flags & SSF_DATA) {
-			case SSF_NAME:			strs[i] = "you"; break;
-			case SSF_CAP_NAME:		strs[i] = "You"; break;
-			case SSF_SHORT_DESC:	strs[i] = query_short(0, this_object()); break;
-			case SSF_LONG_DESC:		strs[i] = query_long(0, this_object()); break;
-			case SSF_REAL_NAME:		strs[i] = query_real_name(); break;
-			case SSF_PRONOUN:		strs[i] = "you"; break;
-			case SSF_OBJECTIVE:		strs[i] = "you"; break;
-			case SSF_POSSESSIVE:	strs[i] = "your"; break;
-			case SSF_GEN_POSSESSIVE: strs[i] = "your"; break;
-			case SSF_RACE:			strs[i] = query_race(); break;
-			case SSF_GUILD:			strs[i] = query_guild(); break;
-			case SSF_ENDING_S:
-			case SSF_ENDING_ES:		strs[i] = ""; break;
-			case SSF_ENDING_IES:	strs[i] = "y"; break;
-		}
-		else
+	if (ob == this_object())
+	    switch (bit_flags & SSF_DATA) {
+	case SSF_NAME:			strs[i] = "you"; break;
+	case SSF_CAP_NAME:		strs[i] = "You"; break;
+	case SSF_SHORT_DESC:	strs[i] = query_short(0, this_object()); break;
+	case SSF_LONG_DESC:		strs[i] = query_long(0, this_object()); break;
+	case SSF_REAL_NAME:		strs[i] = query_real_name(); break;
+	case SSF_PRONOUN:		strs[i] = "you"; break;
+	case SSF_OBJECTIVE:		strs[i] = "you"; break;
+	case SSF_POSSESSIVE:	strs[i] = "your"; break;
+	case SSF_GEN_POSSESSIVE: strs[i] = "your"; break;
+	case SSF_RACE:			strs[i] = query_race(); break;
+	case SSF_GUILD:			strs[i] = query_guild(); break;
+	case SSF_ENDING_S:
+	case SSF_ENDING_ES:		strs[i] = ""; break;
+	case SSF_ENDING_IES:	strs[i] = "y"; break;
+	}
+	else
 #endif
-		switch (bit_flags & SSF_DATA) {
-			case SSF_NAME:
-                                strs[i] = (string) ob->query_name(0, this_object(), 1); break;
-    // New: let's try to use non-capitalized version of the name!
-    // Chopin 10-May-98
-			case SSF_CAP_NAME:
-				strs[i] = capitalize((string) ob->query_name(0, this_object())); break;
-			case SSF_SHORT_DESC:
-				strs[i] = (string) ob->query_short(0, this_object()); break;
-			case SSF_LONG_DESC:
-				strs[i] = (string) ob->query_long(0, this_object()); break;
-			case SSF_REAL_NAME:		strs[i] = (string) ob->query_real_name(); break;
-			case SSF_PRONOUN:		strs[i] = (string) ob->Pronoun(); break;
-			case SSF_OBJECTIVE:		strs[i] = (string) ob->Objective(); break;
-			case SSF_POSSESSIVE:	strs[i] = (string) ob->Possessive(); break;
-			case SSF_GEN_POSSESSIVE:
-				strs[i] = (string) ob->query_name(0, this_object());
-				if (strs[i]) strs[i] += "'s";
-				break;
-			case SSF_RACE:			strs[i] = (string) ob->query_race(); break;
-			case SSF_GUILD: 		strs[i] = (string) ob->query_guild(); break;
-			case SSF_ENDING_S:		strs[i] = "s"; break;
-			case SSF_ENDING_ES: 	strs[i] = "es"; break;
-			case SSF_ENDING_IES:	strs[i] = "ies"; break;
-		}
+	    switch (bit_flags & SSF_DATA) {
+	case SSF_NAME:
+	    strs[i] = (string) ob->query_name(0, this_object(), 1); break;
+	    // New: let's try to use non-capitalized version of the name!
+	    // Chopin 10-May-98
+	case SSF_CAP_NAME:
+	    strs[i] = capitalize((string) ob->query_name(0, this_object())); break;
+	case SSF_SHORT_DESC:
+	    strs[i] = (string) ob->query_short(0, this_object()); break;
+	case SSF_LONG_DESC:
+	    strs[i] = (string) ob->query_long(0, this_object()); break;
+	case SSF_REAL_NAME:		strs[i] = (string) ob->query_real_name(); break;
+	case SSF_PRONOUN:		strs[i] = (string) ob->Pronoun(); break;
+	case SSF_OBJECTIVE:		strs[i] = (string) ob->Objective(); break;
+	case SSF_POSSESSIVE:	strs[i] = (string) ob->Possessive(); break;
+	case SSF_GEN_POSSESSIVE:
+	    strs[i] = (string) ob->query_name(0, this_object());
+	    if (strs[i]) strs[i] += "'s";
+	    break;
+	case SSF_RACE:			strs[i] = (string) ob->query_race(); break;
+	case SSF_GUILD: 		strs[i] = (string) ob->query_guild(); break;
+	case SSF_ENDING_S:		strs[i] = "s"; break;
+	case SSF_ENDING_ES: 	strs[i] = "es"; break;
+	case SSF_ENDING_IES:	strs[i] = "ies"; break;
 	}
+    }
 
-// Since shared originals can't have functions applied to them earlier than 
-// here, it's not a great spead-up to perform functions in the previous loop
-// for other strings either. So let's just do another loop here where
-// all functions are performed.
+    // Since shared originals can't have functions applied to them earlier than 
+    // here, it's not a great spead-up to perform functions in the previous loop
+    // for other strings either. So let's just do another loop here where
+    // all functions are performed.
 
-	i = sizeof(strs);
-	while (--i>=0) {
-		if(bit_flags = (flags[i] & SSF_FUNCTIONS))
-			switch (bit_flags) {
-			case SSF_CAPITALIZE:
-				strs[i] = strs[i] ? capitalize(strs[i]) : "ERROR"; break;
-			case SSF_LOWER_CASE:
-				strs[i] = strs[i] ? lower_case(strs[i]) : "ERROR"; break;
-			case SSF_UPPER_CASE:
-				strs[i] = strs[i] ? upper_case(strs[i]) : "ERROR"; break;
-			}
+    i = sizeof(strs);
+    while (--i>=0) {
+	if(bit_flags = (flags[i] & SSF_FUNCTIONS))
+	    switch (bit_flags) {
+	case SSF_CAPITALIZE:
+	    strs[i] = strs[i] ? capitalize(strs[i]) : "ERROR"; break;
+	case SSF_LOWER_CASE:
+	    strs[i] = strs[i] ? lower_case(strs[i]) : "ERROR"; break;
+	case SSF_UPPER_CASE:
+	    strs[i] = strs[i] ? upper_case(strs[i]) : "ERROR"; break;
 	}
-	
-	return implode(strs, "");
+    }
+
+    return implode(strs, "");
 }
 
 

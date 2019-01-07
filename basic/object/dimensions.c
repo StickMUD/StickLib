@@ -21,15 +21,15 @@ int weight, *size;
 public void
 set_weight(int x)
 {
-  weight = x;
+    weight = x;
 }
 
 public int
 query_weight_kg()
 {
-  int kg = 0;
+    int kg = 0;
 
-  switch (weight)
+    switch (weight)
     {
     case 0: kg = 0;
     case 1: kg = 1;
@@ -46,7 +46,7 @@ query_weight_kg()
 public int
 query_weight()
 {
-  return weight;
+    return weight;
 }
 
 public int query_width()  { SIZECHECK1; return size[0]; }
@@ -57,20 +57,20 @@ public int *query_size()  { SIZECHECK1; return size; }
 public status
 set_size(mixed x)
 {
-  /* Default: height */
-  if (intp(x))
+    /* Default: height */
+    if (intp(x))
     {
-      SIZECHECK2;
-      size[1] = x;
-      return 1;
+	SIZECHECK2;
+	size[1] = x;
+	return 1;
     }
 
-  if (!pointerp(x)) return 0;
-  if (sizeof(x) != 3) return 0;
+    if (!pointerp(x)) return 0;
+    if (sizeof(x) != 3) return 0;
 
-  size = x;
+    size = x;
 
-  return 1;
+    return 1;
 }
 
 public status set_width(int x)  { SIZECHECK2; size[0] = x; return 1;}
