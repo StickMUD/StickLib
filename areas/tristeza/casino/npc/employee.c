@@ -57,7 +57,7 @@ create_monster()
 
     set_wc(60, 1);
     set_ac(80, 1);
-    set_al( 0 );
+    set_alignment( 0 );
 
     set_spell_chance( 40 );
     set_spell_dam( 80 );

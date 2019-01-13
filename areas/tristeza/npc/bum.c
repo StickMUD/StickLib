@@ -9,7 +9,7 @@ create_monster()
     set_name("bum");
     set_race("human");
     set_level(2);
-    set_al(20);
+    set_alignment(20);
     set_long(
  "A really filthy looking smelly bum. You guess that he's a Finn.");
     set_hp(50);

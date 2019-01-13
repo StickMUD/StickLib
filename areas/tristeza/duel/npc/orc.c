@@ -100,7 +100,7 @@ int i;
  
          
   set_random_pick (30);
-  set_al(-random(300));
+  set_alignment(-random(300));
             
   tmp = ({ "knife", "steel_bar", "ord_sword" });
   if (!random(3)) {

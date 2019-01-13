@@ -32,7 +32,7 @@ create_monster()
     set_level(30+random(20));
     set_hp( 1000+random(2000) );
 
-    set_al( 0 );
+    set_alignment( 0 );
 
     set_spell_chance( 30 );
     set_spell_dam( 30 );

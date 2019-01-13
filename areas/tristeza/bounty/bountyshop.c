@@ -100,7 +100,7 @@ remove(string s) {
    
    if(!s) return 0;
 
-   if(!wanted || !m_sizeof(wanted)) {
+   if(!wanted || !sizeof(wanted)) {
        write("No Criminals to Remove!\n");
        return 1;
     }
@@ -125,7 +125,7 @@ string arg;
    if(sscanf(s, "%s %d %d", arg, from, amount) == 3) s = arg;
    else {
        from = 1;
-       if(wanted) amount = (m_sizeof(wanted));
+       if(wanted) amount = (sizeof(wanted));
     } 
    
    if(from <= 0) from = 1;
@@ -141,7 +141,7 @@ string arg;
              "Bounty <criminal> <gc>: Set/add bounty for a person.\n"+
              "Show corpse:            Claim your reward.\n");
        write("------------------------------------------------------------\n");
-       if(!wanted || !(a = m_sizeof(wanted)))
+       if(!wanted || !(a = sizeof(wanted)))
           write("No criminals this time, bummer! Come back later.\n");
        else {
           
@@ -159,7 +159,7 @@ string arg;
                     data[i][MONEY]);
        }
    } else {
-       if(!wanted || !m_sizeof(wanted)) {
+       if(!wanted || !sizeof(wanted)) {
           write("There are no criminals on the list.\n");
           return 1;
         }
@@ -196,7 +196,7 @@ mixed data;
       return 0;
   }
 
-  if(!wanted || !m_sizeof(wanted)) {
+  if(!wanted || !sizeof(wanted)) {
       write("No criminals on the list.\n");
       return 1;
   }
@@ -246,7 +246,7 @@ mixed *msgs;
 
    plr = lower_case(plr);
 
-   if(!wanted || !m_sizeof(wanted) || !(data = wanted[plr])) {
+   if(!wanted || !sizeof(wanted) || !(data = wanted[plr])) {
      if(!("/secure/master_amy"->exists_player(lower_case(plr)))) {
           write("The fat man says: Never heard of this person, sorry.\n");
           return 1;

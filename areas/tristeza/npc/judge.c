@@ -14,7 +14,7 @@ create_monster()
   set_gender(G_MALE);
   set(NPC_SET_PK_FLAG, 1);
   set_hp(2500);
-  set_al(1000); /* It's Very Evil to kill him! */
+  set_alignment(1000); /* It's Very Evil to kill him! */
   set_id(({ "yellowliver", "high judge" }));
 
   set_long(

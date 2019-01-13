@@ -86,7 +86,7 @@ insertIntoLocker(string str)
       return notify_fail("Usage: insert <item> into locker\n"),0;
    if(item[0] == '*') {
       u_conf = 1;
-      item = extract(item, 1);
+      item = item[1..<0]; // extract(item, 1);
    }
    if(!(ob=present(item,this_player())))
       return notify_fail("You don't seem to have a \""+item+"\".\n"),0;

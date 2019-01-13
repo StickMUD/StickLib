@@ -32,7 +32,7 @@ and command all the Cityguards of " CITY_NAME ".");
   /*   set_wander(7); */
   set_hp(3000 + level * 50);
   set_money(random(level * 40));
-  set_al(100 + random(800));
+  set_alignment(100 + random(800));
 
   if (random(100) < 45)
     {

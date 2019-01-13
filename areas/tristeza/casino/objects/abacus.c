@@ -17,6 +17,8 @@
 
 *****************************************************************************/
 
+#include "/sys/configuration.h"
+
 #include <treasure.h>
 
 int start_gold,gold,previous_gold;
@@ -40,14 +42,14 @@ create_treasure()
 void init_treasure()
 {
     add_action("abacus", "abacus");
-    
+
     player=this_player();
 
     if ( !interactive( environment() ))
-        set_heart_beat(0);           /* turn off heartbeat if not being carried */
+        configure_object(this_object(), OC_HEART_BEAT, 0); /* turn off heartbeat if not being carried */
     else
-        set_heart_beat(1);           /* turn on heartbeat if carried */
-    
+        configure_object(this_object(), OC_HEART_BEAT, 1); /* turn on heartbeat if carried */
+
     gold = player->query_money();
     start_gold = gold;
 }
@@ -86,7 +88,7 @@ void heart_beat()
      start_gold = gold;
    }
   else
-   set_heart_beat(0);
+   configure_object(this_object(), OC_HEART_BEAT, 0);
 
 }
 
@@ -106,14 +108,14 @@ status abacus( string arg )
 
   if ( temp == "on" )
     {
-         set_heart_beat(1);
+         configure_object(this_object(), OC_HEART_BEAT, 1);
          player->tell_me("The abacus is now on.\n");
          return 1;
     }
 
   if ( temp == "off" )
    {
-     set_heart_beat(0);
+     configure_object(this_object(), OC_HEART_BEAT, 0);
      player->tell_me("The abacus is now off.\n");
      return 1;
    }

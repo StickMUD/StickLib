@@ -34,7 +34,7 @@ create_monster()
    set_spell_mess2("Black Knight kicks you on the forehead!");
    set_spell_mess1("Black Knight kicks his opponent on the forehead.");
    set_spell_dam(30);
-   set_al(500);
+   set_alignment(500);
    set_id("black knight");
 #ifdef AREA_FROBOZZ_INN
    add_weapon( AREA_FROBOZZ_INN+"obj/python", "sword", 0, 3,

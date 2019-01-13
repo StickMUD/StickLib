@@ -32,7 +32,7 @@ create_guard()
   /*   set_wander(7); */
   set_hp(400 + level * 20);
   money = level * 25 + random(100) + 199;
-  set_al(399 + random(800));
+  set_alignment(399 + random(800));
 
   if (random(100) < 40)
     {

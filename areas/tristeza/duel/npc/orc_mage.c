@@ -18,7 +18,7 @@ create_monster() {
    set_ac(30);
    set_chance(10);
    set_spell_dam(80);
-   set_al(-500);
+   set_alignment(-500);
    set_spell_mess2("You are hit by a vibrating electric flare.");
    set_spell_mess1("Ghost of Orchius launches a vibrating flare.");
 

@@ -59,7 +59,7 @@
 /*********************** function prototypes ***********************/
 void shuffle();
 int  get_card( int pos, int func );
-int  bubble_sort( int *arry1, int *arry2 );
+void  bubble_sort( int *arry1, int *arry2 );
 int  evaluate();
 void delay_func( string message );
 void show_cards();

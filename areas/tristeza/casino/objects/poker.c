@@ -71,7 +71,7 @@ void shuffle();
 int  get_card( int pos, int func );
 int  get_bets( string forwho );
 int  errorcheck( string person, int func );
-int  bubble_sort( int *arry1, int *arry2 );
+void  bubble_sort( int *arry1, int *arry2 );
 void delay_func( int func );
 void timer_func( object person, int func );
 int  next_player( int current_player, int func );
