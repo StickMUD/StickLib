@@ -22,12 +22,12 @@ create_monster()
     set_short("An insane gambler");
 
     set_long(
-"This patron of the casino is dirty and ragged, with wildly\
+      "This patron of the casino is dirty and ragged, with wildly\
  gleaming eyes and a snarling rictus of a mouth.  He has\
  obviously spent FAR too much time in the casino, and appears\
  to have lost not only his money, but his mind as well." );
 
- 
+
     set(NPC_AGGRESSIVE);
     set_level(30+random(20));
     set_hp( 1000+random(2000) );
@@ -43,9 +43,9 @@ create_monster()
     load_a_chat( 30, ({ "%<me.name>% yells: It's MY wheel! MINE!!!" }) ); 
 
 
-                               /** lets block the player from fleeing **/
-                               /** This may be a bit harsh, but hey,  **/
-                               /** this is definitely misfortune :)   **/
+    /** lets block the player from fleeing **/
+    /** This may be a bit harsh, but hey,  **/
+    /** this is definitely misfortune :)   **/
 
     add_block("up","all",0,0,
       ":%<me.name>% intercepts you as you try to flee.",

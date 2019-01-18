@@ -19,11 +19,11 @@ int crime_time, crime_level;
 string
 query_auto_load()
 {
-string tmp, s;
-int i;
-	tmp = object_name(this_object());
-	if (sscanf(tmp, "%s#%d", s, i)) tmp = s;
-	return tmp + ":"+crime_time+"#"+crime_level;
+    string tmp, s;
+    int i;
+    tmp = object_name(this_object());
+    if (sscanf(tmp, "%s#%d", s, i)) tmp = s;
+    return tmp + ":"+crime_time+"#"+crime_level;
 }
 
 void
@@ -64,11 +64,11 @@ query_crime_status()
     if (crime_level < 1) return 0;
 
     switch (crime_level) {
-	case 1: return "theft"; break;
-	case 2: return "burglary"; break;
-	case 3: return "assault"; break;
-	case 4: return "manslaughter"; break;
-	case 5: return "murder"; break;
-	default: return 0; break;
+    case 1: return "theft"; break;
+    case 2: return "burglary"; break;
+    case 3: return "assault"; break;
+    case 4: return "manslaughter"; break;
+    case 5: return "murder"; break;
+    default: return 0; break;
     }
 }

@@ -45,8 +45,8 @@ create_room()
     add_item("hatch", #'hatch_desc);
     add_exit("up", CITY_DIR + "scribe_room");
     add_exit("southwest", CITY_DIR+"S13_1");
-	add_monster(AREA_TRISTEZA "npc/black",
-		0, 5);
+    add_monster(AREA_TRISTEZA "npc/black",
+      0, 5);
 }
 
 status search_cmd(string what) {

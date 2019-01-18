@@ -6,10 +6,10 @@
 void
 create_treasure()
 {
-   set_name("snotball");
-   set_id(({ "small snotball", "ball" }));
-   set_weight(0);
-   set_short("small snotball");
-   set_long("This snotball is definitely made by an orc.");
-   set_value(0);
+    set_name("snotball");
+    set_id(({ "small snotball", "ball" }));
+    set_weight(0);
+    set_short("small snotball");
+    set_long("This snotball is definitely made by an orc.");
+    set_value(0);
 }

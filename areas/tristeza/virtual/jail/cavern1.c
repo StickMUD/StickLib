@@ -7,9 +7,9 @@ create_room()
 {
     set_short("Big cavern");
     set_long(
- "Wow, what a big room! You become dizzy when you think about the amount "+
- "of work and spoons which they have used when digging this chamber. In "+
- "fact, you become so confused that you don't know where you came from.");
+      "Wow, what a big room! You become dizzy when you think about the amount "+
+      "of work and spoons which they have used when digging this chamber. In "+
+      "fact, you become so confused that you don't know where you came from.");
 
     set_light_level(LT_DIM);
     set_wd(WD_INDOORS);
@@ -34,23 +34,23 @@ gosomewhere()
 {
     /* Aaaaaaaaaaaaaaaaaaarrrrrrrrrrrrrrrrrrrrrrrrrghhhhhhhhhh! */
     if (this_player()->query_sit()) {
-        if (this_player()->short())
+	if (this_player()->short())
 	    say((string)this_player()->query_name()+" stands up.\n");
 	this_player()->set_ssit(0);
     }
 
     if (this_player()->query_rest()) {
-        write("Nah, you feel too relaxed to move.\n");
+	write("Nah, you feel too relaxed to move.\n");
 	return 1;
     }
 
     this_player()->move_player(query_verb() + "#" +
-	({
-         DIRR + "/tunnel2",
-         DIRR + "/tunnel5",
-         DIRR + "/tunnel6",
-         DIRR + "/tunnel3"
-	})[random(4)]);
+      ({
+	DIRR + "/tunnel2",
+	DIRR + "/tunnel5",
+	DIRR + "/tunnel6",
+	DIRR + "/tunnel3"
+      })[random(4)]);
 
     return 1;
 }

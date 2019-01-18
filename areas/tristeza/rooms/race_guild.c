@@ -27,8 +27,8 @@ create_room()
 	"It's made of pure magic. But perhaps you can read it?"
       ]));
     set_commands(([ "choose" : "choose_cmd",
-		"holocaust" : "disallow",
-		"purify" : "disallow" ]));
+	"holocaust" : "disallow",
+	"purify" : "disallow" ]));
 }
 
 status
@@ -63,37 +63,37 @@ read_cmd(string s)
 status
 choose_cmd(string arg)
 {
-  object trob;
-  string r;
+    object trob;
+    string r;
 
-  if (!arg) return notify_fail("What did you want to choose?\n"), 0;
-  arg = lower_case(arg);
-  if (member(({ "human", "elf", "dark elf", "dwarf",
-			"hobbit", "half-orc", "troll" }), arg) == -1)
-    return
+    if (!arg) return notify_fail("What did you want to choose?\n"), 0;
+    arg = lower_case(arg);
+    if (member(({ "human", "elf", "dark elf", "dwarf",
+	  "hobbit", "half-orc", "troll" }), arg) == -1)
+	return
 	notify_fail("Hmm, perhaps " + arg + " is not one of possible\
  choices.\nTry reading the sign first.\n"), 0;
 
-  r = (string)this_player()->query_race();
+    r = (string)this_player()->query_race();
 
-  if (arg == r)
+    if (arg == r)
     {
 	this_player()->tell_me("Hey, you already are a member of that race!");
 	return 1;
     }
 
-  if (r
+    if (r
       && ((((int)this_player() -> query_level() > 1)
-	   || ((int) this_player() -> query_ep() > 1000))))
+	  || ((int) this_player() -> query_ep() > 1000))))
     {
-      this_player()->tell_me("A voice whispers: You have already chosen \
+	this_player()->tell_me("A voice whispers: You have already chosen \
 your race.");
-      return 1;
+	return 1;
     }
 
-  log_file("race_log", ctime(time()) + ": " +
-	   capitalize((string)this_player()->query_real_name()) + ": " +
-	   (r ? r : "*human*") + " -> " + arg + "\n");
+    log_file("race_log", ctime(time()) + ": " +
+      capitalize((string)this_player()->query_real_name()) + ": " +
+      (r ? r : "*human*") + " -> " + arg + "\n");
 
     if ( trob = clone_object(GENERIC_RACE_TRANSFORMER))
     {
@@ -112,6 +112,6 @@ your race.");
 status
 disallow(string arg)
 {
-  this_player()->tell_me("Tim the Enchanter glares at you.");
-  return 1;
+    this_player()->tell_me("Tim the Enchanter glares at you.");
+    return 1;
 }

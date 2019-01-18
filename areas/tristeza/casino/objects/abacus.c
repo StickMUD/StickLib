@@ -27,14 +27,14 @@ object player;
 void
 create_treasure()
 {
-  set_short("A small stone abacus");
-  set_long("It is a small stone rectangle with several columns of beads.\
+    set_short("A small stone abacus");
+    set_long("It is a small stone rectangle with several columns of beads.\
  You can use it to help keep track of your finances with\
  'abacus <on/off/reset>.'");
 
-  set_id("abacus");
-  set_weight(1);
-  set_value(1000);
+    set_id("abacus");
+    set_weight(1);
+    set_value(1000);
 
 
 }
@@ -46,9 +46,9 @@ void init_treasure()
     player=this_player();
 
     if ( !interactive( environment() ))
-        configure_object(this_object(), OC_HEART_BEAT, 0); /* turn off heartbeat if not being carried */
+	configure_object(this_object(), OC_HEART_BEAT, 0); /* turn off heartbeat if not being carried */
     else
-        configure_object(this_object(), OC_HEART_BEAT, 1); /* turn on heartbeat if carried */
+	configure_object(this_object(), OC_HEART_BEAT, 1); /* turn on heartbeat if carried */
 
     gold = player->query_money();
     start_gold = gold;
@@ -64,68 +64,68 @@ int drop() { return 0; }
 void heart_beat()
 {
 
-  if ( environment() == player )
-   {
-     previous_gold = gold;
-     gold = player->query_money();
-                                  /** if gold has decreased */
-     if ( previous_gold > gold )
-        player->tell_me("Abacus: gold is now "+gold
-          +" ( -"+( previous_gold-gold)
-          +" ) ( "+(gold-start_gold)+" so far ).\n");
+    if ( environment() == player )
+    {
+	previous_gold = gold;
+	gold = player->query_money();
+	/** if gold has decreased */
+	if ( previous_gold > gold )
+	    player->tell_me("Abacus: gold is now "+gold
+	      +" ( -"+( previous_gold-gold)
+	      +" ) ( "+(gold-start_gold)+" so far ).\n");
 
-     else                            /** if gold has increased */
-     if ( gold > previous_gold )
-        player->tell_me("Abacus: gold is now "+gold
-          +" ( +"+( gold-previous_gold )
-          +" ) ( "+(gold-start_gold)+" so far ).\n");
-   }
-  else
-  if ( interactive( environment() ))
-   {
-     player = environment();
-     gold = player->query_money();
-     start_gold = gold;
-   }
-  else
-   configure_object(this_object(), OC_HEART_BEAT, 0);
+	else                            /** if gold has increased */
+	if ( gold > previous_gold )
+	    player->tell_me("Abacus: gold is now "+gold
+	      +" ( +"+( gold-previous_gold )
+	      +" ) ( "+(gold-start_gold)+" so far ).\n");
+    }
+    else
+    if ( interactive( environment() ))
+    {
+	player = environment();
+	gold = player->query_money();
+	start_gold = gold;
+    }
+    else
+	configure_object(this_object(), OC_HEART_BEAT, 0);
 
 }
 
 
 status abacus( string arg )
 {
-  string temp;
+    string temp;
 
-  if (!arg || sscanf(arg, "%s", temp) != 1 )
-      return 0;
+    if (!arg || sscanf(arg, "%s", temp) != 1 )
+	return 0;
 
-  if ( !living( environment() ))
-     {
-             notify_fail("You don\'t have the abacus.\n");
-             return 0;
-     }
-
-  if ( temp == "on" )
+    if ( !living( environment() ))
     {
-         configure_object(this_object(), OC_HEART_BEAT, 1);
-         player->tell_me("The abacus is now on.\n");
-         return 1;
+	notify_fail("You don\'t have the abacus.\n");
+	return 0;
     }
 
-  if ( temp == "off" )
-   {
-     configure_object(this_object(), OC_HEART_BEAT, 0);
-     player->tell_me("The abacus is now off.\n");
-     return 1;
-   }
+    if ( temp == "on" )
+    {
+	configure_object(this_object(), OC_HEART_BEAT, 1);
+	player->tell_me("The abacus is now on.\n");
+	return 1;
+    }
 
-  if ( temp == "reset" )
-   {
-     player->tell_me("Ok you reset the abacus.\n");
-     return 1;
-   }
+    if ( temp == "off" )
+    {
+	configure_object(this_object(), OC_HEART_BEAT, 0);
+	player->tell_me("The abacus is now off.\n");
+	return 1;
+    }
+
+    if ( temp == "reset" )
+    {
+	player->tell_me("Ok you reset the abacus.\n");
+	return 1;
+    }
 
 
-  return 0;
+    return 0;
 }

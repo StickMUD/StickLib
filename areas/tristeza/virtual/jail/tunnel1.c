@@ -9,9 +9,9 @@ create_room()
 {
     set_short("Tunnel complex");
     set_long(
- "You are in a damp, rough-walled stone tunnel. Many confusing, twisty "+
- "passages lead into various directions. Well, what did you expect from "+
- "a dungeon which has been dug with spoons...");
+      "You are in a damp, rough-walled stone tunnel. Many confusing, twisty "+
+      "passages lead into various directions. Well, what did you expect from "+
+      "a dungeon which has been dug with spoons...");
 
     set_light_level(LT_DIM);
     set_wd(WD_INDOORS);

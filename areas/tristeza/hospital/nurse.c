@@ -20,13 +20,13 @@ create_monster()
     load_chat(3, ({
 	"Nurse frowns.",
 	"Nurse says: Don't worry, this won't hurt a bit."
-    }));
+      }));
     load_a_chat(10, ({
 	"Nurse screams: EEEEEEEEEKKKKKKKK!",
 	"Nurse yells: HELP!!!",
 	"Nurse shouts: HELP! I'm being raped!"
-    }));
-  set_breath_attack(
-    25, 4, "Nurse sprays acid from a bottle upon you!",
-    "Nurse sprays acid from a bottle!", DT_ACID);
+      }));
+    set_breath_attack(
+      25, 4, "Nurse sprays acid from a bottle upon you!",
+      "Nurse sprays acid from a bottle!", DT_ACID);
 }

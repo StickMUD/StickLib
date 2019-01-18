@@ -16,15 +16,15 @@
 void
 create_room() 
 {
-  set_short("Patients' Hall");
-  set_long(
-"You are in the hall of the patients of " CITY_NAME " Sanatorium.\
+    set_short("Patients' Hall");
+    set_long(
+      "You are in the hall of the patients of " CITY_NAME " Sanatorium.\
  People who are recovering from a disease, examination, or\
  or an operation can rest here.");
-  set_light_level(LT_LIGHTS);
-  set(ROOM_WD, WD_INDOORS);
-  set(IN_CITY);
-  set_exits(([ "north" : AREA_TRISTEZA+"hospital/hall" ]));
-  replace_program(ROOM_FILE);
+    set_light_level(LT_LIGHTS);
+    set(ROOM_WD, WD_INDOORS);
+    set(IN_CITY);
+    set_exits(([ "north" : AREA_TRISTEZA+"hospital/hall" ]));
+    replace_program(ROOM_FILE);
 }
 

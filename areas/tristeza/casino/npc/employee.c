@@ -48,8 +48,8 @@ create_monster()
  for evidence of impropriety, and you doubt that anything you do\
  would escape his notice.");
 
-                              /** These are pretty big dudes...maybe  **/
-                              /** later they will need tuning down    **/ 
+    /** These are pretty big dudes...maybe  **/
+    /** later they will need tuning down    **/ 
     set_level(60);
     set_ep(1000000); 
     set_hp( 3000 );
@@ -71,9 +71,9 @@ create_monster()
 
     set_group("casino_employees");
     set_group_message("ask_help_msg", 
-           ":%<me.name>% shouts: I have a criminal here!");
+      ":%<me.name>% shouts: I have a criminal here!");
     set_group_message("can_help_msg",
-           "You hear running footsteps nearby.");
+      "You hear running footsteps nearby.");
     set_group_message("cant_help_msg",0);
 
 }
@@ -87,86 +87,86 @@ create_monster()
 ********************************************************************************/
 
 void heart_beat()
- {
+{
 
-                                       /** lets be nasty and make employees **/
-                                       /** stun-resistant.  :-)             **/
+    /** lets be nasty and make employees **/
+    /** stun-resistant.  :-)             **/
 
-   if ( this_object()->query_condition( C_STUNNED ) )
-           this_object()->set_condition( C_STUNNED, random(2) );
+    if ( this_object()->query_condition( C_STUNNED ) )
+	this_object()->set_condition( C_STUNNED, random(2) );
 
 
-   if ( enemy_to_follow )
+    if ( enemy_to_follow )
     {
 
-                                        /** we know how to kill pets really **/
-                                        /** efficiently :)                  **/       
+	/** we know how to kill pets really **/
+	/** efficiently :)                  **/       
 
-       if (( enemy_to_follow->query_ctrl() 
-            || (enemy_to_follow->query_name() == "demon") )
-           &&( this_object()->query_name() == "Bouncer" )
-           &&( !random(3)))
-            
-         {
-            environment()->tell_here("Bouncer crushes "
-                +enemy_to_follow->query_name()+"'s skull with a powerful kick!");
+	if (( enemy_to_follow->query_ctrl() 
+	    || (enemy_to_follow->query_name() == "demon") )
+	  &&( this_object()->query_name() == "Bouncer" )
+	  &&( !random(3)))
 
-            enemy_to_follow->death(1, this_object() );
+	{
+	    environment()->tell_here("Bouncer crushes "
+	      +enemy_to_follow->query_name()+"'s skull with a powerful kick!");
 
-            enemy_to_follow = 0;
-         }
-                                       /** if we are a bouncer and our enemy **/
-                                       /** is still fighting us...           **/
-       else
-       if ( this_object()->query_name() == "Bouncer" )
-           if ( !enemy_to_follow->query_dead() 
-            &&( enemy_to_follow->query_hp() > -50 ))
-            
-            {
-                                       /** if enemy has ran away from here.. **/
-                                       /** go to where he is at.             **/
+	    enemy_to_follow->death(1, this_object() );
 
-               if ( environment() != environment( enemy_to_follow )) 
-                {
-                   this_object()->move_player("moving rapidly",
-                         environment( enemy_to_follow ));
+	    enemy_to_follow = 0;
+	}
+	/** if we are a bouncer and our enemy **/
+	/** is still fighting us...           **/
+	else
+	if ( this_object()->query_name() == "Bouncer" )
+	    if ( !enemy_to_follow->query_dead() 
+	      &&( enemy_to_follow->query_hp() > -50 ))
 
-                   this_object()->attack_object( enemy_to_follow );
-                }
-             }
-           else                       /** if enemy is dead, return to office **/
-             {
-                environment(this_object())->tell_here(
-                 "Bouncer says: And let that be a lesson to you!!!" );
+	    {
+		/** if enemy has ran away from here.. **/
+		/** go to where he is at.             **/
 
-                this_object()->move_player("with a self-satisfied smirk",
-                         find_object( AREA_PATH+"rooms/security"));
+		if ( environment() != environment( enemy_to_follow )) 
+		{
+		    this_object()->move_player("moving rapidly",
+		      environment( enemy_to_follow ));
 
-                enemy_to_follow = 0;
+		    this_object()->attack_object( enemy_to_follow );
+		}
+	    }
+	    else                       /** if enemy is dead, return to office **/
+	    {
+		environment(this_object())->tell_here(
+		  "Bouncer says: And let that be a lesson to you!!!" );
 
-             }
+		this_object()->move_player("with a self-satisfied smirk",
+		  find_object( AREA_PATH+"rooms/security"));
+
+		enemy_to_follow = 0;
+
+	    }
 
     }
-   else
-   {
+    else
+    {
 
-       enemy_to_follow = query_attack(); 
+	enemy_to_follow = query_attack(); 
 
-                                          /** if we have no enemy and     **/
-                                          /** we arent in the office then **/
-                                          /** return to the office        **/
+	/** if we have no enemy and     **/
+	/** we arent in the office then **/
+	/** return to the office        **/
 
-       if (( !enemy_to_follow )&&( this_object()->query_name() == "Bouncer")
-         &&( environment( this_object() )->query_short()
-               != "Security and surveilance room."))
+	if (( !enemy_to_follow )&&( this_object()->query_name() == "Bouncer")
+	  &&( environment( this_object() )->query_short()
+	    != "Security and surveilance room."))
 
-         this_object()->move_player("with a self-satisfied smirk",
-                     find_object( AREA_PATH+"rooms/security"));
+	    this_object()->move_player("with a self-satisfied smirk",
+	      find_object( AREA_PATH+"rooms/security"));
 
-   }
-    
-    
-   ::heart_beat();
+    }
+
+
+    ::heart_beat();
 }
 
 
@@ -177,52 +177,52 @@ void heart_beat()
 
 status group_attacked( object victim, object attacker, object *members )
 {
-  mixed bouncer;
-  object enemy;
-  int i,j, stat;
+    mixed bouncer;
+    object enemy;
+    int i,j, stat;
 
 
-  stat = ::group_attacked( victim, attacker, members );
+    stat = ::group_attacked( victim, attacker, members );
 
-                                           /** If we are attacked by a pet **/
-                                           /** lets blame the master!      **/ 
+    /** If we are attacked by a pet **/
+    /** lets blame the master!      **/ 
 
 
-  enemy_to_follow = attacker;
- 
-                                           /** Only call for help if we    **/
-                                           /** are the victim.             **/ 
-  if ( victim == this_object() )
-   {
-                                           /** See if any other bouncers   **/
-      j=0;                                 /** are alive somewhere else    **/
+    enemy_to_follow = attacker;
 
-      for ( i=0; i<sizeof(members); i++ )
-       if ((bouncer = members[i]) && ( bouncer != this_object() )
-           &&( !present( bouncer, environment(attacker) )) 
-           &&( bouncer->query_name() == "Bouncer" ))
-         {
-                                           /** yes! summon them to help me!**/ 
+    /** Only call for help if we    **/
+    /** are the victim.             **/ 
+    if ( victim == this_object() )
+    {
+	/** See if any other bouncers   **/
+	j=0;                                 /** are alive somewhere else    **/
 
-          call_out("delayed_summon", SUMMON_DELAY+j*2, bouncer, attacker );  
-          j++;
-         }
+	for ( i=0; i<sizeof(members); i++ )
+	    if ((bouncer = members[i]) && ( bouncer != this_object() )
+	      &&( !present( bouncer, environment(attacker) )) 
+	      &&( bouncer->query_name() == "Bouncer" ))
+	    {
+		/** yes! summon them to help me!**/ 
+
+		call_out("delayed_summon", SUMMON_DELAY+j*2, bouncer, attacker );  
+		j++;
+	    }
 
 #if RECORD_ATTACKS != 0
 
-   write_file( AREA_PATH+LOGFILE, attacker->query_real_name()+
-                    " attacked "+victim->query_real_name()+".\n" );
+	write_file( AREA_PATH+LOGFILE, attacker->query_real_name()+
+	  " attacked "+victim->query_real_name()+".\n" );
 
-   if ( enemy != attacker )
-     write(" with a "+enemy->query_name()+".\n" );
-   else
-     write(".\n");
+	if ( enemy != attacker )
+	    write(" with a "+enemy->query_name()+".\n" );
+	else
+	    write(".\n");
 
 #endif
 
-   }
+    }
 
-  return stat; 
+    return stat; 
 }
 
 
@@ -234,7 +234,7 @@ status group_attacked( object victim, object attacker, object *members )
 
 void set_enemy( object enemy )
 {
-     enemy_to_follow = enemy;
+    enemy_to_follow = enemy;
 
 } 
 

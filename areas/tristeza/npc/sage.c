@@ -14,5 +14,5 @@ void create_monster()
     set_level(30);
     set_hp(1000);
     set_id(({ "sage", "sage of " LCASE_CITY_NAME, LCASE_CITY_NAME " sage" }));
-   set_money(400*(random(2)));
+    set_money(400*(random(2)));
 }

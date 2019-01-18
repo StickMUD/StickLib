@@ -36,7 +36,7 @@ open(str) {
     current_page = 1;
     write("Ok.\n");
     say(call_other(this_player(), "query_name", 0) +
-	" opens the book.\n");
+      " opens the book.\n");
     return 1;
 }
 
@@ -51,7 +51,7 @@ close(str)
     current_page = 0;
     write("Ok.\n");
     say(call_other(this_player(), "query_name", 0) +
-	" closed the book.\n");
+      " closed the book.\n");
     return 1;
 }
 

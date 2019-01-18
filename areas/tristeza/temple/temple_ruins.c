@@ -25,32 +25,32 @@ In saeculorum saecula.\nAmen."
       ]));
     set_exits(([
 	"north"	: AREA_TRISTEZA+"temple/grave_yard",
-      "east" : "/room/path",
-		"south"	: GENERIC_ROOM_CHURCH 
-	]));
+	"east" : "/room/path",
+	"south"	: GENERIC_ROOM_CHURCH 
+      ]));
 }
 
 void
 init_room()
 {
-  // Great priests, yeah...
-  add_action("disallow", "holocaust");
-  add_action("disallow", "purify");
+    // Great priests, yeah...
+    add_action("disallow", "holocaust");
+    add_action("disallow", "purify");
 }
 
 status
 disallow(string arg)
 {
-  this_player()->tell_me("Tim the Enchanter glares at you.");
-  return 1;
+    this_player()->tell_me("Tim the Enchanter glares at you.");
+    return 1;
 }
 
 status
 read_cmd(string str)
 {
-	if (str == "plaque") {
-		this_player()->tell_me(query_long(str, this_player()));
-		return 1;
-	}
-	return 0;
+    if (str == "plaque") {
+	this_player()->tell_me(query_long(str, this_player()));
+	return 1;
+    }
+    return 0;
 }

@@ -21,7 +21,7 @@ create_monster()
     set_spell_dam(80);
     set_spell_mess1("Dr Mengele is holding something shiny and sharp!");
     set_spell_mess2(
- "Dr Mengele slices you with his scalpel. That really HURTS!");
+      "Dr Mengele slices you with his scalpel. That really HURTS!");
     set_level(14);
     set_hp(3000);
     set_wander(0);
@@ -32,12 +32,12 @@ create_monster()
     n = "Mengele states: ";
     /* Thanks to newsgroup sci.med for lots of talk :-) */
     load_chat(7, ({
-        n+"Hello.",
+	n+"Hello.",
 	n+"There has been lots of typhoid fever cases lately.",
 	n+"Did you know that I had the sewers disinfected?",
-/*
-	n+"They should really disinfect those sewers..."
-*/
+	/*
+		n+"They should really disinfect those sewers..."
+	*/
 	n+"Unfortunately, tacrine is no levodopa.",
 	n+"I read sci.med, do you?",
 	n+"I'm a firm believer in euthanasia and legalised suicide.",
@@ -47,12 +47,12 @@ create_monster()
 	n+"Perhaps some farmorubicin (epirubicin hydrochloride)...",
 	n+"Some male human homosexuals show a hypothalamic response more characteristic of genetic females...",
 	n+"30 mg of dextromethorphan, 650 mg of acetaminophen..."
-    }));
+      }));
 
     load_a_chat(12, ({
 	n+"Hey! Watch it! I might get angry!",
 	n+"How DARE you attack a doctor!",
 	n+"Do you think you will ever get any healing here after this?",
 	n+"Stop that now, or..."
-    }));
+      }));
 }

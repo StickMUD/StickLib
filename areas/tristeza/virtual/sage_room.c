@@ -85,7 +85,7 @@ int buy(string str) {
     object what;
     inames = m_indices(items);
     if(!str) return notify_fail("Buy what? \n"), 0;
-	str = lower_case(str);
+    str = lower_case(str);
     if(member(inames, str) == -1) {
 	return notify_fail(capitalize(str)+" is not sold here. \n"), 0;
     }

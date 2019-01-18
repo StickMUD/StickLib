@@ -15,13 +15,13 @@
 public void
 shout_city(string msg)
 {
-object *xob, ob;
-int i;
-string tmp;
+    object *xob, ob;
+    int i;
+    string tmp;
 
     i = sizeof(xob = users());
 
     while (i--)
 	if ((ob = environment(xob[i])) && ob->query(IN_CITY))
-	  xob[i]->tell_me(msg);
+	    xob[i]->tell_me(msg);
 }

@@ -8,6 +8,6 @@ create_room()
     set_light_level(LT_LIGHTS);
     set(ROOM_WD,WD_NONE);
     set(PREVENT_TELEPORT);
-//  set(ROOM_ISOLATED);
+    //  set(ROOM_ISOLATED);
     replace_program(ROOM_FILE);
 }

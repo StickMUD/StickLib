@@ -2,8 +2,8 @@
 
 void
 init() {
-object ob;
+    object ob;
 
-	ob = clone_object(AREA_TRISTEZA "duel/cool_off");
-  move_object(this_player(), ob);
+    ob = clone_object(AREA_TRISTEZA "duel/cool_off");
+    move_object(this_player(), ob);
 }

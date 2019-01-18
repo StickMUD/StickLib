@@ -2,7 +2,7 @@
   This is a packet of chewing gum to ease the withdrawals when player tries
   to quit smoking. It calls the smoke daemon when player starts chewing it.
 
-                Coded by Mclaud for StickMUD in January 1996.
+		Coded by Mclaud for StickMUD in January 1996.
 
  * ** *** **** ***** ****** ******* ******** ********* ********** ***********/
 
@@ -15,34 +15,34 @@ inherit "/basic/object/dimensions";
 int amount;
 
 int query_value() {
-        if (amount > 0) return ((15 * amount * 2) / 3);
-        return 0;
-        }
+    if (amount > 0) return ((15 * amount * 2) / 3);
+    return 0;
+}
 
 string query_name() {
     return "packet of chewing gum";
-    }
-    
+}
+
 varargs status
 id(string s, object who)
 {
     return s == "gum" || s == "chewing gum";
-    }
+}
 
 void
 init()
 {
-        add_action("chew", "chew");
-        }
+    add_action("chew", "chew");
+}
 
 void
 reset(int arg)
 {
     if (!arg) {
-        amount = 20;
-        set_weight(1);
-        }
+	amount = 20;
+	set_weight(1);
     }
+}
 
 varargs string
 query_long(string s, object who)
@@ -55,13 +55,13 @@ query_long(string s, object who)
     if (amount > 0) txt += "There are "+amount+" gums left.";
     else txt += "It's empty.";
     return txt;
-    }
+}
 
 varargs string                           
 query_short(string s, object who)
 {
     return "Packet of chewing gum";
-    }
+}
 
 varargs status
 chew(string what)
@@ -69,24 +69,24 @@ chew(string what)
     int sweat;
     if (what != "gum") return 0;
 
-     if ((status) SMOKE_D->query_chewing(this_player()) == YES) {
-        notify_fail("You are already chewing some.\n");
-        return 0;
-        }
+    if ((status) SMOKE_D->query_chewing(this_player()) == YES) {
+	notify_fail("You are already chewing some.\n");
+	return 0;
+    }
 
     if ((status) SMOKE_D->query_smoking(this_player()) == YES) {
-        notify_fail("While smoking? In your dreams.\n");
-        return 0;
-        }
+	notify_fail("While smoking? In your dreams.\n");
+	return 0;
+    }
 
     if (!amount) {
-        notify_fail("You don't have any gum left.\n");
-        return 0;
-        }
+	notify_fail("You don't have any gum left.\n");
+	return 0;
+    }
     if ((int) SMOKE_D->query_sweat(this_player()) == NO) {
-        notify_fail("You really don't need that right now.\n");
-        return 0;
-        }
+	notify_fail("You really don't need that right now.\n");
+	return 0;
+    }
 
     amount --;
     SMOKE_D->start_chewing(this_player());
@@ -96,16 +96,16 @@ chew(string what)
  chewing a bubblegum.", this_player());
     if (amount == 0) call_out("clean", 120);
     return 1;
-    }
+}
 
 void clean() {
     if (environment())
-        environment()->tell_me("Empty chewing gum packet falls in pieces.");
+	environment()->tell_me("Empty chewing gum packet falls in pieces.");
     destruct(this_object());
 }
 
 status
 get(int silent)
 {
-   return 1;
+    return 1;
 }

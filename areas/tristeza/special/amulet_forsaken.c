@@ -12,10 +12,10 @@
 void
 create_armour()
 {
-  set_type("amulet");
-  set_weight(1);
-  set_ac(1);
-  if (set_unique(object_name(this_object()), UNIQUENESS_PARTIAL, 2, 1))
+    set_type("amulet");
+    set_weight(1);
+    set_ac(1);
+    if (set_unique(object_name(this_object()), UNIQUENESS_PARTIAL, 2, 1))
     {
 	set_name("amulet of the forsaken");
 	set_short("Amulet of the Forsaken");
@@ -26,14 +26,14 @@ create_armour()
 	add_special_property( ARM_SP_BOOST_STAT, ST_INT, 3 );
 	add_special_property( ARM_SP_DRAIN_STAT, ST_STR, 2 );
 	add_special_property( ARM_SP_DRAIN_STAT, ST_FP_HEAL_RATE, 1 );
-     }
-   else
-     {
+    }
+    else
+    {
 	set_name("broken amulet");
 	set_short("Broken amulet of the Forsaken");
 	set_long("This is the amulet of the ancient daemon Ba'alzamon,\
  the Forsaken. Unfortunately, it is blackened and partially melted.\
  You can sense no power in it.");
 	set_value(500);
-     }
+    }
 }

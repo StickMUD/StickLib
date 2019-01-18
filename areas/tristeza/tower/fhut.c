@@ -16,45 +16,45 @@ create_room()
 {
     set_short ("inside hut");
     set_long ("Inside a dark, small wooden hut. The dim light comes from "+
-"eerie mist so thick it's hard to see the walls; only a brighter opening "+
-"indicate a doorway out. Opposite the opening is a heavy wooden table and "+
-"behind the table sits an old gypsy woman.");
+      "eerie mist so thick it's hard to see the walls; only a brighter opening "+
+      "indicate a doorway out. Opposite the opening is a heavy wooden table and "+
+      "behind the table sits an old gypsy woman.");
     add_item ("mist", "Eerie mist fills the air, making the scene look "+
-              "rather scary.");
+      "rather scary.");
     add_item (({"walls","doorway","door","opening"}),
-              "You can't really spot the walls, but a brighter light "+
-              "in one direction indicates a doorway out.");
+      "You can't really spot the walls, but a brighter light "+
+      "in one direction indicates a doorway out.");
     add_item ("table", "A fine and heavy wooden table.");
     add_item (({"woman", "gypsy", "old woman", "gypsy woman"}),
-              "Behind the table sits an old gypsy woman, dressed in "+
-              "colourful clothes. The way she looks at you makes you "+
-              "shiver.");
+      "Behind the table sits an old gypsy woman, dressed in "+
+      "colourful clothes. The way she looks at you makes you "+
+      "shiver.");
     set_light_level (LT_LIGHTS);
     add_exit ("out", "/room/tower/out_there_somewhere");
 
     cards = ([
-   "sun": "a symbolic golden sun",
-   "moon": "a symbolc silver moon",
-   "star": "a symbolic silver star",
-   "comet": "a symbolic golden comet",
-   "throne": "a wealthy throne",
-   "key": "a golden key",
-   "knight": "a knight in full armour on a horse",
-   "gem": "a colourful gem",
-   "the void": "nothing but black",
-   "flames": "lot of flames",
-   "skull": "a grinning skull",
-   "talons": "?????",               /* ???? */
-   "ruin": "a ruin of a castle",
-   "euryale": "a woman face, snakes as hair",              /* ???? */
-   "rogue": "a rogue with a dagger",
-   "balance": "balanced scales",
-   "jester": "a juggling jester",
-   "fool": "?????",                 /* ???? */
-   "vizier": "a wizard with a crystal ball",
-   "idiot": "?????",                /* ???? */
-   "fates": "?????",                /* ???? */
-   "donjon": "a skeleton hanging on the wall" ]);
+      "sun": "a symbolic golden sun",
+      "moon": "a symbolc silver moon",
+      "star": "a symbolic silver star",
+      "comet": "a symbolic golden comet",
+      "throne": "a wealthy throne",
+      "key": "a golden key",
+      "knight": "a knight in full armour on a horse",
+      "gem": "a colourful gem",
+      "the void": "nothing but black",
+      "flames": "lot of flames",
+      "skull": "a grinning skull",
+      "talons": "?????",               /* ???? */
+      "ruin": "a ruin of a castle",
+      "euryale": "a woman face, snakes as hair",              /* ???? */
+      "rogue": "a rogue with a dagger",
+      "balance": "balanced scales",
+      "jester": "a juggling jester",
+      "fool": "?????",                 /* ???? */
+      "vizier": "a wizard with a crystal ball",
+      "idiot": "?????",                /* ???? */
+      "fates": "?????",                /* ???? */
+      "donjon": "a skeleton hanging on the wall" ]);
 }
 
 void
@@ -74,16 +74,16 @@ my_give (string what)
 {
     int amount;
     if (!what || (sscanf (what, "%d coins to %s", amount, what) != 2))
-        return 0;
+	return 0;
     if (AM_INVIS) { TELLPLAYER ("Gypsy whispers: Please, be visible.\n");
-                    return 1; }
+	return 1; }
     if (amount < 100000) {
-        /* ehh.. tell_room */
-        TELLPLAYER ("As you are about to hand the coins to the gypsy woman, "+
-               "she says: ");
-        TELLOTHERS ("The gypsy looks at "+MYNAME+" and says: ");
-        TELLROOM ("hundred times thousand coins, that is the price.\n");
-        return 1;
+	/* ehh.. tell_room */
+	TELLPLAYER ("As you are about to hand the coins to the gypsy woman, "+
+	  "she says: ");
+	TELLOTHERS ("The gypsy looks at "+MYNAME+" and says: ");
+	TELLROOM ("hundred times thousand coins, that is the price.\n");
+	return 1;
     }
     /* inform and get money out of player */
     /* or maybe some item that need to be get from elsewhere ??? */
@@ -100,7 +100,7 @@ pick_card(string arg)
     string *names;
 
     if (arg && arg != "card" && arg != "a card")
-       return 0;
+	return 0;
 
     names = m_indices(cards);
     card = random(sizeof(names));

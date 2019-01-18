@@ -212,14 +212,14 @@ query_patient()
 void
 init_room()
 {
- /* Hmmm..
-    if ((!patient || !present(patient, this_object())) &&
-      present(this_player(), this_object()) &&
-      this_player() && living(this_player()) && query_ip_number(this_player()))
-   */
-   if(!patient)
+    /* Hmmm..
+       if ((!patient || !present(patient, this_object())) &&
+	 present(this_player(), this_object()) &&
+	 this_player() && living(this_player()) && query_ip_number(this_player()))
+      */
+    if(!patient)
 	patient = this_player();
-   else if(!present(patient, this_object())) patient = this_player();
+    else if(!present(patient, this_object())) patient = this_player();
 }
 
 status
@@ -296,229 +296,229 @@ rob_money(int x)
 int
 diagnosis()
 {
-  string tmp;
-  object *inv;
-  int g, i;
+    string tmp;
+    object *inv;
+    int g, i;
 
-  if (!rob_money(50)) return 1;
+    if (!rob_money(50)) return 1;
 
-  this_player()->tell_me("\nDoctor says: Ok, take all your clothes off...\n\n\
+    this_player()->tell_me("\nDoctor says: Ok, take all your clothes off...\n\n\
 After the examination you get this diagnosis:");
 
-  inv = all_inventory(this_player());
+    inv = all_inventory(this_player());
 
-  for (i = 0; i < sizeof(inv); i++) {
-    if (inv[i]->id("disease")) {
-      if (!(tmp = (string)inv[i]->query_nickname())) tmp = "Fever";
-      this_player()->tell_me("\nYou have the "+tmp+". Curing costs " +
-		  cure_disease_cost((int)inv[i]->query_level()) + ". " +
-		  "('buy cure disease').");
-    }
+    for (i = 0; i < sizeof(inv); i++) {
+	if (inv[i]->id("disease")) {
+	    if (!(tmp = (string)inv[i]->query_nickname())) tmp = "Fever";
+	    this_player()->tell_me("\nYou have the "+tmp+". Curing costs " +
+	      cure_disease_cost((int)inv[i]->query_level()) + ". " +
+	      "('buy cure disease').");
+	}
 
-    if (inv[i]->id("pregnancy")) {
-      this_player()->tell_me("\nOh, you are pregnant! How cute. Buy abortion \
+	if (inv[i]->id("pregnancy")) {
+	    this_player()->tell_me("\nOh, you are pregnant! How cute. Buy abortion \
 to get rid of the baby.");
+	}
+
+	if (inv[i]->id("mental_disease")) {
+	    if (!(tmp = (string)inv[i]->query_name()))
+		tmp = "Madness";
+	    this_player()->tell_me("\nYou have the "+tmp+". Curing costs "+
+	      cure_mental_cost((int)inv[i]->query_level()) + ". "+
+	      "('buy cure " + tmp + "').");
+	}
     }
 
-    if (inv[i]->id("mental_disease")) {
-      if (!(tmp = (string)inv[i]->query_name()))
-	tmp = "Madness";
-      this_player()->tell_me("\nYou have the "+tmp+". Curing costs "+
-		  cure_mental_cost((int)inv[i]->query_level()) + ". "+
-		  "('buy cure " + tmp + "').");
-    }
-  }
-
-  g = (int)this_player()->query_gender();
-  if (g == 1 || g == 2) {
-    if (((int)this_player()->query_level() > 1))
-      this_player()->tell_me(
-	"\nYou can change your gender ('buy sex change'), which costs " +
-	SEX_CHANGE_COST + " gc.");
-    else
-      this_player()->tell_me("\nYou can change your \
+    g = (int)this_player()->query_gender();
+    if (g == 1 || g == 2) {
+	if (((int)this_player()->query_level() > 1))
+	    this_player()->tell_me(
+	      "\nYou can change your gender ('buy sex change'), which costs " +
+	      SEX_CHANGE_COST + " gc.");
+	else
+	    this_player()->tell_me("\nYou can change your \
 gender ('buy sex change') for free.");
-  }
+    }
 
-  this_player()->tell_me("\nPlastic surgery can add or remove scars ('buy add/remove \
+    this_player()->tell_me("\nPlastic surgery can add or remove scars ('buy add/remove \
 scars'), but that's an expensive operation, "+PLASTIC_COST+" gc.");
 
-  if (this_player()->query_race()) {
-    this_player()->tell_me("\nYou can change your race ('buy race <race>'), cost is " +
-		race_change_cost(this_player()) + " gc.");
-  }
+    if (this_player()->query_race()) {
+	this_player()->tell_me("\nYou can change your race ('buy race <race>'), cost is " +
+	  race_change_cost(this_player()) + " gc.");
+    }
 
-  return 1;
+    return 1;
 }
 
 status
 buy(string arg)
 {
-  object ob;
-  string tmp, tmp2, n;
-  int cost, i, x, *st, stat_value, z, rcc;
-  mapping race_maxes;
+    object ob;
+    string tmp, tmp2, n;
+    int cost, i, x, *st, stat_value, z, rcc;
+    mapping race_maxes;
 
-  if (!doctor_here()) return 0;
-  if (!patient || !present(patient, this_object())) patient = this_player();
-  if (patient != this_player()) {
-    notify_fail("Doctor says: Huh? Who are you? Where's my patient???\n");
-    return 0;
-  }
-
-  if (!arg) {
-    notify_fail("Doctor says: What? Try buying diagnosis first...\n");
-    return 0;
-  }
-
-  arg = lower_case(arg);
-  if (arg == "diagnosis" || arg == "diagnose") return diagnosis();
-  if (arg == "sex change") {
-    cost = (int)this_player()->query_gender();
-    if (cost != 1 && cost != 2) {
-      notify_fail("Doctor says: Huh? Aren't you weird enough?\n");
-      return 0;
-    }
-    if (((int)this_player()->query_level() > 1))
-      if (!rob_money(SEX_CHANGE_COST)) return 1;
-    sex_change();
-    return 1;
-  }
-
-  if (arg == "abortion")
-    {
-      if(!present4("pregnancy", this_player(), this_player(),
-		   IL_TOTALLY_INVISIBLE))
-	{
-	  notify_fail("Doctor says: You are not pregnant.\n");
-	  return 0;
-	}
-      if (!rob_money(ABORTION_COST)) return 1;
-      abortion();
-      return 1;
-    }
-
-  if (sscanf(lower_case(arg), "cure %s", tmp) == 1)
-    {
-      if (tmp == "nicotine addiction" || tmp == "addiction") {
-	this_player()->tell_me(
-		    "Dr Mengele states: We don't do those operations yet. Come back later.");
-	return 1;
-      }
-
-      if (tmp == "disease") {
-	ob = present4("disease", this_player(), this_player(),
-		      IL_TOTALLY_INVISIBLE);
-	if (ob) {
-	  cost = cure_disease_cost((int)ob->query_level());
-	  if (!rob_money(cost)) return 1;
-	  cure_disease(tmp);
-	  return 1;
-	}
-	notify_fail("Doctor says: What disease?\n");
-	return 1;
-      }
-
-      ob = present4(tmp, this_player(), this_player(), IL_TOTALLY_INVISIBLE);
-      if (ob) {
-	if (ob->id("mental_disease")) {
-	  cost = cure_mental_cost((int)ob->query_level());
-	  if (!rob_money(cost)) return 1;
-	  cure_mental(tmp);
-	  return 1;
-	}
-	notify_fail("Doctor gasps: I don't cure " + tmp + "!\n");
+    if (!doctor_here()) return 0;
+    if (!patient || !present(patient, this_object())) patient = this_player();
+    if (patient != this_player()) {
+	notify_fail("Doctor says: Huh? Who are you? Where's my patient???\n");
 	return 0;
-      }
-
-      notify_fail("Doctor says: You don't seem to have any " +
-		  "\"" + tmp + "\".\n");
-      return 0;
     }
 
-  if (sscanf(lower_case(arg), "race %s", tmp) == 1) {
-    if (!(tmp2 = (string)this_player()->query_race())) {
-      notify_fail("Doctor says: Why don't you go to Guild of Races and select your race?\n");
-      return 0;
+    if (!arg) {
+	notify_fail("Doctor says: What? Try buying diagnosis first...\n");
+	return 0;
     }
 
-    if (tmp2 == tmp) {
-      notify_fail(sprintf(
-			  "Doctor says: What? Change %s to %s?\n", tmp, tmp));
-      return 0;
+    arg = lower_case(arg);
+    if (arg == "diagnosis" || arg == "diagnose") return diagnosis();
+    if (arg == "sex change") {
+	cost = (int)this_player()->query_gender();
+	if (cost != 1 && cost != 2) {
+	    notify_fail("Doctor says: Huh? Aren't you weird enough?\n");
+	    return 0;
+	}
+	if (((int)this_player()->query_level() > 1))
+	    if (!rob_money(SEX_CHANGE_COST)) return 1;
+	sex_change();
+	return 1;
     }
 
-    if (member(RACES, tmp) == -1) {
-      this_player()->tell_me(sprintf("Doctor says: I only know races %s.\n", implode(RACES, ", ", " and ")));
-      return 1;
+    if (arg == "abortion")
+    {
+	if(!present4("pregnancy", this_player(), this_player(),
+	    IL_TOTALLY_INVISIBLE))
+	{
+	    notify_fail("Doctor says: You are not pregnant.\n");
+	    return 0;
+	}
+	if (!rob_money(ABORTION_COST)) return 1;
+	abortion();
+	return 1;
     }
 
-    rcc = race_change_cost(this_player());
+    if (sscanf(lower_case(arg), "cure %s", tmp) == 1)
+    {
+	if (tmp == "nicotine addiction" || tmp == "addiction") {
+	    this_player()->tell_me(
+	      "Dr Mengele states: We don't do those operations yet. Come back later.");
+	    return 1;
+	}
 
-    if (rcc < 1)
-      {
-	this_player()->tell_me("Doctor Mengele says: \
+	if (tmp == "disease") {
+	    ob = present4("disease", this_player(), this_player(),
+	      IL_TOTALLY_INVISIBLE);
+	    if (ob) {
+		cost = cure_disease_cost((int)ob->query_level());
+		if (!rob_money(cost)) return 1;
+		cure_disease(tmp);
+		return 1;
+	    }
+	    notify_fail("Doctor says: What disease?\n");
+	    return 1;
+	}
+
+	ob = present4(tmp, this_player(), this_player(), IL_TOTALLY_INVISIBLE);
+	if (ob) {
+	    if (ob->id("mental_disease")) {
+		cost = cure_mental_cost((int)ob->query_level());
+		if (!rob_money(cost)) return 1;
+		cure_mental(tmp);
+		return 1;
+	    }
+	    notify_fail("Doctor gasps: I don't cure " + tmp + "!\n");
+	    return 0;
+	}
+
+	notify_fail("Doctor says: You don't seem to have any " +
+	  "\"" + tmp + "\".\n");
+	return 0;
+    }
+
+    if (sscanf(lower_case(arg), "race %s", tmp) == 1) {
+	if (!(tmp2 = (string)this_player()->query_race())) {
+	    notify_fail("Doctor says: Why don't you go to Guild of Races and select your race?\n");
+	    return 0;
+	}
+
+	if (tmp2 == tmp) {
+	    notify_fail(sprintf(
+		"Doctor says: What? Change %s to %s?\n", tmp, tmp));
+	    return 0;
+	}
+
+	if (member(RACES, tmp) == -1) {
+	    this_player()->tell_me(sprintf("Doctor says: I only know races %s.\n", implode(RACES, ", ", " and ")));
+	    return 1;
+	}
+
+	rcc = race_change_cost(this_player());
+
+	if (rcc < 1)
+	{
+	    this_player()->tell_me("Doctor Mengele says: \
 What, race change would cost nothing? Something is bugging here. \
 Ask an admin or coder to look at this.");
-	return 1;
-      }
-
-    if (!rob_money(rcc)) return 1;
-
-    race_maxes = (mapping) LEVELS_D->query_race_max_stats();
-    n = (string) this_player()->query_real_name();
- 
-    for (i = z = 0, st = m_indices(Stats); i < sizeof(st); i++) {
-      if ((stat_value = (int) this_player()->query_stat(st[i])) > race_maxes[tmp][st[i]])
-	{
-	  if (!x++) {
-	    this_player()->tell_me(sprintf("Doctor Mengele says: Well, your %s will \
-also be lowered due to the operation.", Stats[st[i]]));
-	  } else {
-	    this_player()->tell_me(sprintf("Doctor Mengele says: ... as well as your %s...",
-				Stats[st[i]]));
-	  }
-	  this_player()->set_stat(st[i], race_maxes[tmp][st[i]]);
-	  // Let's log them... in case there are problems. :-/
-log_file("mengele", sprintf("%s (level %d), changed race from %O to %O. \
-%O lowered from %d to %d (cost %d), at %s\n",
-	n, (int)this_player()->query_level(),
-		tmp2, tmp, Stats[st[i]], stat_value, race_maxes[tmp][st[i]],
-				      rcc, ctime(time()) ));
-	  z++;
+	    return 1;
 	}
+
+	if (!rob_money(rcc)) return 1;
+
+	race_maxes = (mapping) LEVELS_D->query_race_max_stats();
+	n = (string) this_player()->query_real_name();
+
+	for (i = z = 0, st = m_indices(Stats); i < sizeof(st); i++) {
+	    if ((stat_value = (int) this_player()->query_stat(st[i])) > race_maxes[tmp][st[i]])
+	    {
+		if (!x++) {
+		    this_player()->tell_me(sprintf("Doctor Mengele says: Well, your %s will \
+also be lowered due to the operation.", Stats[st[i]]));
+		} else {
+		    this_player()->tell_me(sprintf("Doctor Mengele says: ... as well as your %s...",
+			Stats[st[i]]));
+		}
+		this_player()->set_stat(st[i], race_maxes[tmp][st[i]]);
+		// Let's log them... in case there are problems. :-/
+		log_file("mengele", sprintf("%s (level %d), changed race from %O to %O. \
+%O lowered from %d to %d (cost %d), at %s\n",
+		    n, (int)this_player()->query_level(),
+		    tmp2, tmp, Stats[st[i]], stat_value, race_maxes[tmp][st[i]],
+		    rcc, ctime(time()) ));
+		z++;
+	    }
+	}
+	if (!z)
+	    log_file("mengele",sprintf("%O (level %d), changed race from %O to %O (cost %d) at %s.\n",
+		n, (int)this_player()->query_level(), tmp2, tmp, rcc, ctime(time())));
+	race_change(tmp);
+	return 1;
     }
-    if (!z)
-log_file("mengele",sprintf("%O (level %d), changed race from %O to %O (cost %d) at %s.\n",
-n, (int)this_player()->query_level(), tmp2, tmp, rcc, ctime(time())));
-    race_change(tmp);
-    return 1;
-  }
 
-  if (sscanf(lower_case(arg), "%s scars", tmp) == 1) {
-    if (tmp != "add" && tmp != "remove") {
-      notify_fail("Doctor says: I can only 'add' or 'remove' scars - what do you mean???\n");
-      return 0;
+    if (sscanf(lower_case(arg), "%s scars", tmp) == 1) {
+	if (tmp != "add" && tmp != "remove") {
+	    notify_fail("Doctor says: I can only 'add' or 'remove' scars - what do you mean???\n");
+	    return 0;
+	}
+
+	/* Not on low level players. They don't get scars when dying. */
+	if ((int)this_player()->query_level() < 10) {
+	    notify_fail("Doctor says: Your pretty, young face doesn't need plastic surgery.\n");
+	    return 0;
+	}
+
+	if (!rob_money(PLASTIC_COST)) return 1;
+	plastic_surgery(tmp);
+	return 1;
     }
 
-    /* Not on low level players. They don't get scars when dying. */
-    if ((int)this_player()->query_level() < 10) {
-      notify_fail("Doctor says: Your pretty, young face doesn't need plastic surgery.\n");
-      return 0;
-    }
-
-    if (!rob_money(PLASTIC_COST)) return 1;
-    plastic_surgery(tmp);
-    return 1;
-  }
-
-  notify_fail(({
-    "Doctor says: We can't do that operation before getting some new equipment.",
-      "Doctor says: Oh, that requires an instrument which is currently broken.",
-      "Doctor says: I don't do those operations. Find a specialist.",
-      "Doctor says: Hmm, are you sure that you are in the right place?"
+    notify_fail(({
+	"Doctor says: We can't do that operation before getting some new equipment.",
+	"Doctor says: Oh, that requires an instrument which is currently broken.",
+	"Doctor says: I don't do those operations. Find a specialist.",
+	"Doctor says: Hmm, are you sure that you are in the right place?"
       })[random(4)] + "\n");
-  return 0;
+    return 0;
 }
 
 int
@@ -545,7 +545,7 @@ play_seq()
 	seq = -1;
 	return;
     }
-	 patient->set_condition(C_PASSED_OUT, 4); /* Keep us stunned */
+    patient->set_condition(C_PASSED_OUT, 4); /* Keep us stunned */
 
     if (seq >= sizeof(msg)) {
 
@@ -643,7 +643,7 @@ abortion()
     object pr;
 
     msg = abortion_msg;
-   pr = present4("pregnancy", patient, patient, IL_TOTALLY_INVISIBLE);
+    pr = present4("pregnancy", patient, patient, IL_TOTALLY_INVISIBLE);
     if (pr) {
 	pr->remove();
 	if (pr) destruct(pr);

@@ -9,12 +9,12 @@ static int m;
 void
 create()
 {
-  set_short("Bear bearing a plaque: \"EAT AT JOE'S\"");
-  set_long(
-"It's a large, brown bear which carries a huge plaque on its shoulders. \
+    set_short("Bear bearing a plaque: \"EAT AT JOE'S\"");
+    set_long(
+      "It's a large, brown bear which carries a huge plaque on its shoulders. \
 Both the front and back side of the plaque contain the same advertisement:\n\
 \"EAT AT JOE'S\".");
-  set_id(({ "bear", "joe", "joe the bear" }));
+    set_id(({ "bear", "joe", "joe the bear" }));
 }
 
 status get() { return 0; }
@@ -23,61 +23,61 @@ int query_weight() { return 50; }
 void
 start_move()
 {
-  if (!environment()
+    if (!environment()
       || strstr(object_name(environment()), "rooms/joes") < 0)
     {
-      call_other(AREA_TRISTEZA "rooms/joes", "???");
-      move_object(this_object(), AREA_TRISTEZA "rooms/joes");
+	call_other(AREA_TRISTEZA "rooms/joes", "???");
+	move_object(this_object(), AREA_TRISTEZA "rooms/joes");
     }
 
-  m = 0;
-  call_out("moving", 5);
+    m = 0;
+    call_out("moving", 5);
 }
 
 
 void
 moving()
 {
-  string tmp, dr;
-  object ob;
-  int d;
+    string tmp, dr;
+    object ob;
+    int d;
 
-  tmp = "swssseeennneeeeeesssssswwwnnennwsswnwwnnnwwn";
+    tmp = "swssseeennneeeeeesssssswwwnnennwsswnwwnnnwwn";
 
-  if (m >= sizeof(tmp))
+    if (m >= sizeof(tmp))
     {
-      start_move();
-      return;
+	start_move();
+	return;
     }
 
-  d = tmp[m];
-  dr = (d=='n'?"north":
-	d=='e'?"east":
-	d=='s'?"south":"west");
-  tmp = (string)environment()->query_exit(dr);
+    d = tmp[m];
+    dr = (d=='n'?"north":
+      d=='e'?"east":
+      d=='s'?"south":"west");
+    tmp = (string)environment()->query_exit(dr);
 
-  if (tmp)
+    if (tmp)
     {
-      ob = find_object(tmp);
-      if (!ob) call_other(tmp, "???");
-      ob = find_object(tmp);
+	ob = find_object(tmp);
+	if (!ob) call_other(tmp, "???");
+	ob = find_object(tmp);
     }
 
-  if (!tmp || !ob)
+    if (!tmp || !ob)
     {
 #if 0
-      if (find_player("graah"))
-	find_player("graah")->tell_me("Joe on eksynyt!");
+	if (find_player("graah"))
+	    find_player("graah")->tell_me("Joe on eksynyt!");
 #endif
-      destruct(this_object());
-      return;
+	destruct(this_object());
+	return;
     }
 
-  environment()->tell_here("Bear leaves " + dr + ".");
-  move_object(this_object(), ob);
-  environment()->tell_here("Bear arrives.");
+    environment()->tell_here("Bear leaves " + dr + ".");
+    move_object(this_object(), ob);
+    environment()->tell_here("Bear arrives.");
 
-  m++;
+    m++;
 
-  call_out("moving", 5 + random(10));
+    call_out("moving", 5 + random(10));
 }

@@ -7,8 +7,8 @@ create_room()
 {
     set_short("Y-Tunnel");
     set_long(
- "Three tunnels connect here in an 'Y'. There seems to be a bigger open "+
- "space to the south.");
+      "Three tunnels connect here in an 'Y'. There seems to be a bigger open "+
+      "space to the south.");
 
     set_light_level(LT_DIM);
     set_wd(WD_INDOORS);
