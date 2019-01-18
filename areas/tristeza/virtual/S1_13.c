@@ -141,7 +141,7 @@ int    i;
 // be aware.
 
 	call_other(GENERIC_ROOM_PURGATORY, "???");
-	u = filter_array(all_inventory(find_object(GENERIC_ROOM_PURGATORY)),
+	u = filter(all_inventory(find_object(GENERIC_ROOM_PURGATORY)),
 		"who_filter", this_player());
 	ld_id_list = allocate(i = sizeof(u));
 	if (!i) return "A strange, huge ice cube. Wonder what it does here.";

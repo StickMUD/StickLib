@@ -40,13 +40,6 @@ create_room()
         CITY_DIR+"S7_7",
         CITY_DIR+"S7_8",
 #endif
-#ifdef AREA_EAST
-        AREA_EAST+"east/vill_shore",
-#endif
-#ifdef AREA_WEST
-        AREA_WEST+"mines/tunnel2",
-        AREA_WEST+"forest/clearing",
-#endif
 #ifdef GENERIC_ROOM_CHURCH
         GENERIC_ROOM_CHURCH,
 #endif

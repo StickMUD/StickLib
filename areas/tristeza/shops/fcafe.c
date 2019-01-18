@@ -64,7 +64,6 @@ Type 'list' for menu. Watch out: emote is available too.");
   add_permanent(GENERIC_BENCH);
   add_permanent(GENERIC_TRASHCAN);
   add_permanent(GENERIC_BED);
-  add_permanent("/u/kieve/game");
 
   add_exit("down", ROOM_DOWN);
   add_command("emote", "emote_cmd");

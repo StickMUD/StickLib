@@ -13,6 +13,9 @@
  *
  */
 
+#include "/sys/configuration.h"
+#include "/sys/interactive_info.h"
+
 #include <conditions.h>
 
 #define LOG_SCHIZOPHRENIA
@@ -47,11 +50,15 @@ init_arg(string arg) {
    sscanf(arg,"%d#%d",symptom,counter);
 }
 
+#if 0
 void
 reset(int arg) {
     if(arg) return;
-
-    set_heart_beat(1);
+#else
+void
+create() {
+#endif
+    configure_object(this_object(), OC_HEART_BEAT, 1);
 
     if(!counter) {
        counter = 300 + random(150) + random(150) + random(150);
@@ -72,7 +79,7 @@ init() {
 
    if( (string)victim->query_real_name()=="guest" ||
        (int)victim->query_level() < 6 ||
-       (!query_ip_number(victim) && !victim->query_npc()) ) {
+       (!interactive_info(victim, II_IP_NUMBER) && !victim->query_npc()) ) {
       destruct(this_object());
       return;
    }

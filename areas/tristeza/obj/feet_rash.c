@@ -1,6 +1,9 @@
 /* This one comes usually from sauna. You should really wash yourself
    after it! */
 
+#include "/sys/configuration.h"
+#include "/sys/interactive_info.h"
+
 #include <conditions.h>
 
 #define notify(xx) tell_object(victim,xx)
@@ -32,11 +35,15 @@ init_arg(string arg) {
    sscanf(arg,"%d#%d#%d",incubation,symptom,disease_counter);
 }
 
+#if 0
 void
 reset(int arg) {
     if(arg) return;
-
-    set_heart_beat(1);
+#else
+void
+create() {
+#endif
+    configure_object(this_object(), OC_HEART_BEAT, 1);
 
     if(!disease_counter) {
        incubation = 250 + random(250);
@@ -63,7 +70,7 @@ init() {
 
    if ((string)victim->query_real_name()=="guest" ||
        (int)victim->query_level() < 4 ||
-       (!query_ip_number(victim) && !victim->query_npc()) ) {
+       (!interactive_info(victim, II_IP_NUMBER) && !victim->query_npc()) ) {
       destruct(this_object());
       return;
    }

@@ -4,7 +4,7 @@
 
 int cond; /* Condition */
 
-string do_long(string id, string me);
+string do_long(string id, object me);
 
 reset_value() { set_value(5 + cond * 8); }
 
