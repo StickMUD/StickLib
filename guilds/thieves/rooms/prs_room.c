@@ -16,8 +16,6 @@ create_room() {
       "almost all her time in the Temple. The only furniture is a bed.");
     add_exit("south", GDIR + "rooms/temple");
 
-    add_permanent(GENERIC_BED);
-
     add_object( ({
 	DOOR_FILE, ({
 	  "add_door",
