@@ -77,13 +77,13 @@ void create_chests()
 
     if (store_flags ^ BUY_AND_SELL)
     {
-        add_command("borrow", "cmd_handler");
+	add_command("borrow", "cmd_handler");
 	add_command("donate", "cmd_handler");
     }
 
     if (store_flags & BUY_AND_SELL)
     {
-        add_command("buy", "cmd_handler");
+	add_command("buy", "cmd_handler");
 	add_command("sell", "cmd_handler");
 	add_command("value", "cmd_handler");
     }
@@ -94,7 +94,7 @@ void create_chests()
     if (store_flags & STORE_ARMOUR)
     {
 	chest = clone_object(ARMOUR_CHEST);
-        if (store_flags & BUY_AND_SELL)
+	if (store_flags & BUY_AND_SELL)
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
@@ -108,7 +108,7 @@ void create_chests()
     if (store_flags & STORE_WEAPON)
     {
 	chest = clone_object(WEAPON_CHEST);
-        if (store_flags & BUY_AND_SELL)
+	if (store_flags & BUY_AND_SELL)
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
@@ -123,7 +123,7 @@ void create_chests()
     if (store_flags & STORE_GENERAL)
     {
 	chest = clone_object(GENERAL_CHEST);
-        if (store_flags & BUY_AND_SELL)
+	if (store_flags & BUY_AND_SELL)
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
@@ -135,7 +135,7 @@ void create_chests()
     if (store_flags & STORE_SCROLL)
     {
 	chest = clone_object(SCROLL_CHEST);
-        if (store_flags & BUY_AND_SELL)
+	if (store_flags & BUY_AND_SELL)
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
@@ -147,7 +147,7 @@ void create_chests()
     if (store_flags & STORE_POTION)
     {
 	chest = clone_object(POTION_CHEST);
-        if (store_flags & BUY_AND_SELL)
+	if (store_flags & BUY_AND_SELL)
 	{
 	    chest->set_closed(CHEST_CLOSED);
 	    chest->set_locked(CHEST_LOCKED);
@@ -185,7 +185,7 @@ int read_cmd(string arg)
     string *tmp;
 
     if (!arg || arg != "plaque")
-        return 0;
+	return 0;
 
     tmp = ({ });
 

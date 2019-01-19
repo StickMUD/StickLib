@@ -14,8 +14,8 @@ void do_shadow(object ob, string pret, int mode) {
 }
 
 void end_shadow(){
-  unshadow();
-  destruct(this_object());
+    unshadow();
+    destruct(this_object());
 }
 
 string query_pretitle() {

@@ -87,12 +87,12 @@ varargs string *create_list(object chest, string item)
     string *list, *graphic;
 
     if (item)
-        list = chest->list_item(item, (storage_flags & BUY_AND_SELL));
+	list = chest->list_item(item, (storage_flags & BUY_AND_SELL));
     else
 	list = chest->list_items(1);
-/*
-	list = chest->list_items(storage_flags & BUY_AND_SELL);
-*/
+    /*
+	    list = chest->list_items(storage_flags & BUY_AND_SELL);
+    */
     find_player("tamarindo")->tell_me("Gets here");
 
     if (!sizeof(list))
@@ -102,14 +102,14 @@ varargs string *create_list(object chest, string item)
 
     if (item)
 	for (i = 0; i < sizeof(list); i += 3)
-            graphic += ({ 
-		sprintf(" | %3s -> %-48s %5s gold coins |", list[i],
-			list[i + 1], list[i + 2])
+	    graphic += ({ 
+	      sprintf(" | %3s -> %-48s %5s gold coins |", list[i],
+		list[i + 1], list[i + 2])
 	    });
     else
 	for (i = 0; i < sizeof(list); i++)
-            graphic += ({ 
-		sprintf(" | %3d -> %-64s |", (i + 1), list[i])
+	    graphic += ({ 
+	      sprintf(" | %3d -> %-64s |", (i + 1), list[i])
 	    });
 
     graphic += ({ sprintf(" |%73s|\n_\\ %-72s \\", " ", " ") });
