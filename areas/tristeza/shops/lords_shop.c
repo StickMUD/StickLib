@@ -2,7 +2,6 @@
 #include <areas.h>
 #include <generic_items.h>
 
-#define CASTLE_PRICES    AREA_CASTLES+"CASTLE_PRICES"
 #define TP this_player()
 
 void create_room() 
@@ -13,18 +12,16 @@ void create_room()
     set_long(
       "In this shop the Ladies and Lords may buy some very fine magic "+
       "items which are not available to ordinary mortals. Commands: "+
-      "'list' and 'buy'.\n"+
-      "A note about castle-info has been posted on the wall.");
+      "'list' and 'buy'.");
     set(NO_PK);
     set(IN_CITY);
-    set_items(([ "note" : "You can probably read the note...." ]));
     set_exits(([ "east" : AREA_TRISTEZA+"shops/lords_pub"]));
 }
 
-init_room() 
+void
+init_room()
 {
     add_action("read","read");
-    /* Non-lord mortals cannot buy stuff here */
     if(TP && (!TP->query_lord() &&
 	!TP->query_coder_level())) return;
     add_action("list", "list");
@@ -81,15 +78,6 @@ buy(str) {
 
     transfer(ob,TP);
     TP->add_money(-cost);
-    return 1;
-}
-
-status 
-read( string str) 
-{
-    if ( strstr(str, "note") == -1 ) return 0;
-
-    TP->more(explode(read_file(CASTLE_PRICES), "\n"));
     return 1;
 }
 

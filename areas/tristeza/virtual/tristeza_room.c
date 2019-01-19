@@ -410,8 +410,7 @@ a garden to the north. You can see a house behind the garden.";
 	case 10:
 	    short = "Secret Street";
 	    long = "You are on the Secret Street which goes west\
- and east. To the south you see an area full of fancy houses.";
-	    add_exit("south", PLAYER_HOMES1);
+ and east.";
 	    break;
 	case 13:
 	    short = "Godshire";
@@ -543,8 +542,7 @@ a garden to the north. You can see a house behind the garden.";
 	case 12:
 	    short = "Newbie Road";
 	    long = "You are on the Newbie Road which goes north\
- and south. To the west you can see an area full of fancy houses.";
-	    add_exit("west", PLAYER_HOMES2);
+ and south.";
 	    break;
 	case 13:
 	    short = "Godshire, near the South Gate";

@@ -37,7 +37,6 @@ create_room()
 	"north" :	CITY_DIR + "S6_7",
 	"northeast" :	CITY_DIR + "S7_7",
 	"east"	:	CITY_DIR + "S7_8",
-	"southeast" :	CITY_DIR + "S7_9",
 	"south"	:	PUB,
 	"southwest" :	LORD_PUB,
       ]));

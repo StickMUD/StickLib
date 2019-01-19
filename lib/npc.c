@@ -1083,7 +1083,6 @@ heart_beat()
     }
 
     if (!attackers)
-
 	// Quicker to check master attacker first, then present if required.
 
 	if ((ms = query_master()) && (query_defend_master()) &&
@@ -1217,7 +1216,7 @@ heart_beat()
 	    !present(ob, environment()))) {
 	    init_follow(0, STOP_FOLLOWING);
 	}
-    } 
+    }
 
     if (environment() && move_ok && (chat_chance || a_chat_chance)) {
 	c = random(100);
