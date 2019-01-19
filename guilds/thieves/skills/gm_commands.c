@@ -1,3 +1,3 @@
 void phony() {
-  return;
+    return;
 }

@@ -96,7 +96,7 @@ broken or dented armours. On the north wall there is a door.");
 	  PRIEST_ROOM_DIR "armoury_store",
 	  "iron",
 	  "chopin_was_here",
-            1,1,1,SHOP_PICK_LVL,
+	  1,1,1,SHOP_PICK_LVL,
 	  "It's a strong iron lock, protecting well the room behind this door.",
 	}),
       }), 0, 0);

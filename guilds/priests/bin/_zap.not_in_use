@@ -1,6 +1,0 @@
-#include "../priest.h"
-
-zap_cmd(object who, object sym, string s) {
-   notify_fail("Priest 'zap' command is removed from the game temporarily.\n");
-   return 0;
-}

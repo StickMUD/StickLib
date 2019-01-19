@@ -11,7 +11,7 @@ int accept_object(object ob) {
 void create_storage() {
     add_object( ({ SHOP_DOOR,
 	({ "add_door",
-								  "It is a small oak door.",
+	  "It is a small oak door.",
 	  "south",
 	  PRIEST_ROOM_DIR "quartermasters",
 	  "iron",

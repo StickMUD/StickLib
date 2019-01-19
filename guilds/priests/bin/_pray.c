@@ -36,7 +36,7 @@ status pray_cmd(object who, object sym, string arg)
     if(environment(who)->is_priest_sanctum() && VESPER_D->query_vespers()) {
 	if(DELAY_D->query_delay(who, DELAY_TYPE_VESPER)>=0) {
 	    sym->inc_faith(3 + random(3));
-            DELAY_D->add_delay(who, DELAY_TYPE_VESPER, VESPER_DELAY);
+	    DELAY_D->add_delay(who, DELAY_TYPE_VESPER, VESPER_DELAY);
 	}
 	who->tell_me("You chant a humble prayer and feel the presence of "
 	  GOD_NAME " everywhere around you.");
@@ -46,7 +46,7 @@ status pray_cmd(object who, object sym, string arg)
     }
     if(DELAY_D->query_delay(who, DELAY_TYPE_PRAY)>=0) {
 	sym->inc_faith(1);
-        DELAY_D->add_delay(who, DELAY_TYPE_PRAY, PRAY_DELAY);
+	DELAY_D->add_delay(who, DELAY_TYPE_PRAY, PRAY_DELAY);
     }
     str = prayers[random(sizeof(prayers))];
     if(quietly) environment(who)->tell_here(

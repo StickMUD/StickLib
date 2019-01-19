@@ -1,5 +1,5 @@
 #include <treasure.h>
- 
+
 void create_treasure()
 {
     set_name("black rose");
@@ -9,17 +9,17 @@ void create_treasure()
     set_value(30);
     set_weight(1);
 }
- 
+
 void init_treasure()
 {
-   add_action("smell","smell");
-   add_action("smell","sniff");
+    add_action("smell","smell");
+    add_action("smell","sniff");
 }
- 
+
 status smell(string str) {
-   if(!str || !id(str))
-       return notify_fail("Did you want to smell the rose?\n"), 0;
- 
-   this_player()->tell_me("It smells very good.");
-   return 1;
+    if(!str || !id(str))
+	return notify_fail("Did you want to smell the rose?\n"), 0;
+
+    this_player()->tell_me("It smells very good.");
+    return 1;
 }

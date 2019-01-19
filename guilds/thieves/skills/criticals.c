@@ -27,70 +27,70 @@
 #endif
 
 varargs int critical(int skill, int gm, int adv, int pk) {
-	int chance,high;
+    int chance,high;
 
-	chance=high=0;
+    chance=high=0;
 
-	if(skill > 10000) {
-		high  = skill - 10000;
-		chance += high / 10;
-		skill = 10000;
-	}
+    if(skill > 10000) {
+	high  = skill - 10000;
+	chance += high / 10;
+	skill = 10000;
+    }
 
-	if(skill > 5000) {
-		high  = skill - 5000;
-		chance += high / 66;
-		skill = 5000;
-	}
-		
-	chance += skill / 200;
+    if(skill > 5000) {
+	high  = skill - 5000;
+	chance += high / 66;
+	skill = 5000;
+    }
 
-	// Racial bonus or penalty. This is from -3 to 4.
-	// Much more resonable in a base 100 system.  Now level 1
-	// hobbits don't have a 5% chance with no skills
-	chance += adv;
+    chance += skill / 200;
 
-	// Demon or enforcer status gives an extra 5%
-	if(gm) chance += 50;
+    // Racial bonus or penalty. This is from -3 to 4.
+    // Much more resonable in a base 100 system.  Now level 1
+    // hobbits don't have a 5% chance with no skills
+    chance += adv;
+
+    // Demon or enforcer status gives an extra 5%
+    if(gm) chance += 50;
 
 
 #if 0
-  if(this_player()->query_coder_level())
-    write("Critical chance: " + chance + "/1000.\n");
+    if(this_player()->query_coder_level())
+	write("Critical chance: " + chance + "/1000.\n");
 #endif
 
-	// Make sure people aren't exceeding the 35% absolute rate
-	if(chance < 1) chance = 1;
-	else if(chance > 350) chance = 350;
+    // Make sure people aren't exceeding the 35% absolute rate
+    if(chance < 1) chance = 1;
+    else if(chance > 350) chance = 350;
 
-	// Check to see that there was a critical at all
-	if(random(1001) >= chance) return 0;
+    // Check to see that there was a critical at all
+    if(random(1001) >= chance) return 0;
 
 #if 1
-if(find_player("chaotic"))
-  if((int)find_player("chaotic")->query_env("SHOW_THIEF"))
-    find_player("chaotic")->tell_me("Critical success: " + chance + "/1000(" + (string)this_player()->query_real_name() + ")\n");
+    if(find_player("chaotic"))
+	if((int)find_player("chaotic")->query_env("SHOW_THIEF"))
+	    find_player("chaotic")->tell_me("Critical success: " + chance + "/1000(" + (string)this_player()->query_real_name() + ")\n");
 #endif
 
-	// Check to see if it was an extra special critical
-	if(random(1501) < chance) {
-		// Criticals of 3rd level are even more scarce.
-		if(random(2701) < chance) {
+    // Check to see if it was an extra special critical
+    if(random(1501) < chance) {
+	// Criticals of 3rd level are even more scarce.
+	if(random(2701) < chance) {
 #if 1
-if(find_player("chaotic"))
-  if((int)find_player("chaotic")->query_env("SHOW_THIEF"))
-    find_player("chaotic")->tell_me("Triple success: " + chance + "/1000(" + (string)this_player()->query_real_name() + ")\n");
+	    if(find_player("chaotic"))
+		if((int)find_player("chaotic")->query_env("SHOW_THIEF"))
+		    find_player("chaotic")->tell_me("Triple success: " + chance + "/1000(" + (string)this_player()->query_real_name() + ")\n");
 #endif
-			 return 3;
-		} else  {
+	    return 3;
+	} else  {
 #if 1
-if(find_player("chaotic"))
-  if((int)find_player("chaotic")->query_env("SHOW_THIEF"))
-    find_player("chaotic")->tell_me("Double success: " + chance + "/1000(" + (string)this_player()->query_real_name() + ")\n");
+	    if(find_player("chaotic"))
+		if((int)find_player("chaotic")->query_env("SHOW_THIEF"))
+		    find_player("chaotic")->tell_me("Double success: " + chance + "/1000(" + (string)this_player()->query_real_name() + ")\n");
 #endif
-			return 2;
-		}
+	    return 2;
 	}
+    }
 
-	return 1;
+    return 1;
 }

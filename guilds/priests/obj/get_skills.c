@@ -11,11 +11,11 @@ int invuln_skill;
 
 int*
 get_skills(string asker) {
-   int *temp;
-   if(!restore_object(PRIEST_SAVE_DIR "old_alc_skills/"+asker))
-      return 0;
+    int *temp;
+    if(!restore_object(PRIEST_SAVE_DIR "old_alc_skills/"+asker))
+	return 0;
 
-   temp = ({ base_skill, heal_min_skill, heal_maj_skill, les_res_skill,
+    temp = ({ base_skill, heal_min_skill, heal_maj_skill, les_res_skill,
       gre_res_skill, invis_skill, invuln_skill });
-   return temp;
+    return temp;
 }

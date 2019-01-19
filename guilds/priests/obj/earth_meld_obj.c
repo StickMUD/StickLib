@@ -22,11 +22,11 @@ int drop() { return 1; }
 
 init_treasure() {
     if(!pl || pl == this_player()) return;
-     if(can_sense)
-        pl->tell_me(":You feel %<me.name>% entering the room above you.",
-0,0,this_player(),0,0);
+    if(can_sense)
+	pl->tell_me(":You feel %<me.name>% entering the room above you.",
+	  0,0,this_player(),0,0);
     else
-    pl->tell_me("You feel someone walking over you.");
+	pl->tell_me("You feel someone walking over you.");
 }
 
 set_pl(object x, int sense_status) { pl = x, can_sense = sense_status; }

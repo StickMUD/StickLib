@@ -29,12 +29,12 @@ status block_exit(string arg) {
     templar = present("templar", this_object());
     if(!templar || this_player()->query_coder_level()) return 0;
     if(this_player()->query_guild() != GN_PRIEST ||
-    !this_player()->query_guild_object() ||
-    this_player()->query_guild_object()->query_rank() < 2)
-     {
-        tell_here(":%<me.capname>% blocks %<him.gen_possessive>% way!",
-        0,0,templar,templar,this_player(),0);
-        return 1;
+      !this_player()->query_guild_object() ||
+      this_player()->query_guild_object()->query_rank() < 2)
+    {
+	tell_here(":%<me.capname>% blocks %<him.gen_possessive>% way!",
+	  0,0,templar,templar,this_player(),0);
+	return 1;
     }
     return 0;
 }

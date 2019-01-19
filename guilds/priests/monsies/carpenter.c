@@ -113,7 +113,7 @@ status catch_ask(object who, string what)
 	str += "%<me.capname>% says: Your staff is ready, \
 %<cap(him.real_name)>%! ";
 
-        if(price = STAFF_D->make_staff(who)) {
+	if(price = STAFF_D->make_staff(who)) {
 	    str += sprintf("It costs %d gold coins.", price);
 	    if(who->query_money()<price) {
 		str += "\n%<me.capname>% says: Ah, you don't have that much money \

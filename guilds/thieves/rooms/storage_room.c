@@ -23,7 +23,7 @@ create_room()
     set_outdoors(WD_INDOORS);
     set(NO_CLEANUP);
     set_short("Store room");
-   set_long("Store room!");
+    set_long("Store room!");
 }
 
 
@@ -32,19 +32,19 @@ create_room()
 int accept_object(object ob, string desc)
 {
     // value for accepting items used to be 300  --K
-  if (!ob->query_thief_item() &&
+    if (!ob->query_thief_item() &&
       (int)ob->query_value() < 0)
     {
-      if (!poi)
-	poi = (object *)"/guilds/thieves/poison_d"->query_poisoned_things(1);
-      if (member(poi, ob) == -1)
+	if (!poi)
+	    poi = (object *)"/guilds/thieves/poison_d"->query_poisoned_things(1);
+	if (member(poi, ob) == -1)
 	{
-	  this_player()->tell_me(desc + "? Don't donate such crap here!");
-	  return 0;
+	    this_player()->tell_me(desc + "? Don't donate such crap here!");
+	    return 0;
 	}
     }
 
-  return 1;
+    return 1;
 }
 
 
@@ -149,8 +149,8 @@ You don't seem to be able to carry that much.\n");
     environment(me)->tell_here(sprintf("%s borrows %s.",
 	(string) this_player()->query_name(),
 	(string) ob->short()), me);
-   write_file(LOG_DIR+"EQ_LOG", capitalize(this_player()->query_real_name())
-   +" borrowed "+ob->query_short()+" from the Guild at "+ctime(time())+"\n");
+    write_file(LOG_DIR+"EQ_LOG", capitalize(this_player()->query_real_name())
+      +" borrowed "+ob->query_short()+" from the Guild at "+ctime(time())+"\n");
     return 1;
 }
 
@@ -196,18 +196,18 @@ stuff! Let's slow down a bit.");
 
 	ob = item_list[i];
 	if(!(desc = (string)ob->short())
-	   || ob->drop() || !ob)
-	  continue;
+	  || ob->drop() || !ob)
+	    continue;
 	if (!accept_object(ob, desc)) continue;
 	if(!count++) {
-	  donateer = (string)this_player()->query_name();
+	    donateer = (string)this_player()->query_name();
 	}
 
 	environment(me)->tell_here(donateer+" donates "+desc+".",me);
 	me->tell_me("You donate "+desc+" to the Guild. ");
-      write_file(LOG_DIR+"EQ_LOG", capitalize(
-      this_player()->query_real_name())+" donated "+
-    ob->query_short()+" to the Guild at "+ctime(time())+". \n");
+	write_file(LOG_DIR+"EQ_LOG", capitalize(
+	    this_player()->query_real_name())+" donated "+
+	  ob->query_short()+" to the Guild at "+ctime(time())+". \n");
 #if 0
 	/* Turned off during testing */
 #endif

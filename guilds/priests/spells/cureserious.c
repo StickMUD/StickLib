@@ -43,13 +43,13 @@ void
 begin_cureserious(object who, mixed victim)
 {
     if(who==victim) {
-      who->tell_me("You start chanting the mighty healing prayer, closing \
+	who->tell_me("You start chanting the mighty healing prayer, closing \
 your eyes and touching your forehead with your left hand's fingertips.");
-      HERE->tell_here(&(messages[M_BEGIN_1]),0,0,who,who,0,0);
+	HERE->tell_here(&(messages[M_BEGIN_1]),0,0,who,who,0,0);
     }
     else {
-      who->tell_me(&(messages[M_BEGIN_2]),0,0,who,victim,0);
-      HERE->tell_here(&(messages[M_BEGIN_3]),0,0,0,who,victim,0);
+	who->tell_me(&(messages[M_BEGIN_2]),0,0,who,victim,0);
+	HERE->tell_here(&(messages[M_BEGIN_3]),0,0,0,who,victim,0);
     }
     // Now, 1/3 of total cost subtracted...
     who->add_sp(-(cost-finish_cost));
@@ -67,36 +67,36 @@ end_cureserious(object who, mixed victim)
     skill = get_skill(sym);
 
     if (skill_roll(sym, skill)>0) {
-      who->tell_me(&(messages[M_END_ME]),0,0,0,victim,0);
-      here->tell_here(&(messages[M_END_OTHERS]),0,0,who,who,victim,0);
+	who->tell_me(&(messages[M_END_ME]),0,0,0,victim,0);
+	here->tell_here(&(messages[M_END_OTHERS]),0,0,who,who,victim,0);
 
-      // And rest of the sp cost is used here...
-      who->add_sp(-finish_cost);
-      old_hp_fp = victim->query_hp() + victim->query_fp();
-      amount = BALANCE_D->healing(skill,GN_PRIEST,cost);
-      amount -= random(2*amount/7);
+	// And rest of the sp cost is used here...
+	who->add_sp(-finish_cost);
+	old_hp_fp = victim->query_hp() + victim->query_fp();
+	amount = BALANCE_D->healing(skill,GN_PRIEST,cost);
+	amount -= random(2*amount/7);
 
-      if (critical_success) {
-          who->tell_me("You feel " GOD_NAME " is exceptionally \
+	if (critical_success) {
+	    who->tell_me("You feel " GOD_NAME " is exceptionally \
 pleased with you today!");
-          amount = amount * (105 + random(96)) / 100;
-      }
+	    amount = amount * (105 + random(96)) / 100;
+	}
 
-      heal = (victim->add_hp(amount) + victim->add_fp(amount) - old_hp_fp) / 2;
-      sym->inform_debugger(sprintf("Heal amount: %d, real heal: %d", amount, heal));
+	heal = (victim->add_hp(amount) + victim->add_fp(amount) - old_hp_fp) / 2;
+	sym->inform_debugger(sprintf("Heal amount: %d, real heal: %d", amount, heal));
 
-      // Should this be removed??
-      if (victim != who && sym->is_valid_heal(victim))
-          who->add_exp(heal * 10);
+	// Should this be removed??
+	if (victim != who && sym->is_valid_heal(victim))
+	    who->add_exp(heal * 10);
 
-      // no train if player already has full hp / fp
-      inc_skills(who,sym,heal * 100 / amount);
+	// no train if player already has full hp / fp
+	inc_skills(who,sym,heal * 100 / amount);
     }
     else {
-      who->tell_me("But you fail. " GOD_NAME " wasn't on your side \
+	who->tell_me("But you fail. " GOD_NAME " wasn't on your side \
 this time...");
-      here->tell_here(&(messages[M_FAIL]) ,0,0,who,who,0,0);
-      inc_skills(who,sym,100);
+	here->tell_here(&(messages[M_FAIL]) ,0,0,who,who,0,0);
+	inc_skills(who,sym,100);
     }
     return 1;
 }

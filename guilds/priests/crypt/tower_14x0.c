@@ -40,7 +40,7 @@ create_room()
     add_item("hatch", #'hatch_desc);
     add_exit("up", CITY_DIR + "T_NE2");
     add_exit("southwest", CITY_DIR+"S13_1");
-//    add_monster("/players/sumppen/mon/black",0,5);
+    //    add_monster("/players/sumppen/mon/black",0,5);
 }
 
 status search_cmd(string what) {

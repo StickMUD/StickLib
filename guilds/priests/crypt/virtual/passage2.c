@@ -10,7 +10,7 @@ void create_room()
     set_long("You are in an old tunnel somewhere under Tristeza. In the \
 northeast there seems to be a ladder leading up.");
     set_exits(([
-    "southwest" : ROOM_DIR "passage1",
-    "northeast" : ROOM_DIR "under_tower",
-    ]));
+	"southwest" : ROOM_DIR "passage1",
+	"northeast" : ROOM_DIR "under_tower",
+      ]));
 }

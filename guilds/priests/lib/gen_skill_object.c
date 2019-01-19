@@ -58,8 +58,8 @@ skill_roll(object sym, int skill_level)
 	// Critical success chance?
 	// was happening too often
 	// cs = 990 - 2*cs/(1010-cs);
-        // cs = 995 - cs/(1010-cs); // too seldom now :)
-        cs = 995 - 2*cs/(1010-cs);
+	// cs = 995 - cs/(1010-cs); // too seldom now :)
+	cs = 995 - 2*cs/(1010-cs);
 	// cs chance increases dramatically when skill is > 990
 	if (r >= cs) critical_success = 1;
     }

@@ -5,46 +5,46 @@
 status
 is_valid_target(object ob)
 {
-  string sh;
+    string sh;
 
-  if (!ob)
+    if (!ob)
     {
-      return 0;
+	return 0;
     }
 
-  if (!living(ob) ||
-	!ob->query(LIV_IS_PLAYER_OR_NPC) ||
+    if (!living(ob) ||
+      !ob->query(LIV_IS_PLAYER_OR_NPC) ||
       (string)ob->query_name() == "Leo")
     {
-      notify_fail("You can't do that!\n");
-      return 0;
+	notify_fail("You can't do that!\n");
+	return 0;
     }
 
-  if (((string)ob->query_real_name() == "guest") ||
+    if (((string)ob->query_real_name() == "guest") ||
       ((sh = (string)ob->short()) &&
-       (sh == "Tim the Sorcerer" ||
-	sh == "Santa Claus" ||
-	sh == "Wizard (grey)")))
+	(sh == "Tim the Sorcerer" ||
+	  sh == "Santa Claus" ||
+	  sh == "Wizard (grey)")))
     {
-      notify_fail("That is not allowed!\n");
-      return 0;
+	notify_fail("That is not allowed!\n");
+	return 0;
     }
 
-  /* Can't fuck with dead players */
-  if (ob->query_dead())
+    /* Can't fuck with dead players */
+    if (ob->query_dead())
     {
-      notify_fail("But that person is dead!\n");
-      return 0;
+	notify_fail("But that person is dead!\n");
+	return 0;
     }
 
 #if 0
-  /* Fuck! */
-  if (present("tmark", ob))
+    /* Fuck! */
+    if (present("tmark", ob))
     {
-      notify_fail("You can't use your skills against another thief!\n");
-      return 0;
+	notify_fail("You can't use your skills against another thief!\n");
+	return 0;
     }
 #endif
 
-  return 1;
+    return 1;
 }

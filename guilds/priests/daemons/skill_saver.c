@@ -19,7 +19,7 @@ mapping data;
 void
 create() {
     if(!restore_object(SAVE_FILE))
-        data = ([]);
+	data = ([]);
 }
 
 // decreases player's skills by p%
@@ -27,12 +27,12 @@ string
 decrease_skills(string save_str, int p) {
     int i, t;
     string *skills, *d;
-    
+
     d = explode(save_str, "&");
     skills = explode(d[3], "#");
     t = 100 - p;
     for(i=sizeof(skills);--i>=0;)
-        skills[i] = to_string(t*to_int(skills[i])/100);
+	skills[i] = to_string(t*to_int(skills[i])/100);
     d[3]= implode(skills, "#") + "#";
     return implode(d, "&");
 }
@@ -45,34 +45,34 @@ save_my_skills(object who, object sym, status resigning) {
     name = who->query_real_name();
     save_str = sym->query_guild_save();
     if(resigning) {
-        save_str = decrease_skills(save_str, 50); // 50% off
-        new_coef = -time();
+	save_str = decrease_skills(save_str, 50); // 50% off
+	new_coef = -time();
     }
     else new_coef = sym->query_coef();
-        
+
     if(!member(data, name)) {
-        data += ([name : new_coef; save_str]);
-        save_object(SAVE_FILE);
-        return 1; // everything is ok.
+	data += ([name : new_coef; save_str]);
+	save_object(SAVE_FILE);
+	return 1; // everything is ok.
     }
-    
+
     if(data[name,0] < 0) return 1;
     // let's not do anything, because we are rejoining the guild
-    
+
     if(new_coef<data[name, 0] && !resigning) {
-        if(who->query_coder_level()) return 0; // no error messages for coders
-        // something is wrong, since skills can't be lowered by normal
-        // means. Probably player has lost his guild object for a while.
-        PRIEST_ERROR(who,sprintf("Skill save string is corrupted. \
+	if(who->query_coder_level()) return 0; // no error messages for coders
+	// something is wrong, since skills can't be lowered by normal
+	// means. Probably player has lost his guild object for a while.
+	PRIEST_ERROR(who,sprintf("Skill save string is corrupted. \
 new string: %s, old string: %s\n", save_str, data[name,1]));
-        who->tell_me("** There's something wrong with your skills. \
+	who->tell_me("** There's something wrong with your skills. \
 If your skills have become lower or cleared, you should report this to a \
 guild coder. **\n");
-        // hmm... should we automatically restore player's skills
-        // using the old save string, if this happens??
-        return 0;
+	// hmm... should we automatically restore player's skills
+	// using the old save string, if this happens??
+	return 0;
     }
-    
+
     // Everything should be ok...
     data[name, 0] = new_coef;
     data[name, 1] = save_str;
@@ -84,25 +84,25 @@ varargs status
 restore_my_skills(object who, object sym, status joining) {
     string name, save_str;
     int d;
-    
+
     name = who->query_real_name();
     if(!member(data, name)) {
-        if(!joining)
-            notify_fail("That player doesn't have any saved data.\n");
-        return 0;
+	if(!joining)
+	    notify_fail("That player doesn't have any saved data.\n");
+	return 0;
     }
     if(joining) {
-        d = time() + data[name, 0];
-        d /= 86400; // how many days since resign?
-        if(d>50) d = 50; // max 50% off
-        data[name,0] = 0;
-        save_str = decrease_skills(data[name, 1], d);
+	d = time() + data[name, 0];
+	d /= 86400; // how many days since resign?
+	if(d>50) d = 50; // max 50% off
+	data[name,0] = 0;
+	save_str = decrease_skills(data[name, 1], d);
     }
     else save_str = data[name, 1];
     sym->restore_skills(save_str);
     return 1;
 }
-    
+
 void
 remove_player(string name) {
     data -= ([name]);
@@ -124,7 +124,7 @@ make_skills_valid(string name) {
 
     if(!member(data,name)) return 0;
     if(pl = find_player(name))
-        data[name,0] = pl->query_guild_object()->query_coef();
+	data[name,0] = pl->query_guild_object()->query_coef();
     else data[name,0] = 0;
     save_object(SAVE_FILE);
     return 1;
@@ -136,5 +136,5 @@ query_coef(string name) { return data[name, 0]; }
 
 void
 debug() {
-   printf("%O", data);
+    printf("%O", data);
 }

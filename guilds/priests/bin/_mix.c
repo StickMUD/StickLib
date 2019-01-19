@@ -19,16 +19,16 @@ mix_berry(object who, string berry_str, string potion_str) {
     object berry, potion;
 
     if(!(berry = present(berry_str, who)))
-        return notify_fail("You don't have anything called '"+berry_str+"'!\n"),0;
+	return notify_fail("You don't have anything called '"+berry_str+"'!\n"),0;
 
     if(!(potion = present(potion_str, who)))
-        return notify_fail("You don't have anything called '"+potion_str+"'\n"),0;
+	return notify_fail("You don't have anything called '"+potion_str+"'\n"),0;
 
     if(!potion->is_priest_potion())
-        return notify_fail("'"+potion_str+"' is not a priest potion.\n"),0;
+	return notify_fail("'"+potion_str+"' is not a priest potion.\n"),0;
 
     if(!berry->id("alepa berry"))
-        return notify_fail("You don't know how to mix that with a potion.\n"),0;
+	return notify_fail("You don't know how to mix that with a potion.\n"),0;
 
     destruct(berry);
     potion->set_color("dark red");
@@ -45,7 +45,7 @@ mix_cmd(object who, object sym, string pot_name) {
 	return notify_fail("Mix what?"),0;
 
     if(sscanf(pot_name, "%s with %s", berry, tmp)==2) {
-        return mix_berry(who, berry, tmp);
+	return mix_berry(who, berry, tmp);
     }
     pot_name = lower_case(implode(explode(pot_name, " "), "_"));
     if(member(potions, pot_name) == -1) {

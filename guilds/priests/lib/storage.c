@@ -12,7 +12,7 @@
 mixed Store; /* string or object */
 
 void init_room() {
-    
+
     add_action("cmd", "list");
     add_action("cmd", "borrow");
     add_action("cmd", "donate");
@@ -21,9 +21,9 @@ void init_room() {
 
 void reset_room() {
     if(!present("trashcan")) {
-        object ob;
-        ob=clone_object(GENERIC_TRASHCAN);
-        move_object(ob,this_object());
+	object ob;
+	ob=clone_object(GENERIC_TRASHCAN);
+	move_object(ob,this_object());
     }
     this_object()->reset_shop();
 }
@@ -36,7 +36,7 @@ void create_room() {
     set_wd(WD_INDOORS);
     set_short("Storage");
     set_long(
-"You are in a storage area. You can borrow and donate things here.");
+      "You are in a storage area. You can borrow and donate things here.");
     this_object()->create_shop();
     reset_room();
 }
@@ -47,7 +47,7 @@ shop_open() {
     object ob;
 
     if (!(ob = present("shopkeeper", this_object()))) {
-        notify_fail("The shop keeper is not here.\n");
+	notify_fail("The shop keeper is not here.\n");
 	return 0;
     }
 

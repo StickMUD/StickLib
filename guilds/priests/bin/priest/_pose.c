@@ -6,34 +6,34 @@ pose_cmd(object who, object sym, string str) {
     object ob;
     switch(random(NUMBER_OF_POSES)) {
     case 0:
-        TH(":%<me.capname>% yell%<me.ending_s>%: Tithe to the Church, \
+	TH(":%<me.capname>% yell%<me.ending_s>%: Tithe to the Church, \
 support thy God!");
-        break;
+	break;
     case 1:
-        TH(":%<me.capname>% smile%<me.ending_s>% and say%<me.ending_s>%: \
+	TH(":%<me.capname>% smile%<me.ending_s>% and say%<me.ending_s>%: \
 Dost thou take Boccob as thy personal saviour?");
-        break;
+	break;
     case 2:
-        TH(":%<me.capname>% yell%<me.ending_s>%: Repent! Repent! The day \
+	TH(":%<me.capname>% yell%<me.ending_s>%: Repent! Repent! The day \
 of the Lord cometh!");
-        break;
+	break;
     case 3:
-        TH(":%<me.capname>% point%<me.ending_s>% at everyone and yell\
+	TH(":%<me.capname>% point%<me.ending_s>% at everyone and yell\
 %<me.ending_s>%: SINNERS!");
-        break;
+	break;
     case 4:
-        TH(":%<me.capname>% flip%<me.ending_s>% through the bible, \
+	TH(":%<me.capname>% flip%<me.ending_s>% through the bible, \
 looking for a certain passage.");
-        break;
+	break;
     case 5:
-        TH(":%<me.capname>% pull%<me.ending_s>% out some prayer beads \
+	TH(":%<me.capname>% pull%<me.ending_s>% out some prayer beads \
 and utter%<me.ending_s>% prayers to Boccob.");
-        break;
+	break;
     case 6:
-        TH(":%<me.capname>% gaze%<me.ending_s>% at the heavens and \
+	TH(":%<me.capname>% gaze%<me.ending_s>% at the heavens and \
 say%<me.ending_s>%:\n'Boccob will return to lead us! Praise \
 Boccob!'");
-        break;
+	break;
     }
     return 1;
 }

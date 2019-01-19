@@ -17,11 +17,11 @@ object compile_object(string fname) {
     object room;
 
     if(sscanf(fname, ROOM_DIR "maze_%d", n) != 1) {
-        return 0;
+	return 0;
     }
 
     if(n<1 || n>N_ROOMS) {
-        return 0;
+	return 0;
     }
 
     room = clone_object(MAZE_ROOM_FILE);

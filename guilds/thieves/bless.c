@@ -11,5 +11,5 @@ get() { return 0; }
 drop() { return 1; }
 
 id(str) { return str == "skert_bless" || str == "bless" ||
-   str == "blessing";
+    str == "blessing";
 }

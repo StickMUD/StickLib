@@ -29,8 +29,8 @@ int query_duration() { return duration; }
 void
 reset(int arg) {
     if(arg) {
-        check_voting();
-        return;
+	check_voting();
+	return;
     }
     vg_candidates = ({});
     ph_candidates = ({});
@@ -48,27 +48,27 @@ status check_candidate(string name) {
 
 status add_vg_candidate(string name) {
     if(check_candidate(name)) {
-        vg_candidates += ({ name });
-        save_object(VOTES);
-        return 1;
+	vg_candidates += ({ name });
+	save_object(VOTES);
+	return 1;
     }
     return 0;
 }
 
 status add_ph_candidate(string name) {
     if(check_candidate(name)) {
-        ph_candidates += ({ name });
-        save_object(VOTES);
-        return 1;
+	ph_candidates += ({ name });
+	save_object(VOTES);
+	return 1;
     }
     return 0;
 }
 
 status add_pt_candidate(string name) {
     if(check_candidate(name)) {
-        pt_candidates += ({ name });
-        save_object(VOTES);
-       return 1;
+	pt_candidates += ({ name });
+	save_object(VOTES);
+	return 1;
     }
     return 0;
 }
@@ -224,7 +224,7 @@ end_voting() {
     SERVER->inform("*** Elections are over ***");
     SERVER->inform(sprintf("The new Vicegerant is %s, new Preceptor \
 Templar is %s and new Preceptor Hospitilar is %s.",
-        capitalize(vg_name), capitalize(pt_name), capitalize(ph_name)));
+	capitalize(vg_name), capitalize(pt_name), capitalize(ph_name)));
     SERVER->inform("Congratulations for the winners!");
     voting = 0;
     save_object(VOTES);
@@ -241,9 +241,9 @@ check_voting() {
     if(!voting) return;
 
     if(time() > (voting_started + duration))
-        end_voting();
+	end_voting();
     else
-        call_out("inform_players", 5);
+	call_out("inform_players", 5);
 }
 
 string
@@ -252,8 +252,8 @@ query_candidates() {
 Vicegerant candidates: %s\n\
 Preceptor Hospitilar candidates: %s\n\
 Preceptor Templar candidates: %s",
-implode(vg_candidates, ", ", " and "), implode(ph_candidates, ", ", " and "),
-implode(pt_candidates, ", ", " and "));
+      implode(vg_candidates, ", ", " and "), implode(ph_candidates, ", ", " and "),
+      implode(pt_candidates, ", ", " and "));
 }
 
 void
@@ -261,5 +261,5 @@ debug() {
     printf("voting: %d\nvg_voters: %O\nph_voters: %O\npt_voters: %O\n\
 vg_votes: %O\nph_votes: %O\n pt_votes: %O\nstart time: %O\nend time: %O\n",
       voting, vg_voters, ph_voters, pt_voters, vg_votes, ph_votes, pt_votes,
-        ctime(voting_started), ctime(voting_started+duration));
+      ctime(voting_started), ctime(voting_started+duration));
 }

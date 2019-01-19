@@ -21,10 +21,10 @@ void
 begin_web(object who, mixed victim)
 {
     if(victim->query_condition(C_STUNNED)) {
-      who->tell_me("But "+victim->query_name()+" is unable to move already.");
+	who->tell_me("But "+victim->query_name()+" is unable to move already.");
 
-      victim = 0;
-      return;
+	victim = 0;
+	return;
     }
     HERE->tell_here(":%<me.capname>% start%<me.ending_s>% chanting."
       ,0,0,0,who,0,0);
@@ -44,8 +44,8 @@ end_web(object who, mixed victim)
 
     here = HERE;
     if (!victim->attacked_by(who,0)) {
-      who->tell_me("Something made you fail the web prayer!");
-      return 1;
+	who->tell_me("Something made you fail the web prayer!");
+	return 1;
     }
     who->add_sp(-cost);
 
@@ -61,19 +61,19 @@ end_web(object who, mixed victim)
 
     inc_skills(who, sym, 50 + j);
     if(random(i) + k >= random(j)) {
-      dur = BALANCE_D->duration(skill,GN_PRIEST,cost);
-      if(interactive(victim)) dur /= 4;
-      sym->inform_debugger("Duration: " + dur + ".");
-      if(victim->set_condition(C_STUNNED,dur)) {
-          who->tell_me(":You finish your prayer, pointing your hands at \
+	dur = BALANCE_D->duration(skill,GN_PRIEST,cost);
+	if(interactive(victim)) dur /= 4;
+	sym->inform_debugger("Duration: " + dur + ".");
+	if(victim->set_condition(C_STUNNED,dur)) {
+	    who->tell_me(":You finish your prayer, pointing your hands at \
 %<him.name>%. A Web forms out of nowhere, like a flash from the \
 heavens, trapping %<him.name>%!",0,0,who,victim,0);
-          here->tell_here(":%<me.capname>% points %<me.possessive>% hands at \
+	    here->tell_here(":%<me.capname>% points %<me.possessive>% hands at \
 %<him.name>%, and a Web forms out of nowhere trapping %<him.name>%!",
-            0,0,who,who,victim,0);
-          who->attacked_by(victim,0);
-          return 1;
-      }
+	      0,0,who,who,victim,0);
+	    who->attacked_by(victim,0);
+	    return 1;
+	}
     }
     who->tell_me(GOD_NAME+" is against you, you fail in the spell!");
     here->tell_here(":%<me.capname>% looks disappointed.",0,0,who,who,0,0);

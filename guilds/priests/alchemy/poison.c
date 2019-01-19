@@ -24,7 +24,7 @@ poison_em(object who, mixed data) {
     ob = clone_object(PRIEST_OBJ_DIR "area_poison");
     dur = 10 + l/2 + random(l/2);
     if(where->query(ROOM_WD, WD_OUTDOORS))
-      dur = dur / 2 - nature()->query_wind();
+	dur = dur / 2 - nature()->query_wind();
     if(dur<2) dur = 2;
     ob->set_duration(dur);
     move_object(ob, where);

@@ -31,25 +31,25 @@ end_spark(object who, mixed target)
 {
     int dam, t;
     object here, sym;
-        
+
     sym = who->query_guild_object();
     here = HERE;
-    
+
     who->add_sp(-cost);
     who->tell_me(":Small sparks fly from your fingertips at %<him.name>% \
 and burn %<him.objective>%.",0,0,who,target,0);
     target->tell_me(":Small sparks fly from %<me.gen_possessive>% \
 fingertips at you, burning small wounds on you.",
-        0,0,who,target,0);
+      0,0,who,target,0);
     here->tell_here(":Small sparks fly from %<me.gen_possessive>% \
 fingertips at %<him.name>%, and when they hit %<him.objective>%, they \
 burn nasty looking wounds on %<him.objective>%.",
-        0,0,({who,target}),who,target,0);
-    
+      0,0,({who,target}),who,target,0);
+
     t = who->query_level();
     if(t<15)
-        inc_skills(who, sym, 150-10*t);
-    
+	inc_skills(who, sym, 150-10*t);
+
     dam = get_damage(who,sym,interactive(target));
     // let's make sure that we can't cast another attack spell at this round
     who->attacked_by(target,1);

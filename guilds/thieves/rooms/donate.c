@@ -17,7 +17,7 @@ create_room()
     set(NO_CLEANUP);
     set_short("A rather large blackrock room");
     set_long(
-"You are in a rather large room, the walls of which are hewn of blackrock, \
+      "You are in a rather large room, the walls of which are hewn of blackrock, \
 a material known for it's ability to resist all known forms of magic. \
 Sounds in the room are wierdly amplified, and some seem to be diminished, \
 while others are increased in volume. There is also a small plaque on \
@@ -34,21 +34,21 @@ the wall.");
     add_command("borrow",  "cmd");
     add_command("donate", "cmd");
     add_monster( ({ ({ "set_name", "thief-mage" }),
-        ({ "set_level", 25 }),
-        ({ "set_hp", 2500 }),
-        ({ "set_id", ({ "thief-mage", "keeper", "thief", "mage" }) }),
-        ({ "set", LIV_UNDEAD })
-        ,({ "set_short", "A shadowy thief-mage" }),
-        ({ "set_long",
-          "You are looking at the last known living thief-mage - "
-          "a man so fearful of the being exterminated that he has "
-          "made an alliance with the thieves guild for sanctuary. "
-          "In return, he created this blackrock room and promised "
-          "to retain equipment for the thieves guild in some unknown "
-          "plane. The man is shrouded in a cloak, and none of his "
-          "physical features are visible. He is rather tall and lean, "
-          "from what you can see. " })
-        ,
+	({ "set_level", 25 }),
+	({ "set_hp", 2500 }),
+	({ "set_id", ({ "thief-mage", "keeper", "thief", "mage" }) }),
+	({ "set", LIV_UNDEAD })
+	,({ "set_short", "A shadowy thief-mage" }),
+	({ "set_long",
+	  "You are looking at the last known living thief-mage - "
+	  "a man so fearful of the being exterminated that he has "
+	  "made an alliance with the thieves guild for sanctuary. "
+	  "In return, he created this blackrock room and promised "
+	  "to retain equipment for the thieves guild in some unknown "
+	  "plane. The man is shrouded in a cloak, and none of his "
+	  "physical features are visible. He is rather tall and lean, "
+	  "from what you can see. " })
+	,
       }), "Thief-mage arrives. ", 1);
 
 }
@@ -64,21 +64,21 @@ inventory_cmd(string str)
 
 
     if (str)
-        ob = present(str, this_player());
+	ob = present(str, this_player());
 
     if (!(keeped = (object *) this_player()->query_keep_items()))
-        keeped = ({ });
+	keeped = ({ });
 
     ob = first_inventory( (ob ? ob : this_player()) );
     text = ({ "Item", "~~~~" });
     while(ob) {
-        i = (member(keeped, ob) >= 0);
-        if (name = (string)ob->short()) {
-            name += ".";
-            if (i) text += ({ sprintf("%-32s (keeping)", name) });
-            else text += ({ sprintf("%s", name) });
-        }
-        ob = next_inventory(ob);
+	i = (member(keeped, ob) >= 0);
+	if (name = (string)ob->short()) {
+	    name += ".";
+	    if (i) text += ({ sprintf("%-32s (keeping)", name) });
+	    else text += ({ sprintf("%s", name) });
+	}
+	ob = next_inventory(ob);
     }
     this_player()->more(text);
     return 1;
@@ -88,11 +88,11 @@ inventory_cmd(string str)
 int
 cmd(string item)
 {
-  /* added thief check here ++skarda */
+    /* added thief check here ++skarda */
 
     if(!present("thief-mage")||(string)this_player()->query_guild()!="thief") {
-        this_player()->tell_me("The thief-mage is not here to help you. ");
-        return 1;
+	this_player()->tell_me("The thief-mage is not here to help you. ");
+	return 1;
     }
     return (int)call_other(Store, query_verb()+"_item",item);
 }
@@ -102,8 +102,8 @@ int
 read_cmd(string arg)
 {
     if (arg == "plaque" || arg == "writing") {
-        this_player()->tell_me(
-          "There are following commands:\n\
+	this_player()->tell_me(
+	  "There are following commands:\n\
 \tlist [what]              -  list items [called what]. 'list weapons'\n\
 \t                            and 'list armours' are special cases\n\
 \tdonate <what>              -  donate items you are carrying\n\
@@ -112,7 +112,7 @@ read_cmd(string arg)
 Some examples:\n\
 \t'i bag', 'list amulets', 'donate all from bag', 'donate bottle 2 from bag',\
 'borrow short sword'"
-        );
-        return 1;
+	);
+	return 1;
     }
 }

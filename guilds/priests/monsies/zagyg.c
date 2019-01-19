@@ -36,7 +36,7 @@ fire leaps from %<me.possessive>% fingertips to hit %<him.name>%.");
     set_resistance(DT_FIRE, 500);
     set_resistance(DT_LIGHT, 500);
     if(UNIQUE_D->create_unique("priest_store_key", 1)) {
-        move_object(clone_object(PRIEST_OBJ_DIR "shop_key"), this_object());
+	move_object(clone_object(PRIEST_OBJ_DIR "shop_key"), this_object());
     }
     ::create_monster();
 }

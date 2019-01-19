@@ -11,7 +11,7 @@ void create_room()
 In the south the tunnel seems to end, and in the north the tunnel branches \
 into many smaller tunnels.");
     set_exits(([
-    "north" : ROOM_DIR "maze_1",
-    "south" : ROOM_DIR "tunnel1",
-    ]));
+	"north" : ROOM_DIR "maze_1",
+	"south" : ROOM_DIR "tunnel1",
+      ]));
 }

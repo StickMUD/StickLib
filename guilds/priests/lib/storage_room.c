@@ -59,9 +59,9 @@ int list_item(string item) {
 	ob = ob_next;
 	ob_next = next_inventory(ob);
 
-        if(living(ob) || ob->id("door")) continue;
+	if(living(ob) || ob->id("door")) continue;
 	if(((int)ob->query_value() < min_value)) {
-            destruct(ob);
+	    destruct(ob);
 	} else {
 	    /*** list items ***/
 	    if(++count>MAX_LISTED) break;
@@ -105,13 +105,13 @@ int borrow_item(string item) {
     }
 
     if(sscanf(item,"%d%s",i,str)==2 && str=="" && i>0 && i<=MAX_LISTED) {
-        ob = first_inventory();
-        while(ob) {
-            if((!ob->id("door")) && !living(ob)) i--;
-            if(i==0) break;
-            ob = next_inventory(ob);
-        }
-        if(i!=0) ob = 0;
+	ob = first_inventory();
+	while(ob) {
+	    if((!ob->id("door")) && !living(ob)) i--;
+	    if(i==0) break;
+	    ob = next_inventory(ob);
+	}
+	if(i!=0) ob = 0;
     }
     if((!ob && !(ob=present(item))) || living(ob) || ob->id("door")) {
 	notify_fail("No such item in storage.\n");
@@ -252,10 +252,10 @@ int donate_item(string item) {
 void
 init_room() {
     if(query_once_interactive(this_player()) &&
-    !this_player()->query_coder_level()) {
-       write_file(STEAL_LOG, sprintf("%s %s %s\n",
-       object_name(),
-        this_player()->query_real_name(), ctime(time())));
+      !this_player()->query_coder_level()) {
+	write_file(STEAL_LOG, sprintf("%s %s %s\n",
+	    object_name(),
+	    this_player()->query_real_name(), ctime(time())));
     }
 }
 #endif

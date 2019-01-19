@@ -1,5 +1,5 @@
 #include <nroom.h>
- 
+
 void create_room()
 {
     set_short("Guild Treasury");

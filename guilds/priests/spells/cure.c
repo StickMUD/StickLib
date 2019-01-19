@@ -27,9 +27,9 @@ parse_target_string(string s) {
     if(!s) return -1;
     s = lower_case(s);
     if(sscanf(s, "%s from %s", dis_name, tar_name)!=2)
-      return -1;
+	return -1;
     if(dis_name == "disease")
-      return notify_fail("Cure what disease? Please be more precise.\n"),-1;
+	return notify_fail("Cure what disease? Please be more precise.\n"),-1;
     return ({dis_name, tar_name});
 }
 #endif
@@ -45,18 +45,18 @@ begin_cure(object who, mixed data)
     data = 0;
 
     if(tar_name == "") {
-        who->tell_me("Cure who?");
-        return;
+	who->tell_me("Cure who?");
+	return;
     }
     target = find_player(lower_case(tar_name));
     if(!target || !present(target,HERE) || !living(target)) {
-      who->tell_me("That player is not here.");
-      return;
+	who->tell_me("That player is not here.");
+	return;
     }
     if(EXCOM_D->excomed(target->query_real_name())) {
-      who->tell_me("That player is excommunicated and thus does not deserve \
+	who->tell_me("That player is excommunicated and thus does not deserve \
 to be healed.");
-      return;
+	return;
     }
 
     str = ":%<me.capname>% start%<me.ending_s>% mumbling a prayer";
@@ -75,16 +75,16 @@ cure_disease(object who, mixed data)
     sym = who->query_guild_object();
     target = data;
     if(ENV(target) != HERE) {
-      who->tell_me("You have lost your patient");
-      return 1;
+	who->tell_me("You have lost your patient");
+	return 1;
     }
 
     disease = present("disease",target);
     if(!disease) {
-      if(target==who) a = "you are";
-      else a = "that player is";
-      who->tell_me(sprintf("But %s not diseased!",a));
-      return 1;
+	if(target==who) a = "you are";
+	else a = "that player is";
+	who->tell_me(sprintf("But %s not diseased!",a));
+	return 1;
     }
     dis_name = disease->query_nickname();
     if(!dis_name) dis_name = disease->query_name();
@@ -94,37 +94,37 @@ cure_disease(object who, mixed data)
     who->add_sp(-cost);
 
     if(skill_roll(sym, skill)>0) {
-      HERE->tell_here(":%<me.capname>% succeeded in %<me.possessive>% \
+	HERE->tell_here(":%<me.capname>% succeeded in %<me.possessive>% \
 prayer!",0,0,0,who,0,0);
-      if(target==who) {
-          who->tell_me(sprintf("Your body is again pure from the %s.",
-              dis_name));
-          HERE->tell_here(sprintf("%s has recovered from the %s",
-              who->query_name(), dis_name),who);
-      }
-      else {
-          who->tell_me(sprintf("%s's body is again pure from the %s.",
-              target->query_name(), dis_name));
-          HERE->tell_here(sprintf("%s has recovered from the %s.",
-              target->query_name(), dis_name),({who,target}));
-          target->tell_me(sprintf("You have recovered from the %s!",
-              dis_name));
-      }
-      disease->remove();
+	if(target==who) {
+	    who->tell_me(sprintf("Your body is again pure from the %s.",
+		dis_name));
+	    HERE->tell_here(sprintf("%s has recovered from the %s",
+		who->query_name(), dis_name),who);
+	}
+	else {
+	    who->tell_me(sprintf("%s's body is again pure from the %s.",
+		target->query_name(), dis_name));
+	    HERE->tell_here(sprintf("%s has recovered from the %s.",
+		target->query_name(), dis_name),({who,target}));
+	    target->tell_me(sprintf("You have recovered from the %s!",
+		dis_name));
+	}
+	disease->remove();
     }
     else {
-      who->tell_me("You didn't concentrate hard enough. The prayer fails.");
-      HERE->tell_here(":%<him.capname>% fails in %<him.possessive>% prayer.",
-        0,0,who,0,who,0);
+	who->tell_me("You didn't concentrate hard enough. The prayer fails.");
+	HERE->tell_here(":%<him.capname>% fails in %<him.possessive>% prayer.",
+	  0,0,who,0,who,0);
 
-      /* A chance that priest gets infected if he/she fails: */
+	/* A chance that priest gets infected if he/she fails: */
 
-      if(critical_failure && !present("disease",who)) {
-          disease = clone_object("/obj/disease");
-          move_object(disease,who);
-          disease->set_disease(dis_name);
-          who->tell_me("You got infected!");
-      }
+	if(critical_failure && !present("disease",who)) {
+	    disease = clone_object("/obj/disease");
+	    move_object(disease,who);
+	    disease->set_disease(dis_name);
+	    who->tell_me("You got infected!");
+	}
     }
     return 1;
 }

@@ -18,231 +18,231 @@ string tattoo_desc, pretitle;
 status
 gmc(string arg)
 {
-  if (!guildmaster) return 0;
+    if (!guildmaster) return 0;
 
-  if (!arg)
-    return call_other("/bin/pub/_channel",
-		      "channel_cmd", "thiefgmc who", owner);
+    if (!arg)
+	return call_other("/bin/pub/_channel",
+	  "channel_cmd", "thiefgmc who", owner);
 
-  return call_other("/bin/pub/_channel", "channel_cmd",
-		    "thiefgmc send " + arg, owner);
+    return call_other("/bin/pub/_channel", "channel_cmd",
+      "thiefgmc send " + arg, owner);
 }
 
 status
 gmctoggle()
 {
-  if (!guildmaster) return 0;
-  return call_other("/bin/pub/_channel", "channel_cmd",
-		    "thiefgmc toggle", owner);
+    if (!guildmaster) return 0;
+    return call_other("/bin/pub/_channel", "channel_cmd",
+      "thiefgmc toggle", owner);
 }
 
 status
 gmcread(string arg)
 {
-  if (!guildmaster) return 0;
+    if (!guildmaster) return 0;
 
-  if (environment(owner)->query(ROOM_ISOLATED))
+    if (environment(owner)->query(ROOM_ISOLATED))
     {
-      owner->tell_me("Nothing on channel log.");
-      return 1;
+	owner->tell_me("Nothing on channel log.");
+	return 1;
     }
 
-  return "/bin/pub/_channel"->channel_cmd("thiefgmc hist", owner);
+    return "/bin/pub/_channel"->channel_cmd("thiefgmc hist", owner);
 }
 
 int
 manage_gm(string arg)
 {
-  int l;
-  string victim;
+    int l;
+    string victim;
 
-  if (guildmaster < TR_DEMON) return 0;
+    if (guildmaster < TR_DEMON) return 0;
 
 #ifdef OLD_GOVERNMENT
-  if (guildmaster >= TR_DEMON)
+    if (guildmaster >= TR_DEMON)
     {
-      notify_fail("Leave those things to Guildmasters.\n");
-      return 0;
+	notify_fail("Leave those things to Guildmasters.\n");
+	return 0;
     }
 #endif
-  if (!arg)
+    if (!arg)
     {
-      notify_fail("Usage: " + query_verb() + " <thief name>\n");
-      return 0;
+	notify_fail("Usage: " + query_verb() + " <thief name>\n");
+	return 0;
     }
 
-  victim = lower_case(arg);
+    victim = lower_case(arg);
 
 #ifdef OLD_GOVERNMENT
-  if (query_verb() == "promotegm")
+    if (query_verb() == "promotegm")
     {
-      if (guildmaster != TR_GM)
+	if (guildmaster != TR_GM)
 	{
-	  notify_fail("Only the GM can promote Co-Gm's\n");
-	  return 0;
+	    notify_fail("Only the GM can promote Co-Gm's\n");
+	    return 0;
 	}
-      if (member(GM_D->query_enforcers(), victim) != -1)
-	GM_D->remove_enforcer(victim);
-      if (member(GM_D->query_demons(), victim) != -1)
+	if (member(GM_D->query_enforcers(), victim) != -1)
+	    GM_D->remove_enforcer(victim);
+	if (member(GM_D->query_demons(), victim) != -1)
 	{
-	  owner->tell_me("You can't promote demons!");
-	  return 1;
+	    owner->tell_me("You can't promote demons!");
+	    return 1;
 	}
-      GM_D->add_co_gm(victim);
-      return 1;
+	GM_D->add_co_gm(victim);
+	return 1;
     }
-  else
+    else
 #endif
     if (query_verb() == "promote")
-      {
+    {
 #ifdef OLD_GOVERNMENT
 	if (member(GM_D->query_co_gm(), victim) != -1)
-	  GM_D->remove_co_gm(victim);
+	    GM_D->remove_co_gm(victim);
 #endif
 	if (member(GM_D->query_demons(), victim) != -1)
-	  {
+	{
 	    owner->tell_me("You can't promote Demons!");
 	    return 1;
-	  }
+	}
 	GM_D->add_enforcer(victim);
 	return 1;
-      }
+    }
 #ifdef OLD_GOVERNMENT
     else
-      if (query_verb() == "demotegm")
-	{
-	  if (guildmaster != TR_GM)
-	    {
-	      notify_fail("Only the GM can demote Co-Gm's.\n");
-	      return 0;
-	    }
-	  if (member(GM_D->query_co_gm(), victim) == -1)
-	    {
-	      owner->tell_me(victim + " is not a co-gm.");
-	      return 1;
-	    }
-	  GM_D->remove_co_gm(victim);
-	  return 1;
-	}
-#endif
-  if (query_verb() == "demote")
+    if (query_verb() == "demotegm")
     {
-      if (member(GM_D->query_enforcers(), victim) == - 1)
+	if (guildmaster != TR_GM)
 	{
-	  owner->tell_me(victim + " is not an enforcer.");
-	  return 1;
+	    notify_fail("Only the GM can demote Co-Gm's.\n");
+	    return 0;
 	}
-      GM_D->remove_enforcer(victim);
-      return 1;
+	if (member(GM_D->query_co_gm(), victim) == -1)
+	{
+	    owner->tell_me(victim + " is not a co-gm.");
+	    return 1;
+	}
+	GM_D->remove_co_gm(victim);
+	return 1;
     }
-  owner->tell_me("Do what!?");
-  return 1;
+#endif
+    if (query_verb() == "demote")
+    {
+	if (member(GM_D->query_enforcers(), victim) == - 1)
+	{
+	    owner->tell_me(victim + " is not an enforcer.");
+	    return 1;
+	}
+	GM_D->remove_enforcer(victim);
+	return 1;
+    }
+    owner->tell_me("Do what!?");
+    return 1;
 }
 
 int
 tax_set(string arg)
 {
-  object *u, tm;
-  int am, tb, tpl, tfull, tdec, i;
+    object *u, tm;
+    int am, tb, tpl, tfull, tdec, i;
 
-  if (guildmaster > 0)
-    if (arg && arg == "list")
+    if (guildmaster > 0)
+	if (arg && arg == "list")
+	{
+	    write("Thieve's tax debts and time after last paid any:\n");
+	    u = users();
+	    for (i = sizeof(u) - 1; i >= 0; i--)
+	    {
+		if (!u[i]->query_coder_level() &&
+		  !u[i]->query_testplayer() &&
+		  (tm = present("tmark", u[i])))
+		{
+		    tb = time() - (int)tm->query_tax_time();
+		    tpl = tb / 3600;
+		    tb = tpl / 24;
+		    if (tb > 0) tpl -= (tb * 24);
+		    write(sprintf("%-20s: %10d coins\t%d d %d h\n",
+			Realname(u[i]),
+			(int)tm->query_tax(), tb, tpl));
+		}
+	    }
+	    return 1;
+	}
+
+    if (guildmaster < TR_DEMON) return 0;
+
+    /*
+      if (guildmaster >= TR_DEMON)
       {
-	write("Thieve's tax debts and time after last paid any:\n");
-	u = users();
-	for (i = sizeof(u) - 1; i >= 0; i--)
-	  {
-	    if (!u[i]->query_coder_level() &&
-		!u[i]->query_testplayer() &&
-		(tm = present("tmark", u[i])))
-	      {
-		tb = time() - (int)tm->query_tax_time();
-		tpl = tb / 3600;
-		tb = tpl / 24;
-		if (tb > 0) tpl -= (tb * 24);
-		write(sprintf("%-20s: %10d coins\t%d d %d h\n",
-			      Realname(u[i]),
-			      (int)tm->query_tax(), tb, tpl));
-	      }
-	  }
-	return 1;
+      notify_fail("Let Guildmasters handle those.\n");
+      return 0;
       }
+      */
 
-  if (guildmaster < TR_DEMON) return 0;
+    tb  = (int)GUILD->query_tax_base();
+    tpl = (int)GUILD->query_tax_per_level();
 
-  /*
-    if (guildmaster >= TR_DEMON)
+    if (!arg)
     {
-    notify_fail("Let Guildmasters handle those.\n");
+	TM("Tax base level is currently " + tb + "%.");
+
+	tfull = tpl / 10;
+	tdec = (tpl - tfull * 10);
+
+	TM("Tax base increases " + tfull + "." + tdec +
+	  "% per level of thief.");
+	TM("Sample tax rates:");
+	for (i = 1; i < 35; i += 5)
+	    write("Lvl " + i + ":" + (tb + (tpl * i) / 10) + "% ");
+	write(
+	  "\nUse commands \"tax base <x>\" and \"tax level <x>\" to change.\n");
+	return 1;
+    }
+
+    if (sscanf(arg, "base %d", am) == 1)
+    {
+	if (am < 0 || am > 95)
+	{
+	    TM("Illegal amount. Base tax should be 0 to 95%.\n");
+	    return 1;
+	}
+
+	TM("Ok. You set base tax to " + am + "%.\n");
+	GUILD->set_tax_base(am);
+	tax_set(0);
+	return 1;
+    }
+
+    if (sscanf(arg, "level %d", am) == 1)
+    {
+	if (am < 0 || am > 500)
+	{
+	    TM("Illegal tax increase per level.\n");
+	    return 1;
+	}
+
+	if (((int)GUILD->query_tax_base() + am * 4) > 95)
+	{
+	    TM("That would be over 95% with high level characters!\n"+
+	      "Try a smaller amount.");
+	    return 1;
+	}
+
+	tfull = am / 10;
+	tdec = am - (tfull * 10);
+	TM("Ok. You set tax increase per level to " + tfull + "." +
+	  tdec + "%.");
+	GUILD->set_tax_per_level(am);
+	tax_set(0);
+	return 1;
+    }
+
     return 0;
-    }
-    */
-
-  tb  = (int)GUILD->query_tax_base();
-  tpl = (int)GUILD->query_tax_per_level();
-
-  if (!arg)
-    {
-      TM("Tax base level is currently " + tb + "%.");
-
-      tfull = tpl / 10;
-      tdec = (tpl - tfull * 10);
-
-      TM("Tax base increases " + tfull + "." + tdec +
-	 "% per level of thief.");
-      TM("Sample tax rates:");
-      for (i = 1; i < 35; i += 5)
-	write("Lvl " + i + ":" + (tb + (tpl * i) / 10) + "% ");
-      write(
-	 "\nUse commands \"tax base <x>\" and \"tax level <x>\" to change.\n");
-      return 1;
-    }
-
-  if (sscanf(arg, "base %d", am) == 1)
-    {
-      if (am < 0 || am > 95)
-	{
-	  TM("Illegal amount. Base tax should be 0 to 95%.\n");
-	  return 1;
-	}
-
-      TM("Ok. You set base tax to " + am + "%.\n");
-      GUILD->set_tax_base(am);
-      tax_set(0);
-      return 1;
-    }
-
-  if (sscanf(arg, "level %d", am) == 1)
-    {
-      if (am < 0 || am > 500)
-	{
-	  TM("Illegal tax increase per level.\n");
-	  return 1;
-	}
-
-      if (((int)GUILD->query_tax_base() + am * 4) > 95)
-	{
-	  TM("That would be over 95% with high level characters!\n"+
-	     "Try a smaller amount.");
-	  return 1;
-	}
-
-      tfull = am / 10;
-      tdec = am - (tfull * 10);
-      TM("Ok. You set tax increase per level to " + tfull + "." +
-	 tdec + "%.");
-      GUILD->set_tax_per_level(am);
-      tax_set(0);
-      return 1;
-    }
-
-  return 0;
 }
 
 int
 gmeditor(string arg)
 {
-  string tit;
+    string tit;
 
     if (!arg)
     {
@@ -429,15 +429,15 @@ wrath(string arg)
 
     if (arg == "list")
     {
-      u = users();
-      for (t=0;t < sizeof(u);t++)
+	u = users();
+	for (t=0;t < sizeof(u);t++)
 	{
-	  if (u[t]->query_coder_level()
+	    if (u[t]->query_coder_level()
 	      || ((string)u[t]->query_guild() != "thief")) continue;
-	  if (b = ( (int) u[t]->query_ban() - time() ) > 0)
-	    TM(sprintf("%-20s: %d seconds\n",
-		     capitalize((string)environment(u[t])->query_real_name()),
-		     b));
+	    if (b = ( (int) u[t]->query_ban() - time() ) > 0)
+		TM(sprintf("%-20s: %d seconds\n",
+		    capitalize((string)environment(u[t])->query_real_name()),
+		    b));
 	}
 	if (!t)
 	    TM("No one seems to be under Wrath of Skert now.");
@@ -567,32 +567,32 @@ int showlogs(string arg)
 status
 gag_cmd(string who)
 {
-  owner->tell_me("Gag command is not available at the moment.");
-  return 1;
+    owner->tell_me("Gag command is not available at the moment.");
+    return 1;
 #if 0
-  if (!owner->query_coder_level() || guildmaster < TR_DEMON)
-    return 0;
-  if (!who && query_verb() != "whogag")
-    return notify_fail("Gag who?\n"),0;
-  switch(query_verb())
+    if (!owner->query_coder_level() || guildmaster < TR_DEMON)
+	return 0;
+    if (!who && query_verb() != "whogag")
+	return notify_fail("Gag who?\n"),0;
+    switch(query_verb())
     {
     case "gag":
-      if (CHANNEL_D->add_gag(who))
-	owner->tell_me(who + " has been gagged.");
-      else
-	owner->tell_me("Gag failed...");
-      break;
+	if (CHANNEL_D->add_gag(who))
+	    owner->tell_me(who + " has been gagged.");
+	else
+	    owner->tell_me("Gag failed...");
+	break;
     case "ungag":
-      if (CHANNEL_D->remove_gag(who))
-	owner->tell_me(who + " has been ungagged.");
-      else
-	owner->tell_me("Ungag failed...");
-      break;
+	if (CHANNEL_D->remove_gag(who))
+	    owner->tell_me(who + " has been ungagged.");
+	else
+	    owner->tell_me("Ungag failed...");
+	break;
     case "whogag":
-      CHANNEL_D->who_gaged(owner);
-      break;
+	CHANNEL_D->who_gaged(owner);
+	break;
     }
-  return 1;
+    return 1;
 #endif
 }
 
@@ -687,15 +687,15 @@ int kickout(string arg)
 
 status demon(string arg)
 {
-  if (guildmaster < TR_DEMON)
-    return 0;
+    if (guildmaster < TR_DEMON)
+	return 0;
 
-  if (!arg)
-    return call_other("/bin/pub/_channel", "channel_cmd", "thiefdmn who",
-		      owner);
+    if (!arg)
+	return call_other("/bin/pub/_channel", "channel_cmd", "thiefdmn who",
+	  owner);
 
-  return call_other("/bin/pub/_channel", "channel_cmd",
-		    "thiefdmn send " + arg, owner);
+    return call_other("/bin/pub/_channel", "channel_cmd",
+      "thiefdmn send " + arg, owner);
 }
 
 /*
@@ -738,25 +738,25 @@ int showlogs(string arg)
 
 status demonread()
 {
-  if (guildmaster != TR_DEMON)
-    return 1;
+    if (guildmaster != TR_DEMON)
+	return 1;
 
-  if (environment(owner)->query(ROOM_ISOLATED))
+    if (environment(owner)->query(ROOM_ISOLATED))
     {
-      owner->tell_me("Nothing on channel log.");
-      return 1;
+	owner->tell_me("Nothing on channel log.");
+	return 1;
     }
 
-  return "/bin/pub/_channel"->channel_cmd("thiefdmn hist", owner);
+    return "/bin/pub/_channel"->channel_cmd("thiefdmn hist", owner);
 }
 
 status demontoggle()
 {
-  if (guildmaster < TR_DEMON)
-    return 0;
+    if (guildmaster < TR_DEMON)
+	return 0;
 
-  return call_other("/bin/pub/_channel", "channel_cmd", "thiefdmn toggle",
-		    owner);
+    return call_other("/bin/pub/_channel", "channel_cmd", "thiefdmn toggle",
+      owner);
 }
 
 status

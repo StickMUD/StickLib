@@ -11,8 +11,8 @@ create()
     set_id(({"lockpick", "lock pick", "pick", "glowing" }));
     set_short("A glowing lockpick");
     set_long(
-"This is a very rare, and illegal, item to open doors with. This "+
-"one glows with a strange blue light.");
+      "This is a very rare, and illegal, item to open doors with. This "+
+      "one glows with a strange blue light.");
 }
 
 query_weight() { return 1; }

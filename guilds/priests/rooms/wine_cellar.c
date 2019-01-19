@@ -98,7 +98,7 @@ create_pub(){
 cold, as we are under the ground.",
 	({"stone", "stones"}) : "They are of different sizes. One of \
 them seems to be slightly darker than the others.",
-								"dark stone" : "The stone has become darker than the others, and it \
+	"dark stone" : "The stone has become darker than the others, and it \
 looks like someone has pushed it hundreds of times over the years.",
 	"door" : #'door_long,
       ]));

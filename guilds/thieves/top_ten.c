@@ -18,23 +18,23 @@ void reset_top_ten();
 void
 create()
 {
-  restore_object(SAVEFILE);
-  if (!pointerp(top_ten)) reset_top_ten();
+    restore_object(SAVEFILE);
+    if (!pointerp(top_ten)) reset_top_ten();
 }
 
 void
 reset_top_ten()
 {
-  int i, j;
+    int i, j;
 
-  top_ten = ({ ({}), ({}), ({}), ({}), ({}),
-	       ({}), ({}), ({}), ({}), ({}), ({}),({}), });
+    top_ten = ({ ({}), ({}), ({}), ({}), ({}),
+      ({}), ({}), ({}), ({}), ({}), ({}),({}), });
 
-  for (i=0;i<12;i++)
-    for (j = 0; j < NTOP; j++)
-      top_ten[i] += ({ "Nobody", 0 });
+    for (i=0;i<12;i++)
+	for (j = 0; j < NTOP; j++)
+	    top_ten[i] += ({ "Nobody", 0 });
 
-  save_object(SAVEFILE);
+    save_object(SAVEFILE);
 }
 
 nomask void save_me() { save_object(SAVEFILE); }
@@ -43,82 +43,82 @@ nomask void save_me() { save_object(SAVEFILE); }
 void
 check_top_ten(object playerob)
 {
-  object tm;
-  string plrn;
-  int i, j, k, jep, jepulis, nimion, joo, *skills;
+    object tm;
+    string plrn;
+    int i, j, k, jep, jepulis, nimion, joo, *skills;
 
-  if (!playerob ||
+    if (!playerob ||
       !living(playerob) ||
       playerob->query_npc() ||
       !(tm = present("tmark", playerob))) return;
 
-  if (playerob->query_testplayer() ||
+    if (playerob->query_testplayer() ||
       (int)playerob->query_coder_level() != 0) return;
 
-  // 28-Apr-98 / Graah: Demons won't show on these lists.
-  if ((int)tm->query_guildmaster() >= TR_DEMON) return;
+    // 28-Apr-98 / Graah: Demons won't show on these lists.
+    if ((int)tm->query_guildmaster() >= TR_DEMON) return;
 
-  skills = ({ });
+    skills = ({ });
 
-  for(i = 0;i<9;i++)
+    for(i = 0;i<9;i++)
 #if 0
-  	skills += (mixed)tm->query_skills(i);
+	skills += (mixed)tm->query_skills(i);
 #else
-	skills += ({ tm->query_skills(i) });
+    skills += ({ tm->query_skills(i) });
 #endif
 
-   if (!skills || sizeof(skills) < 9) return;
+    if (!skills || sizeof(skills) < 9) return;
 
-  joo = jepulis = 0;
+    joo = jepulis = 0;
 
-  if (!top_ten) reset_top_ten();
+    if (!top_ten) reset_top_ten();
 
-  plrn = (string)playerob->query_real_name();
+    plrn = (string)playerob->query_real_name();
 
-   for (i=0;i < 9; i++) {
-    jep = -1; nimion = 0;
+    for (i=0;i < 9; i++) {
+	jep = -1; nimion = 0;
 
-    for (j = 0; j < NTOP; j++) {
-      if (top_ten[i][j * 2] == plrn) {
-	nimion++; joo++;
-	if (top_ten[i][j * 2 + 1] < skills[i])
-	  {
-	    top_ten[i][j * 2 + 1] = skills[i];
-	    jepulis = 1;
-	  }
-	break;
-      }
+	for (j = 0; j < NTOP; j++) {
+	    if (top_ten[i][j * 2] == plrn) {
+		nimion++; joo++;
+		if (top_ten[i][j * 2 + 1] < skills[i])
+		{
+		    top_ten[i][j * 2 + 1] = skills[i];
+		    jepulis = 1;
+		}
+		break;
+	    }
+	}
+
+	if (!nimion)
+	{
+	    for (j = (NTOP - 1); j >= 0; j--)
+	    {
+		if (top_ten[i][j * 2 + 1] < skills[i]) jep = j;
+	    }
+
+	    if (jep != -1)
+	    {
+		joo++;
+
+		/* Move 'em down? */
+		if (jep < (NTOP - 1))
+		{
+		    for (k = (NTOP - 1); k > jep; k--)
+		    {
+			top_ten[i][k * 2] = top_ten[i][k * 2 - 2];
+			top_ten[i][k * 2 + 1] = top_ten[i][k * 2 - 1];
+		    }
+		}
+
+		top_ten[i][jep * 2] = (string)playerob->query_real_name();
+		top_ten[i][jep * 2 + 1] = skills[i];
+	    }
+	}
     }
 
-    if (!nimion)
-      {
-	for (j = (NTOP - 1); j >= 0; j--)
-	  {
-	    if (top_ten[i][j * 2 + 1] < skills[i]) jep = j;
-	  }
-
-	if (jep != -1)
-	  {
-	    joo++;
-
-	    /* Move 'em down? */
-	    if (jep < (NTOP - 1))
-	      {
-		for (k = (NTOP - 1); k > jep; k--)
-		  {
-		    top_ten[i][k * 2] = top_ten[i][k * 2 - 2];
-		    top_ten[i][k * 2 + 1] = top_ten[i][k * 2 - 1];
-		  }
-	      }
-
-	    top_ten[i][jep * 2] = (string)playerob->query_real_name();
-	    top_ten[i][jep * 2 + 1] = skills[i];
-	  }
-      }
-  }
-
-   remove_call_out("sortimentti");
-   call_out("sortimentti", 4);
+    remove_call_out("sortimentti");
+    call_out("sortimentti", 4);
 }
 
 /*
@@ -128,132 +128,132 @@ check_top_ten(object playerob)
 void
 check_top_damage(int x, int dmg, object playerob)
 {
-  object tm;
-  string plrn;
-  int i, j, k, jep, jepulis, nimion, joo;
+    object tm;
+    string plrn;
+    int i, j, k, jep, jepulis, nimion, joo;
 
-  if (!playerob ||
+    if (!playerob ||
       !living(playerob) ||
       playerob->query_npc() ||
       x < 0 || x > 2 || dmg < 1 ||
       !(tm = present("tmark", playerob))) return;
 
-  if (playerob->query_testplayer() ||
+    if (playerob->query_testplayer() ||
       (int)playerob->query_coder_level() != 0) return;
 
-  joo = jepulis = 0;
+    joo = jepulis = 0;
 
-  if (!top_ten) reset_top_ten();
+    if (!top_ten) reset_top_ten();
 
-  plrn = (string)playerob->query_real_name();
+    plrn = (string)playerob->query_real_name();
 
-  i = 9 + x;
-  jep = -1; nimion = 0;
+    i = 9 + x;
+    jep = -1; nimion = 0;
 
-  for (j = 0; j < NTOP; j++) {
-    if (top_ten[i][j * 2] == plrn) {
-      nimion++; joo++;
-      if (top_ten[i][j * 2 + 1] < dmg)
-	{
-	  top_ten[i][j * 2 + 1] = dmg;
-	  jepulis = 1;
-	}
-      break;
-    }
-  }
-
-  if (!nimion)
-    {
-      for (j = (NTOP - 1); j >= 0; j--)
-	{
-	  if (top_ten[i][j * 2 + 1] < dmg) jep = j;
-	}
-
-      if (jep != -1)
-	{
-	  joo++;
-
-	  /* Move 'em down? */
-	  if (jep < (NTOP - 1))
+    for (j = 0; j < NTOP; j++) {
+	if (top_ten[i][j * 2] == plrn) {
+	    nimion++; joo++;
+	    if (top_ten[i][j * 2 + 1] < dmg)
 	    {
-	      for (k = (NTOP - 1); k > jep; k--)
+		top_ten[i][j * 2 + 1] = dmg;
+		jepulis = 1;
+	    }
+	    break;
+	}
+    }
+
+    if (!nimion)
+    {
+	for (j = (NTOP - 1); j >= 0; j--)
+	{
+	    if (top_ten[i][j * 2 + 1] < dmg) jep = j;
+	}
+
+	if (jep != -1)
+	{
+	    joo++;
+
+	    /* Move 'em down? */
+	    if (jep < (NTOP - 1))
+	    {
+		for (k = (NTOP - 1); k > jep; k--)
 		{
-		  top_ten[i][k * 2] = top_ten[i][k * 2 - 2];
-		  top_ten[i][k * 2 + 1] = top_ten[i][k * 2 - 1];
+		    top_ten[i][k * 2] = top_ten[i][k * 2 - 2];
+		    top_ten[i][k * 2 + 1] = top_ten[i][k * 2 - 1];
 		}
 	    }
 
-	  top_ten[i][jep * 2] = (string)playerob->query_real_name();
-	  top_ten[i][jep * 2 + 1] = dmg;
+	    top_ten[i][jep * 2] = (string)playerob->query_real_name();
+	    top_ten[i][jep * 2 + 1] = dmg;
 	}
     }
 
-  remove_call_out("sortimentti");
-  call_out("sortimentti", 4);
+    remove_call_out("sortimentti");
+    call_out("sortimentti", 4);
 }
 
 void
 sortimentti()
 {
-  sort_top_ten();
-  save_object(SAVEFILE);
+    sort_top_ten();
+    save_object(SAVEFILE);
 }
 
 void
 list_top_ten(int x)
 {
-  int i;
+    int i;
 
-  if (x < 0 || x > 11) return;
+    if (x < 0 || x > 11) return;
 
-  if (!pointerp(top_ten)) reset_top_ten();
+    if (!pointerp(top_ten)) reset_top_ten();
 
-  write("Top " + NTOP + " " +
+    write("Top " + NTOP + " " +
       ({ "Backstabbers", "Sneak/Hiders",
-	   "Throwers", "Lockpickers", "Stealers", "Appraisers",
-          "Poisons", "Tumblers", "Thieves (Average Skills)",
-            "Best Stabs", "Best Throws", "Best Steals" })[x] + ":\n");
-  write("-------------=======================================-------------\n");
+	"Throwers", "Lockpickers", "Stealers", "Appraisers",
+	"Poisons", "Tumblers", "Thieves (Average Skills)",
+	"Best Stabs", "Best Throws", "Best Steals" })[x] + ":\n");
+    write("-------------=======================================-------------\n");
 
-  for (i = 0; i < NTOP; i++)
-   if (x < 9)
-      write(sprintf("%2d. %-25s: %s\n",
-		    i + 1,
-		    capitalize(top_ten[x][i * 2]),
-		    (string)call_other(GDIR + "thief_mark_new",
-				       "EV", top_ten[x][i * 2 + 1])));
-    else
-      write(sprintf("%2d. %-25s: %5d\n",
-		    i + 1,
-		    capitalize(top_ten[x][i * 2]),
-		    top_ten[x][i * 2 + 1]));
+    for (i = 0; i < NTOP; i++)
+	if (x < 9)
+	    write(sprintf("%2d. %-25s: %s\n",
+		i + 1,
+		capitalize(top_ten[x][i * 2]),
+		(string)call_other(GDIR + "thief_mark_new",
+		  "EV", top_ten[x][i * 2 + 1])));
+	else
+	    write(sprintf("%2d. %-25s: %5d\n",
+		i + 1,
+		capitalize(top_ten[x][i * 2]),
+		top_ten[x][i * 2 + 1]));
 }
 
 void
 sort_top_ten()
 {
-  int t, i, j, s;
-  mixed tt;
-  string n;
+    int t, i, j, s;
+    mixed tt;
+    string n;
 
-  tt = top_ten;
+    tt = top_ten;
 
-   for (t=0;t<12;t++)
+    for (t=0;t<12;t++)
     {
-      for (i = 0; i < NTOP; i++)
+	for (i = 0; i < NTOP; i++)
 	{
-	  for (j = 0; j < i; j++)
+	    for (j = 0; j < i; j++)
 	    {
-	      if (tt[t][i * 2 + 1] > tt[t][j * 2 + 1])
+		if (tt[t][i * 2 + 1] > tt[t][j * 2 + 1])
 		{
-		  s = tt[t][i * 2 + 1];
-		  n = tt[t][i * 2];
+		    s = tt[t][i * 2 + 1];
+		    n = tt[t][i * 2];
 
-		  tt[t][i * 2 + 1] = tt[t][j * 2 + 1];
-		  tt[t][i * 2] = tt[t][j * 2];
+		    tt[t][i * 2 + 1] = tt[t][j * 2 + 1];
+		    tt[t][i * 2] = tt[t][j * 2];
 
-		  tt[t][j * 2 + 1] = s;
-		  tt[t][j * 2] = n;
+		    tt[t][j * 2 + 1] = s;
+		    tt[t][j * 2] = n;
 		}
 	    }
 	}

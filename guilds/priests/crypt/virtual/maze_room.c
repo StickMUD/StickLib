@@ -29,47 +29,47 @@ void setup_room(int n) {
     long_desc_set = 0;
     switch(n) {
     case 1:
-      add_exit("south", ROOM_DIR "tunnel2");
-      break;
+	add_exit("south", ROOM_DIR "tunnel2");
+	break;
 
     case N_ROOMS:
-      add_exit("northeast", ROOM_DIR "passage1");
-      break;
+	add_exit("northeast", ROOM_DIR "passage1");
+	break;
 
     case N_ROOMS/2:
-      // Hauta tahan
-      break;
+	// Hauta tahan
+	break;
 
     }
 
     if(!long_desc_set) {
-      switch(random(3)) {
-      case 0:
-          str = "You are in an old tunnel somewhere under the city of \
+	switch(random(3)) {
+	case 0:
+	    str = "You are in an old tunnel somewhere under the city of \
 Tristeza. ";
-          break;
-      case 1:
-          str = "You are wandering somewhere in the tunnels underneath \
+	    break;
+	case 1:
+	    str = "You are wandering somewhere in the tunnels underneath \
 the great Cathedral of Boccob. ";
-          break;
-      case 2:
-          str = "An old tunnel. ";
-          break;
-      }
-      switch(random(3)) {
-      case 0:
-          str += "Walls, floor and ceiling are made of large granite \
+	    break;
+	case 2:
+	    str = "An old tunnel. ";
+	    break;
+	}
+	switch(random(3)) {
+	case 0:
+	    str += "Walls, floor and ceiling are made of large granite \
 stones. ";
-          break;
-      case 1:
-          str += "Here the tunnel has been mined directly into the rock, \
+	    break;
+	case 1:
+	    str += "Here the tunnel has been mined directly into the rock, \
 but parts of the ceiling are made of large stones. ";
-          break;
-      case 2:
-          str += "Damp stonewalls are made of large stones. ";
-      }
+	    break;
+	case 2:
+	    str += "Damp stonewalls are made of large stones. ";
+	}
 
-      set_long(str);
+	set_long(str);
     }
 
     unused_exits = EXIT_LIST;
@@ -81,5 +81,5 @@ but parts of the ceiling are made of large stones. ";
     i = sizeof(unused_exits);
     i -= random(2*i/3);
     while(--i>=0)
-      add_maze_exit(&unused_exits, 1+N_ROOMS/4+random(N_ROOMS/2));
+	add_maze_exit(&unused_exits, 1+N_ROOMS/4+random(N_ROOMS/2));
 }

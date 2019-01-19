@@ -9,7 +9,7 @@ reset(arg) {
     set_id(({ "list" }));
 
     if (!environment())
-        move_object(this_object(), GDIR + "rooms/guild");
+	move_object(this_object(), GDIR + "rooms/guild");
 }
 
 init() {
@@ -23,9 +23,9 @@ read(arg) {
 
 long(arg) {
 
-   tail(AL);
+    tail(AL);
 }
 
 log_attack(str) {
-   if (str) write_file("ATTACKLOG",str);
+    if (str) write_file("ATTACKLOG",str);
 }

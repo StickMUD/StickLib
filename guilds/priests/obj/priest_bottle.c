@@ -203,7 +203,7 @@ string query_name(int mode, object who)
     switch(bottle_status) {
     case POTION:
 	if(who && who->query_guild() == GN_PRIEST)
-            return "potion of " + pot_name;
+	    return "potion of " + pot_name;
 
     default:
     }

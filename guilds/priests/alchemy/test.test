@@ -1,4 +1,0 @@
-#include "priest_potion.h"
-
-create_potion() {
-}

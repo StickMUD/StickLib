@@ -9,7 +9,7 @@ void create_room()
     set_short("An old tunnel");
     set_long("You are in a old damp tunnel somewhere under Tristeza.");
     set_exits(([
-    "southwest" : ROOM_DIR "maze_" + N_ROOMS,
-    "northeast" : ROOM_DIR "passage2",
-    ]));
+	"southwest" : ROOM_DIR "maze_" + N_ROOMS,
+	"northeast" : ROOM_DIR "passage2",
+      ]));
 }

@@ -20,35 +20,35 @@ void
 create_room() {
     set_short("Guildmaster's Room");
     set_long(
- "This is the private chamber of the Guildmaster. From here he rules " +
- "The Guild of Thieves and collects the taxes. On the wall hangs some "+
- "garrottes. On the wall is also some writing. Perhaps you could try to "+
- "read it?");
+      "This is the private chamber of the Guildmaster. From here he rules " +
+      "The Guild of Thieves and collects the taxes. On the wall hangs some "+
+      "garrottes. On the wall is also some writing. Perhaps you could try to "+
+      "read it?");
     add_exit("west", GDIR + "rooms/guild");
     add_exit("south", GDIR + "rooms/gmstorage");
     set_light_level(LT_DIM);
-	set(ROOM_WD, WD_INDOORS);
-  set(PREVENT_TELEPORT);
-  set(ROOM_PREVENT_WHERE);
-	set(ROOM_GUILD);
+    set(ROOM_WD, WD_INDOORS);
+    set(PREVENT_TELEPORT);
+    set(ROOM_PREVENT_WHERE);
+    set(ROOM_GUILD);
 
-// No crystal nor where! Unfair!!! //Graah
- // where is back..all other guilds have their where object..
- // thought i'd put the ball back..--Colt :)
-       add_permanent(GDIR+"obj/crystal_ball");
+    // No crystal nor where! Unfair!!! //Graah
+    // where is back..all other guilds have their where object..
+    // thought i'd put the ball back..--Colt :)
+    add_permanent(GDIR+"obj/crystal_ball");
 
     garrottes = 6; whotook = ({});
 
-	reset_room();
+    reset_room();
 }
 
 void
 reset_room() {
     if (!present("door", this_object())) {
-        if ((door = clone_object(DOOR_FILE))) {
+	if ((door = clone_object(DOOR_FILE))) {
 	    door->add_door( ({
-	      "It is a reinforced wooden door.",
-	      "It is a reinforced wooden door." }),
+		"It is a reinforced wooden door.",
+		"It is a reinforced wooden door." }),
 	      "west", GDIR + "rooms/guild", "firm steel",
 	      "canthavethiskey", 1, 1, 1, 5,
 	      "It is an easy lock to pick.\n" );
@@ -56,7 +56,7 @@ reset_room() {
     }
 
     if (!guard) {
-        guard = clone_object(GDIR + "npc/gmguard");
+	guard = clone_object(GDIR + "npc/gmguard");
 	move_object(guard, this_object());
     }
 }
@@ -67,7 +67,7 @@ init_room(zoppa) {
     add_action("gc", "get"); add_action("gc", "take");
     add_action("replace", "replace");
     add_action("read", "read"); add_action("read", "exa", 1);
-//    add_action("east","east");
+    //    add_action("east","east");
     add_action("south", "south");
 
     /* Most Ninja skills are too small to harm gargantuan guard! */
@@ -83,11 +83,11 @@ init_room(zoppa) {
 
     /* We are more clever than Frobozz! :-D :-D */
     if (!zoppa && present("fsymbol", TP))
-        call_out("_do_kludgy_stuff", 1, TP);
+	call_out("_do_kludgy_stuff", 1, TP);
 
     /* Guard teleports always back */
     if (guard && !present(guard, this_object())) {
-        guard->move_player("X#" + GDIR + "rooms/inner");
+	guard->move_player("X#" + GDIR + "rooms/inner");
     }
 }
 
@@ -112,12 +112,12 @@ kick_handler(string arg)
     if (!present("nmark", TP)) return 0;
 
     if ((!arg && (object)TP->query_attack() == guard) ||
-	(arg && present(arg, environment(TP)) == guard)) {
-        write(({
+      (arg && present(arg, environment(TP)) == guard)) {
+	write(({
 	    "Gargantuan guard is far too BIG to be harmed by martial arts!",
 	    "You can't possibly harm so BIG creature with martial arts!",
 	    "Yeah, sure. It would be like karate-chopping a mountain!"
-	      })[random(3)] + "\n");
+	  })[random(3)] + "\n");
 	return 1;
     }
 
@@ -135,32 +135,32 @@ figh_handler(string arg)
     if (!present("fsymbol", TP)) return 0;
 
     if ((!arg && (object)TP->query_attack() == guard) ||
-	(arg && present(arg, environment(TP)) == guard)) {
+      (arg && present(arg, environment(TP)) == guard)) {
 
-        switch(query_verb()) {
-	    case "aim":
-	        write(
-"Gargantuan guard is too large, you can just aim at his feet!\n");
-		return 1;
-		break;
-	    case "bash":
-	        write(
-"Bashing won't do anything special on a creature this big!\n");
-		return 1;
-		break;
-	    case "slash":
-	        write("It would be like slashing a mountain!\n");
-		return 1;
-		break;
-	    case "smash":
-	        write("It would be like smashing a mountain!\n");
-		return 1;
-		break;
-	    default:
-		return 0;
+	switch(query_verb()) {
+	case "aim":
+	    write(
+	      "Gargantuan guard is too large, you can just aim at his feet!\n");
+	    return 1;
+	    break;
+	case "bash":
+	    write(
+	      "Bashing won't do anything special on a creature this big!\n");
+	    return 1;
+	    break;
+	case "slash":
+	    write("It would be like slashing a mountain!\n");
+	    return 1;
+	    break;
+	case "smash":
+	    write("It would be like smashing a mountain!\n");
+	    return 1;
+	    break;
+	default:
+	    return 0;
 	}
 
-        return 1;
+	return 1;
     }
 
     return 0;
@@ -169,26 +169,26 @@ figh_handler(string arg)
 int
 read(string arg) {
     if (arg != "wall" && arg != "writing") {
-        notify_fail("What did you want to read?\n");
+	notify_fail("What did you want to read?\n");
 	return 0;
     }
 
     write("Thieves can \"get garrotte\" and \"replace garrotte\" here.\n");
 
     if (garrottes > 0) {
-        if (garrottes == 1)
+	if (garrottes == 1)
 	    write("There is only one garrotte left.\n");
 	else
 	    write("There are " + garrottes + " garrottes remaining.\n");
     } else
-        write("Currently there is none of them left.\n");
+	write("Currently there is none of them left.\n");
 
     if (whotook && sizeof(whotook) > 0) {
-        if (sizeof(whotook) == 1)
+	if (sizeof(whotook) == 1)
 	    write(whotook[0] + " has recently taken one.\n");
 	else
 	    write("These thieves have recently taken a garrotte here:\n" +
-		implode(whotook, ", ", " and ") + ".\n");
+	      implode(whotook, ", ", " and ") + ".\n");
     }
 
     return 1;
@@ -196,10 +196,10 @@ read(string arg) {
 
 #if 0
 east() {
-   if (TP->query_coder_level() < LVL_APPRENTICE) return 0;
+    if (TP->query_coder_level() < LVL_APPRENTICE) return 0;
 
-   TP->move_player("east#players/graah/workroom");
-   return 1;
+    TP->move_player("east#players/graah/workroom");
+    return 1;
 }
 #endif
 
@@ -213,47 +213,47 @@ gc(string arg)
 
     if (present("garrotte", this_object())) return 0;
 
-/*
-    write("Due the Link Death cheaters garrotte has been removed.\n");
-    return 1;
-*/
+    /*
+	write("Due the Link Death cheaters garrotte has been removed.\n");
+	return 1;
+    */
 
     /* Rules: Either an Enforcer/GM or Level 25, Str 25 and Dex 25. */
 
     if (!(tm = present("tmark", TP))) {
-        write("Your hand passes through it.\n");
+	write("Your hand passes through it.\n");
 	return 1;
     }
 
 #if 0
     if ((!tm->query_guildmaster()) &&
-/*
-	((int)TP->query_level() < 25 ||
-	(int) TP->query_stat(ST_BASE_DEX) < 24 ||
-	(int) TP->query_stat(ST_BASE_STR) < 24)) {
-*/
-	(int)TP->query_level() < 25) {
+      /*
+	      ((int)TP->query_level() < 25 ||
+	      (int) TP->query_stat(ST_BASE_DEX) < 24 ||
+	      (int) TP->query_stat(ST_BASE_STR) < 24)) {
+      */
+      (int)TP->query_level() < 25) {
 
-        write("As you try that, an electric shock hits you!\n");
+	write("As you try that, an electric shock hits you!\n");
 	return 1;
     }
 #endif
 
     inv = deep_inventory(TP);
     for (i = 0; i < sizeof(inv); i++) {
-        if (inv[i]->id("garrotte")) {
+	if (inv[i]->id("garrotte")) {
 	    write("You already have one.\n");
 	    return 1;
 	}
     }
 
     if (garrottes < 1) {
-        write("There are none left.\n");
+	write("There are none left.\n");
 	return 1;
     }
 
     if (member(whotook, Realname(TP)) != -1) {
-        write("But you just recently took one!\n");
+	write("But you just recently took one!\n");
 	return 1;
     }
 
@@ -262,18 +262,18 @@ gc(string arg)
     call_other(GDIR + "rooms/treasury", "???");
 
     if (!(gr = present("garrotte", find_object(GDIR + "rooms/treasury"))))
-        gr = clone_object(GDIR + "obj/garrotte");
+	gr = clone_object(GDIR + "obj/garrotte");
 
     say((string)TP->query_name() +
-	" gets one garrotte from the wall.\n");
+      " gets one garrotte from the wall.\n");
 
     if (!TP->add_weight((int)gr->query_weight())) {
-        write("Ok. Oops, it slips from your fingers.\n");
+	write("Ok. Oops, it slips from your fingers.\n");
 	say(capitalize((string)TP->query_pronoun()) +
-	    " fumbles and drops it.\n");
+	  " fumbles and drops it.\n");
 	move_object(gr, this_object());
     } else {
-        write("Ok. You take one garrotte.\n");
+	write("Ok. You take one garrotte.\n");
 	move_object(gr, TP);
     }
 
@@ -297,29 +297,29 @@ replace(string arg)
     object gr;
 
     if (!arg) {
-        notify_fail("What do you want to replace?\n");
+	notify_fail("What do you want to replace?\n");
 	return 0;
     }
 
     if (arg[0..7] != "garrotte") {
-        notify_fail("How do you replace " + arg + "???\n");
+	notify_fail("How do you replace " + arg + "???\n");
 	return 0;
     }
 
     if (!(gr = present("garrotte", TP))) {
-        write("You are not even carrying one.\n");
+	write("You are not even carrying one.\n");
 	return 1;
     }
 
     if (!gr->query_thief_item()) {
-        write("That is not a real garrotte!\n");
+	write("That is not a real garrotte!\n");
 	return 1;
     }
 
     write("Ok. You put your garrotte back on the wall.\n");
     say((string)TP->query_name() + " hangs " +
-	(string)TP->query_possessive() +
-        " garrotte on the wall.\n");
+      (string)TP->query_possessive() +
+      " garrotte on the wall.\n");
     TP->add_weight((int)gr->query_weight());
     move_object(gr, GDIR + "rooms/treasury");
 
@@ -329,7 +329,7 @@ replace(string arg)
     if (!taker) taker = Realname(TP);
 
     if (member(whotook, taker) != -1)
-        whotook -= ({ taker });
+	whotook -= ({ taker });
 
     return 1;
 }
@@ -345,17 +345,17 @@ south()
     if (!guard) return 0;
 
     if(this_player()->query_coder_level())
-        return 0;
+	return 0;
 
     if (!(tm = present("tmark", TP))) {
 	write(
-"Guard blocks your way and rumbles: PISS OFF INSECT!\n");
+	  "Guard blocks your way and rumbles: PISS OFF INSECT!\n");
 	return 1;
     }
 
     if (tm->query_guildmaster() < 1) {
 	write(
-"Guard blocks your way and says: YOU IS NOT ONE OF LEADER!\n");
+	  "Guard blocks your way and says: YOU IS NOT ONE OF LEADER!\n");
 	return 1;
     }
 

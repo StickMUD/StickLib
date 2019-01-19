@@ -146,10 +146,10 @@ still_thief(int silently)
 
     // Cheating with hide?
     if (!hidden && (int)owner->query_invis() == IL_HIDDEN)
-      {
+    {
 	owner->tell_me("Stopped hiding.");
 	owner->set_invis(0);
-      }
+    }
 
     /* Note: this is the level of thieven skills, not real level! */
     t_level = (int)owner->query_level();
@@ -323,8 +323,8 @@ set_guildmaster(mixed x)
 		CHANNEL_D->add_channel_member(TO,1,1,1);
 	    else
 		CHANNEL_D->add_channel_member(TO,1,1,-1);
-//	else
-//	    CHANNEL_D->add_channel_member(TO,1,-1,-1);
+	//	else
+	//	    CHANNEL_D->add_channel_member(TO,1,-1,-1);
     }
 }
 
@@ -459,18 +459,18 @@ initialize_guild(string arg)
 #ifdef GUILDLESS
     // Testplayers and coders are still in guild.
     if (this_object()->query_coder_level() ||
-	this_object()->query_is_testplayer())
-      {
+      this_object()->query_is_testplayer())
+    {
 #endif
-    if (guildmaster)
-       {
-        if (guildmaster >= TR_DEMON)
-	    CHANNEL_D->add_channel_member(TO,1,1,1);
-        else
-	    CHANNEL_D->add_channel_member(TO,1,1,-1);
-       }
+	if (guildmaster)
+	{
+	    if (guildmaster >= TR_DEMON)
+		CHANNEL_D->add_channel_member(TO,1,1,1);
+	    else
+		CHANNEL_D->add_channel_member(TO,1,1,-1);
+	}
 #ifdef GUILDLESS
-      }
+    }
 #endif
 
     still_thief(1);
@@ -558,12 +558,12 @@ init_arg(string arg)
     environment()->set_guild_object_name(GDIR + "thief_mark_new");
     environment()->set_guild_save(query_guild_save());
     environment()->set_guild_hook( ([
-	    G_HOOK_HIT_PLAYER : #'query_guild_ac_rate,
-	    G_HOOK_QUIT       : #'guild_mem_quit,
-	    G_HOOK_DEATH      : #'guild_mem_died,
-	    G_HOOK_GO_MORT    : #'guild_mem_mort,
-	    G_HOOK_GO_LD      : #'guild_mem_ld,
-	    G_HOOK_PREVENT_ATTACK : #'guild_prevent_attack,
+	G_HOOK_HIT_PLAYER : #'query_guild_ac_rate,
+	G_HOOK_QUIT       : #'guild_mem_quit,
+	G_HOOK_DEATH      : #'guild_mem_died,
+	G_HOOK_GO_MORT    : #'guild_mem_mort,
+	G_HOOK_GO_LD      : #'guild_mem_ld,
+	G_HOOK_PREVENT_ATTACK : #'guild_prevent_attack,
       ]) );
     still_thief(1);
 }
@@ -597,77 +597,77 @@ valid_desc(string x)
 void
 convert()
 {
-  string old_thief;
-  int sb, kakka;
-  int i, j, resign_date;
+    string old_thief;
+    int sb, kakka;
+    int i, j, resign_date;
 
-//  sb = 900 + t_level * 80;
-  sb = 900 + 80;
-//  kakka = (int)owner->query_level();
-  kakka = 1;
+    //  sb = 900 + t_level * 80;
+    sb = 900 + 80;
+    //  kakka = (int)owner->query_level();
+    kakka = 1;
 
-  skills[SK_TTH]      = sb + 1 * 10 + random(100);
-  skills[SK_STAB]     = sb + 1 * 10 + random(100);
-  skills[SK_SNEAK]    = sb + 1 * 10 + random(100);
-  skills[SK_PICK]     = sb + 1 * 20 + random(100);
-  skills[SK_STEAL]    = sb + 1 * 20 + random(100);
-  skills[SK_APPRAISE] = sb + 1 * 40 + random(100);
-  /* Just a small level bonus */
-  skills[SK_TUMBLING] = 1024 + 50 * (kakka > 20 ? (kakka - 20) : 0);
+    skills[SK_TTH]      = sb + 1 * 10 + random(100);
+    skills[SK_STAB]     = sb + 1 * 10 + random(100);
+    skills[SK_SNEAK]    = sb + 1 * 10 + random(100);
+    skills[SK_PICK]     = sb + 1 * 20 + random(100);
+    skills[SK_STEAL]    = sb + 1 * 20 + random(100);
+    skills[SK_APPRAISE] = sb + 1 * 40 + random(100);
+    /* Just a small level bonus */
+    skills[SK_TUMBLING] = 1024 + 50 * (kakka > 20 ? (kakka - 20) : 0);
 
 #if 0
-  skills[SK_TTH]      = sb + (int)owner->query_stat(ST_DEX) * 10 + random(100);
-  skills[SK_STAB]     = sb + (int)owner->query_str() * 10 + random(100);
-  skills[SK_SNEAK]    = sb + (int)owner->query_stat(ST_DEX) * 10 + random(100);
-  skills[SK_PICK]     = sb + (int)owner->query_int() * 20 + random(100);
-  skills[SK_STEAL]    = sb + (int)owner->query_stat(ST_DEX) * 20 + random(100);
-  skills[SK_APPRAISE] = sb + (int)owner->query_int() * 40 + random(100);
-  /* Just a small level bonus */
-  skills[SK_TUMBLING] = 1024 + 50 * (kakka > 20 ? (kakka - 20) : 0);
+    skills[SK_TTH]      = sb + (int)owner->query_stat(ST_DEX) * 10 + random(100);
+    skills[SK_STAB]     = sb + (int)owner->query_str() * 10 + random(100);
+    skills[SK_SNEAK]    = sb + (int)owner->query_stat(ST_DEX) * 10 + random(100);
+    skills[SK_PICK]     = sb + (int)owner->query_int() * 20 + random(100);
+    skills[SK_STEAL]    = sb + (int)owner->query_stat(ST_DEX) * 20 + random(100);
+    skills[SK_APPRAISE] = sb + (int)owner->query_int() * 40 + random(100);
+    /* Just a small level bonus */
+    skills[SK_TUMBLING] = 1024 + 50 * (kakka > 20 ? (kakka - 20) : 0);
 #endif
 
-  steal_tax = 0;
-  tax_time = time();
+    steal_tax = 0;
+    tax_time = time();
 
 #if 0
-  if (stringp(old_thief =
-	      (string)GUILDD_D->restore_guild_data(
-		(string)environment()->query_real_name(),GN_THIEF)))
+    if (stringp(old_thief =
+	(string)GUILDD_D->restore_guild_data(
+	  (string)environment()->query_real_name(),GN_THIEF)))
 #else
-    if(0)
+	if(0)
 #endif
-    {
-
-write("Debug: old thief, it says: \"" + old_thief + "\".\n");
-
-      if (sscanf(old_thief,
-		 "%d#%d#%d#%d#%d#%d#%d#%d#%d#%d#%d#%d#%s#%d#%s#%d#%d",
-		 guildmaster,show_tattoo,cantflag, skills[SK_STAB],
-		 skills[SK_SNEAK], skills[SK_TTH], skills[SK_PICK],
-		 skills[SK_STEAL], skills[SK_APPRAISE], skills[SK_TUMBLING],
-		 steal_tax, tax_time, pretitle, ban, tattoo_desc,
-		 skills[SK_POISON],
-		 resign_date) != 17)
 	{
-	  environment()->tell_me("Old guild data restore unsuccessful.  \
+
+	    write("Debug: old thief, it says: \"" + old_thief + "\".\n");
+
+	    if (sscanf(old_thief,
+		"%d#%d#%d#%d#%d#%d#%d#%d#%d#%d#%d#%d#%s#%d#%s#%d#%d",
+		guildmaster,show_tattoo,cantflag, skills[SK_STAB],
+		skills[SK_SNEAK], skills[SK_TTH], skills[SK_PICK],
+		skills[SK_STEAL], skills[SK_APPRAISE], skills[SK_TUMBLING],
+		steal_tax, tax_time, pretitle, ban, tattoo_desc,
+		skills[SK_POISON],
+		resign_date) != 17)
+	    {
+		environment()->tell_me("Old guild data restore unsuccessful.  \
 Attempt logged.");
+	    }
+	    else
+	    if (resign_date > 800000000) {
+		for(i=0;i<8;i++) skills[i] -= skills[i]/10;
+		resign_date = time()- resign_date;
+		resign_date /= 86400;
+		if (resign_date > 100) resign_date = 100;
+
+		for(i=0;i < resign_date;i++)
+		    for(j=0;j<8;j++) skills[j] = (skills[j] * 5)/100;
+
+		environment()->tell_me("Skills penalized for " +
+		  resign_date + " days of absence.");
+	    }
 	}
-      else
-	if (resign_date > 800000000) {
-	  for(i=0;i<8;i++) skills[i] -= skills[i]/10;
-	  resign_date = time()- resign_date;
-	  resign_date /= 86400;
-	  if (resign_date > 100) resign_date = 100;
 
-	  for(i=0;i < resign_date;i++)
-	    for(j=0;j<8;j++) skills[j] = (skills[j] * 5)/100;
-
-	  environment()->tell_me("Skills penalized for " +
-				 resign_date + " days of absence.");
-	}
-    }
-
-  initialize_guild(query_guild_save());
+    initialize_guild(query_guild_save());
 }
 
 // Into internal skills
@@ -781,7 +781,7 @@ status refresh(string arg)
     object new_tattoo;
 
     if(sneak)
-        return notify_fail("Not while you're sneaking!\n"), 0;
+	return notify_fail("Not while you're sneaking!\n"), 0;
 
     if (!arg) {
 	environment()->tell_me("Refreshing thief commands.");
@@ -819,15 +819,15 @@ tattoo'.\n"), 0;
 status
 thief_cmd(string arg)
 {
-  string c;
+    string c;
 
-  c = lower_case(query_verb());
+    c = lower_case(query_verb());
 
-  if (file_size(GDIR + "bin/_" + c + ".c") < 1)
-    return notify_fail("This command is currently unavailable.\n"), 0;
+    if (file_size(GDIR + "bin/_" + c + ".c") < 1)
+	return notify_fail("This command is currently unavailable.\n"), 0;
 
-  return (status)call_other(GDIR + "bin/_" + c, c + "_cmd",
-			    this_object(), owner, arg);
+    return (status)call_other(GDIR + "bin/_" + c, c + "_cmd",
+      this_object(), owner, arg);
 }
 
 
@@ -870,20 +870,20 @@ helps.\n"), 0;
 
 static int rank_no(int s)
 {
-  int x;
+    int x;
 
-  if (s <= 0) return 0;
-  x = s / (10000 / ADJ_AMOUNT);
-  if (x > (ADJ_AMOUNT - 1)) x = (ADJ_AMOUNT - 1);
-  return x;
+    if (s <= 0) return 0;
+    x = s / (10000 / ADJ_AMOUNT);
+    if (x > (ADJ_AMOUNT - 1)) x = (ADJ_AMOUNT - 1);
+    return x;
 }
 
 static string
 rankname(int x)
 {
-  /* 39 */
-  return ({
-    "Ridiculous", "Very Terrible", "Terrible",
+    /* 39 */
+    return ({
+      "Ridiculous", "Very Terrible", "Terrible",
       "Harmless", "Mostly Harmless",
       "Quite Awful", "Awful", "Not Awful",
       "Extremely Bad", "Very Bad", "Quite Bad", "Bad", "Somewhat Bad",
@@ -902,14 +902,14 @@ rankname(int x)
 
 string skill_adj(int sk)
 {
-  int x;
+    int x;
 
-  x = sk / (10000 / ADJ_AMOUNT);
+    x = sk / (10000 / ADJ_AMOUNT);
 
-  if (x > (ADJ_AMOUNT - 1))
-    x = ADJ_AMOUNT - 1;
+    if (x > (ADJ_AMOUNT - 1))
+	x = ADJ_AMOUNT - 1;
 
-  return rankname(x);
+    return rankname(x);
 }
 
 string EV(int sk)
@@ -944,15 +944,15 @@ string EV(int sk)
 
 int thief_skills(string arg)
 {
-  object ob, tm;
-  string s;
+    object ob, tm;
+    string s;
 
-  if (arg)
+    if (arg)
     {
-      if (guildmaster < TR_CO_GM && !cdr)
+	if (guildmaster < TR_CO_GM && !cdr)
 	{
-	  notify_fail("You can't see other thieves' skills.\n");
-	  return 0;
+	    notify_fail("You can't see other thieves' skills.\n");
+	    return 0;
 	}
 
 	ob = find_player(lower_case(arg));
@@ -1000,7 +1000,7 @@ Tumbling:\t%s\n\
 
 #if 0
     s += "\nMaximum skill level for you is " +
-      EV(M_MAX_SK_LVL(t_level)) + ".";
+    EV(M_MAX_SK_LVL(t_level)) + ".";
 #endif
 
     if (guildmaster > 0)
@@ -1014,7 +1014,7 @@ Tumbling:\t%s\n\
 	else
 #endif
 	if (guildmaster < TR_DEMON)
-//	    s += "\nYou are the one and only GUILDMASTER.";
+	    //	    s += "\nYou are the one and only GUILDMASTER.";
 	    s += "\nYou are one of the ENFORCERS.";
 	else
 	    s += "\nYou are a Thieven Demi-God!";
@@ -1053,114 +1053,114 @@ static int kludge;
 
 varargs int advance_skill(int sk, int d, int p)
 {
-  object weird;
-  int magic, nsk, i, dp;
-  string old_desc, new_desc;
-  int oldr, newr;
+    object weird;
+    int magic, nsk, i, dp;
+    string old_desc, new_desc;
+    int oldr, newr;
 
-  // Hah hah haa! But don't make it less than 8.
-  if (query_idle(owner) > 10) return sk;
+    // Hah hah haa! But don't make it less than 8.
+    if (query_idle(owner) > 10) return sk;
 
-  // Not obfuscated enough!
-  if ((weird = environment(owner)) &&
+    // Not obfuscated enough!
+    if ((weird = environment(owner)) &&
       (moremagic == weird) &&
       (++kludge > (6+random(6)))) return sk;
-  else if (weird != moremagic) { kludge = 0; moremagic = weird; }
+    else if (weird != moremagic) { kludge = 0; moremagic = weird; }
 
-  // Trolls and Half-Dorks SUCK! / Graah
-  // Trolls have -3, dorks -1. So, (-25 * a) = 75 or 25.
-  // Trolls: Only 17.5% chance to actually train, Dorks: 37.5%.
-  if ((advantage < 0) && ((-25 * advantage) > random(201)))
-    return sk;
+    // Trolls and Half-Dorks SUCK! / Graah
+    // Trolls have -3, dorks -1. So, (-25 * a) = 75 or 25.
+    // Trolls: Only 17.5% chance to actually train, Dorks: 37.5%.
+    if ((advantage < 0) && ((-25 * advantage) > random(201)))
+	return sk;
 
-  // Humans: slightly worse, 50% chance to not advance.
-  if (!advantage && (random(101) < 50)) return sk;
+    // Humans: slightly worse, 50% chance to not advance.
+    if (!advantage && (random(101) < 50)) return sk;
 
-  if (sk < 0) sk = 0;
+    if (sk < 0) sk = 0;
 
-  // Max skill level for level. See thief.h.
-  // Got the inspiration when a certain cheater again started killing
-  // himself to level 1. :-D / Graah
-  // April 2, 1998 - Kieve -> Took out the max level for training.
-  //   The bug which allowed that seems to have been fixed, and
-  //   also, demons imposed higher training requirements for lower
-  //   level players.
+    // Max skill level for level. See thief.h.
+    // Got the inspiration when a certain cheater again started killing
+    // himself to level 1. :-D / Graah
+    // April 2, 1998 - Kieve -> Took out the max level for training.
+    //   The bug which allowed that seems to have been fixed, and
+    //   also, demons imposed higher training requirements for lower
+    //   level players.
 #if 0
-  if (sk >= (M_MAX_SK_LVL(t_level))) return sk;
+    if (sk >= (M_MAX_SK_LVL(t_level))) return sk;
 #endif
 
-  if (p < 1)
-    p = 1; /* Default */
-  else if (p > 100)
-    p = 100; /* Can't add more than 100 at once */
+    if (p < 1)
+	p = 1; /* Default */
+    else if (p > 100)
+	p = 100; /* Can't add more than 100 at once */
 
-  old_desc = EV(sk);
-  oldr = rank_no(sk);
+    old_desc = EV(sk);
+    oldr = rank_no(sk);
 
-  nsk = sk;
+    nsk = sk;
 
-  /* Difficulty %, ranges from 25% to 175% */
+    /* Difficulty %, ranges from 25% to 175% */
 
-  if (d >= 5000)
-    dp = (100 - ((d - 5000) / 66)); /* Change that 66 */
+    if (d >= 5000)
+	dp = (100 - ((d - 5000) / 66)); /* Change that 66 */
 
-  if (d  < 5000)
-    dp = (100 + ((5000 - d) / 66)); /* to change range */
+    if (d  < 5000)
+	dp = (100 + ((5000 - d) / 66)); /* to change range */
 
-  for (i = 0; i < p; i++)
+    for (i = 0; i < p; i++)
     {
-      magic = 10000 - nsk;
+	magic = 10000 - nsk;
 
-      if (magic < 1)
+	if (magic < 1)
 	{
-	  /* REALLY slow advancement for ultimate skills. */
+	    /* REALLY slow advancement for ultimate skills. */
 
-	  magic = (-(magic));
+	    magic = (-(magic));
 
-	  if (random(magic) < 50)
+	    if (random(magic) < 50)
 	    {
-	      owner->tell_me("You feel a bit more skilled.");
+		owner->tell_me("You feel a bit more skilled.");
 
-	      new_desc = EV(nsk + 1);
+		new_desc = EV(nsk + 1);
 
-	      if (new_desc != old_desc)
+		if (new_desc != old_desc)
 		{
-		  owner->tell_me("Your skill advances to " + new_desc + "!");
+		    owner->tell_me("Your skill advances to " + new_desc + "!");
 		}
 
-	      return (nsk + 1);
+		return (nsk + 1);
 	    }
 
-	  return nsk;
+	    return nsk;
 	}
 
-      magic = ((dp * magic) / (100 * THF_DIV));
-      if (magic < 1)
-	magic = 1; /* At least one point. */
-      if (magic > 4)
-	magic = 4; /* Maximum of 4 points at once. */
+	magic = ((dp * magic) / (100 * THF_DIV));
+	if (magic < 1)
+	    magic = 1; /* At least one point. */
+	if (magic > 4)
+	    magic = 4; /* Maximum of 4 points at once. */
 
-      nsk += magic;
+	nsk += magic;
     }
 
 #if 0
-  new_desc = EV(nsk);
+    new_desc = EV(nsk);
 
-  if (new_desc != old_desc)
+    if (new_desc != old_desc)
     {
-      owner->tell_me("Your skill advances to " + new_desc + "!");
+	owner->tell_me("Your skill advances to " + new_desc + "!");
     }
 #endif
 
-  newr = rank_no(nsk);
+    newr = rank_no(nsk);
 
-  if (newr > oldr)
+    if (newr > oldr)
     {
-      owner->tell_me("Skill just rised from " + rankname(oldr) +
-                     " to " + rankname(newr) + "!");
+	owner->tell_me("Skill just rised from " + rankname(oldr) +
+	  " to " + rankname(newr) + "!");
     }
 
-  return nsk;
+    return nsk;
 }
 
 
@@ -1392,8 +1392,8 @@ stop_sneak()
 status
 hide()
 {
-  HIDE->hide(owner);
-  return 1;
+    HIDE->hide(owner);
+    return 1;
 }
 
 
@@ -1406,43 +1406,43 @@ void set_stabbed(mapping x) { stabbed = x; }
 int
 stab_delay(object victim)
 {
-  if (!victim) return 1;
-  if (!mappingp(stabbed)) stabbed = ([]);
+    if (!victim) return 1;
+    if (!mappingp(stabbed)) stabbed = ([]);
 
-  m_delete(stabbed, 0); // Remove dead monsters
+    m_delete(stabbed, 0); // Remove dead monsters
 
-  if (victim->query_dead())
+    if (victim->query_dead())
     {
-      m_delete(stabbed, victim);
-      return 1;
+	m_delete(stabbed, victim);
+	return 1;
     }
 
-  if (!member(stabbed, victim))
+    if (!member(stabbed, victim))
     {
-      stabbed += ([ victim: (time() + (int)victim->query_stat(ST_INT)) ]);
+	stabbed += ([ victim: (time() + (int)victim->query_stat(ST_INT)) ]);
 
-      // First try. Already in combat? Then we can't stab.
-      if (victim->is_fighting(owner) ||
-	  member(victim->query_hunted(), owner) != -1)
+    // First try. Already in combat? Then we can't stab.
+    if (victim->is_fighting(owner) ||
+      member(victim->query_hunted(), owner) != -1)
 	return 1;
 
-      return 0;
-    }
+    return 0;
+}
 
-  // Already been stabbing this one. Has it forgotten?
-  if (stabbed[victim] < time())
-    {
-      stabbed[victim] = (time() + (int)victim->query_stat(ST_INT));
-      return 0;
-    }
+// Already been stabbing this one. Has it forgotten?
+if (stabbed[victim] < time())
+{
+    stabbed[victim] = (time() + (int)victim->query_stat(ST_INT));
+    return 0;
+}
 
-  return 1;
+return 1;
 }
 
 
 status stab(string str)
 {
-  if (stab_cheat)
+    if (stab_cheat)
     {
 	owner->tell_me("You have to wait some more.");
 	return 1;
@@ -1503,7 +1503,7 @@ string thief_pretitle()
 	    return "GUILDMASTER";
 #endif
 	/* Demon */
-        if(x == TR_ENFORCER) return "ENFORCER";
+	if(x == TR_ENFORCER) return "ENFORCER";
 	if (pretitle == "0")
 	    return "";
 	if (pretitle != "1")
@@ -1561,76 +1561,76 @@ string thief_pretitle()
 
 status canttoggle()
 {
-  return "/bin/pub/_channel"->channel_cmd("thief toggle", owner);
+    return "/bin/pub/_channel"->channel_cmd("thief toggle", owner);
 }
 
 varargs status chant(string str)
 {
-  object ob, tm;
-  string d1, d2, d3, nm;
+    object ob, tm;
+    string d1, d2, d3, nm;
 
-  // Best place I could think to put it.... -Kel
-  if (owner)
+    // Best place I could think to put it.... -Kel
+    if (owner)
     {
-      if (top_checked < 1)
+	if (top_checked < 1)
 	{
-	  top_checked = 10;
-	  call_other(TOP_TEN, "check_top_ten", owner);
+	    top_checked = 10;
+	    call_other(TOP_TEN, "check_top_ten", owner);
 	}
-      else
-	top_checked--;
+	else
+	    top_checked--;
     }
 
-  if (str)
+    if (str)
     {
-      if (((sscanf(lower_case(str), "%s %s %s", d1, d2, d3) == 3) &&
-	   (d1 == d2) && (d2 == d3)))
+	if (((sscanf(lower_case(str), "%s %s %s", d1, d2, d3) == 3) &&
+	    (d1 == d2) && (d2 == d3)))
 	{
-	  TM("You chant a name three times, trying to summon a demon...");
-	  if (environment(owner)->query(PREVENT_TELEPORT_TO) ||
+	    TM("You chant a name three times, trying to summon a demon...");
+	    if (environment(owner)->query(PREVENT_TELEPORT_TO) ||
 	      environment(owner)->query(PREVENT_TELEPORT))
 	    {
-	      TM("...but you know it is hopeless from here.");
-	      return 1;
+		TM("...but you know it is hopeless from here.");
+		return 1;
 	    }
 
-	  if ((ob = find_player(d1)) && !ob->query_dead() &&
+	    if ((ob = find_player(d1)) && !ob->query_dead() &&
 	      (tm = present("tmark", ob)) && tm->query_guildmaster() >=
 	      TR_DEMON)
 	    {
-	      if (ob == owner)
+		if (ob == owner)
 		{
-		  TM("Summoning yourself sounds pretty silly.");
-		  return 1;
+		    TM("Summoning yourself sounds pretty silly.");
+		    return 1;
 		}
 
-	      if (environment(ob)->query(PREVENT_TELEPORT) ||
+		if (environment(ob)->query(PREVENT_TELEPORT) ||
 		  environment(ob)->query(PREVENT_TELEPORT_FROM))
 		{
-		  TM("...but you know it is hopeless from there.");
-		  return 1;
+		    TM("...but you know it is hopeless from there.");
+		    return 1;
 		}
 
-	      //
-	      if (ob->is_fighting())
+		//
+		if (ob->is_fighting())
 		{
-		  TM("...but that demon is in middle of a fight just now.");
-		  return 1;
+		    TM("...but that demon is in middle of a fight just now.");
+		    return 1;
 		}
 
-	      nm = (string) owner->query_real_name();
-	      ob->tell_me(sprintf(
-				  "You hear %s calling your name three times somewhere! If you wish to help %s, \
+		nm = (string) owner->query_real_name();
+		ob->tell_me(sprintf(
+		    "You hear %s calling your name three times somewhere! If you wish to help %s, \
 type 'goto %s'.", nm, (string) owner->Objective(), nm));
-	      tm->set_summoner(owner,environment(owner),time());
+		tm->set_summoner(owner,environment(owner),time());
 	    }
 
-	  return 1;
+	    return 1;
 	}
     }
 
-  if (!str) return "/bin/pub/_channel"->channel_cmd("thief list", owner);
-  return "/bin/pub/_channel"->channel_cmd("thief send " + str, owner);
+    if (!str) return "/bin/pub/_channel"->channel_cmd("thief list", owner);
+    return "/bin/pub/_channel"->channel_cmd("thief send " + str, owner);
 }
 
 /*
@@ -1680,29 +1680,29 @@ status fix_title(string arg)
 
 void backup_log(string filename)
 {
-  string tmp;
+    string tmp;
 
-  /* Coders/testplrs must not fill our log. They don't need backup. */
-  if (cdr)
-    return;
+    /* Coders/testplrs must not fill our log. They don't need backup. */
+    if (cdr)
+	return;
 
-  if (filename != "THIEF_LOG" && filename != "KICKED_LOG")
-    return;
+    if (filename != "THIEF_LOG" && filename != "KICKED_LOG")
+	return;
 
-  if (file_size(GDIR + filename) >= 256000)
+    if (file_size(GDIR + filename) >= 256000)
     {
-      rename(GDIR + filename, GDIR + filename + ".old");
-/*
-      LOG_FILE(filename, "New log file started at " + ctime(time()) + "\n");
-*/
+	rename(GDIR + filename, GDIR + filename + ".old");
+	/*
+	      LOG_FILE(filename, "New log file started at " + ctime(time()) + "\n");
+	*/
     }
 
-  tmp = query_guild_save();
+    tmp = query_guild_save();
 
-/*
-  LOG_FILE(filename,
-	   ctime(time()) + ":" + Realname(owner) + ": " + tmp + "\n");
-*/
+    /*
+      LOG_FILE(filename,
+	       ctime(time()) + ":" + Realname(owner) + ": " + tmp + "\n");
+    */
 }
 
 /* When he _types_ "save", then log. Don't log when autosaving. */
@@ -1742,31 +1742,31 @@ guild_mem_quit(object who)
 
 void guild_mem_died(object died, object killer)
 {
-  object killer_mark;
+    object killer_mark;
 
-  if (died != owner) return;
-  remove_call_out("done_mort");
-  already_mort = 0;
-  BIN_CHANNEL_D->send_channel_message("SKERT", "thief", sprintf(
+    if (died != owner) return;
+    remove_call_out("done_mort");
+    already_mort = 0;
+    BIN_CHANNEL_D->send_channel_message("SKERT", "thief", sprintf(
 	"My child %s, has been murdered by %s. May %s death be avenged!",
 	capitalize((string)owner->query_real_name()),
 	capitalize((string)killer->query_real_name()),
 	(string)owner->Possessive()));
-  if (guildmaster != TR_GM)
-    return;
+    if (guildmaster != TR_GM)
+	return;
 
 #ifdef OLD_GOVERNMENT
-  if ((string)killer->query_guild() == GN_THIEF)
+    if ((string)killer->query_guild() == GN_THIEF)
     {
-      killer_mark = (object) killer->query_guild_object();
-      if (killer_mark->query_guildmaster() == TR_DEMON)
-	return;
-      BIN_CHANNEL_D->send_channel_meesage("SKERT","thief",
-	capitalize((string)killer->query_real_name()) +
-		" is making " + killer->query_possessive() +
-					  " bid for GM by killing " +
-		capitalize((string)GM_D->query_gm()) + ".");
-      GM_D->start_vote((string)killer->query_real_name());
+	killer_mark = (object) killer->query_guild_object();
+	if (killer_mark->query_guildmaster() == TR_DEMON)
+	    return;
+	BIN_CHANNEL_D->send_channel_meesage("SKERT","thief",
+	  capitalize((string)killer->query_real_name()) +
+	  " is making " + killer->query_possessive() +
+	  " bid for GM by killing " +
+	  capitalize((string)GM_D->query_gm()) + ".");
+	GM_D->start_vote((string)killer->query_real_name());
     }
 #endif
 }
@@ -1780,39 +1780,39 @@ done_mort()
 void
 guild_mem_mort(object mort, object killer)
 {
-  string place;
+    string place;
 
-  if (mort != owner) return;
-  if (already_mort) return;
-  already_mort = 1;
+    if (mort != owner) return;
+    if (already_mort) return;
+    already_mort = 1;
 
-// None of the guilds supports this message any more.
-// Bull
+    // None of the guilds supports this message any more.
+    // Bull
 #if 0
-  if (!owner->query_coder_level())
+    if (!owner->query_coder_level())
     {
-      place = (string)environment(owner)->query_short(2, owner);
-      if (!stringp(place)) place = "Dark place";
-      BIN_CHANNEL_D->send_channel_message("SKERT", "thief",
-	sprintf("My child %s, is mortally wounded at %s!",
-		capitalize((string)mort->query_real_name()),
-		place));
+	place = (string)environment(owner)->query_short(2, owner);
+	if (!stringp(place)) place = "Dark place";
+	BIN_CHANNEL_D->send_channel_message("SKERT", "thief",
+	  sprintf("My child %s, is mortally wounded at %s!",
+	    capitalize((string)mort->query_real_name()),
+	    place));
     }
 #endif
 
-  call_out("done_mort",150);
+    call_out("done_mort",150);
 }
 
 void
 guild_mem_ld(object me)
 {
-  int il;
+    int il;
 
-  if (me != owner) return;
+    if (me != owner) return;
 
-  // Must not stay hidden to ld
-  il = (int)owner->query_invis();
-  if (il == IL_HIDDEN) owner->vis();
+    // Must not stay hidden to ld
+    il = (int)owner->query_invis();
+    if (il == IL_HIDDEN) owner->vis();
 }
 
 status
@@ -1996,28 +1996,28 @@ int taxes()
 
 status cantread(string arg)
 {
-  if (environment(owner)->query(ROOM_ISOLATED))
+    if (environment(owner)->query(ROOM_ISOLATED))
     {
-      owner->tell_me("Nothing on channel log.");
-      return 1;
+	owner->tell_me("Nothing on channel log.");
+	return 1;
     }
 
-  return "/bin/pub/_channel"->channel_cmd("thief hist", owner);
+    return "/bin/pub/_channel"->channel_cmd("thief hist", owner);
 }
 
 
 /* All other damage goes through this */
 void hit_victim(mixed ar)
 {
-  int d;
-  string dummy;
+    int d;
+    string dummy;
 
-  if (!ar[0] || !objectp(ar[0]) || !intp(ar[1]))
-    return;
+    if (!ar[0] || !objectp(ar[0]) || !intp(ar[1]))
+	return;
 
 #ifdef OLD_GOVERNMENT
-  if (sscanf(object_name(environment(owner)),"guilds/thieves/%s",
-	     dummy) == 1 && (string)ar[0]->query_guild() != GN_THIEF)
+    if (sscanf(object_name(environment(owner)),"guilds/thieves/%s",
+	dummy) == 1 && (string)ar[0]->query_guild() != GN_THIEF)
     {
 	if (guildmaster && guildmaster != TR_DEMON)
 	    owner->tell_me("You fight extra hard in \
@@ -2045,27 +2045,27 @@ defense of your guild!");
 
 #ifdef GN_PRIEST
     if (member(({ GN_PRIEST }), ar[0]->query_guild()) != -1)
-      ar[1] = ar[1] * 2;
+	ar[1] = ar[1] * 2;
 #endif
 
 #ifdef GN_NINJA
     if (member(({ GN_NINJA }), ar[0]->query_guild()) != -1)
-      ar[1] = ((ar[1] * 3) / 2);
+	ar[1] = ((ar[1] * 3) / 2);
 #endif
 
 
-    
+
     d = (int)ar[0]->hit_player(TUNE_THIEF_DAMAGE(ar[1]), 0, DT_SLASH, owner);
 
     if (cdr)
 	TM("(Damage: " + d + " hits)");
 
     if (ar[0] && !ar[0]->is_npc())
-      {
+    {
 	THIEF_LOG("tth_dmg",
-		  owner->query_real_name() + " threw for " +
-		  d + " pts dmg.\n");
-      }
+	  owner->query_real_name() + " threw for " +
+	  d + " pts dmg.\n");
+    }
 }
 
 /* All stab damage goes through this */
@@ -2131,18 +2131,18 @@ defense of your guild!");
 	}
     }
     if (ar[0])
-      {
+    {
 	if (!ar[0]->is_npc() && !cdr)
-	  {
+	{
 	    THIEF_LOG("PK_STAB_DMG",
-		      capitalize((string)owner->query_real_name())+"("+
-		      owner->query_race()+
-		      ") stabbed for "+((d*100) / ar[0]->query_max_hp())+
-		      "% of "+capitalize((string)ar[0]->query_real_name())+
-		      "'s("+ar[0]->query_race()+") hit points. ("+
-		      d+")\n");
-	  }
-      }
+	      capitalize((string)owner->query_real_name())+"("+
+	      owner->query_race()+
+	      ") stabbed for "+((d*100) / ar[0]->query_max_hp())+
+	      "% of "+capitalize((string)ar[0]->query_real_name())+
+	      "'s("+ar[0]->query_race()+") hit points. ("+
+	      d+")\n");
+	}
+    }
 }
 
 void delayed_hit(int delay, mixed ar)
@@ -2159,36 +2159,36 @@ void delayed_stab(int delay, mixed ar)
 int top(string arg)
 {
     int w;
- 
+
     if(guildmaster < TR_DEMON)
-        notify_fail("Usage: top <1..9> (and 'thelp top' for more info)\n");
+	notify_fail("Usage: top <1..9> (and 'thelp top' for more info)\n");
     else
-        notify_fail("Usage: top <1..12> (and 'thelp top' for more info)\n");
- 
+	notify_fail("Usage: top <1..12> (and 'thelp top' for more info)\n");
+
     if (!arg)
-        return 0;
+	return 0;
     if(sscanf(arg, "%d", w) != 1)
-        return 0;
+	return 0;
     if(w < 1)
-        return 0;
+	return 0;
     if(guildmaster < TR_DEMON  &&  w > 9)
-        return 0;
+	return 0;
     if(guildmaster >= TR_DEMON  &&  w > 12)
-        return 0;
- 
-/*
-    if(guildmaster < TR_DEMON)
-    {
-        TM("Those lists are restricted to Demons. ");
-        return 1;
-    }
-    if ((int)this_player()->query_level() < 20)
-    {
-        TM("You must be at least level 20 to read lists.");
-        return 1;
-    }
-*/
- 
+	return 0;
+
+    /*
+	if(guildmaster < TR_DEMON)
+	{
+	    TM("Those lists are restricted to Demons. ");
+	    return 1;
+	}
+	if ((int)this_player()->query_level() < 20)
+	{
+	    TM("You must be at least level 20 to read lists.");
+	    return 1;
+	}
+    */
+
     TOP_TEN->list_top_ten(w - 1);
     return 1;
 }
@@ -2219,58 +2219,58 @@ status resign(string arg)
 // Now shows "effective dex"
 status thief_weight()
 {
-  int weight, d, td;
+    int weight, d, td;
 
-  weight = (int)owner->query(LIV_CARRY_RATE);
-  weight -= 5;
-  if (weight < 0) weight = 0;
+    weight = (int)owner->query(LIV_CARRY_RATE);
+    weight -= 5;
+    if (weight < 0) weight = 0;
 
-  switch (weight)
+    switch (weight)
     {
     case 0..10:
-      owner->tell_me("You're carrying almost nothing! Your tumbling \
+	owner->tell_me("You're carrying almost nothing! Your tumbling \
 will be great!");
-      break;
+	break;
     case 11..20:
-      owner->tell_me("Wow!, that's a light load.  You should have \
+	owner->tell_me("Wow!, that's a light load.  You should have \
 no problem tumbling!");
-      break;
+	break;
     case 21..30:
-      owner->tell_me("Your load is still pretty light, but starting \
+	owner->tell_me("Your load is still pretty light, but starting \
 to get in your way.");
-      break;
+	break;
     case 31..40:
-      owner->tell_me("You should probably be carrying less, at least \
+	owner->tell_me("You should probably be carrying less, at least \
 if you wanna tumble better.");
-      break;
+	break;
     case 41..60:
-      owner->tell_me("Your load is starting to get heavy now.  \
+	owner->tell_me("Your load is starting to get heavy now.  \
 You probably won't tumble to well.");
-      break;
+	break;
     case 61..100:
-      owner->tell_me("Your load is way too heavy for you to \
+	owner->tell_me("Your load is way too heavy for you to \
 perform your skills well.");
-      break;
+	break;
     default:
-      owner->tell_me("You are carrying wierdly. Contact a (co-)admin.");
-      break;
+	owner->tell_me("You are carrying wierdly. Contact a (co-)admin.");
+	break;
     }
 
-  d = (int)TP->query_stat(ST_DEX);
-  td = thief_dex();
+    d = (int)TP->query_stat(ST_DEX);
+    td = thief_dex();
 
-  if (td > d)
-    owner->tell_me("With this load, your effective dexterity is \"" +
-		   (string)DESC_D->query_dex_desc(td) +
-		   "\", which is better than your normal dexterity (\"" +
-		   (string)DESC_D->query_dex_desc(d) + "\").");
-  else if (td < d)
-    owner->tell_me("With this load, your effective dexterity is \"" +
-		   (string)DESC_D->query_dex_desc(td) +
-		   "\", which is worse than your normal dexterity (\"" +
-		   (string)DESC_D->query_dex_desc(d) + "\").");
+    if (td > d)
+	owner->tell_me("With this load, your effective dexterity is \"" +
+	  (string)DESC_D->query_dex_desc(td) +
+	  "\", which is better than your normal dexterity (\"" +
+	  (string)DESC_D->query_dex_desc(d) + "\").");
+    else if (td < d)
+	owner->tell_me("With this load, your effective dexterity is \"" +
+	  (string)DESC_D->query_dex_desc(td) +
+	  "\", which is worse than your normal dexterity (\"" +
+	  (string)DESC_D->query_dex_desc(d) + "\").");
 
-  return 1;
+    return 1;
 }
 status end_cook()
 {

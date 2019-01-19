@@ -9,7 +9,7 @@ my_long(int mode, object me) {
 }
 
 create_monster() {
-  set_name("gate");
-  set_long(#'my_long);
-  set_level(50);
+    set_name("gate");
+    set_long(#'my_long);
+    set_level(50);
 }

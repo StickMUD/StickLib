@@ -44,12 +44,12 @@ query_guests() {
     string *strs;
 
     if(sizeof(guests)>0) {
-        i = sizeof(guests);
-        strs = allocate(i);
-        while(--i>=0) strs[i] = capitalize(guests[i]);
+	i = sizeof(guests);
+	strs = allocate(i);
+	while(--i>=0) strs[i] = capitalize(guests[i]);
 
-        return "Guests of the Cathedral:" +
-            sprintf("\n%-78#s",implode(strs,"\n"));
+	return "Guests of the Cathedral:" +
+	sprintf("\n%-78#s",implode(strs,"\n"));
     }
     return "No guests.";
 }

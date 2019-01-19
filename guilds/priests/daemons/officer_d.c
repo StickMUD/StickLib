@@ -13,27 +13,27 @@ mapping officers;
 create(){
     restore_object(S_FILE);
     if(!officers) officers = ([]);
-    
+
     offices = ([
-        15: "Guild Admin",
-        11: "Avatar",
-        10: "Guild Coder",
-        9 : "Saint",
-        8 : "Vicegerant",
-        7 : "Cardinal",
-        6 : "Preceptor",
-        5 : "Preceptor",
-        4 : "Elector",
-        3 : "Elector",
-        2 : "Inquisitor",
-        1 : "Acolyte",
+      15: "Guild Admin",
+      11: "Avatar",
+      10: "Guild Coder",
+      9 : "Saint",
+      8 : "Vicegerant",
+      7 : "Cardinal",
+      6 : "Preceptor",
+      5 : "Preceptor",
+      4 : "Elector",
+      3 : "Elector",
+      2 : "Inquisitor",
+      1 : "Acolyte",
     ]);
 
     long_offices = ([
-        6 : "Preceptor Hospitilar",
-        5 : "Preceptor Templar",
-        4 : "Elector Secularus",
-        3: "Elector Medico",
+      6 : "Preceptor Hospitilar",
+      5 : "Preceptor Templar",
+      4 : "Elector Secularus",
+      3: "Elector Medico",
     ]);
 }
 
@@ -42,7 +42,7 @@ string get_office(int i) { return offices[i]; }
 string get_long_office(int i) {
     string tmp;
     if(tmp = long_offices[i])
-        return tmp;
+	return tmp;
     return offices[i];
 }
 
@@ -58,7 +58,7 @@ string get_officer(int rank) {
 string
 query_title(object who) {
     int t;
-    
+
     if(!query_once_interactive(who)) return "";
     t = officers[who->query_real_name()];
     if(t) return offices[t];
@@ -76,10 +76,10 @@ query_title(object who) {
     default:  return "Some Coder";
     }
     if(who->query_testplayer())
-        return "Testchar";
+	return "Testchar";
     return "";
 }
- 
+
 void
 add_officer(string who, int what) {
     if(what) officers[who] = what;
@@ -96,14 +96,14 @@ clear_officers() {
     t = m_indices(officers);
     i = sizeof(t);
     while(--i>=0) {
-        name = t[i];
-        if(officers[name] <= VG_RANK) {
-            officers -= ([ name ]);
-            if(pl = find_player(name)) {
-                sym = pl->query_guild_object();
-                sym->set_rank(0);
-            }
-        }
+	name = t[i];
+	if(officers[name] <= VG_RANK) {
+	    officers -= ([ name ]);
+	    if(pl = find_player(name)) {
+		sym = pl->query_guild_object();
+		sym->set_rank(0);
+	    }
+	}
     }
     save_object(S_FILE);
 }

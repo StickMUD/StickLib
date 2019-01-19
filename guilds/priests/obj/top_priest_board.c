@@ -3,17 +3,17 @@
 
 string
 show_list() {
-   if((!IS_PRIEST(this_player())) && (!this_player()->query_coder_level()))
-      return "The text on the board is written in some ancient script \
+    if((!IS_PRIEST(this_player())) && (!this_player()->query_coder_level()))
+	return "The text on the board is written in some ancient script \
 you can't understand.";
-   return BOOKKEEPER->top_spell_list();
+    return BOOKKEEPER->top_spell_list();
 }
 
 void
 create_treasure() {
-   set_name("top board");
-   set_id("board");
-   set_long(#'show_list);
+    set_name("top board");
+    set_id("board");
+    set_long(#'show_list);
 }
 
 status get() { return 0; }

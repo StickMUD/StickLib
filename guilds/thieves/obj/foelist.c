@@ -22,14 +22,14 @@ reset(int arg)
     set_id(({ "list", "written" }));
     set_short("A written list hangs on wall");
     set_long(
-	"There are two lists: black and white list. You could read them "+
-	"by typing 'read black' and 'read white'.\n");
+      "There are two lists: black and white list. You could read them "+
+      "by typing 'read black' and 'read white'.\n");
 
     if (!environment())
-        move_object(this_object(), GDIR + "rooms/tower");
+	move_object(this_object(), GDIR + "rooms/tower");
 
     if (!restore_object(SAVEFILE)) {
-        lists = ({ ({ }), ({ }) });
+	lists = ({ ({ }), ({ }) });
 	writers = ({ ({ }), ({ }) });
     }
 }
@@ -40,7 +40,7 @@ void
 init() {
     add_action("read", "read");
     add_action("write_list", "write");
-     add_action("remove_from_list", "erase");
+    add_action("remove_from_list", "erase");
 }
 
 string *purge_list(string *l) {
@@ -52,7 +52,7 @@ string *purge_list(string *l) {
     nl = ({ });
 
     for (i = 0; i < sizeof(l); i++)
-        if (l[i] && l[i] != "") nl += ({ l[i] });
+	if (l[i] && l[i] != "") nl += ({ l[i] });
 
     return nl;
 }
@@ -66,19 +66,19 @@ read(string arg) {
     string ln;
 
     if (!arg) {
-        notify_fail("Read what?\n");
+	notify_fail("Read what?\n");
 	return 0;
     }
 
     if (lower_case(arg[0..4]) == "black") l = 0;
     else if (lower_case(arg[0..4]) == "white") l = 1;
     else {
-        notify_fail("What's that \"" + arg + "\"?\n");
+	notify_fail("What's that \"" + arg + "\"?\n");
 	return 0;
     }
 
     if (!present("tmark", this_player())) {
-        write("You can't understand anything it says.\n");
+	write("You can't understand anything it says.\n");
 	if (this_player()->query_coder_level() > 0) {
 	    write("(But as a coder, you can read even Thieve's Chant.)\n");
 	} else return 1;
@@ -91,18 +91,18 @@ read(string arg) {
     write("THE " + upper_case(ln) + " LIST:\n");
     write("After each name there is (name of the thief) who wrote it.\n");
     write("Type 'write <player name> on " + ln + " list' to add a name,\n");
-   write("and use 'erase <name>' to remove a name from list.\n");
+    write("and use 'erase <name>' to remove a name from list.\n");
     write(
-"=========================================================================\n");
+      "=========================================================================\n");
 
     if (!lists || !lists[l] || sizeof(lists[l]) < 1) {
-        write("This list is empty.\n");
+	write("This list is empty.\n");
 	return 1;
     }
 
     for (i = 0; i < sizeof(lists[l]); i ++) {
 
-        if (!stringp(lists[l][i]) || !stringp(writers[l][i])) {
+	if (!stringp(lists[l][i]) || !stringp(writers[l][i])) {
 	    if (!stringp(lists[l][i])) lists[l][i] = "ERROR";
 	    if (!stringp(writers[l][i])) writers[l][i] = "ERROR";
 	}
@@ -130,19 +130,19 @@ write_list(string arg)
     int l;
 
     if (!(tm = present("tmark", this_player()))) return 0;
-/*
-   if ((int)tm->query_guildmaster() >= 500)
-   {
-      notify_fail("Demons may not use this board.\n");
-      return 0;
-   }
-*/
+    /*
+       if ((int)tm->query_guildmaster() >= 500)
+       {
+	  notify_fail("Demons may not use this board.\n");
+	  return 0;
+       }
+    */
 
     if (!arg ||
-	(sscanf(arg, "%s on %s list", plr, ln) != 2 &&
-	 sscanf(arg, "%s in %s list", plr, ln) != 2)) {
-        notify_fail(
-	    "Type 'write <player name> on black (or white) list' to do it.\n");
+      (sscanf(arg, "%s on %s list", plr, ln) != 2 &&
+	sscanf(arg, "%s in %s list", plr, ln) != 2)) {
+	notify_fail(
+	  "Type 'write <player name> on black (or white) list' to do it.\n");
 	return 0;
     }
 
@@ -152,37 +152,37 @@ write_list(string arg)
     if (ln == "black") l = 0;
     else if (ln == "white") l = 1;
     else {
-        notify_fail("What is that \"" + ln + "\" list then?\n");
+	notify_fail("What is that \"" + ln + "\" list then?\n");
 	return 0;
     }
 
     if ((int)this_player()->query_level() < 10) {
-        notify_fail("You have to be level 10 before you can even try.\n");
+	notify_fail("You have to be level 10 before you can even try.\n");
 	return 0;
     }
 
     /* later: enforcers/gm only */
     if (tm->query_guildmaster() < 1) {
-        notify_fail(
-"Only the guild enforcers and the guildmaster can write on this list.\n");
+	notify_fail(
+	  "Only the guild enforcers and the guildmaster can write on this list.\n");
 	return 0;
     }
 
     if (!MASTER_OB->exists_player(plr)) {
-        notify_fail(
-	    "There is no player called \"" + capitalize(plr) + "\".\n");
+	notify_fail(
+	  "There is no player called \"" + capitalize(plr) + "\".\n");
 	return 0;
     }
 
     if (member(lists[(l == 0 ? 1 : 0)], plr) != -1) {
-        notify_fail(
-	    "But " + capitalize(plr) + " is already on the other list!\n");
+	notify_fail(
+	  "But " + capitalize(plr) + " is already on the other list!\n");
 	return 0;
     }
 
     if (member(lists[l], plr) != -1) {
-        notify_fail(
-	    capitalize(plr) + " already is on that list.\n");
+	notify_fail(
+	  capitalize(plr) + " already is on that list.\n");
 	return 0;
     }
 
@@ -205,30 +205,30 @@ remove_from_list(string arg)
     int l, ix;
 
     if (!(tm = present("tmark", this_player()))) return 0;
-/*
-   if ((int)tm->query_guildmaster() >= 500)
-   {
-      notify_fail("Demons may not use this list.\n");
-      return 0;
-   }
-*/
+    /*
+       if ((int)tm->query_guildmaster() >= 500)
+       {
+	  notify_fail("Demons may not use this list.\n");
+	  return 0;
+       }
+    */
 
     if (!arg) {
-        notify_fail("Usage: 'remove <name>'\n");
+	notify_fail("Usage: 'remove <name>'\n");
 	return 0;
     }
 
     plr = lower_case(arg);
 
     if ((int)this_player()->query_level() < 10) {
-        notify_fail("You have to be level 10 before you can even try.\n");
-        return 0;
+	notify_fail("You have to be level 10 before you can even try.\n");
+	return 0;
     }
 
     /* later: enforcers/gm only */
     if (tm->query_guildmaster() < 1) {
-        notify_fail(
-"Only the guild enforcers and the guildmaster can write on this list.\n");
+	notify_fail(
+	  "Only the guild enforcers and the guildmaster can write on this list.\n");
 	return 0;
     }
 
@@ -236,18 +236,18 @@ remove_from_list(string arg)
     else if ((ix = member(lists[1], plr)) != -1) l = 1;
 
     if (ix == -1 || sizeof(lists[l]) < 1) {
-        notify_fail(capitalize(plr) + " is not on either list.\n");
+	notify_fail(capitalize(plr) + " is not on either list.\n");
 	return 0;
     }
 
     if (writers[l][ix] != (string)this_player()->query_real_name() &&
-	tm->query_guildmaster() < 11) {
-        notify_fail("Only Guildmaster can remove names set by others.\n");
+      tm->query_guildmaster() < 11) {
+	notify_fail("Only Guildmaster can remove names set by others.\n");
 	return 0;
     }
 
     write("Ok. You remove name of " + capitalize(plr) + " from " +
-	({ "black", "white" })[l] + " list.\n");
+      ({ "black", "white" })[l] + " list.\n");
     say(this_player()->query_name() + " removes something from the list.\n");
 
     lists[l][ix] = 0;

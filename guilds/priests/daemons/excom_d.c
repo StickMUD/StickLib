@@ -22,12 +22,12 @@ excoms() {
     string *strs;
 
     if(sizeof(names)>0) {
-        i = sizeof(names);
-        strs = allocate(i);
-        while(--i>=0) strs[i] = capitalize(names[i]);
-        
-        return "Those Excommunicated:" +
-            sprintf("\n%-78#s",implode(strs,"\n"));
+	i = sizeof(names);
+	strs = allocate(i);
+	while(--i>=0) strs[i] = capitalize(names[i]);
+
+	return "Those Excommunicated:" +
+	sprintf("\n%-78#s",implode(strs,"\n"));
     }
     return "No one is excommunicated.";
 }
@@ -43,7 +43,7 @@ void
 excom_me(object me) {
     me->tell_me("You have been excommunicated!");
     if(me->query_guild() == GN_PRIEST)
-        SERVER->resign(me);
+	SERVER->resign(me);
     me->set_title("the Accursed of Boccob");
 }
 
@@ -55,14 +55,14 @@ excom(string myname) {
     myname = lower_case(myname); 
 
     if(!excomed(myname)) {
-        names += ({ myname });
-        if((who=find_player(myname)))
-            excom_me(who);
-        INFORMER->inform(capitalize(myname)+" has \
+	names += ({ myname });
+	if((who=find_player(myname)))
+	    excom_me(who);
+	INFORMER->inform(capitalize(myname)+" has \
 been excommunicated; have no further traffic with this heathen.");
     } else {
-        names-=({ myname });
-        INFORMER->inform(capitalize(myname)+" is \
+	names-=({ myname });
+	INFORMER->inform(capitalize(myname)+" is \
 no longer excommunicated; may the mercy of " GOD_NAME " uphold us all.");
     }
 
@@ -95,25 +95,25 @@ ban_me(string myname, int frock_him) {
     status flag;
 
     if(member(banned, myname)>=0) {
-        if(!frock_him) return 0;
-        TP->tell_me("You pray quickly to " GOD_NAME " asking him "
-            "to lift the prohabition against "+capitalize(myname)+".");
-        INFORMER->inform(capitalize(myname)+" has been frocked.");
-        if(find_player(myname)) {
-            go=(object)find_player(myname)->query_guild_object();
-            go->set_banned(0);
-        }
+	if(!frock_him) return 0;
+	TP->tell_me("You pray quickly to " GOD_NAME " asking him "
+	  "to lift the prohabition against "+capitalize(myname)+".");
+	INFORMER->inform(capitalize(myname)+" has been frocked.");
+	if(find_player(myname)) {
+	    go=(object)find_player(myname)->query_guild_object();
+	    go->set_banned(0);
+	}
 
-        banned-=({ myname });
+	banned-=({ myname });
     }
     else{
-        if(frock_him) return 0;
-        banned+=({ myname });
-        INFORMER->inform(capitalize(myname)+" has been unfrocked. \
+	if(frock_him) return 0;
+	banned+=({ myname });
+	INFORMER->inform(capitalize(myname)+" has been unfrocked. \
 By Tradition of the Order, this prohabition against using prayers and \
 spells is in effect until lifted by the Vicegerant.");
-        go = (object)find_player(myname)->query_guild_object();
-        go->set_banned(1);
+	go = (object)find_player(myname)->query_guild_object();
+	go->set_banned(1);
     }
 
     banned = sort_array(banned, #'>);
@@ -122,5 +122,5 @@ spells is in effect until lifted by the Vicegerant.");
 }
 
 debug() {
-   printf("Excomed: %O\nBanned: %O\n", names, banned);
+    printf("Excomed: %O\nBanned: %O\n", names, banned);
 }

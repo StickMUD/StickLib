@@ -29,26 +29,26 @@ begin_earthmeld(object who, mixed data)
 {
     object ob;
     if(HERE->query(ROOM_WD) != WD_OUTDOORS) {
-        who->tell_me("You look at the floor, but don't think it would be \
+	who->tell_me("You look at the floor, but don't think it would be \
 suitable for melding into it.");
-        data = 0;
-        return;
+	data = 0;
+	return;
     }
     data = HERE;
     who->tell_me("You kneel down, touch the ground and start praying.");
     if(who->query_invis())
-        HERE->tell_here("You hear someone praying.", who);
+	HERE->tell_here("You hear someone praying.", who);
     else
-        HERE->tell_here(":%<me.capname>% kneel%<me.ending_s>% down, touch\
+	HERE->tell_here(":%<me.capname>% kneel%<me.ending_s>% down, touch\
 %<me.ending_es>% the ground and start%<me.ending_s>% praying.",
-        0,0,who,who,0,0);
+	  0,0,who,who,0,0);
 }
 
 
 status
 do_earthmeld(object who, mixed data)
 {
-     object sym, temp_room, cur_room;
+    object sym, temp_room, cur_room;
     int skill;
     object ob;
 
@@ -57,25 +57,25 @@ do_earthmeld(object who, mixed data)
     inc_skills(who, sym, 100);
     who->add_sp(-cost);
     if(data != HERE) {
-        who->tell_me("Your concentration breaks as you move to other room");
-        return 1;
+	who->tell_me("Your concentration breaks as you move to other room");
+	return 1;
     }
     if(skill_roll(sym, skill) > 0) {
-        temp_room = clone_object(PRIEST_ROOM_DIR "earth_meld_room");
-        ob = clone_object(PRIEST_OBJ_DIR "earth_meld_obj");
-        ob->set_pl(who, get_skill_rank(skill2pex(skill)) > SENSE_RANK);
-         cur_room = HERE;
-        temp_room->set_previous_room(cur_room, who, ob);
+	temp_room = clone_object(PRIEST_ROOM_DIR "earth_meld_room");
+	ob = clone_object(PRIEST_OBJ_DIR "earth_meld_obj");
+	ob->set_pl(who, get_skill_rank(skill2pex(skill)) > SENSE_RANK);
+	cur_room = HERE;
+	temp_room->set_previous_room(cur_room, who, ob);
 
-        who->tell_me("You meld to the ground!");
-        who->move_player("Vmelds to the ground", temp_room);
-        move_object(ob, cur_room);
+	who->tell_me("You meld to the ground!");
+	who->move_player("Vmelds to the ground", temp_room);
+	move_object(ob, cur_room);
 
-        return 1;
+	return 1;
     }
     who->tell_me("Your prayer failed!");
     if(!who->query_invis())
-        HERE->tell_here(":%<me.capname>% looks rather dissapointed.",
-        0,0,who,who,0,0);
+	HERE->tell_here(":%<me.capname>% looks rather dissapointed.",
+	  0,0,who,who,0,0);
     return 1;
 }

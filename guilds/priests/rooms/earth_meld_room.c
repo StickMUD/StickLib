@@ -25,10 +25,10 @@ the ground.");
 
 void init_room() {
     if(this_player() != pl) {
-        this_player()->tell_me("How on earth did you get here??? \
+	this_player()->tell_me("How on earth did you get here??? \
 Teleporting to church...");
-        this_player()->move_player("X", "/room/church");
-        return;
+	this_player()->move_player("X", "/room/church");
+	return;
     }
     add_action("filter_commands", "", 1);
     add_action("out_cmd", "out");
@@ -46,13 +46,13 @@ void set_previous_room(object room, object who, object ob) {
 void self_destruct() {
     object ob, *inv;
     int i;
-    
+
     inv = all_inventory(this_object());
     i = sizeof(inv);
     while(--i>=0) {
-        ob = inv[i];
-        if(ob && query_once_interactive(ob))
-            ob->move_player("X", "/room/church");
+	ob = inv[i];
+	if(ob && query_once_interactive(ob))
+	    ob->move_player("X", "/room/church");
     }
     destruct(earth_ob);
     destruct(this_object());
@@ -60,7 +60,7 @@ void self_destruct() {
 
 status filter_commands(string args) {
     string cmd;
-    
+
     cmd = query_verb();
     switch(cmd) {
     case "score": case "session":
@@ -68,16 +68,16 @@ status filter_commands(string args) {
     case "cash": case "sc": case "spells": case "potions":
     case "look": case "who": case "pskills": case "askills":
     case "comm":
-        return 0;
-        
+	return 0;
+
     case "quit":
-        self_destruct();
-        return 0;
-    
-    // followers of caine can't rest
+	self_destruct();
+	return 0;
+
+	// followers of caine can't rest
     case "rest": case "sit":
-        if(order!=-1) return 0;
-        
+	if(order!=-1) return 0;
+
     }
     pl->tell_me("You can't do that while being melted to the ground.");
     return 1;
@@ -88,17 +88,17 @@ status out_cmd(string str) {
     set_heart_beat(0);
     remove_call_out("out_cmd");
     if(!prev_room) {
-        pl->tell_me("There's something wrong with that room where you were \
+	pl->tell_me("There's something wrong with that room where you were \
 before melting to the earth. Teleporting you to church.");
-        pl->move_player("X", "/room/church");
+	pl->move_player("X", "/room/church");
     } else {
-        pl->tell_me("You regain your original form stand up.");
-        move_object(pl, prev_room);
-        prev_room->tell_here(":%<me.capname>% raises from the earth!",
-            0,0,pl,pl,0,0);
+	pl->tell_me("You regain your original form stand up.");
+	move_object(pl, prev_room);
+	prev_room->tell_here(":%<me.capname>% raises from the earth!",
+	  0,0,pl,pl,0,0);
     }
     if(pk_time)
-        pl->set(LIV_OK_TO_PK, pk_time);
+	pl->set(LIV_OK_TO_PK, pk_time);
     self_destruct();
     return 1;
 }
@@ -106,8 +106,8 @@ before melting to the earth. Teleporting you to church.");
 
 heart_beat() {
     if(pl->query_fp()<FP_COST) {
-        out_cmd();
-        return;
+	out_cmd();
+	return;
     }
     pl->add_fp(-FP_COST);
 }

@@ -50,11 +50,11 @@ status moved;
 
 // Fucking XP-cheaters- Starks
 status query_moved() {
-	if(moved) {
-		moved = 0;
-		return 1;
-	}
-	return 0;
+    if(moved) {
+	moved = 0;
+	return 1;
+    }
+    return 0;
 }
 
 int order; // -1, 0 or 1
@@ -122,10 +122,10 @@ int query_faith() {
 
     t = DELAY_D->query_delay(owner, DELAY_TYPE_FAITH_DECR);
     if(!t)
-      DELAY_D->add_delay(owner, DELAY_TYPE_FAITH_DECR, FAITH_DECR_DELAY);
+	DELAY_D->add_delay(owner, DELAY_TYPE_FAITH_DECR, FAITH_DECR_DELAY);
     else if(t>0) {
-      faith -= t;
-      if(faith<-10) faith = -10;
+	faith -= t;
+	if(faith<-10) faith = -10;
     }
     return faith;
 }
@@ -174,8 +174,8 @@ void guild_mem_quit(object who) {
     catch(SLAVE_D->remove_all_slaves(owner));
     catch(DELAY_D->freeze_delays(owner));
     if(!is_coder) {
-      write_file(PRIEST_DIR "log/SKILL_BACKUP", sprintf("%s %s: %s\n",
-          ctime(time()), cap_name, query_guild_save()));
+	write_file(PRIEST_DIR "log/SKILL_BACKUP", sprintf("%s %s: %s\n",
+	    ctime(time()), cap_name, query_guild_save()));
     }
 }
 
@@ -185,14 +185,14 @@ void guild_mem_ld(object who) {
     DELAY_D->freeze_delays(owner);
     SLAVE_D->go_ld(owner);
     if(owner->query_invis() < IL_TOTALLY_INVISIBLE)
-      INFORMER->inform(cap_name+" goes linkdead.");
+	INFORMER->inform(cap_name+" goes linkdead.");
 }
 
 void guild_mem_recover_from_ld(object who) {
     SLAVE_D->recover_from_ld(owner);
     DELAY_D->unfreeze_delays(owner);
     if(owner->query_invis() < IL_TOTALLY_INVISIBLE)
-      INFORMER->inform(cap_name+" recovers from linkdeath.");
+	INFORMER->inform(cap_name+" recovers from linkdeath.");
 }
 
 status prevent_attack() {
@@ -205,15 +205,15 @@ void guild_mem_mort(object who, object hitter) {
     // Bull
 #if 0
     if(!environment(owner)->query(ROOM_ISOLATED))
-      INFORMER->inform(sprintf("%s's faithful follower %s is mortally \
+	INFORMER->inform(sprintf("%s's faithful follower %s is mortally \
 wounded!", ORDERS[order+1], cap_name));
 #endif
 }
 
 void guild_mem_died(object who, object killer) {
     if(!environment(owner)->query(ROOM_ISOLATED))
-      INFORMER->inform(sprintf("%s was killed by %s.",
-          cap_name,capitalize(killer->query_name())));
+	INFORMER->inform(sprintf("%s was killed by %s.",
+	    cap_name,capitalize(killer->query_name())));
     // no, not telling killer's real name
     SLAVE_D->remove_all_slaves(owner);
     casting = mixing = 0;
@@ -229,18 +229,18 @@ restore_skills(string str) {
 
     pexes = allocate(N_SKILLS);
     if(!str || !stringp(str)) {
-      order = faith = 0;
-      version = CURRENT_SYMBOL_VERSION;
-      return 1;
+	order = faith = 0;
+	version = CURRENT_SYMBOL_VERSION;
+	return 1;
     }
     if(sscanf(str, "%d&%d&%d&%s", order, faith, version, ps)!=4) {
-      order = faith = 0;
-      version = CURRENT_SYMBOL_VERSION;
-      return 0;
+	order = faith = 0;
+	version = CURRENT_SYMBOL_VERSION;
+	return 0;
     }
     i = 0;
     while(sizeof(ps) && i<N_SKILLS) {
-      sscanf(ps,"%d#%s", pexes[i++], ps);
+	sscanf(ps,"%d#%s", pexes[i++], ps);
     }
     return 1;
 }
@@ -254,21 +254,21 @@ query_guild_save()
     int i, t, c;
 
     if(!is_coder) {
-      if(err = catch(BOOKKEEPER->update_me(owner)))
-          do_error("query_guild_save()", err);
+	if(err = catch(BOOKKEEPER->update_me(owner)))
+	    do_error("query_guild_save()", err);
 
-      if((c = query_coef() - last_coef)>0) {
-          last_coef = query_coef();
-          t = time() - last_save;
-          last_save = time();
-          write_file(PEXLOG, sprintf("%s %d %d\n", cap_name, c, t));
-      }
+	if((c = query_coef() - last_coef)>0) {
+	    last_coef = query_coef();
+	    t = time() - last_save;
+	    last_save = time();
+	    write_file(PEXLOG, sprintf("%s %d %d\n", cap_name, c, t));
+	}
     }
 
     temp = sprintf("%d&%d&%d&", order, faith, version);
 
     for(i=0;i<sizeof(pexes);i++)
-      temp = sprintf("%s%d#",temp,pexes[i]);
+	temp = sprintf("%s%d#",temp,pexes[i]);
 
     return temp;
 }
@@ -283,50 +283,50 @@ init_my_guild_info() {
     SKILL_SAVER->save_my_skills(owner, this_object());
     DELAY_D->unfreeze_delays(owner);
     if(file_size(NEWSFILE) > 0)
-      owner->more(explode(read_file(NEWSFILE), "\n"));
+	owner->more(explode(read_file(NEWSFILE), "\n"));
     if(version != CURRENT_SYMBOL_VERSION) {
-      // I knew I would have to do this... it just sucks to have
-      // several kinds of skills in the game.
-      SKILL_CONVERTER->convert_skills(owner, version, pexes, order);
-      version = CURRENT_SYMBOL_VERSION;
+	// I knew I would have to do this... it just sucks to have
+	// several kinds of skills in the game.
+	SKILL_CONVERTER->convert_skills(owner, version, pexes, order);
+	version = CURRENT_SYMBOL_VERSION;
     }
     if(owner->query_invis() < IL_TOTALLY_INVISIBLE)
-        VOTING_D->check_voting();
+	VOTING_D->check_voting();
 }
 
 
 void
 initialize_guild(string arg) {
     if(environment() && interactive(environment())) {
-      owner = environment();
-      owner_name = owner->query_real_name();
-      cap_name = capitalize(owner_name);
-      is_coder = (owner->query_coder_level()!=0) ||
-      (owner->query_testplayer()!=0);
-      if(!restore_skills(arg))
-          owner->tell_me("Error in restoring your skills! Report this \
+	owner = environment();
+	owner_name = owner->query_real_name();
+	cap_name = capitalize(owner_name);
+	is_coder = (owner->query_coder_level()!=0) ||
+	(owner->query_testplayer()!=0);
+	if(!restore_skills(arg))
+	    owner->tell_me("Error in restoring your skills! Report this \
 to a guild coder.");
-      last_save = time();
-      last_coef = query_coef();
+	last_save = time();
+	last_coef = query_coef();
 
-      // I think these should not be needed
-      owner->set_guild(GN_PRIEST);
-      owner->set_guild_object(this_object());
-      owner->set_guild_object_name(PRIEST_SYMBOL);
-      owner->set_guild_save(query_guild_save());
+	// I think these should not be needed
+	owner->set_guild(GN_PRIEST);
+	owner->set_guild_object(this_object());
+	owner->set_guild_object_name(PRIEST_SYMBOL);
+	owner->set_guild_save(query_guild_save());
 
-      owner->set_guild_hook(([
-          G_HOOK_QUIT:#'guild_mem_quit,
-          G_HOOK_DEATH:#'guild_mem_died,
-          G_HOOK_GO_LD:#'guild_mem_ld,
-          G_HOOK_RECOVER_FROM_LD:#'guild_mem_recover_from_ld,
-          //          G_HOOK_GO_MORT:#'guild_mem_mort,
-          G_HOOK_PREVENT_ATTACK:#'prevent_attack,
-          G_HOOK_WIELD_WEAPON:symbol_function("wield_weapon", ATTACK_D),
-          G_HOOK_REMOVE_WEAPON:symbol_function("remove_weapon", ATTACK_D),
-        ]));
+	owner->set_guild_hook(([
+	    G_HOOK_QUIT:#'guild_mem_quit,
+	    G_HOOK_DEATH:#'guild_mem_died,
+	    G_HOOK_GO_LD:#'guild_mem_ld,
+	    G_HOOK_RECOVER_FROM_LD:#'guild_mem_recover_from_ld,
+	    //          G_HOOK_GO_MORT:#'guild_mem_mort,
+	    G_HOOK_PREVENT_ATTACK:#'prevent_attack,
+	    G_HOOK_WIELD_WEAPON:symbol_function("wield_weapon", ATTACK_D),
+	    G_HOOK_REMOVE_WEAPON:symbol_function("remove_weapon", ATTACK_D),
+	  ]));
 
-      call_out(#'init_my_guild_info,1);
+	call_out(#'init_my_guild_info,1);
     }
 }
 
@@ -337,7 +337,7 @@ string my_long(string id, object who) {
     str = "This is the holy symbol of the almighty overgod \
 " GOD_NAME ". It is the sign of your devotion, carry it with pride.";
     if(who && who->query_guild() == GN_PRIEST)
-      str += "\n[Priest info: To seek enlightment, search for 'advice'.]";
+	str += "\n[Priest info: To seek enlightment, search for 'advice'.]";
     return str;
 }
 
@@ -387,41 +387,41 @@ mapping
 query_guild_commands()
 {
     return (([
-      "pskills"       : #'priest_cmd,
-      "askills"       : #'priest_cmd,
-      "spells"        : #'priest_cmd,
-      "potions"       : #'priest_cmd,
+	"pskills"       : #'priest_cmd,
+	"askills"       : #'priest_cmd,
+	"spells"        : #'priest_cmd,
+	"potions"       : #'priest_cmd,
 
-      "invoke"        : #'priest_cmd,
-      "mix"           : #'priest_cmd,
-      "sample"        : #'priest_cmd,
-      "meditate"      : #'priest_cmd,
-      "angel"         : #'priest_cmd,
+	"invoke"        : #'priest_cmd,
+	"mix"           : #'priest_cmd,
+	"sample"        : #'priest_cmd,
+	"meditate"      : #'priest_cmd,
+	"angel"         : #'priest_cmd,
 
-      "comm"          : #'priest_cmd,
-      "advice"        : #'priest_cmd,
-      "pray"          : #'priest_cmd,
-      "praise"        : #'priest_cmd,
-      "absolve"       : #'priest_cmd,
-      "priest"        : #'priest_cmd, // several commands starting with "priest"
-      "target"        : #'priest_cmd,
-      "exclude"       : #'priest_cmd,
+	"comm"          : #'priest_cmd,
+	"advice"        : #'priest_cmd,
+	"pray"          : #'priest_cmd,
+	"praise"        : #'priest_cmd,
+	"absolve"       : #'priest_cmd,
+	"priest"        : #'priest_cmd, // several commands starting with "priest"
+	"target"        : #'priest_cmd,
+	"exclude"       : #'priest_cmd,
 
-      // staff commands:
-      "store"         : #'priest_cmd,
-      "absorb"        : #'priest_cmd,
-      "rid"           : #'priest_cmd,
-      "leave"         : #'priest_cmd,
-      "zap"           : #'priest_cmd,
+	// staff commands:
+	"store"         : #'priest_cmd,
+	"absorb"        : #'priest_cmd,
+	"rid"           : #'priest_cmd,
+	"leave"         : #'priest_cmd,
+	"zap"           : #'priest_cmd,
 
-      // officer commands:
-      "judge"         : #'priest_cmd,
-      "frock"         : #'priest_cmd,
-      "unfrock"       : #'priest_cmd,
-      "excom"         : #'priest_cmd,
+	// officer commands:
+	"judge"         : #'priest_cmd,
+	"frock"         : #'priest_cmd,
+	"unfrock"       : #'priest_cmd,
+	"excom"         : #'priest_cmd,
 
-      // for coders only:
-      "pcoder"          : #'priest_cmd,
+	// for coders only:
+	"pcoder"          : #'priest_cmd,
       ]));
 }
 
@@ -437,8 +437,8 @@ is_valid_heal(object who) {
     counter = 0;
 
     for(i=0;i<sizeof(healed);i++){
-      if(time()-healed_time[i] > 120) healed[i]=0;        
-      if(healed[i]==who) counter++; 
+	if(time()-healed_time[i] > 120) healed[i]=0;        
+	if(healed[i]==who) counter++; 
     }
 
     if(counter>=2) return 0;
@@ -446,8 +446,8 @@ is_valid_heal(object who) {
     // exp when they healed ppl. fixed it /Chopin
 
     for(i=sizeof(healed)-1;i>0;i--) {
-      healed[i]=healed[i-1];
-      healed_time[i]=healed_time[i-1];
+	healed[i]=healed[i-1];
+	healed_time[i]=healed_time[i-1];
     }
 
     healed[0]=who;
@@ -466,10 +466,10 @@ is_valid_heal(object who) {
 void
 inform_debugger(string str) {
     if(debugger) {
-      if(debugger != owner)
-          debugger->tell_me(sprintf("&&%s: %s",cap_name,str));
-      else
-          owner->tell_me("%% "+str);
+	if(debugger != owner)
+	    debugger->tell_me(sprintf("&&%s: %s",cap_name,str));
+	else
+	    owner->tell_me("%% "+str);
     }
 }
 

@@ -19,19 +19,19 @@ status drop_cmd(string arg) {
 
     notify_fail("Drop what into where?\n");
     if(!arg || sscanf(arg, "%d %s into %s", amount, what, where) != 3)
-        return 0;
+	return 0;
 
     if(what != "gc" && what != "gold coins" && what != "coins")
-        return 0;
+	return 0;
 
     if(!id(where)) return 0;
     if(amount < 0) {
-        this_player()->tell_me("Donate a negative amount??");
-        return 1;
+	this_player()->tell_me("Donate a negative amount??");
+	return 1;
     }
     if(this_player()->query_money() < amount) {
-        this_player()->tell_me("You don't have that much money with you.");
-        return 1;
+	this_player()->tell_me("You don't have that much money with you.");
+	return 1;
     }
     this_player()->tell_me(sprintf("You donated %d gc to the \
 priest guild.", amount));

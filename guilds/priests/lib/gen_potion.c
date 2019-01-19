@@ -202,8 +202,8 @@ begin_smash(object who, mixed data) {
 
     potion = data[0];
     if(!potion) {
-        data = 0;
-        return;
+	data = 0;
+	return;
     }
     l = data[1];
     destruct(potion);

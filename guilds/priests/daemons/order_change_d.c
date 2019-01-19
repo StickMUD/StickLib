@@ -32,7 +32,7 @@ void order_changed(object pl) {
     if(!(sym = pl->query_guild_object())) return;
     cur_coef = sym->query_coef();
     if((coef_required = cur_coef/10) > MAX_COEF_REQUIREMENT)
-        coef_required = MAX_COEF_REQUIREMENT;
+	coef_required = MAX_COEF_REQUIREMENT;
     players[pl->query_real_name()] = cur_coef + coef_required;
     save_object(SAVE_FILE);
 }

@@ -46,16 +46,16 @@ set_smell_msg(string s) {smell_msg = s; }
 status is_known(object pl) {
     int sk;
     object sym;
-    
+
     if(!pl) return 0;
     switch(pl->query_guild()) {
     case GN_PRIEST:
-        sym = pl->query_guild_object();
-        sk = to_int(pex2skill(sym->query_pex(SK_NATURE)));
-        return sk >= recog_diff;
-    
+	sym = pl->query_guild_object();
+	sk = to_int(pex2skill(sym->query_pex(SK_NATURE)));
+	return sk >= recog_diff;
+
     default:
-        return 0;
+	return 0;
     }
 }
 
@@ -64,7 +64,7 @@ string
 my_query_short(int mode, object who) {
     if(!who) who = this_player();
     if(who && is_known(who))
-        return real_short;
+	return real_short;
     return general_short;
 }
 
@@ -72,7 +72,7 @@ string
 my_query_long(string id, object who) {
     if(!who) who = this_player();
     if(who && is_known(who))
-        return real_long;
+	return real_long;
     return general_long;
 }
 
@@ -89,13 +89,13 @@ void
 init_food() {
     switch(TP->query_guild()) {
     case GN_PRIEST:
-        // let's not use set_name, because it sets short and long descs
-        // too, and that would just require additional work to be done here
-        id_name = real_name;
-        break;
-        
+	// let's not use set_name, because it sets short and long descs
+	// too, and that would just require additional work to be done here
+	id_name = real_name;
+	break;
+
     default:
-        id_name = general_name;
+	id_name = general_name;
     }
     add_action("smell_cmd", "smell");
     add_action("smell_cmd", "sniff");
@@ -109,7 +109,7 @@ create_food() {
     set_id("herb");
     set_short(#'my_query_short);
     set_long(#'my_query_long);
-    
+
     real_name = "example herb";
     general_name = "herb";
     real_short = "An example herb";
@@ -117,7 +117,7 @@ create_food() {
     real_long = "It's an example herb.";
     general_long = "It's a herb.";
     smell_msg = "It doesn't smell for anything particular.";
-    
+
     if(function_exists("init_herb")) functions_used |= INIT_USED;
     this_object()->create_herb();
 }

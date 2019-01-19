@@ -12,7 +12,7 @@ create_herb() {
     set_general_long("The leaves aren't too green anymore.");
     set_smell_msg("These leaves have a bit sweet smell.");
     set_recog_diff(300);
-    
+
     set_strength(1);
     set_no_heal(1);
     set_eating_mess(" eats some dried leaves, but spits them out \

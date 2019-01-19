@@ -16,15 +16,15 @@ void
 begin_id(object who, mixed target)
 {
     if(!target || !(target = present(target, HERE)) || !living(target)) {
-      who->tell_me("There's no such being here!");
-      target = 0;
-      return;
+	who->tell_me("There's no such being here!");
+	target = 0;
+	return;
     }
     if(target==who) {
-      who->tell_me("You should know your own mind well enough, so that you \
+	who->tell_me("You should know your own mind well enough, so that you \
 don't have to use this spell to find what your alignment is.");
-      target = 0;
-      return;
+	target = 0;
+	return;
     }
     HERE->tell_here(":%<me.capname>% utter%<me.ending_s>% a prayer and \
 touch%<me.ending_s>% gently %<him.name>%",0,0,0,who,target,0);
@@ -37,31 +37,31 @@ detect_align(object who, mixed target)
     string al_str;
 
     if(!objectp(target))
-      return 0;
+	return 0;
     who->add_sp(-cost);
     inc_skills(who, who->query_guild_object(), 100);
     if(who->query_level() > random(10)) {
-      align = (int)target->query_alignment();
-      if(align > 2000)
-          al_str="extremely holy";
-      else if(align > 1000)
-          al_str="holy";
-      else if(align > 200)
-          al_str="pure";
-      else if(align > -200)
-          al_str="neutral";
-      else if(align > -1000)
-          al_str="evil";
-      else if(align > -2000)
-          al_str="devilish";
-      else
-          al_str="altogether satanic";
+	align = (int)target->query_alignment();
+	if(align > 2000)
+	    al_str="extremely holy";
+	else if(align > 1000)
+	    al_str="holy";
+	else if(align > 200)
+	    al_str="pure";
+	else if(align > -200)
+	    al_str="neutral";
+	else if(align > -1000)
+	    al_str="evil";
+	else if(align > -2000)
+	    al_str="devilish";
+	else
+	    al_str="altogether satanic";
 
-      who->tell_me(sprintf("You slowly get a vision of %s's %s mind.",
-          target->query_name(),al_str));
-      HERE->tell_here(":%<me.capname>% finishes %<me.possessive>% prayer."
-        ,0,0,who,who,0,0);
-      return 1;
+	who->tell_me(sprintf("You slowly get a vision of %s's %s mind.",
+	    target->query_name(),al_str));
+	HERE->tell_here(":%<me.capname>% finishes %<me.possessive>% prayer."
+	  ,0,0,who,who,0,0);
+	return 1;
     }
     who->tell_me("You fail to concentrate your mind fully.");
     HERE->tell_here(":%<me.capname>% ends praying, but looks rather \
