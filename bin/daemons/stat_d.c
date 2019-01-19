@@ -38,9 +38,9 @@ nomask int query_prevent_shadow() { return 1; }
 nomask void
 test()
 {
-  string *d;
+    string *d;
 
-  d = get_dir("/data/plr/a*.o", 0);
+    d = get_dir("/data/plr/a*.o", 0);
 
-  write("sizeof(d) = " + sizeof(d) + "\n");
+    write("sizeof(d) = " + sizeof(d) + "\n");
 }

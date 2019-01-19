@@ -23,10 +23,10 @@ I_cmd(string str) {
     while (++i < sizeof(inv)) {
 	if (!(str = (string)inv[i]->short(IL_TOTALLY_INVISIBLE, this_player()))) {
 	    str = (str = (string)inv[i]->query_name())
-		? sprintf("<%s>", str) : "-";
+	    ? sprintf("<%s>", str) : "-";
 	}
 	printf("%2d: %-35s %s\n", i+1, tilde_path(object_name(inv[i])),
-	       str);
+	  str);
     }
 
     return 1;

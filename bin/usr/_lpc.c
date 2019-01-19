@@ -11,10 +11,10 @@ lpc_cmd(string str)
 {
     if (!CHECK) return 0;
 
-/*
-    if (this_player()->query_coder_level() < LVL_COADMIN)
-	return 0;
-*/
+    /*
+	if (this_player()->query_coder_level() < LVL_COADMIN)
+	    return 0;
+    */
 
     if (str) {
 	string file;
@@ -43,5 +43,5 @@ lpc_cmd(string str)
 	rm(file);
 	return 1;
     }
-	notify_fail("Usage: "+query_verb()+" <some_lpc_code>\n");
+    notify_fail("Usage: "+query_verb()+" <some_lpc_code>\n");
 }

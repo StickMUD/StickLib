@@ -3,6 +3,6 @@
 nomask int
 tailchannel_cmd(string arg)
 {
-  "/bin/pub/_channel"->channel_cmd("lord hist", TP);
-  return 1;
+    "/bin/pub/_channel"->channel_cmd("lord hist", TP);
+    return 1;
 }

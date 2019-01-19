@@ -12,7 +12,7 @@ status peace;
 nomask void
 create()
 {
-  if (!restore_object(SAVE_FILE)) peace = 0;
+    if (!restore_object(SAVE_FILE)) peace = 0;
 }
 
 /*
@@ -25,27 +25,27 @@ create()
 nomask status
 query_peace()
 {
-  return peace;
+    return peace;
 }
 
 nomask void
 set_peace(status p)
 {
-  /* No change? */
-  if (peace == p) return;
+    /* No change? */
+    if (peace == p) return;
 
-  peace = p;
+    peace = p;
 
-  if (peace)
+    if (peace)
     {
-      filter_objects(users(), "tell_me",
- "\n\n\tPeace fills the world. Player killing is now prohibited.\n\n");
+	filter_objects(users(), "tell_me",
+	  "\n\n\tPeace fills the world. Player killing is now prohibited.\n\n");
     }
-  else
+    else
     {
-      filter_objects(users(), "tell_me",
-"\n\n\tPeace is lifted from the world. Player killing is again possible.\n\n");
+	filter_objects(users(), "tell_me",
+	  "\n\n\tPeace is lifted from the world. Player killing is again possible.\n\n");
     }
 
-  save_object(SAVE_FILE);
+    save_object(SAVE_FILE);
 }

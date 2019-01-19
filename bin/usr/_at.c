@@ -9,8 +9,8 @@ at_cmd(string str) {
     if (!CHECK) return 0;
 
     if (!str ||
-	sscanf(str, "%s %s", n, cmd) != 2) {
-        notify_fail("Usage: at <who> <cmd>\n");
+      sscanf(str, "%s %s", n, cmd) != 2) {
+	notify_fail("Usage: at <who> <cmd>\n");
 	return 0;
     }
 
@@ -19,14 +19,14 @@ at_cmd(string str) {
     if (!who) who = find_living(n);
 
     if (!who) {
-        notify_fail("Can't find " + capitalize(n) + ".\n");
+	notify_fail("Can't find " + capitalize(n) + ".\n");
 	return 0;
     }
 
     room = environment(who);
 
     if (!room) {
-        notify_fail(capitalize(n) + " doesn't have an environment!\n");
+	notify_fail(capitalize(n) + " doesn't have an environment!\n");
 	return 0;
     }
 

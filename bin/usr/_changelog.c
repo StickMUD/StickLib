@@ -20,19 +20,19 @@ void show_reports(object pl, string fname, int amount) {
 
     max = file_lines(fname);
     if(!max) {
-        pl->tell_me("Log is empty.");
-        return;
+	pl->tell_me("Log is empty.");
+	return;
     }
     columns = pl->query_env("columns");
     if(!columns) columns = 80;
 
     if(amount == -1  || max < amount)
-      amount = max;
+	amount = max;
     str = "";
     for(i = max - amount + 1; i <= max; i++) {
-      if(sscanf(read_file(fname, i, 1), "%d#%s#%s", time, name, msg) == 3)
-          str += sprintf("<%d> %s %s:\n%-=*s\n\n", i, ctime(time),
-            capitalize(name), columns, msg);
+	if(sscanf(read_file(fname, i, 1), "%d#%s#%s", time, name, msg) == 3)
+	    str += sprintf("<%d> %s %s:\n%-=*s\n\n", i, ctime(time),
+	      capitalize(name), columns, msg);
     }
     pl->more(explode(str, "\n"));
 }
@@ -50,9 +50,9 @@ void show_reports_from_all(object pl) {
 
     str = "";
     for(i = max - amount + 1; i <= max; i++) {
-      if(sscanf(read_file(ALL_LOG, i, 1), "%s#%d#%s#%s", log, time, name, msg) == 4)
-          str += sprintf("(%s) %s %s:\n%-=*s\n\n", log, ctime(time),
-            capitalize(name), columns, msg);
+	if(sscanf(read_file(ALL_LOG, i, 1), "%s#%d#%s#%s", log, time, name, msg) == 4)
+	    str += sprintf("(%s) %s %s:\n%-=*s\n\n", log, ctime(time),
+	      capitalize(name), columns, msg);
     }
     pl->more(explode(str, "\n"));
 }
@@ -67,71 +67,71 @@ status changelog_cmd(string str) {
 
     notify_fail("Usage: changelog <guild/lib> [report <message>/more/delete]\n");
     if(!str) {
-      show_reports_from_all(TP);
-      return 1;
+	show_reports_from_all(TP);
+	return 1;
     }
 
     if(sscanf(str, "%s %s %s", gname, option, text) < 3)
-      if(sscanf(str, "%s %s", gname, option) < 2)
-          gname = str;
+	if(sscanf(str, "%s %s", gname, option) < 2)
+	    gname = str;
 
     if(member(LOGS, gname) < 0) return
-      notify_fail("First parameter should be " + implode(LOGS, ", ", " or ") + ".\n"),0;
+	notify_fail("First parameter should be " + implode(LOGS, ", ", " or ") + ".\n"),0;
     fname = LOG_DIR + gname;
 
     if(!option) {
-      show_reports(TP, fname, LAST_AMOUNT);
+	show_reports(TP, fname, LAST_AMOUNT);
     }
     else {
-      switch(option) {
-      case "more":
-          show_reports(TP, fname, -1);
-          break;
+	switch(option) {
+	case "more":
+	    show_reports(TP, fname, -1);
+	    break;
 
-      case "report":
-          if(!text) return 0;
-          tmp = sprintf("%d#%s#%s\n", time(), TP->query_real_name(), text);
-          write_file(fname, tmp);
-          write_file(ALL_LOG, sprintf("%s#%s", gname, tmp));
+	case "report":
+	    if(!text) return 0;
+	    tmp = sprintf("%d#%s#%s\n", time(), TP->query_real_name(), text);
+	    write_file(fname, tmp);
+	    write_file(ALL_LOG, sprintf("%s#%s", gname, tmp));
 
-          // let's clean it up every now and then
-          if((n = file_lines(ALL_LOG)) > 3*LAST_AMOUNT) {
-              tmp = read_file(ALL_LOG, n - 2*LAST_AMOUNT, 2*LAST_AMOUNT);
-              rename(ALL_LOG, ALL_LOG ".tmp");
-              write_file(ALL_LOG, tmp);
-          }
-          TP->tell_me("Ok.");
-          break;
+	    // let's clean it up every now and then
+	    if((n = file_lines(ALL_LOG)) > 3*LAST_AMOUNT) {
+		tmp = read_file(ALL_LOG, n - 2*LAST_AMOUNT, 2*LAST_AMOUNT);
+		rename(ALL_LOG, ALL_LOG ".tmp");
+		write_file(ALL_LOG, tmp);
+	    }
+	    TP->tell_me("Ok.");
+	    break;
 
-      case "delete":
-          if(!text || !(n = to_int(text)))
-              return 0;
-          if(!(text = read_file(fname, n, 1)) || text == "")
-              return notify_fail("No such report number.\n"),0;
-          if(sscanf(text, "%s#%s#%s", tmp, name, text) < 3)
-              return notify_fail("Error in log file.\n"),0;
-          if(name != TP->query_real_name() && TP->query_coder_level() < LVL_COADMIN)
-              return notify_fail("You can remove only your own reports.\n"),0;
+	case "delete":
+	    if(!text || !(n = to_int(text)))
+		return 0;
+	    if(!(text = read_file(fname, n, 1)) || text == "")
+		return notify_fail("No such report number.\n"),0;
+	    if(sscanf(text, "%s#%s#%s", tmp, name, text) < 3)
+		return notify_fail("Error in log file.\n"),0;
+	    if(name != TP->query_real_name() && TP->query_coder_level() < LVL_COADMIN)
+		return notify_fail("You can remove only your own reports.\n"),0;
 
-          // This will most likely cause errors if the file gets too large :(
-          tmp = read_file(fname);
-          tmps = explode(tmp, "\n");
-          deleted_line = sprintf("%s#%s\n", gname, tmps[n-1]);
-          tmps = tmps[0..n-2] + tmps[n..];
-          rename(fname, fname + ".tmp");
-          write_file(fname, implode(tmps, "\n"));
+	    // This will most likely cause errors if the file gets too large :(
+	    tmp = read_file(fname);
+	    tmps = explode(tmp, "\n");
+	    deleted_line = sprintf("%s#%s\n", gname, tmps[n-1]);
+	    tmps = tmps[0..n-2] + tmps[n..];
+	    rename(fname, fname + ".tmp");
+	    write_file(fname, implode(tmps, "\n"));
 
-          // we have to delete the same line from "all" log too
-          tmp = read_file(ALL_LOG);
-          rename(ALL_LOG, ALL_LOG ".tmp");
-          write_file(ALL_LOG,implode(explode(tmp, deleted_line), ""));
+	    // we have to delete the same line from "all" log too
+	    tmp = read_file(ALL_LOG);
+	    rename(ALL_LOG, ALL_LOG ".tmp");
+	    write_file(ALL_LOG,implode(explode(tmp, deleted_line), ""));
 
-          TP->tell_me("Ok.");
-          break;
+	    TP->tell_me("Ok.");
+	    break;
 
-      default:
-          return 0;
-      }
+	default:
+	    return 0;
+	}
     }
     return 1;
 }

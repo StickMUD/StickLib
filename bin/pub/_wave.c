@@ -7,10 +7,10 @@ inherit "/lib/find_name";
 varargs status
 wave_cmd(string arg, object me)
 {
-object who;
-string x, wn, *cl;
-mapping c;
-int i, s;
+    object who;
+    string x, wn, *cl;
+    mapping c;
+    int i, s;
 
     if (!me && !(me = this_player())) return 0;
 
@@ -30,17 +30,17 @@ int i, s;
 	    wn = 0;
 
 	    if (cl && (s = sizeof(cl)) > 0) {
-	        for (i = 0; i < s; i++) {
+		for (i = 0; i < s; i++) {
 		    if (member(explode(c[cl[i]][0], " "),
 			lower_case(arg)) != -1) {
-		        wn = c[cl[i]][0];
+			wn = c[cl[i]][0];
 			break;
 		    }
 		}
 	    }
 
 	    if (!wn) {
-	        notify_fail("You can't see any " + arg + " around here.\n");
+		notify_fail("You can't see any " + arg + " around here.\n");
 		return 0;
 	    }
 	}
@@ -48,9 +48,9 @@ int i, s;
 
     if (!who && !wn) {
 	me -> tell_me("You wave happily.");
-        environment(me) -> tell_here((string)me->query_name(0, me)
-		+" waves happily.", me);
-        return 1;
+	environment(me) -> tell_here((string)me->query_name(0, me)
+	  +" waves happily.", me);
+	return 1;
     }
 
     if (who && living(who)) {
@@ -66,11 +66,11 @@ int i, s;
     if (!wn) return notify_fail("Waving invisible things is silly.\n"), 0;
 
     x = ({" furiously"," in the air"," clumsily"," happily",
-	  ". How silly"})[random(5)];
+      ". How silly"})[random(5)];
 
     me -> tell_me("You wave " + wn + x + ".");
     environment(me) -> tell_here((string)me->query_name(0, me)
-	+ " waves " + wn + x + ".", me);
+      + " waves " + wn + x + ".", me);
 
     return 1;
 }

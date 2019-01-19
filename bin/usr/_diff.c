@@ -102,7 +102,7 @@ locate_split( string *common1, string *common2, int s1, int e1, int s2, int e2)
     if( found_len ) {
 	if( swapped ) SWAP(found_e1,found_e2,tmp);
 	return ({ found_e1 - found_len - 1, found_e1,
-		  found_e2 - found_len - 1, found_e2 });
+	  found_e2 - found_len - 1, found_e2 });
     }
     return 0;
 }
@@ -123,7 +123,7 @@ split_diff( string *common1, string *common2, int s1, int e1, int s2, int e2)
 
     if( tmp = locate_split( common1, common2, s1, e1, s2, e2 ) ) {
 	return ( split_diff( common1, common2, s1, tmp[0], s2, tmp[2] ) +
-		 split_diff( common1, common2, tmp[1], e1, tmp[3], e2 ) );
+	  split_diff( common1, common2, tmp[1], e1, tmp[3], e2 ) );
     }
     return ({ ({ s1, e1-s1+1, s2, e2-s2+1 }) });
 }
@@ -214,7 +214,7 @@ output_diff( string *lines1, string *lines2, mixed *diff, int count )
 		f1 += diff[end][1];
 		f2 += diff[end][3];
 	    } while( ++end < max && ( c1 + count >= diff[end][0] ||
-				      c2 + count >= diff[end][2] ) );
+		c2 + count >= diff[end][2] ) );
 	    if( c1 >= sizeof( lines1 ) ) c1 = sizeof( lines1 ) - 1;
 	    if( c2 >= sizeof( lines2 ) ) c2 = sizeof( lines2 ) - 1;
 
@@ -222,7 +222,7 @@ output_diff( string *lines1, string *lines2, mixed *diff, int count )
 		// Create a unified diff.
 		output += allocate( 1 + (c2-s2+1) + f1 );
 		output[idx++] = sprintf( "@@ -%d,%d +%d,%d @@",
-					 s1+1, c1-s1+1, s2+1, c2-s2+1 );
+		  s1+1, c1-s1+1, s2+1, c2-s2+1 );
 		for( k = diff[i][2], mode = 0; s2 <= c2; s2++ ) {
 		    if( k == s2 ) {
 			if( !mode ) {
@@ -366,7 +366,7 @@ make_diff( string *lines1, string *lines2, int count )
     // Do recursive calls to find the differences.
     // Then add the original removed lines back to the diff.
     tmp = fix_diff( split_diff( common1, common2, s12, e1, s12, e2 ),
-		    diff1, diff2 );
+      diff1, diff2 );
     diff1 = diff2 = 0;
 
     // Create the textual output from the data.
@@ -381,9 +381,9 @@ get_lines( string file_name )
 
     file_name = (string)this_player()->absolute_path( file_name );
     switch( file_size( file_name ) ) {
-      case -2: { write( file_name + " is a directory.\n" ); return 0; }
-      case -1: { write( file_name + " is not a file or no permission.\n" );
-		 return 0; }
+    case -2: { write( file_name + " is a directory.\n" ); return 0; }
+    case -1: { write( file_name + " is not a file or no permission.\n" );
+	    return 0; }
     }
     file = read_file( file_name );
     if( !file ) {
@@ -419,7 +419,7 @@ diff_cmd( string str )
     int context;
 
     if (!CHECK) return 0;
-//  seteuid( getuid( previous_object() ) );
+    //  seteuid( getuid( previous_object() ) );
     if( str ) {
 	string tmp;
 
@@ -437,10 +437,10 @@ diff_cmd( string str )
 		    notify_fail( "Flag -o needs an argument.\n" );
 		    return 0;
 		}
-	        output_file =(string)this_player()->absolute_path(output_file);
+		output_file =(string)this_player()->absolute_path(output_file);
 		if( !write_file( output_file, "" ) ) {
 		    notify_fail( sprintf( "Can't write to '%s'.\n",
-					  output_file ) );
+			output_file ) );
 		    return 0;
 		}
 	    } else if( str[0] ) {
@@ -463,7 +463,7 @@ diff_cmd( string str )
 	return 1;
     }
     if( !pointerp( lines1 = get_lines( file_name1 ) ) ||
-        !pointerp( lines2 = get_lines( file_name2 ) ) )
+      !pointerp( lines2 = get_lines( file_name2 ) ) )
     {
 	write( "No comparison made.\n" );
 	return 1;
@@ -476,7 +476,7 @@ diff_cmd( string str )
     }
     if( context ) {
 	output = ({ ((context>0) ? "*** " : "--- ") + file_name1,
-		    ((context>0) ? "--- " : "+++ ") + file_name2 }) + output;
+	  ((context>0) ? "--- " : "+++ ") + file_name2 }) + output;
     }
 
     if( output_file ) {

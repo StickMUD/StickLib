@@ -4,9 +4,9 @@
 #include <daemons.h>
 
 nomask int which_cmd(string str) {
-mapping list;
-mapping *arr,*arr2;
-int i,j;
+    mapping list;
+    mapping *arr,*arr2;
+    int i,j;
 
     if (!str) {
 	notify_fail("Usage: which <command>\nSearches for a command in your path.\n");
@@ -17,10 +17,10 @@ int i,j;
     for(i=0;i<sizeof(arr);i++) {
 	arr2=m_indices(list[arr[i]]);
 	if (member(arr2, str)!=-1) {
-		write(str+" is in ");
-		write(arr[i]);
-		write("\n");
-		return 1;
+	    write(str+" is in ");
+	    write(arr[i]);
+	    write("\n");
+	    return 1;
 	}
 
     }

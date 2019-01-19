@@ -3,6 +3,6 @@
 nomask int
 channellog_cmd(string arg)
 {
-  "/bin/pub/_channel"->channel_cmd("lord more", TP);
-  return 1;
+    "/bin/pub/_channel"->channel_cmd("lord more", TP);
+    return 1;
 }

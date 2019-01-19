@@ -2,7 +2,7 @@
 
 #include <cmd.h>
 
-       
+
 nomask status
 call2_cmd(string str, object me)
 {
@@ -17,17 +17,17 @@ call2_cmd(string str, object me)
 
 	if (ob = get_object(tmp)) {
 	    if (sscanf(str, "%s %s", str, arg) &&
-		sscanf(arg, "%d%s", i, tmp) && tmp == "")
+	      sscanf(arg, "%d%s", i, tmp) && tmp == "")
 	    {
 		arg = i;
 	    }
 	    if (!function_exists(str, ob)) {
 		notify_fail(sprintf("No function '%s' in '%s'.\n",
-				    str, object_name(ob)));
+		    str, object_name(ob)));
 		return 0;
 	    }
 	    arg = (mixed)call_other(ob, str, arg);
-	me->tell_me(sprintf("Returns: %O.", arg));
+	    me->tell_me(sprintf("Returns: %O.", arg));
 
 	    return 1;
 	}

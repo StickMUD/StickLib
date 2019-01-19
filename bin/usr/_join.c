@@ -14,30 +14,30 @@ void
 create() {
     guild_marks = ([
 #ifdef GN_PRIEST
-	GN_PRIEST: PRIEST_MARK_PATH,
+      GN_PRIEST: PRIEST_MARK_PATH,
 #endif
 #ifdef GN_MAGE
-	GN_MAGE: MAGE_MARK_PATH,
+      GN_MAGE: MAGE_MARK_PATH,
 #endif
 #ifdef GN_THIEF
-	GN_THIEF: THIEF_MARK_PATH,
+      GN_THIEF: THIEF_MARK_PATH,
 #endif
 #ifdef GN_NINJA
-	GN_NINJA: NINJA_MARK_PATH,
+      GN_NINJA: NINJA_MARK_PATH,
 #endif
 #ifdef GN_FIGHTER
-	GN_FIGHTER: FIGHTER_MARK_PATH,
+      GN_FIGHTER: FIGHTER_MARK_PATH,
 #endif
 #ifdef GN_NECROMANCER
-	GN_NECROMANCER: NECRO_MARK_PATH,
+      GN_NECROMANCER: NECRO_MARK_PATH,
 #endif
 #ifdef GN_HEALER
-	GN_HEALER: HEALER_MARK_PATH,
+      GN_HEALER: HEALER_MARK_PATH,
 #endif
 #ifdef GN_WARRIOR
-	GN_WARRIOR: WARRIOR_MARK_PATH,
+      GN_WARRIOR: WARRIOR_MARK_PATH,
 #endif
-   ]);
+    ]);
 }
 
 
@@ -51,14 +51,14 @@ status join_cmd( string guild )
 
     if(!member(guild_marks, guild)) {
 	notify_fail(sprintf("Valid guilds are: %s\n",
-	  implode(m_indices(guild_marks), " ")));
+	    implode(m_indices(guild_marks), " ")));
 	return 0;
     }
 
     /** resign current guild **/
 
     old_guild = this_player()->query_guild();
-    
+
     //No autoresign for Fighters!
 #ifdef GN_FIGHTER
     if(old_guild == GN_FIGHTER) {

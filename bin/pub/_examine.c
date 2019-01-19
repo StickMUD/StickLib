@@ -8,8 +8,8 @@
 varargs nomask status
 examine_cmd(string s, object me)
 {
-	if (!me && !(me = this_player())) return 0;
+    if (!me && !(me = this_player())) return 0;
 
-	if (!s) return notify_fail("Examine what?\n"), 0;
-	return look_cmd("at "+s, me);
+    if (!s) return notify_fail("Examine what?\n"), 0;
+    return look_cmd("at "+s, me);
 }

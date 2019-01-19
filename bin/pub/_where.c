@@ -35,7 +35,7 @@ where_cmd(string str, object me)
     mylevel = (int)me->query_level();
 
     if(str == "toggle") {
-      WhereON = me->query(PLR_SHOW_WHERE_ON);
+	WhereON = me->query(PLR_SHOW_WHERE_ON);
 	this_player()->set(WhereON ? PLR_SHOW_WHERE_OFF : PLR_SHOW_WHERE_ON);
 	this_player()->tell_me("Where messages now "+(WhereON ? "on" : "off")+".");
 	return 1;
@@ -240,7 +240,7 @@ where_map(object ob, int mylevel, int my_clevel)
     // Hidden are currently never shown for noncoders /Graah
     // If you feel very high levels etc. must be able to, change this...
     if (!my_clevel &&
-	((int)ob->query_invis() == IL_HIDDEN)) return 0;
+      ((int)ob->query_invis() == IL_HIDDEN)) return 0;
 
     /* Level >= 45, detect any non-coder */
     if (mylevel >= 45) return lev;

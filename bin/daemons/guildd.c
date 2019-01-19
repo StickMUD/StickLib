@@ -44,24 +44,24 @@ static string whose_data;
 status
 save_guild_data(string plr_name, string guild, mixed data)
 {
-	if (!guild || !plr_name) return 0;
-	if (whose_data != plr_name) {
-		save_data = 0;
-		whose_data = plr_name;
-		restore_object(GUILD_SAVE + plr_name);
-	}
-	if (!save_data) save_data = ([ guild : data ]);
-	else save_data[guild] = data;
-	save_object(GUILD_SAVE + plr_name);
+    if (!guild || !plr_name) return 0;
+    if (whose_data != plr_name) {
+	save_data = 0;
+	whose_data = plr_name;
+	restore_object(GUILD_SAVE + plr_name);
+    }
+    if (!save_data) save_data = ([ guild : data ]);
+    else save_data[guild] = data;
+    save_object(GUILD_SAVE + plr_name);
 }
 
 mixed
 restore_guild_data(string plr_name, string guild)
 {
-	if (whose_data != plr_name) {
-		whose_data = plr_name;
-		restore_object(GUILD_SAVE + plr_name);
-	}
-	if (!save_data) return 0;
-	return save_data[guild];
+    if (whose_data != plr_name) {
+	whose_data = plr_name;
+	restore_object(GUILD_SAVE + plr_name);
+    }
+    if (!save_data) return 0;
+    return save_data[guild];
 }

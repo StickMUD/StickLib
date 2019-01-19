@@ -6,22 +6,22 @@
 status
 summontoggle_cmd(string what, object me)
 {
-int allow_summon;
-	if (!me && !(me = this_player())) return 0;
+    int allow_summon;
+    if (!me && !(me = this_player())) return 0;
     switch(what)
     {
     case "on":
 	allow_summon = 1;
-        break;
+	break;
     case "off":
-        allow_summon = 0;
-        break;
+	allow_summon = 0;
+	break;
     default:
 	allow_summon = !(me -> query(PLR_ALLOW_SUMMON));
-   }
+    }
 
-	me->set(allow_summon ? PLR_ALLOW_SUMMON : PLR_PREVENT_SUMMON);
-	me->tell_me(sprintf(
-"Now you %s be summoned easily.", (allow_summon ? "can" : "cannot")));
+    me->set(allow_summon ? PLR_ALLOW_SUMMON : PLR_PREVENT_SUMMON);
+    me->tell_me(sprintf(
+	"Now you %s be summoned easily.", (allow_summon ? "can" : "cannot")));
     return 1;
 }

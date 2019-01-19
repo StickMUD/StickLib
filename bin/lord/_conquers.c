@@ -10,20 +10,20 @@
 */
 int conquers_cmd()
 {
-  if (((int)TP->query_level() < 28) && !(CODER))
-    return 0;
+    if (((int)TP->query_level() < 28) && !(CODER))
+	return 0;
 
-  if(!(CAN_MOVE(TP)))
+    if(!(CAN_MOVE(TP)))
     {
-      notify_fail(MOVE);
-      return 0;
+	notify_fail(MOVE);
+	return 0;
     }
 
-  if(!tail(CONQUERS))
+    if(!tail(CONQUERS))
     {
-      notify_fail("No one has conquered anyone recently.\n");
-      return 0;
+	notify_fail("No one has conquered anyone recently.\n");
+	return 0;
     }
 
-  return 1;
+    return 1;
 }

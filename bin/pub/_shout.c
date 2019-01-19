@@ -22,11 +22,11 @@ shout_cmd(string str, object me)
     status hidename;
 
     if (!me && !(me = this_player())) return 0;
-   if (!me->is_npc())
-    if (me != this_player() && interactive(me) && me->query_coder_level())
-	return 0;
+    if (!me->is_npc())
+	if (me != this_player() && interactive(me) && me->query_coder_level())
+	    return 0;
 
-    /* Can't patch coders to shout... */
+	/* Can't patch coders to shout... */
     if (!str) {
 	notify_fail("Shout what?\n");
 	return 0;
@@ -46,12 +46,12 @@ You should use 'tell' instead until you get to level 2.");
 
     if (!IS_CODER(CODERLVL)) {
 	if ((int)me->query_sp() < 20) {
-//	    me -> tell_me("You don't have enough spell points (min. 20)!");
+	    //	    me -> tell_me("You don't have enough spell points (min. 20)!");
 	    me -> tell_me("You are too tired mentally to do that (min. 20 SP)!");
 	    return 1;
 	}
 	if ((int)me->query_fp() < 20) {
-//	    me -> tell_me("You don't have enough fatigue points (min. 20)!");
+	    //	    me -> tell_me("You don't have enough fatigue points (min. 20)!");
 	    me -> tell_me("You are too tired to do that (min. 20 FP)!");
 	    return 1;
 	}
@@ -96,10 +96,10 @@ You should use 'tell' instead until you get to level 2.");
 	for (i = 0; i < sizeof(u); i++) {
 	    if (u[i] == me) continue;
 	    if (u[i]->listen_shout() >= LEVEL) continue;
-           // Deaf players can't hear shouting! //Chopin
-            if(u[i]->query_condition(C_DEAF)) continue;
-            if(environment(u[i]))
-	    if(environment(u[i])->query(ROOM_ISOLATED)) continue;
+	    // Deaf players can't hear shouting! //Chopin
+	    if(u[i]->query_condition(C_DEAF)) continue;
+	    if(environment(u[i]))
+		if(environment(u[i])->query(ROOM_ISOLATED)) continue;
 	    if (!hidename || u[i]->query_coder_level())
 		n = capitalize((string)me->query_real_name());
 	    else
@@ -112,7 +112,7 @@ You should use 'tell' instead until you get to level 2.");
 	}
 
 	me->tell_me("You shout: "+str, 0, TELL_TYPE_SHOUT, 0, 0, 0);
-        log_file("SHOUT", capitalize((string)me->query_real_name()) + ": " + str + "\n");
+	log_file("SHOUT", capitalize((string)me->query_real_name()) + ": " + str + "\n");
     }
 
     return 1;

@@ -10,20 +10,20 @@
 */
 int signings_cmd()
 {
-  if (((int)TP->query_level() < 30) && !(CODER))
-    return 0;
+    if (((int)TP->query_level() < 30) && !(CODER))
+	return 0;
 
-  if(!(CAN_MOVE(TP)))
+    if(!(CAN_MOVE(TP)))
     {
-      notify_fail(MOVE);
-      return 0;
+	notify_fail(MOVE);
+	return 0;
     }
 
-  if(!tail(SIGNINGS))
+    if(!tail(SIGNINGS))
     {
-      notify_fail("Cannot access the signings log currently.\n");
-      return 0;
+	notify_fail("Cannot access the signings log currently.\n");
+	return 0;
     }
 
-  return 1;
+    return 1;
 }

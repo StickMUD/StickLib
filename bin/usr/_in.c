@@ -9,8 +9,8 @@ in_cmd(string str) {
     if (!CHECK) return 0;
 
     if (!str ||
-	sscanf(str, "%s %s", room, cmd) != 2) {
-        notify_fail("Usage: in <room> <cmd>\n");
+      sscanf(str, "%s %s", room, cmd) != 2) {
+	notify_fail("Usage: in <room> <cmd>\n");
 	return 1;
     }
 
@@ -24,10 +24,10 @@ in_cmd(string str) {
     old_room = environment(TP);
     move_object(TP, room);
 
-	command(cmd, TP);
+    command(cmd, TP);
 
     if (old_room)
-        move_object(TP, old_room);
+	move_object(TP, old_room);
     else
 	write("Could not return back again.\n");
     return 1;

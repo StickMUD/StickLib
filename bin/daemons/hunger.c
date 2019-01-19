@@ -27,19 +27,19 @@ hunger_effect(object ob)
     sev = (int) ob->query_some_func_which_returns_hunger_severity_level();
 
     switch(random(sev)) {
-        case 0: /* SP drain */
-	    if ((int)ob->query_sp() > 0)
-		ob->add_sp(-(5 + random(sev)));
-	    ob->tell_me("Your head spins due lack of food.\n");
-	    break;
-	case 1: /* Faint */
-	    ob->set_condition(C_UNCONSCIOUS, 2 + random(sev));
-	    ob->tell_me("You faint from lack of food.\n");
-	    break;
-	default:
-	    ob->tell_me(
-"You feel very hungry. You'd better find something to eat soon.\n");
-	    break;
+    case 0: /* SP drain */
+	if ((int)ob->query_sp() > 0)
+	    ob->add_sp(-(5 + random(sev)));
+	ob->tell_me("Your head spins due lack of food.\n");
+	break;
+    case 1: /* Faint */
+	ob->set_condition(C_UNCONSCIOUS, 2 + random(sev));
+	ob->tell_me("You faint from lack of food.\n");
+	break;
+    default:
+	ob->tell_me(
+	  "You feel very hungry. You'd better find something to eat soon.\n");
+	break;
     }
 }
 

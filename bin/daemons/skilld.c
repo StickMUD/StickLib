@@ -73,13 +73,13 @@ query_is_valid_skill(string skname)
     /* Or are we going to have "ki"? Oriental stuff... */
     if (sizeof(skname) < 3) {
 	write("query_is_valid_skill: too short skill name \"" +
-		skname + "\"\n");
+	  skname + "\"\n");
 	return 0;
     }
 
     if (sizeof(skname) > MAX_SKNAME_LEN) {
 	write("query_is_valid_skill: too long skill name \"" +
-		skname + "\"\n");
+	  skname + "\"\n");
 	return 0;
     }
 
@@ -99,13 +99,13 @@ skill_desc(int value)
 
     if (!skrat) {
 	skrat = ({ "novice ", "junior ", "apprentice ", "", "confident ",
-	"seasoned ", "expert ", "eminent ", "brilliant ", "superior " });
+	  "seasoned ", "expert ", "eminent ", "brilliant ", "superior " });
 	s_skrat = sizeof(skrat);
     }
 
     if (!sklev) {
 	sklev = ({ "student", "amateur", "layman", "acolyte", "journeyman",
-	"craftsman", "professional", "veteran", "master", "guru" });
+	  "craftsman", "professional", "veteran", "master", "guru" });
 	s_sklev = sizeof(sklev);
     }
 
@@ -145,15 +145,15 @@ list_skills(object ob)
     tmp = "";
 
     for (l = 0, i = sizeof(ind) - 1; i >= 0; i--) {
-        x = liv_Skills[ind[i]][SK_SCORE];
+	x = liv_Skills[ind[i]][SK_SCORE];
 	y = x - 100 * (x / 100);
 	if (y < 0) y = 0;
 	if (y > 99) y = 99;
 
 	tmp += sprintf("%-11s:%02d%% %-23s ",
-		ind[i],
-		y,
-		skill_desc(x / 1000));
+	  ind[i],
+	  y,
+	  skill_desc(x / 1000));
 	l++;
 	if (l > 1) {
 	    l = 0;

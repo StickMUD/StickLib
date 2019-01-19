@@ -53,37 +53,37 @@ status processing;	// To prevent recursion on attacks.
 void
 create()
 {
-	groups = ([ ]);
-	attacks = ({ });
-	attacks2 = ({ });
+    groups = ([ ]);
+    attacks = ({ });
+    attacks2 = ({ });
 }
 
 // Let's clean mapping up... May contain some unused groups.
 void
 reset()
 {
-string *grs;
-object *members;
-int i, size;
-	if (!hb_on) {
-		attacks = ({ });
-		attacks2 = ({ });
-	}
+    string *grs;
+    object *members;
+    int i, size;
+    if (!hb_on) {
+	attacks = ({ });
+	attacks2 = ({ });
+    }
 
-	for (i = sizeof(grs = m_indices(groups)) - 1; i >= 0; i--) {
-	  if (!pointerp(members = groups[grs[i]])) continue;
-	  members -= ({ 0 });		// Let's remove kileld npcs from group.
-	  if (!sizeof(members))
-		members = 0;	// We'll mark this group empty...
-	  groups[grs[i]] = members;
-	}
-	groups = m_delete(groups, 0);	// Now let's remove empty groups..
+    for (i = sizeof(grs = m_indices(groups)) - 1; i >= 0; i--) {
+	if (!pointerp(members = groups[grs[i]])) continue;
+	members -= ({ 0 });		// Let's remove kileld npcs from group.
+	if (!sizeof(members))
+	    members = 0;	// We'll mark this group empty...
+	groups[grs[i]] = members;
+    }
+    groups = m_delete(groups, 0);	// Now let's remove empty groups..
 }
 
 object *
 query_group(string gname)
 {
-	return groups[gname];
+    return groups[gname];
 }
 
 // With this we'll add a npc to a group of npcs. If no such group
@@ -91,104 +91,104 @@ query_group(string gname)
 void
 add_to_group(string group, object npc)
 {
-object *x;
-	if (!(x = groups[group]))
-		x = ({ npc });
-	else {
-		x -= ({ 0 });
-		if (member(x, npc) >= 0) return;	// Already in group.
-		x += ({ npc });
-	}
-	groups[group] = x;
+    object *x;
+    if (!(x = groups[group]))
+	x = ({ npc });
+    else {
+	x -= ({ 0 });
+	if (member(x, npc) >= 0) return;	// Already in group.
+	x += ({ npc });
+    }
+    groups[group] = x;
 }
 
 void
 group_attacked(object npc, object attacker, string group)
 {
-	if (processing) return;
+    if (processing) return;
 
-	if (!hb_on)
+    if (!hb_on)
 	configure_object(this_object(), OC_HEART_BEAT, (hb_on = 1));
 
-	attacks += ({ ({ npc, attacker, group }) });
+    attacks += ({ ({ npc, attacker, group }) });
 }
 
 
 void
 process_attacks2()
 {
-int size, size2, i, j;
-mixed *x;
-object *group, victim, attacker;
-	for (size = sizeof(attacks2), i = 0; i < size; i++) {
-	  if (!(x = attacks2[i])) continue;
-	  if (!(victim = x[0]) || !(attacker = x[1])
+    int size, size2, i, j;
+    mixed *x;
+    object *group, victim, attacker;
+    for (size = sizeof(attacks2), i = 0; i < size; i++) {
+	if (!(x = attacks2[i])) continue;
+	if (!(victim = x[0]) || !(attacker = x[1])
 	  || environment(victim) != environment(attacker)) {
-// Either victim, or attacker (or both) has died, or either one has fled.
-// In that case, let's remove the request.
-		attacks2[i] = 0;
-		continue;
-	  }
-	  if ((size2 = sizeof(group = x[2])) > MAX_NPC_PER_HB) {
-// If more npcs, we'll handle just first from the group now.
-		attacks2[i][2] = group[MAX_NPC_PER_HB .. size2 - 1];
-		size2 = MAX_NPC_PER_HB;
-		group = group[0 .. size2 - 1];
-	  } else {
-		attacks2[i] = 0;
-// Otherwise, let's mark this request done now.
-	  }
-	  for (j = 0; j < size2; j++) {
-		if (group[j])
-			group[j] -> group_attacked(victim, attacker, group);
-
-// Note that 3rd argument isn't now whole group! However, it shouldn't
-// usually matter. If it does, we'll have to think of neat way to provide
-// better solution. -+ Doomdark +-
-
-	  }
+	    // Either victim, or attacker (or both) has died, or either one has fled.
+	    // In that case, let's remove the request.
+	    attacks2[i] = 0;
+	    continue;
 	}
-	attacks2 -= ({ 0 });
-// Let's finally remove processed requests.
-// Note that unlike in "process_attacks" we can't simply clear whole
-// array as it may still contain partially processed requests!
+	if ((size2 = sizeof(group = x[2])) > MAX_NPC_PER_HB) {
+	    // If more npcs, we'll handle just first from the group now.
+	    attacks2[i][2] = group[MAX_NPC_PER_HB .. size2 - 1];
+	    size2 = MAX_NPC_PER_HB;
+	    group = group[0 .. size2 - 1];
+	} else {
+	    attacks2[i] = 0;
+	    // Otherwise, let's mark this request done now.
+	}
+	for (j = 0; j < size2; j++) {
+	    if (group[j])
+		group[j] -> group_attacked(victim, attacker, group);
+
+	    // Note that 3rd argument isn't now whole group! However, it shouldn't
+	    // usually matter. If it does, we'll have to think of neat way to provide
+	    // better solution. -+ Doomdark +-
+
+	}
+    }
+    attacks2 -= ({ 0 });
+    // Let's finally remove processed requests.
+    // Note that unlike in "process_attacks" we can't simply clear whole
+    // array as it may still contain partially processed requests!
 }
 
 void
 process_attacks()
 {
-int i, size, size2;
-object *x, victim, attacker;
-mixed *tmp;
-object dd;
-	for (i = 0, size = sizeof(attacks); i < size; i++) {
-	  if (!(tmp = attacks[i]))
-		continue;
-	  attacks[i] = 0;	// Let's remove this from the first list.
-	  if (!(victim = tmp[0]) || !(attacker = tmp[1])
-	   || environment(victim) != environment(attacker))
-		continue;
+    int i, size, size2;
+    object *x, victim, attacker;
+    mixed *tmp;
+    object dd;
+    for (i = 0, size = sizeof(attacks); i < size; i++) {
+	if (!(tmp = attacks[i]))
+	    continue;
+	attacks[i] = 0;	// Let's remove this from the first list.
+	if (!(victim = tmp[0]) || !(attacker = tmp[1])
+	  || environment(victim) != environment(attacker))
+	    continue;
 
-// Victim or attacker is (or both are) dead, or attacker or victim has
-// fled away from the room!
+	// Victim or attacker is (or both are) dead, or attacker or victim has
+	// fled away from the room!
 
-	  if (victim -> group_attacked(victim, attacker, (x = groups[tmp[2]]))) {
-// We'll 'ask' npc if it wants other members to be asked to help...
-// That is, if there are still other npcs alive.
-		x -= ({ 0, victim });	// Let's remove dead npcs, and originating
-					// npc, from the list.
-		if (!sizeof(x)) continue;
+	if (victim -> group_attacked(victim, attacker, (x = groups[tmp[2]]))) {
+	    // We'll 'ask' npc if it wants other members to be asked to help...
+	    // That is, if there are still other npcs alive.
+	    x -= ({ 0, victim });	// Let's remove dead npcs, and originating
+	    // npc, from the list.
+	    if (!sizeof(x)) continue;
 
-// Now, we'll move this request to the other list to be processed on
-// next heart_beat.
+	    // Now, we'll move this request to the other list to be processed on
+	    // next heart_beat.
 
-		attacks2 += ({ ({ victim, attacker, x }) });
-	  }
+	    attacks2 += ({ ({ victim, attacker, x }) });
 	}
+    }
 
-	attacks = ({ });	// If we've got this far, it'll be empty.
-			// Nulling of elements if done just to be
-			// sure we won't repeat calls.
+    attacks = ({ });	// If we've got this far, it'll be empty.
+    // Nulling of elements if done just to be
+    // sure we won't repeat calls.
 }
 
 // Let's first process actual giving of help, as they're supposed to
@@ -196,37 +196,37 @@ object dd;
 void
 heart_beat()
 {
-string error;
-int i;
-	processing = 1;
-	if (sizeof(attacks2)) {
-		if (error = catch(process_attacks2())) {
-			write(error);	// Let's hope it goes to some log!!!
-			processing = 0;
-			return;
-		}
-	} else if (!sizeof(attacks)) {
-
-// If no more calls, we can turn hb off to save CPU-time.
-		configure_object(this_object(), OC_HEART_BEAT, (processing = hb_on = 0));
-		return;
+    string error;
+    int i;
+    processing = 1;
+    if (sizeof(attacks2)) {
+	if (error = catch(process_attacks2())) {
+	    write(error);	// Let's hope it goes to some log!!!
+	    processing = 0;
+	    return;
 	}
+    } else if (!sizeof(attacks)) {
 
-	if (sizeof(attacks)) {
-		if (error = catch(process_attacks())) {
-			write(error);	// Let's hope it goes to some log!!!
-		}
+	// If no more calls, we can turn hb off to save CPU-time.
+	configure_object(this_object(), OC_HEART_BEAT, (processing = hb_on = 0));
+	return;
+    }
+
+    if (sizeof(attacks)) {
+	if (error = catch(process_attacks())) {
+	    write(error);	// Let's hope it goes to some log!!!
 	}
-	processing = 0;
+    }
+    processing = 0;
 }
 
 mapping
 query_groups()
 {
-	return groups;
+    return groups;
 }
 mixed *
 query_attacks(int x)
 {
-	return x ? attacks2 : attacks;
+    return x ? attacks2 : attacks;
 }

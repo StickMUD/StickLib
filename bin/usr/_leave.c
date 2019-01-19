@@ -28,15 +28,15 @@ status leave_cmd( string arg )
     mark = this_player()->query_guild_object();
 #ifdef GN_FIGHTER
     if(this_player()->query_guild() == GN_FIGHTER) {
-        if(mark) {
+	if(mark) {
 	    mark->resign3("yes"); //Let Fighters guild symbol do the dirty job
 	    //of reducing Fighter skills etc etc
 	}
     }
     else
 #endif
-        if(mark) {
-            destruct(mark);
+    if(mark) {
+	destruct(mark);
     }
 
     this_player()->tell_me(sprintf("You leave the %s guild.",

@@ -13,23 +13,23 @@
 
 int shop_cmd()
 {
-  if (((int)TP->query_level() < 32) && !(CODER))
-    return 0;
+    if (((int)TP->query_level() < 32) && !(CODER))
+	return 0;
 
-  if(!(CAN_MOVE(TP)))
+    if(!(CAN_MOVE(TP)))
     {
-      notify_fail(MOVE);
-      return 0;
+	notify_fail(MOVE);
+	return 0;
     }
 
-  if(object_name(environment(TP))!="room/church")
+    if(object_name(environment(TP))!="room/church")
     {
-      notify_fail("You must be in the church to do this.\n");
-      return 0;
+	notify_fail("You must be in the church to do this.\n");
+	return 0;
     }
 
-  /* Do the actual command */
-  TP->move_player("Vteleports into the Travelling Shop#players/rincewind/shop");
+    /* Do the actual command */
+    TP->move_player("Vteleports into the Travelling Shop#players/rincewind/shop");
 
-  return 1;
+    return 1;
 }

@@ -16,11 +16,11 @@ du_cmd(string path)
     path = resolve_path(path ? path : ".", this_player());
 
     if (path[-1..-1] != "/")
-        path += "/";
+	path += "/";
 
     if (file_size(path) != -2) {
-        write("No such directory.\n");
-        return 1;
+	write("No such directory.\n");
+	return 1;
     }
 
     /* Weed out some unwanted "too long evaluation" cases. */
@@ -45,10 +45,10 @@ du_show(string path)
     /* Size = 1 because the directory reserves some space too */
     for (i = 1, size = 1; i < sizeof(dir); i += 2)
     {
-        if (dir[i] == -2)
-            size += du_show(path + dir[i-1] + "/");
-        else
-            size += (dir[i] + 1023) >> 10;
+	if (dir[i] == -2)
+	    size += du_show(path + dir[i-1] + "/");
+	else
+	    size += (dir[i] + 1023) >> 10;
     }
     write(size + "\t" + path[0..-2] + "\n");
     return size;

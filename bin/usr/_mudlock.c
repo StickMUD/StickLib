@@ -9,7 +9,7 @@
 nomask int mudlock_cmd()
 {
     if (!interactive(this_player()) || this_player()->query_coder_level() <= LVL_SENIOR)
-        return notify_fail("Must be a senior wizard or higher to lock the mud.\n"), 0;
+	return notify_fail("Must be a senior wizard or higher to lock the mud.\n"), 0;
 
     MUDLOCK_D->toggle_mudlock();
 

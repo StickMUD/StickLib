@@ -12,19 +12,19 @@
 */
 int messages_cmd(string str)
 {
-  if ((int)TP->query_level() < 30)
-    return 0 ;
+    if ((int)TP->query_level() < 30)
+	return 0 ;
 
-  if(!(CAN_MOVE(TP)))
+    if(!(CAN_MOVE(TP)))
     {
-      notify_fail(MOVE);
-      return 0;
+	notify_fail(MOVE);
+	return 0;
     }
 
-  if(str)
-    TP->mmsgs(str);
-  else
-    TP->show_msg();
+    if(str)
+	TP->mmsgs(str);
+    else
+	TP->show_msg();
 
-  return 1;
+    return 1;
 }

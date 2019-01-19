@@ -50,11 +50,11 @@ do_load(string str) {
     if (!stringp(str)) return 0;
     str = lower_case(str);
     for (i = 0; i < sizeof(str); i++) {
-        if (str[i] < 'a' || str[i] > 'z') return 0;
+	if (str[i] < 'a' || str[i] > 'z') return 0;
     }
 
     /* Restore data */
-	if (restore_object(PATH_FOR_PLAYER_SAVE(str))) {
+    if (restore_object(PATH_FOR_PLAYER_SAVE(str))) {
 	last_finger = time();
 	return 1;
     }
@@ -69,18 +69,18 @@ show_name(string str) {
     /* Show name, title, race, liege, level or coder status and age */
     write("Name  : " + capitalize(name) + " " + title + "\n");
     str = "Status: " + ({"neuter", "male", "female" })[gender]
-        + (race ? (" " + race) : " *human*");
+    + (race ? (" " + race) : " *human*");
     if (liege) str += ", servant of " + capitalize(liege);
     switch (coder_level) {
-	case -1:  str += ", testplayer (" + level + ")"; break;
-        case 0:   str += ", level " + level; break;
-        case 10:  str += ", novice coder"; break;
-	case 50: str += ", junior coder"; break;
-        case 100: str += ", coder"; break;
-        case 200: str += ", senior coder"; break;
-        case 300: str += ", co-admin"; break;
-        case 400: str += ", admin"; break;
-        default: str += ", coder level(" + coder_level + ")";
+    case -1:  str += ", testplayer (" + level + ")"; break;
+    case 0:   str += ", level " + level; break;
+    case 10:  str += ", novice coder"; break;
+    case 50: str += ", junior coder"; break;
+    case 100: str += ", coder"; break;
+    case 200: str += ", senior coder"; break;
+    case 300: str += ", co-admin"; break;
+    case 400: str += ", admin"; break;
+    default: str += ", coder level(" + coder_level + ")";
     }
     write(str + "  (" + age/43200 + " d " + (age/1800)%24 + " h)\n");
     return 1;
@@ -91,9 +91,9 @@ show_name(string str) {
 
     tmp = (string)"/bin/daemons/maild"->query_mail(str);
     if( tmp  && (strstr(tmp, "NEW") != -1) )
-      write("There is unread mail.\n");
+	write("There is unread mail.\n");
     else
-      write("No unread mail.\n");
+	write("No unread mail.\n");
 }
 
 nomask private void
@@ -103,19 +103,19 @@ show_login() {
     int    i;
 
     if (ob = find_player(name)) {
-        if (interactive(ob)) {
+	if (interactive(ob)) {
 	    i = interactive_info(ob, II_IDLE) / 60;
 	    write("Logged in." + (i ? (" Idle " + i + " min.\n") : "\n"));
 	} else
 	    write("Link dead.\n");
     } else {
-        if (last_saved) {
+	if (last_saved) {
 	    if ((i = time() - last_saved) >= 86400)
-	        str = (i = i/86400) + " day";
+		str = (i = i/86400) + " day";
 	    else if (i >= 3600)
 		str = (i = i/3600) + " hour";
 	    else
-	        str = (i = i/60) + " minute";
+		str = (i = i/60) + " minute";
 	    if (i != 1) str += "s";
 	    write("Logged out " + str + " ago.\n");
 	} else {
@@ -139,21 +139,21 @@ show_mortal(string str, object who) {
 	return 0;
     tmp3 = str;
     if (stringp(called_from_ip_name)) {
-        xstr = explode(called_from_ip_name, ".");
+	xstr = explode(called_from_ip_name, ".");
 	if (sizeof(xstr) && !sscanf(str = xstr[sizeof(xstr) - 1], "%d", i)) {
 	    printf("Called from: .%s\n", str);
 	}
     }
 
-/*
+    /*
 #ifdef GN_THIEF
-    /* Show guild if both are thieves. */
-/*
-	if (sscanf(auto_load, "%s/thief_mark%s", tmp1, tmp2) == 2 &&
-	who && (string)who->query_guild() == GN_THIEF)
-        write("Member of Guild of Thieves\n");
+	/* Show guild if both are thieves. */
+    /*
+	    if (sscanf(auto_load, "%s/thief_mark%s", tmp1, tmp2) == 2 &&
+	    who && (string)who->query_guild() == GN_THIEF)
+	    write("Member of Guild of Thieves\n");
 #endif
-*/
+    */
 
     show_new_mail(tmp3);
 
@@ -174,21 +174,21 @@ show_coder(string str) {
 
     /* Extended finger informantion */
     write(sprintf("Stats : %2d str  %2d dex  %2d int  %2d con\n",
-        Str, Dex, Int, Con));
+	Str, Dex, Int, Con));
     if (luck)
 	printf("Other : %d exp  %d $  (luck:%d)\n", experience, money, luck);
     else
 	printf("Other : %d exp  %d $\n", experience, money);
     write(sprintf("Quests  : %-=69s\n",
-        (quests ? implode(explode(quests, "#"), " ") : "none") ));
+	(quests ? implode(explode(quests, "#"), " ") : "none") ));
     write(sprintf("Autoload: %-=69s\n",
-        (auto_load ? implode(explode(auto_load, "^!"), "\n") : "none") ));
-     write("Member of "+guild+" guild.\n");
+	(auto_load ? implode(explode(auto_load, "^!"), "\n") : "none") ));
+    write("Member of "+guild+" guild.\n");
     if(this_interactive()->query_coder_level() > 100)
-      write("Email: "+ mailaddr+"\n");
+	write("Email: "+ mailaddr+"\n");
     write("Called from: " + called_from_ip_name
-        + ((called_from_ip_name != called_from_ip)
-            ? (" (" + called_from_ip + ")\n") : "\n") );
+      + ((called_from_ip_name != called_from_ip)
+	? (" (" + called_from_ip + ")\n") : "\n") );
     show_new_mail(str);
     show_login();
     return 1;
@@ -199,7 +199,7 @@ nomask int clean_up() { destruct(this_object()); }
 int
 query_last_save(string who)
 {
-	if (who && who != name)
-		do_load(who);
-	return last_saved;
+    if (who && who != name)
+	do_load(who);
+    return last_saved;
 }

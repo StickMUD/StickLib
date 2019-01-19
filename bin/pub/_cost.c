@@ -8,8 +8,8 @@
 nomask int
 cost_cmd(string str)
 {
-  // Could probably call lib/guild...
-  if ((int)this_player()->query_level() < 25)
-    return (int)(AREA_TRISTEZA + "adv_guild/adv_guild")->cost_cmd();
-  return (int)(AREA_TRISTEZA + "rooms/lords_guild")->cost();
+    // Could probably call lib/guild...
+    if ((int)this_player()->query_level() < 25)
+	return (int)(AREA_TRISTEZA + "adv_guild/adv_guild")->cost_cmd();
+    return (int)(AREA_TRISTEZA + "rooms/lords_guild")->cost();
 }

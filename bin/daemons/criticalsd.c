@@ -51,9 +51,9 @@ critical_hit(object victim, object hitter, int damage, int type, int bonus)
     if (!victim || !living(victim)) return 0;
 
     if (hitter) {
-        if (function_exists("extra_critical", hitter))
+	if (function_exists("extra_critical", hitter))
 	    return (int)hitter->extra_critical(
-		victim, hitter, damage, type, bonus);
+	      victim, hitter, damage, type, bonus);
     }
 
     hname = find_name(hitter, (hitter && living(hitter) ? 1 : 0));
@@ -79,21 +79,21 @@ critical_hit(object victim, object hitter, int damage, int type, int bonus)
     rt = 0;
 
     for (i = sizeof(wrd) - 1; i >= 0; i--) {
-        if (wrd[i] == "skeleton") {
+	if (wrd[i] == "skeleton") {
 	    rt = "skeleton";
 	    break;
 	}
 
-        if (member(({ "orc", "half-orc", "elf", "giant",
-	     "human", "hobbit", "dwarf", "titan", "zombie",
-	     "ghoul", "skeleton" }), wrd[i]) != -1) {
+	if (member(({ "orc", "half-orc", "elf", "giant",
+	      "human", "hobbit", "dwarf", "titan", "zombie",
+	      "ghoul", "skeleton" }), wrd[i]) != -1) {
 	    rt = "human";
 	    break;
 	}
 
 	if (member(({ "deer", "mouse", "rat", "goose",
-	    "bear", "unicorn", "buffalo", "horse", "camel",
-	    "sheep", "goat", "wolf", "dog", "pig", "aardvark" }), wrd[i]) != -1) {
+	      "bear", "unicorn", "buffalo", "horse", "camel",
+	      "sheep", "goat", "wolf", "dog", "pig", "aardvark" }), wrd[i]) != -1) {
 	    rt = "animal";
 	    break;
 	}
@@ -129,14 +129,14 @@ critical_hit(object victim, object hitter, int damage, int type, int bonus)
 	}
 
 	if (member(({ "cat", "lion", "tiger", "panther",
-	    "puma" }), wrd[i]) != -1) {
+	      "puma" }), wrd[i]) != -1) {
 	    rt = "feline";
 	    break;
 	}
 
 	/* We hope "cube" is "gelatinous cube"... */
 	if (member(({ "slime", "jelly", "ooze",
-	     "amoeba", "pudding", "cube" }), wrd[i]) != -1) {
+	      "amoeba", "pudding", "cube" }), wrd[i]) != -1) {
 	    rt = "jelly";
 	    break;
 	}
@@ -151,17 +151,17 @@ critical_hit(object victim, object hitter, int damage, int type, int bonus)
 
     bp = bps[rt][(random(sizeof(bps[rt]) - 1))];
 
-/* The rest is just a test */
+    /* The rest is just a test */
 
     write(sprintf("%-=78s", "Race: " + rt + ", Parts: " +
 	implode(bps[rt], ", ", " and ") + ".\n"));
 
     if (hitter) {
-        tell_object(hitter, "You hit " + vname +
-	    " into " + (string)victim->query_possessive() +
-	    " " + bp + "!\n");
+	tell_object(hitter, "You hit " + vname +
+	  " into " + (string)victim->query_possessive() +
+	  " " + bp + "!\n");
 	tell_object(victim, hname +
-	    " hits you into your " + bp + "!\n");
+	  " hits you into your " + bp + "!\n");
     }
 
     return 1;
@@ -173,19 +173,19 @@ init_bodies()
     bps = ([ ]);
 
     bps["bird"] = ({ "left wing", "right wing", "left leg", "right leg",
-		       "beak", "tail", "back", "chest", "stomach" });
+      "beak", "tail", "back", "chest", "stomach" });
 
     /* Human, demon and angel are quite similar */
     bps["human"] = ({ "neck", "back", "chest", "stomach", "left eye",
-			"jaw", "nose", "forehead", "left cheek",
-			"right cheek", "left side", "right side",
-			"left arm", "right arm", "left hand", "right eye",
-			"right hand", "groin", "left leg", "right leg",
-			"pelvis", "right shoulder", "left shoulder" });
+      "jaw", "nose", "forehead", "left cheek",
+      "right cheek", "left side", "right side",
+      "left arm", "right arm", "left hand", "right eye",
+      "right hand", "groin", "left leg", "right leg",
+      "pelvis", "right shoulder", "left shoulder" });
 
     /* Demon has hooves & tail (and a pitchfork...) */
     bps["demon"] = bps["human"] +
-        ({ "left wing", "right wing", "left hoof", "right hoof", "tail" });
+    ({ "left wing", "right wing", "left hoof", "right hoof", "tail" });
 
     /* Demon done, human has feet */
     bps["human"] += ({ "left foot", "right foot" });
@@ -194,29 +194,29 @@ init_bodies()
     bps["angel"] = bps["human"] + ({ "left wing", "right wing" });
 
     bps["dragon"] = ({ "left wing", "right wing", "neck", "back",
-			 "left front leg", "right front leg", "tail",
-			 "left hind leg", "right hind leg", "chest",
-			 "jaw", "nose", "forehead", "stomach" });
+      "left front leg", "right front leg", "tail",
+      "left hind leg", "right hind leg", "chest",
+      "jaw", "nose", "forehead", "stomach" });
 
     /* They had 8 legs? (got an E in biology :-)... */
     bps["insect"] = ({ "head", "body",
-			 "first leg", "second leg", "third leg",
-			 "fourth leg", "fifth leg", "sixth leg",
-			 "seventh leg", "eight leg" });
+      "first leg", "second leg", "third leg",
+      "fourth leg", "fifth leg", "sixth leg",
+      "seventh leg", "eight leg" });
 
     /* And these had 6 legs? */
     bps["arachnid"] = ({ "head", "body",
-			   "first leg", "second leg", "third leg",
-			   "fourth leg", "fifth leg", "sixth leg",
-			 "eyes", "stomach" });
+      "first leg", "second leg", "third leg",
+      "fourth leg", "fifth leg", "sixth leg",
+      "eyes", "stomach" });
 
     bps["snake"] = ({ "head", "body", "tail" });
 
     /* Meow! */
     bps["feline"] = ({ "head", "body", "tail", "neck", "back",
-			 "left front paw", "right front paw",
-			 "left hind paw", "front hind paw",
-			 "jaw", "nose", "forehead", "stomach" });
+      "left front paw", "right front paw",
+      "left hind paw", "front hind paw",
+      "jaw", "nose", "forehead", "stomach" });
 
     /* Is "pseudopod" correct word here? */
     bps["jelly"] = ({ "body", "pseudopod" });
@@ -224,15 +224,15 @@ init_bodies()
     /* Todo: (perhaps) some have hooves, some cloven hooves, some paws,
        horn(s), ridges etc. */
     bps["animal"] = ({ "head", "body", "tail", "neck", "back",
-			 "left front leg", "right front leg",
-			 "left hind leg", "right hind leg",
-			 "jaw", "nose", "forehead", "stomach" });
+      "left front leg", "right front leg",
+      "left hind leg", "right hind leg",
+      "jaw", "nose", "forehead", "stomach" });
 
     /* And the neckbone connected to backbone, ... */
     bps["skeleton"] = ({ "skull", "left shoulder", "right shoulder",
-			   "left ribs", "right ribs", "collarbone",
-			   "backbone", "pelvis", "left thighbone",
-			   "neckbone", "right tighbone",
-			   "left legbone", "right legbone",
-			 });
+      "left ribs", "right ribs", "collarbone",
+      "backbone", "pelvis", "left thighbone",
+      "neckbone", "right tighbone",
+      "left legbone", "right legbone",
+    });
 }

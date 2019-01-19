@@ -13,78 +13,78 @@
 */
 int first_cmd(string str)
 {
-  string tmp;
-  string tname, mname;
-  object target;
+    string tmp;
+    string tname, mname;
+    object target;
 
-  if (((int)TP->query_level() < 35) && !(CODER))
-    return 0;
+    if (((int)TP->query_level() < 35) && !(CODER))
+	return 0;
 
-  if(!str)
+    if(!str)
     {
-      notify_fail("Usage: first aid <player>\n");
-      return 0;
+	notify_fail("Usage: first aid <player>\n");
+	return 0;
     }
 
-  if(!sscanf(str,"aid %s",tmp))
+    if(!sscanf(str,"aid %s",tmp))
     {
-      notify_fail("Usage: first aid <player>\n");
-      return 0;
+	notify_fail("Usage: first aid <player>\n");
+	return 0;
     }
 
-  if(!(CAN_MOVE(TP)))
+    if(!(CAN_MOVE(TP)))
     {
-      notify_fail(MOVE);
-      return 0;
+	notify_fail(MOVE);
+	return 0;
     }
 
-  target=present(tmp,environment(TP));
-  if(!target)
+    target=present(tmp,environment(TP));
+    if(!target)
     {
-      notify_fail("No such player here.\n");
-      return 0;
+	notify_fail("No such player here.\n");
+	return 0;
     }
-  tname = (string)target->query_name();
-  mname = (string)TP->query_name();
+    tname = (string)target->query_name();
+    mname = (string)TP->query_name();
 
-  if(target->query_npc())
+    if(target->query_npc())
     {
-      notify_fail("You can only give first aid to players.\n");
-      return 0;
-    }
-
-  if(target->query_ghost() || target->query_dead())
-    {
-      notify_fail("It's to late that person is dead already.\n");
-      return 0;
+	notify_fail("You can only give first aid to players.\n");
+	return 0;
     }
 
-  if(target->query_hp() > 0)
+    if(target->query_ghost() || target->query_dead())
     {
-      notify_fail(capitalize(str)+" does not need healing.\n");
-      return 0;
+	notify_fail("It's to late that person is dead already.\n");
+	return 0;
     }
 
-  if(SP < CO_AID)
+    if(target->query_hp() > 0)
     {
-      notify_fail(SP_MES);
-      return 0;
+	notify_fail(capitalize(str)+" does not need healing.\n");
+	return 0;
     }
 
-  TM("You give first aid to " +tname+ ".");
+    if(SP < CO_AID)
+    {
+	notify_fail(SP_MES);
+	return 0;
+    }
 
-  tell_room(environment(TP),mname+" gives first aid to "+
-	    tname+".\n",({ TP,target }));
+    TM("You give first aid to " +tname+ ".");
 
-  tell_object(target,mname+" gives you first aid.\n");
+    tell_room(environment(TP),mname+" gives first aid to "+
+      tname+".\n",({ TP,target }));
 
-  TP->add_sp(-CO_AID);
-  target->heal_self(AID_HEAL);
+    tell_object(target,mname+" gives you first aid.\n");
 
-  TM(tname+" seems to feel better.");
+    TP->add_sp(-CO_AID);
+    target->heal_self(AID_HEAL);
 
-  log_file(AID_FILE,capitalize((string)TP->query_real_name())+"gave first aid to"+
-	capitalize((string)target->query_real_name()+"\n"));
+    TM(tname+" seems to feel better.");
 
-  return 1;
+    log_file(AID_FILE,capitalize((string)TP->query_real_name())+"gave first aid to"+
+      capitalize((string)target->query_real_name()+"\n"));
+
+    return 1;
 }

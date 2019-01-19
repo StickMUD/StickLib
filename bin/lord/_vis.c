@@ -10,17 +10,17 @@
 */
 int vis_cmd()
 {
-	if ((int)TP->query_level() < 30)
-		return 0;
+    if ((int)TP->query_level() < 30)
+	return 0;
 
-	if(!(CAN_MOVE(TP)))
-	{
-		notify_fail(MOVE);
-		return 0;
-	}
+    if(!(CAN_MOVE(TP)))
+    {
+	notify_fail(MOVE);
+	return 0;
+    }
 
-	TP->vis();
+    TP->vis();
 
-	return 1;
+    return 1;
 
 }

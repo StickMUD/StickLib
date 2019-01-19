@@ -34,18 +34,18 @@ int *als;
 
 nomask void
 create() {
-   str_desc = ({
-  "scrawny", "undeveloped", "puny", "weak", "muscled", "strong",
-  "giant-like", "titan-like", "collosic", "titanic" });
-   con_desc = ({
- "meek", "sickly", "unhealthy", "frail", "healthy", "vigorous",
-  "resistant", "invigorated", "pumped", "buff" });
+    str_desc = ({
+      "scrawny", "undeveloped", "puny", "weak", "muscled", "strong",
+      "giant-like", "titan-like", "collosic", "titanic" });
+    con_desc = ({
+      "meek", "sickly", "unhealthy", "frail", "healthy", "vigorous",
+      "resistant", "invigorated", "pumped", "buff" });
     dex_desc = ({
-   "sloth-like", "unresponsive", "slow", "clumsy", "agile",
-   "dextrous", "fast", "quick", "nimble", "rapid" });
+      "sloth-like", "unresponsive", "slow", "clumsy", "agile",
+      "dextrous", "fast", "quick", "nimble", "rapid" });
     int_desc = ({
-   "peonic", "moronic", "stupid", "dumb", "smart", "clever",
-  "intelligent", "ingenious", "visionary", "omniscient" });
+      "peonic", "moronic", "stupid", "dumb", "smart", "clever",
+      "intelligent", "ingenious", "visionary", "omniscient" });
     comp_desc = ({ "somewhat ", "rather ", "","quite ","very ","extremely " });
 
     bleed_desc = ({
@@ -60,20 +60,20 @@ create() {
       "Everything is dark. You know you will die soon."
     });
 
-  als = ({ AL_ANGELIC * AL_RATIO / 100, AL_SAINTLY * AL_RATIO / 100,
-	   AL_VERY_GOOD * AL_RATIO / 100,
-	   AL_GOOD * AL_RATIO / 100, AL_QUITE_GOOD * AL_RATIO / 100,
-	   AL_VERY_NICE * AL_RATIO / 100,
-	   AL_NICE * AL_RATIO / 100, AL_QUITE_NICE * AL_RATIO / 100,
-	   AL_QUITE_NASTY * AL_RATIO / 100,
-	   AL_NASTY * AL_RATIO / 100, AL_QUITE_EVIL * AL_RATIO / 100,
-	   AL_EVIL * AL_RATIO / 100, AL_VERY_EVIL * AL_RATIO / 100,
-	   AL_DEMONIC * AL_RATIO / 100, AL_SATANIC * AL_RATIO / 100  });
+    als = ({ AL_ANGELIC * AL_RATIO / 100, AL_SAINTLY * AL_RATIO / 100,
+      AL_VERY_GOOD * AL_RATIO / 100,
+      AL_GOOD * AL_RATIO / 100, AL_QUITE_GOOD * AL_RATIO / 100,
+      AL_VERY_NICE * AL_RATIO / 100,
+      AL_NICE * AL_RATIO / 100, AL_QUITE_NICE * AL_RATIO / 100,
+      AL_QUITE_NASTY * AL_RATIO / 100,
+      AL_NASTY * AL_RATIO / 100, AL_QUITE_EVIL * AL_RATIO / 100,
+      AL_EVIL * AL_RATIO / 100, AL_VERY_EVIL * AL_RATIO / 100,
+      AL_DEMONIC * AL_RATIO / 100, AL_SATANIC * AL_RATIO / 100  });
 
-  aa = ({  "Angelic", "Saintly", "Very Good", "Good", "Quite Good",
-	   "Very Nice", "Nice", "Quite Nice", "Neutral",
-	   "Quite Nasty", "Nasty", "Very Nasty",
-	   "Evil", "Very Evil", "Demonic", "Satanic" });
+    aa = ({  "Angelic", "Saintly", "Very Good", "Good", "Quite Good",
+      "Very Nice", "Nice", "Quite Nice", "Neutral",
+      "Quite Nasty", "Nasty", "Very Nasty",
+      "Evil", "Very Evil", "Demonic", "Satanic" });
 
 }
 
@@ -81,80 +81,80 @@ nomask string
 query_str_desc(int x) {
     string dummy;
     if (x > MAX_AB) {
-      x = MAX_AB;
-      dummy = "more than ";
+	x = MAX_AB;
+	dummy = "more than ";
     }
     else dummy = "";
     if (x < 1) x = 1;
     x--;
 
     return dummy + comp_desc[(x < MAX_NEG) ? (CMPCNT - 1 - (x % CMPCNT)) : (x % CMPCNT)]
-            + str_desc[x / CMPCNT];
+    + str_desc[x / CMPCNT];
 }
 
 nomask string
 query_dex_desc(int x) {
     string dummy;
     if (x > MAX_AB) {
-      x = MAX_AB;
-      dummy = "more than ";
+	x = MAX_AB;
+	dummy = "more than ";
     }
     else dummy = "";
     if (x < 1) x = 1;
     x--;
 
     return dummy + comp_desc[(x < MAX_NEG) ? (CMPCNT - 1 - (x % CMPCNT)) : (x % CMPCNT)]
-            + dex_desc[x / CMPCNT];
+    + dex_desc[x / CMPCNT];
 }
 
 nomask string
 query_con_desc(int x) {
     string dummy;
     if (x > MAX_AB) {
-      x = MAX_AB;
-      dummy = "more than ";
+	x = MAX_AB;
+	dummy = "more than ";
     }
     else dummy = "";
     if (x < 1) x = 1;
     x--;
 
     return dummy + comp_desc[(x < MAX_NEG) ? (CMPCNT - 1 - (x % CMPCNT)) : (x % CMPCNT)]
-            + con_desc[x / CMPCNT];
+    + con_desc[x / CMPCNT];
 }
 
 nomask string
 query_int_desc(int x) {
     string dummy;
     if (x > MAX_AB) {
-      x = MAX_AB;
-      dummy = "more than ";
+	x = MAX_AB;
+	dummy = "more than ";
     }
     else dummy = "";
     if (x < 1) x = 1;
     x--;
 
     return dummy + comp_desc[(x < MAX_NEG) ? (CMPCNT - 1 - (x % CMPCNT)) : (x % CMPCNT)]
-            + int_desc[x / CMPCNT];
+    + int_desc[x / CMPCNT];
 }
 
 nomask string
 query_ab_desc(int Str, int Dex, int Con, int Int)
 {
-   return (query_str_desc(Str) + ", " +
-	   query_dex_desc(Dex) + ", " +
-	   query_con_desc(Con) + " and " +
-	   query_int_desc(Int) + ".");
+    return (query_str_desc(Str) + ", " +
+      query_dex_desc(Dex) + ", " +
+      query_con_desc(Con) + " and " +
+      query_int_desc(Int) + ".");
 }
 
 nomask void
 desc_me(object ob) {
-   if (!ob) ob = this_player();
+    if (!ob) ob = this_player();
 
-	this_player()->tell_me("You are "+
+    this_player()->tell_me("You are "+
       query_ab_desc((int)ob->query_stat(ST_STR),
-		    (int)ob->query_stat(ST_DEX),
-		    (int)ob->query_stat(ST_CON),
-			(int) ob->query_stat(ST_INT)) );
+	(int)ob->query_stat(ST_DEX),
+	(int)ob->query_stat(ST_CON),
+	(int) ob->query_stat(ST_INT)) );
 }
 
 /*
@@ -175,7 +175,7 @@ hp_desc(object ob, int mode)
 
     /* Kludge with players, as they might have negative hp */
     if (!ob->query_npc()) {
-        hp  += mhp / 3;
+	hp  += mhp / 3;
 	mhp += mhp / 3;
     }
 
@@ -187,7 +187,7 @@ hp_desc(object ob, int mode)
     if (x > (HP_DESC_NO - 1)) x = (HP_DESC_NO - 1);
 
     if (mode == 1) {
-        return "You " + ({
+	return "You " + ({
 	  "are at death's door",
 	  "are barely alive",
 	  "are in critical condition",
@@ -205,8 +205,8 @@ hp_desc(object ob, int mode)
 	  "have some minor scratches",
 	  "are fine",
 	  "are in an excellent condition"
-	  })[x] + ".\n";
-      }
+	})[x] + ".\n";
+    }
 
     return capitalize((string)ob->query_pronoun()) + " " + ({
       "is at death's door",
@@ -226,7 +226,7 @@ hp_desc(object ob, int mode)
       "has some minor scratches",
       "is fine",
       "is in an excellent condition"
-      })[x] + ".\n";
+    })[x] + ".\n";
 
 }
 
@@ -242,24 +242,24 @@ ac_desc(object ob)
     if (a > 15) a = 15;
 
     return capitalize((string)ob->query_pronoun()) + " has " +
-      ({
-	"a really poor defence.\n",
-	"a poor defence.\n",
-	"an average defence.\n",
-	"a good defence.\n",
-	"a very good defence.\n",
-	"an excellent defence.\n",
-	"an extremely good defence.\n",
-	"a mighty defence.\n",
-	"a magical defence!\n",
-	"an invincible defence!\n",
-	"a defence like a yard thick steel plates!\n",
-	"a defence like four yards of solid steel!\n",
-	"a defence like a yard of solid Adamantium!\n",
-	"a defence like four yards of solid Adamantium!\n",
-	"a defence like TWENTY YARDS OF SOLID ADAMANTIUM!\n",
-	"a defence that goes beyond all description!!!\n",
-	})[a];
+    ({
+      "a really poor defence.\n",
+      "a poor defence.\n",
+      "an average defence.\n",
+      "a good defence.\n",
+      "a very good defence.\n",
+      "an excellent defence.\n",
+      "an extremely good defence.\n",
+      "a mighty defence.\n",
+      "a magical defence!\n",
+      "an invincible defence!\n",
+      "a defence like a yard thick steel plates!\n",
+      "a defence like four yards of solid steel!\n",
+      "a defence like a yard of solid Adamantium!\n",
+      "a defence like four yards of solid Adamantium!\n",
+      "a defence like TWENTY YARDS OF SOLID ADAMANTIUM!\n",
+      "a defence that goes beyond all description!!!\n",
+    })[a];
 }
 
 nomask string
@@ -274,27 +274,27 @@ wc_desc(object ob)
     if (a > 12) a = 12;
 
     return capitalize((string)ob->query_pronoun()) + " " +
-      ({
-	"is harmless.\n",
-	"is mostly harmless.\n",
-	"is an average opponent.\n",
-	"is a good fighter.\n",
-	"is a dangerous opponent.\n",
-	"is a deadly opponent.\n",
-	"is a lord-killer opponent.\n",
-	"is a BIG lord-killer opponent.\n",
-	"is a killer machine!\n",
-	"could kill a major dragon with one hit!\n",
-	"could kill SEVEN dragons with one hit!\n",
-	"could destroy a MOUNTAIN with one hit!\n",
-	"could shred a CODER in one round!!!\n",
-	})[a];
+    ({
+      "is harmless.\n",
+      "is mostly harmless.\n",
+      "is an average opponent.\n",
+      "is a good fighter.\n",
+      "is a dangerous opponent.\n",
+      "is a deadly opponent.\n",
+      "is a lord-killer opponent.\n",
+      "is a BIG lord-killer opponent.\n",
+      "is a killer machine!\n",
+      "could kill a major dragon with one hit!\n",
+      "could kill SEVEN dragons with one hit!\n",
+      "could destroy a MOUNTAIN with one hit!\n",
+      "could shred a CODER in one round!!!\n",
+    })[a];
 }
 
 string
 query_rnd_bleed_desc()
 {
-  return bleed_desc[random(sizeof(bleed_desc))];
+    return bleed_desc[random(sizeof(bleed_desc))];
 }
 
 //
@@ -303,56 +303,56 @@ query_rnd_bleed_desc()
 string
 query_al_title(int alignment)
 {
-  int a, d;
+    int a, d;
 
-  for (a = 0, d = -1; a < 14; a++)
-    if (alignment > als[a])
-      {
-	d = a;
-	break;
-      }
+    for (a = 0, d = -1; a < 14; a++)
+	if (alignment > als[a])
+	{
+	    d = a;
+	    break;
+	}
 
-  if (d == -1) d = 15;
+    if (d == -1) d = 15;
 
-  if (alignment < (3 * als[14])) return "Utterly " + aa[15];
-  else if (alignment < (2 * als[14])) return "Extremely " + aa[15];
-  else if (alignment < (15 * als[14] / 10)) return "Very " + aa[15];
-  else if (alignment > (3 * als[0])) return "Utterly " + aa[0];
-  else if (alignment > (2 * als[0])) return "Extremely " + aa[0];
-  else if (alignment > (15 * als[0] / 10)) return "Very " + aa[0];
+    if (alignment < (3 * als[14])) return "Utterly " + aa[15];
+    else if (alignment < (2 * als[14])) return "Extremely " + aa[15];
+    else if (alignment < (15 * als[14] / 10)) return "Very " + aa[15];
+    else if (alignment > (3 * als[0])) return "Utterly " + aa[0];
+    else if (alignment > (2 * als[0])) return "Extremely " + aa[0];
+    else if (alignment > (15 * als[0] / 10)) return "Very " + aa[0];
 
-  return aa[d];
+    return aa[d];
 }
 
 void
 table()
 {
-  int i;
+    int i;
 
-  for (i = 1; i < 52; i++)
-    this_player()->tell_me(i + ": " + query_ab_desc(i,i,i,i));
+    for (i = 1; i < 52; i++)
+	this_player()->tell_me(i + ": " + query_ab_desc(i,i,i,i));
 }
 
 // Better make it a shared global array, no need to rememer exact
 // desc amount... can use sizeof. Besides, no need to re-construct
 // the array _every time_ function is called.
-	string *mud_descs = ({
-    MUD_NAME,
-    MUD_NAME ": Nightmare on Main Street",
-    MUD_NAME " II: Thousand and One Banishments",
-    MUD_NAME " III: The Coder Wars",
-    MUD_NAME " IV: The New Hope",
-    MUD_NAME " V: " CITY_NAME " Strikes Back",
-    MUD_NAME " VI: Return of the Lag",
-    MUD_NAME " VII: Return of the Addicts",
-    MUD_NAME " VIII: The Guild Wars",
-    MUD_NAME " IX: The Whinefree Generation",
-    "Raiders of the Lost " MUD_NAME,
-    "Grossed Swords",
-	});
+string *mud_descs = ({
+  MUD_NAME,
+  MUD_NAME ": Nightmare on Main Street",
+  MUD_NAME " II: Thousand and One Banishments",
+  MUD_NAME " III: The Coder Wars",
+  MUD_NAME " IV: The New Hope",
+  MUD_NAME " V: " CITY_NAME " Strikes Back",
+  MUD_NAME " VI: Return of the Lag",
+  MUD_NAME " VII: Return of the Addicts",
+  MUD_NAME " VIII: The Guild Wars",
+  MUD_NAME " IX: The Whinefree Generation",
+  "Raiders of the Lost " MUD_NAME,
+  "Grossed Swords",
+});
 
 nomask string
 query_mud_name()
 {
-	return mud_descs[random(sizeof(mud_descs))];
+    return mud_descs[random(sizeof(mud_descs))];
 }

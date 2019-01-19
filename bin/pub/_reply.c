@@ -8,7 +8,7 @@
 int
 reply_cmd(string str)
 {
-/* Simple kludge to allow mailbox to work ok: */
+    /* Simple kludge to allow mailbox to work ok: */
     if(to_int(str)) return 0;
     return "/bin/pub/_tell.c"->do_reply(str);
 }

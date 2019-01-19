@@ -35,7 +35,7 @@ throw_cmd(string arg) {
        things automatically at our opponent. */
 
     if (!arg) {
-        write("Throw what? And perhaps, at whom?\n");
+	write("Throw what? And perhaps, at whom?\n");
 	return 0;
     }
 
@@ -43,10 +43,10 @@ throw_cmd(string arg) {
 
     /* 'throw money away'? */
     if (sscanf(arg, "%s away", what) == 1) {
-        targid = 0;
+	targid = 0;
     } else {
-        /* 'throw caterpillar at christmas-tree monster'? */
-        if (sscanf(arg, "%s at %s", what, targid) != 2) {
+	/* 'throw caterpillar at christmas-tree monster'? */
+	if (sscanf(arg, "%s at %s", what, targid) != 2) {
 	    what = arg;
 	    targid = 0;
 	}
@@ -56,13 +56,13 @@ throw_cmd(string arg) {
     if (targid) target = present(targid, environment(TP));
 
     if (!item) {
-        write("You aren't carrying any \"" + what + "\".\n");
+	write("You aren't carrying any \"" + what + "\".\n");
 	return 0;
     }
 
     if (targid && !target) {
-        write("You can't see anything called \"" + targid +
-	    "\" around here.\n");
+	write("You can't see anything called \"" + targid +
+	  "\" around here.\n");
 	return 0;
     }
 
@@ -74,18 +74,18 @@ throw_cmd(string arg) {
     iname = find_name(item, 0);
 
     if (item->drop())
-      {
-        TP->tell_me("You can't throw " + iname + "!\n");
+    {
+	TP->tell_me("You can't throw " + iname + "!\n");
 	return 1;
-      }
+    }
 
     /* No target, we just throw a thing away. Equal to drop command,
        except that it might damage the item, and we don't have all the
        extra functions with throw, like 'throw all' or 'throw 4 coins'
        etc. but who cares. */
     if (!target)
-      {
-        TP->tell_me("You throw " + iname + " away.\n");
+    {
+	TP->tell_me("You throw " + iname + " away.\n");
 	tell_room(env, myname + " throws " + iname + " away.\n", ({ TP }));
 	TP->add_weight(-((int)item->query_weight()));
 
@@ -93,19 +93,19 @@ throw_cmd(string arg) {
 
 	move_object(item, env);
 	return 1;
-      }
+    }
 
     tname = find_name(target, 1);
 
     if (environment(target) != env)
-      {
-        TP->tell_me("You can't see " + tname + " around here.\n");
+    {
+	TP->tell_me("You can't see " + tname + " around here.\n");
 	return 1;
-      }
+    }
 
     TP->tell_me("You throw " + iname + " at " + tname + "!\n");
     env->tell_here(myname + " throws " + iname + " at " + tname + "!\n",
-		   ({ TP, target }), 0);
+      ({ TP, target }), 0);
     target->tell_me(myname + " throws " + iname + " at you!\n");
 
     /* Get the 0..100000 value */

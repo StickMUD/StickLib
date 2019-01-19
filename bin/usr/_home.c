@@ -8,7 +8,7 @@ home_cmd(string str, object me)
     string err;
 
     if (!CHECK || !me)
-      return 0;
+	return 0;
 
     if (!str)
 	workroom = PATH_USER + (string)me->query_real_name() + "/workroom";
@@ -18,12 +18,12 @@ home_cmd(string str, object me)
     err = catch(call_other(workroom, "???"));
 
     if (err) {
-        me->tell_me(sprintf("Error in loading workroom: %s\n", err));
+	me->tell_me(sprintf("Error in loading workroom: %s\n", err));
     }
 
     if (find_object(workroom)) {
-        me->move_player("X", workroom);
-        return 1;
+	me->move_player("X", workroom);
+	return 1;
     }
     me->tell_me("Argh! You are homeless!");
     return 1;

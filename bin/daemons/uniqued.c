@@ -120,11 +120,11 @@ query_unique(string name)
     if(uniq_lock) return 0; // not allowed if locked
 
     if(query_uptime() < 12600) {
-        probability = 30 + query_uptime() / 180;
-        // will be 100 after 12600 seconds = 210 minutes
+	probability = 30 + query_uptime() / 180;
+	// will be 100 after 12600 seconds = 210 minutes
 
-        if(probability < random(101))
-            return 0;
+	if(probability < random(101))
+	    return 0;
     }
 
     name = get_original(name);

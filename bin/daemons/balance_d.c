@@ -37,35 +37,35 @@ static mapping guilds;
 nomask void
 create()
 {
-  /* Guild skill area weighs. Every guild has 200% to use. */
+    /* Guild skill area weighs. Every guild has 200% to use. */
 
-  guilds = ([
-/*			  Attack	Defence		Heal	*/
+    guilds = ([
+      /*			  Attack	Defence		Heal	*/
 
-	GN_NONE:	({  80,		 80,		 40, }),
+      GN_NONE:	({  80,		 80,		 40, }),
 
 #ifdef GN_FIGHTER
-	GN_FIGHTER:	({ 100,		 75,		 25, }),
+      GN_FIGHTER:	({ 100,		 75,		 25, }),
 #endif
 #ifdef GN_HEALER
-	GN_HEALER:	({  20,		 80,		100, }),
+      GN_HEALER:	({  20,		 80,		100, }),
 #endif
 #ifdef GN_MAGE
-	GN_MAGE:	({  80,		 80,		 40, }),
+      GN_MAGE:	({  80,		 80,		 40, }),
 #endif
 #ifdef GN_NECROMANCER
-	GN_NECROMANCER:	({  85,		 75,		 40, }),
+      GN_NECROMANCER:	({  85,		 75,		 40, }),
 #endif
 #ifdef GN_NINJA
-	GN_NINJA:	({  95,		 80,		 25, }),
+      GN_NINJA:	({  95,		 80,		 25, }),
 #endif
 #ifdef GN_PRIEST
-	GN_PRIEST:	({  65,		 60,		 75, }),
+      GN_PRIEST:	({  65,		 60,		 75, }),
 #endif
 #ifdef GN_THIEF
-	GN_THIEF:	({  75,		 90,		 35, }),
+      GN_THIEF:	({  75,		 90,		 35, }),
 #endif
-  ]);
+    ]);
 }
 
 
@@ -95,26 +95,26 @@ nomask status critical_failure() { return critical_failure; }
 int
 skill_roll(int skill_level)
 {
-  int r, cs;
+    int r, cs;
 
-  critical_failure = critical_success = 0;
+    critical_failure = critical_success = 0;
 
-  if(skill_level > 1000) skill_level = 1000; // Max 100%
+    if(skill_level > 1000) skill_level = 1000; // Max 100%
 
-  r = random(1001);
+    r = random(1001);
 
-  if (r <= 10) { critical_failure = 1; return 0; }
+    if (r <= 10) { critical_failure = 1; return 0; }
 
-  /* Critical success chance? */
-  cs = (990 - (skill_level / 2500));
-  if (cs < 900) cs = 900;
+    /* Critical success chance? */
+    cs = (990 - (skill_level / 2500));
+    if (cs < 900) cs = 900;
 
-  if (r >= cs) critical_success = 1;
-/* Why is this here?
-  else if (r < skill_level) return 0;
-  //Sumppen */
+    if (r >= cs) critical_success = 1;
+    /* Why is this here?
+      else if (r < skill_level) return 0;
+      //Sumppen */
 
-  return (skill_level - r);
+    return (skill_level - r);
 }
 
 
@@ -134,15 +134,15 @@ skill_roll(int skill_level)
 nomask int
 hit_chance(int skill_level, string guild)
 {
-  int s, a;
+    int s, a;
 
-  if (!guilds[guild])
-    a = guilds[GN_NONE][W_ATT];
-  else a = guilds[guild][W_ATT];
+    if (!guilds[guild])
+	a = guilds[GN_NONE][W_ATT];
+    else a = guilds[guild][W_ATT];
 
-  s = (60 + (100 * skill_level / 869));
+    s = (60 + (100 * skill_level / 869));
 
-  return (s * a / 100);
+    return (s * a / 100);
 }
 
 
@@ -160,25 +160,25 @@ hit_chance(int skill_level, string guild)
 nomask status
 hit_roll(int skill_level, string guild, int ac)
 {
-  int c, r;
+    int c, r;
 
-  critical_failure = critical_success = 0;
+    critical_failure = critical_success = 0;
 
-  c = (hit_chance(skill_level, guild) - ac);
+    c = (hit_chance(skill_level, guild) - ac);
 
-  if (c < 10) c = 10;
-  if (c > 95) c = 95;
+    if (c < 10) c = 10;
+    if (c > 95) c = 95;
 
-  r = random(100);
+    r = random(100);
 
-  if (r >= 99) { critical_failure = 1; return 0; }
-  if (r < (1 + (skill_level > 10000 ?
-		1 + (skill_level - 10000) / 1000 : 0)))
+    if (r >= 99) { critical_failure = 1; return 0; }
+    if (r < (1 + (skill_level > 10000 ?
+	  1 + (skill_level - 10000) / 1000 : 0)))
     { critical_success = 1; return 1; }
 
-  if (r <= c) return 1;
+    if (r <= c) return 1;
 
-  return 0;
+    return 0;
 }
 
 
@@ -195,24 +195,24 @@ hit_roll(int skill_level, string guild, int ac)
 nomask int
 damage(int skill_level, string guild, int p,status is_player)
 {
-  int a, dmg, sk, pr;
+    int a, dmg, sk, pr;
 
-  if (!guilds[guild])
+    if (!guilds[guild])
 	a = guilds[GN_NONE][W_ATT];
-  else a = guilds[guild][W_ATT];
+    else a = guilds[guild][W_ATT];
 
-  /* Max possible MK damage for skill */
-  dmg = (100 + (skill_level - 50));
+    /* Max possible MK damage for skill */
+    dmg = (100 + (skill_level - 50));
 
-  /* FP/SP requirement for max effect at this skill.
-   * Reduce damage if less than full is used. */
-  pr = (30 + (10 * skill_level / 111));
-  if (p < pr) a = (a * p) / pr;
+    /* FP/SP requirement for max effect at this skill.
+     * Reduce damage if less than full is used. */
+    pr = (30 + (10 * skill_level / 111));
+    if (p < pr) a = (a * p) / pr;
 
-  if(is_player)
-    return (PK_DAM * (a * dmg / 100) / 100);
-  else
-    return (a * dmg / 100);
+    if(is_player)
+	return (PK_DAM * (a * dmg / 100) / 100);
+    else
+	return (a * dmg / 100);
 }
 
 
@@ -232,18 +232,18 @@ damage(int skill_level, string guild, int p,status is_player)
 nomask int
 melee_damage(int skill_level, string guild, int p, object who, object wp,status is_player)
 {
-  int dmg, wc;
+    int dmg, wc;
 
-  dmg = damage(skill_level, guild, p,is_player);
+    dmg = damage(skill_level, guild, p,is_player);
 
-  /* Weapon class (treating "20" as maximum at the moment) */
-  /* Melee attacks with wc more than 20 increase damage! */
-  if (wp) wc = (int)wp->query_wc();
-  else if (who) wc = (int)who->query_wc();
-  else wc = 10;
-  if (wc != 20) dmg = (dmg * wc) / 20;
+    /* Weapon class (treating "20" as maximum at the moment) */
+    /* Melee attacks with wc more than 20 increase damage! */
+    if (wp) wc = (int)wp->query_wc();
+    else if (who) wc = (int)who->query_wc();
+    else wc = 10;
+    if (wc != 20) dmg = (dmg * wc) / 20;
 
-  return (dmg);
+    return (dmg);
 }
 
 
@@ -259,21 +259,21 @@ melee_damage(int skill_level, string guild, int p, object who, object wp,status 
 nomask int
 defence(int skill_level, string guild, int p)
 {
-  int a, def, pr;
+    int a, def, pr;
 
-  if (!guilds[guild])
+    if (!guilds[guild])
 	a = guilds[GN_NONE][W_DEF];
-  else a = guilds[guild][W_DEF];
+    else a = guilds[guild][W_DEF];
 
-  /* Max possible defence for skill */
-  def = (30 + (7 * skill_level / 100));
+    /* Max possible defence for skill */
+    def = (30 + (7 * skill_level / 100));
 
-  /* FP/SP requirement for max effect at this skill.
-   * Reduce damage if less than full is used. */
-  pr = (30 + (10 * skill_level / 111));
-  if (p < pr) a = (a * p) / pr;
+    /* FP/SP requirement for max effect at this skill.
+     * Reduce damage if less than full is used. */
+    pr = (30 + (10 * skill_level / 111));
+    if (p < pr) a = (a * p) / pr;
 
-  return (a * def / 100);
+    return (a * def / 100);
 }
 
 
@@ -289,7 +289,7 @@ defence(int skill_level, string guild, int p)
 nomask int
 defence_ac(int skill_level, string guild, int p)
 {
-  return (defence(skill_level, guild, p) / 5);
+    return (defence(skill_level, guild, p) / 5);
 }
 
 
@@ -308,16 +308,16 @@ defence_ac(int skill_level, string guild, int p)
 nomask int
 duration(int skill_level, string guild, int p)
 {
-  int dur, pr;
+    int dur, pr;
 
-  dur = (8 + (skill_level / 25));
+    dur = (8 + (skill_level / 25));
 
-  /* FP/SP requirement for max effect at this skill.
-   * Reduce damage if less than full is used. */
-  pr = (30 + (10 * skill_level / 111));
-  if (p < pr) dur = (dur * p) / pr;
+    /* FP/SP requirement for max effect at this skill.
+     * Reduce damage if less than full is used. */
+    pr = (30 + (10 * skill_level / 111));
+    if (p < pr) dur = (dur * p) / pr;
 
-  return dur;
+    return dur;
 }
 
 
@@ -336,23 +336,23 @@ duration(int skill_level, string guild, int p)
 nomask int
 healing(int skill_level, string guild, int p)
 {
-  int a, heal, pr;
+    int a, heal, pr;
 
-  if (!guilds[guild])
+    if (!guilds[guild])
 	a = guilds[GN_NONE][W_HEAL];
-  else a = guilds[guild][W_HEAL];
+    else a = guilds[guild][W_HEAL];
 
-  /* Max possible heal for skill */
-  /* Don't take these "unneccessary" parentheses away any more, please!
-     This thing heals zillion points if you do so. /Graah */
-  heal = (20 + ((30 * skill_level) / 100));
+    /* Max possible heal for skill */
+    /* Don't take these "unneccessary" parentheses away any more, please!
+       This thing heals zillion points if you do so. /Graah */
+    heal = (20 + ((30 * skill_level) / 100));
 
-  /* FP/SP requirement for max effect at this skill.
-   * Reduce damage if less than full is used. */
-  pr = (20 + (skill_level / 10));
-  if (p < pr) a = ((a * p) / pr);
+    /* FP/SP requirement for max effect at this skill.
+     * Reduce damage if less than full is used. */
+    pr = (20 + (skill_level / 10));
+    if (p < pr) a = ((a * p) / pr);
 
-  return ((a * heal) / 100);
+    return ((a * heal) / 100);
 }
 
 #define	LIST_GUILDS	\
@@ -364,118 +364,118 @@ healing(int skill_level, string guild, int p)
 nomask void
 tables(int used)
 {
-  int i, j, s;
-  string *guilds;
+    int i, j, s;
+    string *guilds;
 
-	guilds = ({ });
+    guilds = ({ });
 
 #ifdef GN_FIGHTER
-	guilds += ({ GN_FIGHTER });
+    guilds += ({ GN_FIGHTER });
 #endif
 #ifdef GN_HEALER
-	guilds += ({ GN_HEALER });
+    guilds += ({ GN_HEALER });
 #endif
 #ifdef GN_MAGE
-	guilds += ({ GN_MAGE });
+    guilds += ({ GN_MAGE });
 #endif
 #ifdef GN_NECROMANCER
-	guilds += ({ GN_NECROMANCER });
+    guilds += ({ GN_NECROMANCER });
 #endif
 #ifdef GN_NINJA
-	guilds += ({ GN_NINJA });
+    guilds += ({ GN_NINJA });
 #endif
 #ifdef GN_PRIEST
-	guilds += ({ GN_PRIEST });
+    guilds += ({ GN_PRIEST });
 #endif
 #ifdef GN_THIEF
-	guilds += ({ GN_THIEF });
+    guilds += ({ GN_THIEF });
 #endif
 
-  if (!used)
+    if (!used)
 	used = 120;
-  printf("\
+    printf("\
     MK ATTACK, maximum damages (spell or wc 20 weapon, %d sp/fp)\n",used);
 
-  LIST_GUILDS
+    LIST_GUILDS
 
-  for(i=0;i<101;i+=10)
+    for(i=0;i<101;i+=10)
     {
-      s = i*10;
+	s = i*10;
 	printf("%7d", s / 10);
 	for (j = 0; j < sizeof(guilds); j++)
-		printf("%8d", damage(s, guilds[j], used, 0));
+	    printf("%8d", damage(s, guilds[j], used, 0));
 	write("\n");
     }
 
-  printf("\n\n\
+    printf("\n\n\
     PK ATTACK, maximum damages (spell or wc 20 weapon, %d sp/fp)\n",used);
 
-  LIST_GUILDS
+    LIST_GUILDS
 
-  for(i=0;i<101;i+=10)
+    for(i=0;i<101;i+=10)
     {
-      s = i*10;
+	s = i*10;
 	printf("%7d", s / 10);
 	for (j = 0; j < sizeof(guilds); j++)
-		printf("%8d", damage(s, guilds[j], used, 0));
+	    printf("%8d", damage(s, guilds[j], used, 0));
 	write("\n");
     }
 
 
-  printf("\n\n\
+    printf("\n\n\
     DEFENCE skill, maximum percents (using 120 sp/fp)\n");
-  LIST_GUILDS
+    LIST_GUILDS
 
 
-  for(i=0;i<101;i+=10)
+    for(i=0;i<101;i+=10)
     {
-      s = i*10;
+	s = i*10;
 	printf("%7d", s / 10);
 	for (j = 0; j < sizeof(guilds); j++)
-		printf("%8d", defence(s, guilds[j], 120));
+	    printf("%8d", defence(s, guilds[j], 120));
 	write("\n");
     }
 
-  printf("\n\n\
+    printf("\n\n\
     skill/spell DURATION, maximum # of beats (using 120 sp/fp)\n");
 
-  LIST_GUILDS
+    LIST_GUILDS
 
-  for(i=0;i<101;i+=10)
+    for(i=0;i<101;i+=10)
     {
-      s = i*10;
+	s = i*10;
 	printf("%7d", s / 10);
 	for (j = 0; j < sizeof(guilds); j++)
-		printf("%8d", defence(s, guilds[j], 120));
+	    printf("%8d", defence(s, guilds[j], 120));
 	write("\n");
     }
 
 
-  printf("\n\n\
+    printf("\n\n\
     HARMFUL/ATTACK skill/spell DURATION, maximum # of beats (using 120 sp/fp)\n");
 
-  LIST_GUILDS
-  for(i=0;i<101;i+=10)
+    LIST_GUILDS
+    for(i=0;i<101;i+=10)
     {
-      s = i*10;
+	s = i*10;
 	printf("%7d", s / 10);
 	for (j = 0; j < sizeof(guilds); j++)
-		printf("%8d", duration(s, guilds[j], 120) / 4);
+	    printf("%8d", duration(s, guilds[j], 120) / 4);
 	write("\n");
     }
 
 
-  printf("\n\n\
+    printf("\n\n\
     HEALING, maximum heal (to HP, SP _or_ FP) (using 120 sp/fp)\n");
 
-  LIST_GUILDS
+    LIST_GUILDS
 
-  for(i=0;i<101;i+=10)
+    for(i=0;i<101;i+=10)
     {
-      s = i*10;
+	s = i*10;
 	printf("%7d", s / 10);
 	for (j = 0; j < sizeof(guilds); j++)
-		printf("%8d", healing(s, guilds[j], 120));
+	    printf("%8d", healing(s, guilds[j], 120));
 	write("\n");
     }
 }

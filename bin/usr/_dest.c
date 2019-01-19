@@ -22,7 +22,7 @@ dest_cmd(string str)
 
 	if ((tmp = (string)ob->query_name()) || (tmp = (string)ob->short())) {
 	    say(sprintf("%s is disintegrated by %s.\n", tmp,
-			(string)TP->query_name()));
+		(string)TP->query_name()));
 	} else {
 	    tmp = object_name(ob);
 	}

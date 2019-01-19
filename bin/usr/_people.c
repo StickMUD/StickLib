@@ -33,9 +33,9 @@ nomask int people_cmd(string str) {
     output = ({""});
 
     for(x=0;x<num;x++) {
-        name=people[x]->query_real_name();
-        if(name) name = capitalize(name);
-        else     name = "Login";
+	name=people[x]->query_real_name();
+	if(name) name = capitalize(name);
+	else     name = "Login";
 	age   =format_time((people[x]->query_age())/30);
 	if(str=="n") ip_num = format_text(interactive_info(people[x], II_IP_NAME),"bah");
 	else ip_num=interactive_info(people[x], II_IP_NUMBER);
