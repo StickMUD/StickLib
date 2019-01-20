@@ -4,6 +4,7 @@
 # No log files
 *.log 
 log/*
+data/d/channel_d/*
 
 # No coder directories
 home/*

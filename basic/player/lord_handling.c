@@ -21,7 +21,7 @@ string query_real_name();
 #endif
 
 #ifndef	MASTER_OB
-#define MASTER_OB "/secure/master_amy"
+#define MASTER_OB "/secure/master"
 #endif
 static string new_liege;
 string liege;			// Which Lord are we serving, if any?
@@ -32,7 +32,7 @@ int
 liege_cmd(string arg)
 {
     object ob;
-    return notify_fail("Sorry, but there'll be no lieges for now.\n"), 0;
+    //return notify_fail("Sorry, but there'll be no lieges for now.\n"), 0;
     if (coder_level > 0) {
 	notify_fail("You are too powerful to serve others.\n");
 	return (liege = 0);
@@ -192,7 +192,7 @@ lich_cmd(string str)
 	if (query(PLR_LICH_OFF))
 	    tell_me("(Your channel is off)\n" + s);
 	else
-	    tell_me(s, 0, TELL_TYPE_LIEGE_CHANNEL, 0, 0, 0);
+	    tell_me(s, 0, TELL_TYPE_HOUSE, 0, 0, 0);
 	return 1;
     }
 
@@ -209,17 +209,17 @@ lich_cmd(string str)
     if (!query(PLR_LICH_ON))
 	s = "(Your channel is off)";
 
-    txt = sprintf("/* %s */: %s", capitalize(name), str);
+    txt = sprintf("/@ %s @/: %s", capitalize(name), str);
 
     for (i = sizeof(ob) - 1; i >= 0; i--) {
 	if (ob[i]->query(PLR_LICH_ON)) {
-	    ob[i]->tell_me(txt, 0, TELL_TYPE_LIEGE_CHANNEL, 0, 0, 0);
+	    ob[i]->tell_me(txt, 0, TELL_TYPE_HOUSE, 0, 0, 0);
 	    dummy = 1;
 	}
     }
 
     if (!dummy) tell_me("No one heard you.");
-    else tell_me("Ok.");
+    else tell_me(txt, 0, TELL_TYPE_HOUSE, 0, 0, 0);
 
     return 1;
 }

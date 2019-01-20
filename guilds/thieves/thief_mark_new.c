@@ -23,7 +23,6 @@
 /* Rewrote several pieces Nov. 07 1995 - Kelgath */
 /* Transfered skills to seperate files in ~thieves/skills and tidied a
    bit more 1/1/96 --Colt */
-// Can't fucking quit & relogin reset stab cheat again. /Graah
 // 21-Jul-96: Channel handles isolated rooms now. /Graah
 // Now checking for idling before adding tumbling skill //Frobozz
 // Tumble now costs some fp (same goes for dodge/parry) //Sumppen
@@ -85,7 +84,7 @@ inherit "/guilds/thieves/skills/criticals";
 mapping skills;
 int success, targ_lev, sneak, t_level, guildmaster, tth;
 string pretitle, tattoo_desc;
-int ban; /* Ban until time() >= ban...   fuck... */
+int ban; /* Ban until time() >= ban...  */
 int wea_sharp, delay_steal, show_tattoo, delay_stab, stab_cheat;
 int delay_warmup;
 int steal_tax, tax_time; /* Unpaid taxes and time last paid */

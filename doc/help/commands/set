@@ -7,21 +7,40 @@ set message [type] to [color] :
 Sets your message [type] to [color].
 
 Types:
-lord        -          lord channel
-guild       -          guild/clan channel
-mud         -          mud channel
-tell        -          tells
-coder       -          coder channel
-party       -          party channel
-hitby       -          if you are successfully hit
-missedby    -          if you are missed by something
-missing     -          if you miss something in combat
-hitting     -          if you hit something in combat
 
-Colors:
-red, blue, yellow, green, orange, purple, black,
-bold red, bold blue, bold yellow, bold green, bold orange,
-bold purple, bold black
+say        :  Says within the same room
+whisper    :  Whispers within the same room
+tell       :  Tells
+shout      :  Shouts
+party      :  Messages within your party
 
-NOTE: You will probably not even see the 'black' color, so don't bother with
-it. Use bold black instead.
+hitby      :  If you are hit by something
+missedby   :  If you are missed by something
+hitting    :  If you hit something in combat
+missing    :  If you miss something in combat
+death      :  
+
+roombrief  :  Brief description of the room
+roomdesc   :  Verbose description of the room
+smells     :  Smells in your surroundings
+sounds     :  Sounds in your surroundings
+roomitem   :  Items in your room
+inventory  :  Items in your inventory
+invitem    :  Items inside of items in your inventory
+
+broadcast  :  Broadcast channel
+info       :  Info channel
+mort       :  Mort channel
+newbie     :  Newbie channel
+ooc        :  Out of Character channel
+lord       :  Lord channel
+guild      :  Guild channel
+house      :  House / Family channel
+faction    :  Faction / Kingdom channel
+order      :  Order / Clan channel
+wiz        :  Wizard channel
+arch       :  Archwizard channel
+admin      :  Administrator channel
+
+Available colors:  red, blue, yellow, green, magenta, black, cyan, white
+Available effects: bold, dim, underline, italic, reverse, normal

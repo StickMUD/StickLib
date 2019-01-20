@@ -30,7 +30,6 @@ is_valid_target(object ob)
 	return 0;
     }
 
-    /* Can't fuck with dead players */
     if (ob->query_dead())
     {
 	notify_fail("But that person is dead!\n");

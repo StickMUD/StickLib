@@ -21,21 +21,6 @@
 			users location.
 */
 
-/* Graah 22-Jun-96: Added a fun fumble. It is most likely to fumble
- * for those who have the worst luck. Also fixed so that it is harder
- * to make monster summonkills.
- */
-
-/* Summon now takes FP too! //Graah 26-Jun-96 */
-
-/* Can't fucking summon at all now if summontoggle is on.
-   Plastic level 50 cheaters just kill all people otherwise.
-   //Graah */
-// And coders, keep your mouth shut for once. Why should
-// players know about this at all?
-
-/* Now spellcaster guilds use this as it used to be. //Graah */
-
 int
 summon_cmd(string str)
 {

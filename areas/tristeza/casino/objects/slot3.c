@@ -276,7 +276,7 @@ status pull_cmd(string arg)
 	}
     }
 
-    /*** everything seems ok...spin the fucker! ***/
+    /*** everything seems ok...spin it! ***/
 
     name = TP->QRN;
 

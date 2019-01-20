@@ -1,9 +1,7 @@
 #include <cmd.h>
 #include <tell_me.h>
 
-#define	TERM_LIST	({\
-		"vt100", "ansi", "dumb"\
-		})
+#define	TERM_LIST ({"vt100", "ansi", "dumb"})
 
 mapping messages;
 mapping effects;
@@ -12,47 +10,63 @@ void
 create()
 {
     messages = ([
-      "tell"	: TELL_TYPE_TELL,
-      "lord"	: TELL_TYPE_LORD_CHANNEL,
-      "mud"	: TELL_TYPE_MUD_CHANNEL,
-      "guild"	: TELL_TYPE_GUILD_CHANNEL,
-      "hitby"	: TELL_TYPE_HIT_BY,
-      "missedby": TELL_TYPE_MISSED_BY,
-      "hitting" : TELL_TYPE_HITTING,
-      "missing" :TELL_TYPE_MISSING,
-      "party"	: TELL_TYPE_PARTY,
-      "info"	: TELL_TYPE_INFO,
-      "coder"	: TELL_TYPE_CODER_CHANNEL,
-      "flord"	: TELL_TYPE_FLORD_CHANNEL,
-      "liege"	: TELL_TYPE_LIEGE_CHANNEL,
-      "lich"	: TELL_TYPE_LIEGE_CHANNEL,
-      "shout"	: TELL_TYPE_SHOUT,
+      "say":		TELL_TYPE_SAY,
+      "whisper":	TELL_TYPE_WHISPER,
+      "tell":		TELL_TYPE_TELL,
+      "shout":		TELL_TYPE_SHOUT,
+      "party":		TELL_TYPE_PARTY,
+      "hitby":		TELL_TYPE_HIT_BY,
+      "missedby":	TELL_TYPE_MISSED_BY,
+      "hitting":	TELL_TYPE_HITTING,
+      "missing":	TELL_TYPE_MISSING,
+      "death":		TELL_TYPE_DEATH,
+      "roombrief":	TELL_TYPE_ROOM_BRIEF,
+      "roomdesc":	TELL_TYPE_ROOM_DESC,
+      "smells":		TELL_TYPE_ROOM_SMELLS,
+      "sounds":		TELL_TYPE_ROOM_SOUNDS,
+      "roomitem":	TELL_TYPE_ROOM_ITEM,
+      "inventory":	TELL_TYPE_INVENTORY,
+      "invitem":	TELL_TYPE_INV_ITEM,
+      "broadcast":	TELL_TYPE_BROADCAST,
+      "info":		TELL_TYPE_INFO,
+      "mort":		TELL_TYPE_MORT,
+      "newbie":		TELL_TYPE_NEWBIE,
+      "ooc":		TELL_TYPE_OOC,
+      "lord":		TELL_TYPE_LORD,
+      "guild":		TELL_TYPE_GUILD,
+      "house":		TELL_TYPE_HOUSE,
+      "faction":	TELL_TYPE_FACTION,
+      "order":		TELL_TYPE_ORDER,
+      "wiz":		TELL_TYPE_WIZ,
+      "arch":		TELL_TYPE_ARCH,
+      "admin":		TELL_TYPE_ADMIN,
     ]);
+
     effects = ([
-      "normal"		: "0",
-      "bold"		: "1",
-      "dim"		: "2",
-      "italic"		: "3",
-      "underlined"	: "4",
-      "underline"	: "4",
-      "reversed"	: "7",
-      "colour0"		: "30",
-      "colour1"		: "31",
-      "colour2"		: "32",
-      "colour3"		: "33",
-      "colour4"		: "34",
-      "colour5"		: "35",
-      "colour6"		: "36",
-      "colour7"		: "37",
-      /* Let's allow using real colour names too... */
-      "black"		: "30",
-      "red"		: "31",
-      "green"		: "32",
-      "yellow"		: "33",
-      "blue"		: "34",
-      "purple"		: "35",
-      "cyan"		: "36",
-      "white"		: "37",
+        "normal"      : "0",
+        "reset"       : "0",
+        "bold"        : "1",
+        "dim"         : "2",
+        "italic"      : "3",
+        "underline"   : "4",
+        "flash"       : "5",
+        "reverse"     : "7",
+        "black"       : "30",
+        "red"         : "31",
+        "green"       : "32",
+        "yellow"      : "33",
+        "blue"        : "34",
+        "magenta"     : "35",
+        "cyan"        : "36",
+        "white"       : "37",
+        "bgblack"     : "40",
+        "bgred"       : "41",
+        "bggreen"     : "42",
+        "bgyellow"    : "43",
+        "bgblue"      : "44",
+        "bgmagenta"   : "45",
+        "bgcyan"      : "46",
+        "bgwhite"     : "47",
     ]);
 }
 

@@ -294,7 +294,7 @@ status spin_cmd(string arg)
 	return 0;
     }
 
-    /*** everything seems ok...spin the fucker! ***/
+    /*** everything seems ok...spin it! ***/
 
     call_out( "spinning", 1, "The wheel spins...");
     call_out( "spinning", SPIN_DELAY+1, "The wheel slows...");

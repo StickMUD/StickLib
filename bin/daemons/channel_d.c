@@ -40,105 +40,61 @@ static closure sort_lambda;
 static string *dont_show_ld;
 
 // Channel log dir, max log size
-#define CLOG_DIR      "/data/d/channel_d/"
-#define MAX_CLOG  50000
+#define CLOG_DIR	"/data/d/channel_d/"
+#define MAX_CLOG	50000
 
 /* To enable/disable the support for certain stick-specific
  * guilds uncomment/comment these defines:
  */
 
-//#define	HAVE_MAGE_GUILD
 #define		HAVE_PRIEST_GUILD
-//#define	HAVE_NECROMANCER_GUILD
-//#define	HAVE_NINJA_GUILD
 #define	        HAVE_THIEF_GUILD
-//#define	HAVE_HEALER_GUILD
-#define		HAVE_DANCER_GUILD // Shadowchaser specific
 
 nomask void
 create()
 {
     channels = ([
-      "mud":        ({ TELL_TYPE_MUD_CHANNEL, 0 }),
-      "water":      ({ TELL_TYPE_GUILD_CHANNEL, 0 }),
-      "earth":      ({ TELL_TYPE_GUILD_CHANNEL, 0 }),
-      "wind":       ({ TELL_TYPE_GUILD_CHANNEL, 0 }),
-      "fire":       ({ TELL_TYPE_GUILD_CHANNEL, 0 }),
-#ifdef USE_STICKMUD_CHANNELS
-      "ooc":        ({ TELL_TYPE_LORD_CHANNEL, 0 }),
-#endif
-      "lord":       ({ TELL_TYPE_LORD_CHANNEL, 0 }),
-#ifdef USE_STICKMUD_CHANNELS
-      "flord":      ({ TELL_TYPE_FLORD_CHANNEL, 0 }),
-      "ninja":      ({ TELL_TYPE_GUILD_CHANNEL, "ninja_list" }),
-      "ninjasen":   ({ TELL_TYPE_GUILD_CHANNEL, "ninjasen_list" }),
-      "mage":       ({ TELL_TYPE_GUILD_CHANNEL, "mage_list" }),
-      "necro":      ({ TELL_TYPE_GUILD_CHANNEL, 0 }),
-#endif
-      "thief":      ({ TELL_TYPE_GUILD_CHANNEL, "thief_list" }),
-      "thiefdmn":   ({ TELL_TYPE_GUILD_CHANNEL, "thiefdmn_list" }),
-      "thiefgmc":   ({ TELL_TYPE_GUILD_CHANNEL, "thiefgmc_list" }),
-      "priest":     ({ TELL_TYPE_GUILD_CHANNEL, "priest_list" }),
-#ifdef USE_STICKMUD_CHANNELS
-      "healer":     ({ TELL_TYPE_GUILD_CHANNEL, "healer_list" }),
-      "fighter":    ({ TELL_TYPE_GUILD_CHANNEL, "fighter_list" }),
-      "jyu":        ({ TELL_TYPE_PARTY,         0 }),
-#endif
-      "wiz":        ({ TELL_TYPE_CODER_CHANNEL, 0 }),
-      "gunn":    ({ TELL_TYPE_GUILD_CHANNEL, 0 }),
-      "stealer":    ({ TELL_TYPE_GUILD_CHANNEL, 0 }),
-      "duren":    ({ TELL_TYPE_GUILD_CHANNEL, 0 }),
-      "rider":    ({ TELL_TYPE_GUILD_CHANNEL, 0 }),
-#ifdef USE_STICKMUD_CHANNELS
-      "fiz":        ({ TELL_TYPE_CODER_CHANNEL, 0 }),
-#endif
-      "arch":       ({ TELL_TYPE_CODER_CHANNEL, 0 }),
-      "admin":       ({ TELL_TYPE_CODER_CHANNEL, 0 }),
+      "broadcast":	({ TELL_TYPE_BROADCAST, 0 }),
+      "info":		({ TELL_TYPE_INFO, 0 }),
+      "mort":		({ TELL_TYPE_MORT, 0 }),
+      "newbie":		({ TELL_TYPE_NEWBIE, 0 }),
+      "ooc":		({ TELL_TYPE_OOC, 0 }),
+      "lord":		({ TELL_TYPE_LORD, 0 }),
+      "water":		({ TELL_TYPE_FACTION, 0 }),
+      "earth":		({ TELL_TYPE_FACTION, 0 }),
+      "wind":		({ TELL_TYPE_FACTION, 0 }),
+      "fire":		({ TELL_TYPE_FACTION, 0 }),
+      "wiz":		({ TELL_TYPE_WIZ, 0 }),
+      "arch":		({ TELL_TYPE_ARCH, 0 }),
+      "admin":		({ TELL_TYPE_ADMIN, 0 }),
+      "thief":		({ TELL_TYPE_GUILD, "thief_list" }),
+      "thiefdmn":	({ TELL_TYPE_GUILD, "thiefdmn_list" }),
+      "thiefgmc":	({ TELL_TYPE_GUILD, "thiefgmc_list" }),
+      "priest":		({ TELL_TYPE_GUILD, "priest_list" }),
     ]);
 
     ch_ppl = ([
-      "mud":       ({}),
-      "water":     ({}),
-      "earth":     ({}),
-      "wind":      ({}),
-      "fire":      ({}),
-      "gunn":    ({}),
-      "stealer":    ({}),
-      "duren":    ({}),
-      "rider":    ({}),
-#ifdef USE_STICKMUD_CHANNELS
-      "ooc":       ({}),
-#endif
-      "lord":      ({}),
-#ifdef USE_STICKMUD_CHANNELS
-      "flord":     ({}),
-      "ninja":     ({}),
-      "ninjasen":  ({}),
-      "mage":      ({}),
-      "necro":     ({}),
-#endif
-      "thief":     ({}),
-      "thiefdmn":  ({}),
-      "thiefgmc":  ({}),
-      "priest":    ({}),
-#ifdef USE_STICKMUD_CHANNELS
-      "jyu":       ({}),
-#endif
-      "wiz":       ({}),
-#ifdef USE_STICKMUD_CHANNELS
-      "fiz":       ({}),
-#endif
-      "arch":      ({}),
-      "admin":      ({}),
-#ifdef USE_STICKMUD_CHANNELS
-      "healer":    ({}),
-      "fighter":   ({}),
-#endif
+      "broadcast":	({ }),
+      "info":		({ }),
+      "mort":		({ }),
+      "newbie":		({ }),
+      "ooc":		({ }),
+      "lord":		({ }),
+      "water":		({ }),
+      "earth":		({ }),
+      "wind":		({ }),
+      "fire":		({ }),
+      "wiz":		({ }),
+      "arch":		({ }),
+      "admin":		({ }),
+      "thief":		({ }),
+      "thiefdmn":	({ }),
+      "thiefgmc":	({ }),
+      "priest":		({ }),
     ]);
 
     ch_admin = ([
-      "flord":  ({ "garathan", }),
-      "lord":   ({ "garathan", }),
+      //"lord":   ({ "garathan", }),
     ]);
 
     // These strings in attempts to fake messages.
@@ -146,14 +102,15 @@ create()
       " says: ",
       " shouts: ",
       " yells: ",
-      //    " tells you: ",
       " whispers: ",
       " asks: ",
       " bellows: ",
     });
 
     // Channels on which we don't want to see the Linkdeads
-    dont_show_ld = ({ "flord", "mage" });
+    dont_show_ld = ({
+      //"mage"
+    });
 
     filter(users(), "check_channels");
 }
@@ -444,16 +401,13 @@ send_channel_message(mixed ob, string ch, string msg)
 	    indent = sizeof(ob) + 3;
 	else
 	    indent = sizeof(ob->query_real_name()) + 3;
-	if (ch == "lord" || ch == "flord") msg = " " + msg;
-	else 
+	if (ch == "lord") msg = " " + msg;
+	else
 	{
 	    msg = ": " + msg;
 	    indent += sizeof(ch) + 2;
 	}
     }
-
-    //  if ((int)ob->query_frog() && !(IS_CODER_OB(ob)))
-    //     msg = " HHHHRRRRIIIBBBIT HHHHRIBBBIT!";
 
     tmp = call_other(this_object(), ch + "_format", ob, msg, e);
 
@@ -477,18 +431,71 @@ send_channel_message(mixed ob, string ch, string msg)
 // is probably required.
 //
 
-//
-// This channel is for Out Of Character talk only!
-// Must have played 24h and be on level 5
-// Disabled for non-coders atm. /Graah
-//
+nomask status
+broadcast_check(object ob)
+{
+    return 1;
+}
+
+nomask string
+broadcast_format(mixed ob, string msg, int e)
+{
+    if (objectp(ob))
+	return "[Broadcast] " + capitalize((string)ob->query_real_name()) + msg;
+    if (stringp(ob)) return "[Broadcast] " + ob + msg;
+    else return "[Broadcast]" + msg;
+}
+
+nomask status
+info_check(object ob)
+{
+    return 1;
+}
+
+nomask string
+info_format(mixed ob, string msg, int e)
+{
+    if (objectp(ob))
+	return "[Info] " + capitalize((string)ob->query_real_name()) + msg;
+    if (stringp(ob)) return "[Info] " + ob + msg;
+    else return "[Info]" + msg;
+}
+
+nomask status
+mort_check(object ob)
+{
+    return 1;
+}
+
+nomask string
+mort_format(mixed ob, string msg, int e)
+{
+    if (objectp(ob))
+	return "[Mort] " + capitalize((string)ob->query_real_name()) + msg;
+    if (stringp(ob)) return "[Mort] " + ob + msg;
+    else return "[Mort]" + msg;
+}
+
+nomask status
+newbie_check(object ob)
+{
+    return 1;
+}
+
+nomask string
+newbie_format(mixed ob, string msg, int e)
+{
+    if (objectp(ob))
+	return "[Newbie] " + capitalize((string)ob->query_real_name()) + msg;
+    if (stringp(ob)) return "[Newbie] " + ob + msg;
+    else return "[Newbie]" + msg;
+}
+
 nomask status
 ooc_check(object ob)
 {
-    return (ob
-      && ob->query_coder_level()
-      && ((int)ob->query_age() > (24 * 60 * 60))
-      && ((int)ob->query_level() >= 5));
+    return (ob && (ob->query_coder_level()
+	|| (ob->query_age() > (24 * 60 * 60) && ob->query_level() >= 5)));
 }
 
 nomask string
@@ -534,43 +541,28 @@ nomask status wind_check(object ob)
 nomask string wind_format(mixed ob, string msg, int e)
 {
     if (objectp(ob))
-	return "[Wind] " + capitalize((string)ob->query_real_name()) + msg;
+	return "[Wind] " + capitalize(ob->query_real_name()) + msg;
     if (stringp(ob)) return "[Wind] " + ob + msg;
     else return "[Wind] " + msg;
 }
 
 nomask status water_check(object ob)
 {
-    return (ob && ((int)ob->query_kingdom("water") || (int)ob->query_coder_level()));
+    return (ob && (ob->query_kingdom("water") || (int)ob->query_coder_level()));
 }
 
 nomask string water_format(mixed ob, string msg, int e)
 {
     if (objectp(ob))
-	return "[Water] " + capitalize((string)ob->query_real_name()) + msg;
+	return "[Water] " + capitalize(ob->query_real_name()) + msg;
     if (stringp(ob)) return "[Water] " + ob + msg;
     else return "[Water] " + msg;
-}
-
-nomask status mud_check(object ob) {
-    return 1;
-}
-
-nomask string
-mud_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob))
-	return "[Mud] " + capitalize((string)ob->query_real_name()) + msg;
-    if (stringp(ob)) return "[Mud] " + ob + msg;
-    else return "[Mud]" + msg;
 }
 
 nomask status
 lord_check(object ob)
 {
-    return (ob
-      && (ob->query_coder_level()
-	|| (int)ob->query_level() >= 25));
+    return (ob && (ob->query_coder_level() || ob->query_level() >= 25));
 }
 
 nomask string
@@ -586,35 +578,9 @@ lord_format(mixed ob, string msg, int e)
     else if (stringp(ob))
     {
 	if (!e) return "<" + ob + ">" + msg;
-	else return "<Lord> " + ob + msg;      
+	else return "<Lord> " + ob + msg;
     }
     else return "<Lord> " + msg;
-}
-
-nomask status
-flord_check(object ob)
-{
-    return (ob
-      && (ob->query_coder_level()
-	|| (int)ob->query_level() >= 25));
-}
-
-nomask string
-flord_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob))
-    {
-	if (!e) return "{" + capitalize((string)ob->query_real_name()) +
-	    "}" + msg;
-	else return "{FLord} " + capitalize((string)ob->query_real_name()) +
-	    msg;
-    }
-    else if (stringp(ob))
-    {
-	if (!e) return "{" + ob + "}" + msg;
-	else return "{FLord} " + ob + msg;      
-    }
-    else return "{Lord} " + msg;
 }
 
 nomask status
@@ -633,33 +599,18 @@ wiz_format(mixed ob, string msg, int e)
 }
 
 nomask status
-fiz_check(object ob)
-{
-    return (ob && (int)ob->query_coder_level() >= LVL_APPRENTICE);
-}
-
-nomask string
-fiz_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob))
-	return "[Fiz] " + capitalize((string)ob->query_real_name()) + msg;
-    if (stringp(ob)) return "[Fiz] " + ob + msg;
-    else return "[Fiz]" + msg;
-}
-
-nomask status
 arch_check(object ob)
-{    
+{
     return (ob && (int)ob->query_coder_level() >= LVL_ELDER);
 }
 
 nomask string
-arch_format(mixed ob, string msg, int e)   
+arch_format(mixed ob, string msg, int e)
 {
     if (objectp(ob))
-	return "[Arch] " + capitalize((string)ob->query_real_name()) + msg;   
-    if (stringp(ob)) return "[Arch] " + ob + msg;   
-    else return "[Arch]" + msg;   
+	return "[Arch] " + capitalize((string)ob->query_real_name()) + msg;
+    if (stringp(ob)) return "[Arch] " + ob + msg;
+    else return "[Arch]" + msg;
 }
 
 nomask status
@@ -678,15 +629,12 @@ admin_format(mixed ob, string msg, int e)
 }
 
 #ifdef GN_THIEF
-// Thief Guild channels
 nomask status
 thief_check(object ob)
 {
     if (!ob) return 0;
 
-    return (ob
-      && ((string)ob->query_guild() == GN_THIEF)
-      || ob->query_coder_level());
+    return (ob && (ob->query_guild() == GN_THIEF || ob->query_coder_level()));
 }
 
 nomask string
@@ -704,7 +652,7 @@ thief_format(mixed ob, string msg, int e)
     else if (stringp(ob))
     {
 	if (!e) return "[Thf " + ob + "]" + msg;
-	else return "[Thf] " + ob + msg;      
+	else return "[Thf] " + ob + msg;
     }
     else return "[Thf] " + msg;
 }
@@ -981,356 +929,6 @@ thiefdmn_list(object me)
 }
 #endif
 
-#ifdef GN_NINJA
-
-// Ninja Guild channel
-
-#define HLINE    "-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-=0=-"
-#define HHEAD  "\nTitle            Name           Belt        Status Activity Location"
-#define HHEAD2   "---------------- -------------- ----------- ------ -------- -----------------"
-
-nomask status
-ninja_check(object ob)
-{
-    if (!ob) return 0;
-
-    return (ob
-      && ((string)ob->query_guild() == GN_NINJA)
-      || ob->query_coder_level());
-}
-
-nomask string
-ninja_format(mixed ob, string msg, int e)
-{
-    string pretitle;
-    object nmark;
-
-    if (msg[0] == ':') msg = msg[1..<1];
-
-    if (objectp(ob))
-    {
-	// Added to support pretitles - Excalibur
-	if((nmark=present("nmark", ob)))
-	    pretitle = (string)nmark->ninja_pretitle();
-	else pretitle = "";
-
-	if (!e) return pretitle + capitalize((string)ob->query_real_name()) +
-	    " >>" + msg;
-	else return "Ninja >> " + pretitle + capitalize((string)ob->query_real_name()) +
-	    msg;
-    }
-    else if (stringp(ob))
-    {
-	if (!e) return ob + " >>" + msg;
-	else return "Ninja >> " + ob + msg;
-    }
-    else return "Ninja >> " + msg;
-}
-
-nomask string *
-ninja_list(object me)
-{
-    string *who_list, tmp, name, beltstr, chanstat, actvstat, loc;
-    object *who_member, *who, nmark, e;
-    int i, z, add_list, num, il, me_coder, me_level;
-    status isolated;
-
-    //  who = ch_ppl["ninja"];
-    who = sort_array(ch_ppl["ninja"], "sort_em", this_object());
-    who_member = ({});
-
-    if (me && environment(me))
-	isolated = (status)environment(me)->query(ROOM_ISOLATED);
-    else isolated = 0;
-
-    if (!isolated)
-    {
-	for(i = 0; i < sizeof(who); i++)
-	{
-	    //   if (who[i] && interactive(who[i]))
-	    if (who[i])
-		who_member += ({ who[i] });
-	}
-    }
-    else who_member = ({ me });
-
-    who_list = ({ HLINE });
-    who_list += ({ HHEAD });
-    who_list += ({ HHEAD2 });
-
-    me_coder = (int)me->query_coder_level();
-    me_level = (int)me->query_level();
-
-    num = 0;
-
-    for (i = 0; i < sizeof(who_member); i++)
-    {
-	il = (int)who_member[i]->query_invis();
-	nmark = present("nmark", who_member[i]);
-
-	// Don't show non-ninjas on channel to non-coders.
-	if (!nmark && !me_coder) continue;
-
-	if (me_coder
-	  || (!environment(who_member[i])->query(ROOM_ISOLATED)
-	    &&
-	    (!il
-	      || (il < IL_TOTALLY_INVISIBLE && me_level > 21))))
-	{
-	    // Format name
-	    name = capitalize((string) who_member[i]->query_real_name());
-	    if(me_coder){
-		if (il >= IL_TOTALLY_INVISIBLE) name = "<"+name+">";
-		else if (il) name = "("+name+")";
-	    }
-	    else {
-		if (who_member[i]->query_coder_level() && il) continue;
-		else if (il) name = "("+name+")";
-	    }
-
-	    // Strip the word "belt" from ninja belt desc
-	    if(nmark)
-	    {
-		sscanf(nmark->get_title(nmark->query_nlevel()), "%s belt",
-		  beltstr);
-		num++;
-	    }
-	    else beltstr = "";
-
-	    // Channel Status
-	    z = who_member[i]->query_channel_status("ninja");
-	    if ((z & CHANNEL_OFF)) chanstat = "Off";
-	    else if ((z & CHANNEL_BAN)) chanstat = "BANNED";
-	    else chanstat = "On";
-
-	    // Active Status
-	    if ((z & CHANNEL_LD))
-		actvstat = "LinkDead";
-	    else if (interactive_info(who_member[i], II_IDLE) > 300)
-		actvstat = "Idle";
-	    else if (who_member[i]->is_fighting())
-		actvstat = "Fighting";
-	    else if (interactive_info(who_member[i], II_EDITING))
-		actvstat = "Editing";
-	    else actvstat = "";
-
-	    // Location
-	    if (me_coder<0) loc = "(test character)";
-	    else
-	    if (me_coder || me == who_member[i] ||
-	      (int)who_member[i]->query_level() < me_level)
-	    { loc = (string) environment(who_member[i])->short();
-		if (!loc) loc = "Unknown place"; }
-	    else loc = "--";
-	    if (sizeof(loc) > 18) loc = loc[0..14] + "...";
-
-	    tmp = sprintf("%-16s %-14s %-11s %-6s %-8s %-17s",
-	      (nmark ? (string)nmark->ninja_pretitle() : who_member[i]->query_pretitle() ),
-	      name,
-	      beltstr,
-	      chanstat,
-	      actvstat,
-	      loc
-	    );
-	    who_list += ({ tmp });
-	}
-    }
-
-    who_list += ({ "\n" + num + " ninja"+((num>1) ? "s" : "")+", "+sizeof(users())+" player"+((sizeof(users())>1) ? "s" : "")+"." });
-    //  who_list += ({ "\n" + num + " ninjas." });
-    who_list += ({ HLINE });
-
-    return who_list;
-}
-
-nomask status
-ninjasen_check(object ob)
-{
-    object mark;
-
-    if (!ob) return 0;
-
-    return (ob
-      && (((string)ob->query_guild() == GN_NINJA) 
-	&& (mark = present("nmark", ob))
-	&& (mark->query_sensei() || mark->query_kensai()))
-      || ob->query_coder_level());
-}
-
-nomask string
-ninjasen_format(mixed ob, string msg, int e)
-{
-    if (msg[0] == ':') msg = msg[1..<1];
-
-    if (objectp(ob))
-    {
-	if (!e) return capitalize((string)ob->query_real_name()) +
-	    " >>>" + msg;
-	else return "Ninja >>> " + capitalize((string)ob->query_real_name()) +
-	    msg;
-    }
-    else if (stringp(ob))
-    {
-	if (!e) return ob + " >>>" + msg;
-	else return "Ninja >>> " + ob + msg;
-    }
-    else return "Ninja >>> " + msg;
-}
-
-nomask string *
-ninjasen_list(object me)
-{
-    string *who_list, tmp, name, beltstr, chanstat, actvstat, loc;
-    object *who_member, *who, nmark, e;
-    int i, z, add_list, num, il, me_coder, me_level;
-    status isolated;
-
-    //  who = ch_ppl["ninjasen"];
-    who = sort_array(ch_ppl["ninjasen"], "sort_em", this_object());
-    who_member = ({});
-
-    if (me && environment(me))
-	isolated = (status)environment(me)->query(ROOM_ISOLATED);
-    else isolated = 0;
-
-    if (!isolated)
-    {
-	for(i = 0; i < sizeof(who); i++)
-	{
-	    //   if (who[i] && interactive(who[i]))
-	    if (who[i])
-		who_member += ({ who[i] });
-	}
-    }
-    else who_member = ({ me });
-
-    who_list = ({ HLINE });
-    who_list += ({ HHEAD });
-    who_list += ({ HHEAD2 });
-
-    me_coder = (int)me->query_coder_level();
-    me_level = (int)me->query_level();
-
-    num = 0;
-
-    for (i = 0; i < sizeof(who_member); i++)
-    {
-	il = (int)who_member[i]->query_invis();
-	nmark = present("nmark", who_member[i]);
-
-	// Don't show non-ninjas on channel to non-coders.
-	if (!nmark && !me_coder) continue;
-
-	if (me_coder
-	  || (!environment(who_member[i])->query(ROOM_ISOLATED)
-	    &&
-	    (!il
-	      || (il < IL_TOTALLY_INVISIBLE && me_level > 21))))
-	{
-	    // Format name
-	    name = capitalize((string) who_member[i]->query_real_name());
-	    if(me_coder){
-		if (il >= IL_TOTALLY_INVISIBLE) name = "<"+name+">";
-		else if (il) name = "("+name+")";
-	    }
-	    else {
-		if (who_member[i]->query_coder_level() && il) continue;
-		else if (il) name = "("+name+")";
-	    }
-
-	    // Strip the word "belt" from ninja belt desc
-	    if(nmark)
-	    {
-		sscanf(nmark->get_title(nmark->query_nlevel()), "%s belt",
-		  beltstr);
-		num++;
-	    }
-	    else beltstr = "";
-
-	    // Channel Status
-	    z = who_member[i]->query_channel_status("ninjasen");
-	    if ((z & CHANNEL_OFF)) chanstat = "Off";
-	    else if ((z & CHANNEL_BAN)) chanstat = "BANNED";
-	    else chanstat = "On";
-
-	    // Active Status
-	    if ((z & CHANNEL_LD))
-		actvstat = "LinkDead";
-	    else if (interactive_info(who_member[i], II_IDLE) > 300)
-		actvstat = "Idle";
-	    else if (who_member[i]->is_fighting())
-		actvstat = "Fighting";
-	    else if (interactive_info(who_member[i], II_EDITING))
-		actvstat = "Editing";
-	    else actvstat = "";
-
-	    // Location
-	    if (me_coder<0) loc = "(test character)";
-	    else
-	    if (me_coder || me == who_member[i] ||
-	      (int)who_member[i]->query_level() < me_level) 
-		loc = (string) environment(who_member[i])->short();
-	    else loc = "--";
-	    if (sizeof(loc) > 18) loc = loc[0..14] + "...";
-
-	    tmp = sprintf("%-16s %-14s %-11s %-6s %-8s %-17s",
-	      (nmark ? (string)nmark->ninja_pretitle() : who_member[i]->query_pretitle() ),
-	      name,
-	      beltstr,
-	      chanstat,
-	      actvstat,
-	      loc
-	    );
-	    who_list += ({ tmp });
-	}
-    }
-
-    who_list += ({ "\n" + num + " ninja"+((num>1)? "s" : "")+", "+sizeof(users())+" player"+((sizeof(users())>1) ? "s" : "")+"." });
-    //  who_list += ({ "\n" + num + " ninjas." });
-    who_list += ({ HLINE });
-
-    return who_list;
-}
-#endif
-
-#ifdef GN_MAGE
-
-// Mages have joined in! :)
-#include "/guilds/mage/include/channel.h"
-
-// If you can't have 'em, try these: 
-#if 0
-#define	WHITE		400
-#define	BLACK		-400
-#define	MAGE_LIST_D	"/guilds/mage/daemon/listd"
-#define	MAGE_GUILD_TITLE "Guild of Mages"
-#define MAGE_CHANNEL_LEFT    "--=*=--"
-#define MAGE_CHANNEL_RIGHT   "--=*=--"
-#define MAGE_CHANNEL_HEADER \
-"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
-#define IS_MAGE_GUILD_CODER(x) (member(({ }), x) >= 0 ? 1 : 0)
-#endif
-
-nomask status
-mage_check(object ob)
-{
-
-    if (!ob) return 0;
-
-    return (ob
-      && ((string)ob->query_guild() == GN_MAGE)
-      || ob->query_coder_level());
-}
-
-nomask string
-mage_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob))
-	return "@M-" + capitalize((string)ob->query_real_name()) + msg;
-    if (stringp(ob)) return "@M-" + ob + msg;
-    else return "@M-" + msg;
-}
-
 /* Function: sort_by_level (int) is called from mage_list */
 int query_sort_by_level(object one, object two) {
     int first, second, x1;
@@ -1346,6 +944,9 @@ int query_sort_by_level(object one, object two) {
 
     return (( first > second ) ? -1 : 1);
 }
+
+#define	WHITE		400
+#define	BLACK		-400
 
 /* Function: sort_by_align (object *) is called from mage_list */
 object *query_sort_by_align(object *us) {
@@ -1366,185 +967,6 @@ object *query_sort_by_align(object *us) {
 
     return white+grey+black;
 }
-
-nomask string *
-mage_list(object who)
-{
-    object *us;
-    string name, title, text, text2, text3;
-    string place, alig, idle;
-    string *council;
-    int i, j, his_level, my_level;
-    int itotal, ctotal, ptotal, s, cl;
-
-    us = ch_ppl["mage"];
-    us -= ({ 0 });
-    us = sort_array(us, "query_sort_by_level", this_object());
-    us = query_sort_by_align(us);
-
-    text = text2 = "";
-    council = MAGE_LIST_D->read_council();
-    text3 = sprintf("\n%|25s%|27s%|25s\n%|15s%|47s%|15s%|78s\n",
-      MAGE_CHANNEL_LEFT, MAGE_GUILD_TITLE, MAGE_CHANNEL_RIGHT,
-      MAGE_CHANNEL_LEFT,
-      sprintf("* %s * %s * %s *",
-	sprintf("%s",capitalize(council[0])),
-	sprintf("%s",capitalize(council[1])),
-	sprintf("%s",capitalize(council[2]))),
-      MAGE_CHANNEL_RIGHT,
-      MAGE_CHANNEL_HEADER);
-
-    my_level = who->query_level();
-
-    for (i = 0; i < sizeof(us); i ++) {
-	place = 0;
-
-	s = (int)us[i]->query_channel_status("mage");
-
-	if ((us[i]->query_invis() < IL_TOTALLY_INVISIBLE &&
-	    interactive(us[i]) &&
-	    (us[i]->query_guild() == GN_MAGE) && // Let's not show non-mage
-	    // coders to mortals.
-	    !environment(us[i])->query(ROOM_ISOLATED)) ||
-	  ((int)who->query_coder_level()&&!(s & CHANNEL_OFF)) ) {
-
-	    if(interactive(us[i])) {
-		if (interactive_info(us[i], II_EDITING) >= 300) {
-		    idle = "(idle)";
-		    itotal ++;
-		}
-		else idle = "";
-	    }
-	    j = us[i]->query_alignment();
-	    if (j >= WHITE)
-		alig = "White";
-	    else if (j <= BLACK)
-		alig = "Black";
-	    else
-		alig = "Grey";
-
-	    if (cl = us[i]->query_coder_level()) {
-		ctotal ++;
-		title = (string) us[i]->query_pretitle();
-		if (title == "Apprentice ") title = "Novice Coder ";
-
-		if(title != "Apprentice " && title != "Novice Coder " &&
-		  title != "Coder " && title != "Senior Coder " &&
-		  title != "Pseudo-Admin " && title != "Co-Admin " &&
-		  title != "Admin ")
-		    title = "(void) ";
-	    } else {
-		ptotal++;
-		title = sprintf("%s Mage", alig);
-
-		if(MAGE_LIST_D->is_council(us[i]->query_real_name()))
-		    title = "Councillor";
-	    }
-
-	    if(MAGE_LIST_D->query_outcast(us[i]->query_real_name()) == 1)
-		title = "Outcast";
-	    name = capitalize((string) us[i]->query_real_name() );
-	    his_level = us[i]->query_level();
-
-	    if (us[i]->query_invis()) {
-		if (who->query_level() >= CAN_SEE_INVIS || who == us[i]) {
-		    if (us[i]->query_invis() >= IL_TOTALLY_INVISIBLE)
-			name = sprintf("<%s>", name);
-		    else name = sprintf("(%s)", name);
-		} else {
-		    name = 0;
-		    if (cl)
-			ctotal --;
-		    else ptotal --;
-		}
-	    }
-	    if ((his_level <= my_level &&
-		!environment(us[i])->query(ROOM_PREVENT_WHERE)) &&
-	      !environment(us[i])->query(ROOM_ISOLATED) ||
-	      IS_MAGE_GUILD_CODER(who->query_real_name()) )
-		place = environment(us[i])->query_short();
-
-	    if (sizeof(place) > 35) place = place[0..34];
-
-	    {  // Stripataan moniriviset yksirivisiksi.
-		j = strstr((string)place, "\n");
-		if( j >= 0 )
-		    place = place[0..j-1];
-	    }
-
-	    if(!interactive(us[i])) {
-		if(cl) ctotal --;
-		else ptotal --;
-		if(interactive_info(us[i], II_IDLE) > 300) {
-		    itotal --;
-		    if (itotal < 0) itotal = 0;
-		}
-		name = 0;
-	    }
-
-	    if(name) {
-		name += " ";
-		if (cl) {
-		    text2 += sprintf("  %s [%|14s] %-14'.'s %-34s %-6s\n",
-		      ((s & CHANNEL_BAN) ? "B" :
-			(s & CHANNEL_LD)  ? "L" :
-			(s & CHANNEL_OFF) ? "-" : "+"),
-		      title, name, (place ? place : ""), idle);
-		}
-		else {
-		    text += sprintf("  %s [%|14s] %-14'.'s %-34s %-6s\n",
-		      ((s & CHANNEL_BAN) ? "B" :
-			(s & CHANNEL_LD)  ? "L" :
-			(s & CHANNEL_OFF) ? "-" : "+"),
-		      title, name, (place ? place : " "), idle);
-		}
-	    }
-	}
-    }
-
-    text += sprintf("%|78s\n%|78s", MAGE_CHANNEL_HEADER,
-      sprintf("Total of %d coder%s and %d mage%s visible to you,\
- %d idle.", ctotal, (ctotal != 1 ? "s" : ""), ptotal,
-	(ptotal != 1 ? "s" : ""), itotal)
-    );
-    if (sizeof(text2) >= 10)
-	text2 += sprintf("%|78s\n", MAGE_CHANNEL_HEADER);
-    who->tell_me(text3+text2+text);
-}
-
-// .. #ifdef GN_MAGE
-#endif
-
-
-#ifdef GN_NECROMANCER
-// Necromancers joining in too.
-
-nomask status
-necro_check(object ob)
-{
-
-    if (!ob) return 0;
-
-    return (ob
-      && ((string)ob->query_guild() == GN_NECROMANCER)
-      || ob->query_coder_level());
-}
-
-nomask string
-necro_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob)) {
-	if( msg[0] != ':')
-	    return "[Guild] "+capitalize((string)ob->query_real_name()) + msg;
-	else
-	    return capitalize((string)ob->query_real_name()) + " [Guild]" + msg;
-    }
-    if (stringp(ob)) return ob + " [Guild] "+ msg;
-    else return "[Guild]" + msg;
-}
-// ... #ifdef GN_NECROMANCER
-#endif
-
 
 #ifdef HAVE_PRIEST_GUILD
 // PRIESTS
@@ -1681,345 +1103,3 @@ priest_list(object me)
 
 // ...#ifdef HAVE_PRIEST_GUILD
 #endif
-
-// And the good old JYU channel is back. :)
-
-nomask status
-jyu_check(object ob)
-{
-    string tmp;
-
-    if (!ob) return 0;
-
-#define JYU_EXTRA_LIST ({ "eldaron" })
-
-    return (ob
-      && (object_info(ob, OI_ONCE_INTERACTIVE) && (tmp = interactive_info(ob, II_IP_NAME)) &&
-	(strstr(tmp,"jyu.fi") != -1))
-      || ob->query_coder_level()
-      || ( member( JYU_EXTRA_LIST, ob->query_real_name() )>= 0 )
-    );
-}
-
-nomask string
-jyu_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob))
-	return "-=JYU=- " + capitalize((string)ob->query_real_name()) + msg;
-    if (stringp(ob)) return "-=JYU=- " + ob + msg;
-    else return "-=JYU=-" + msg;
-}
-
-#ifdef	GN_HEALER
-
-// Healer channel...
-
-nomask status
-healer_check(object ob)
-{
-    if (!ob) return 0;
-
-    return (ob
-      && ((string)ob->query_guild() == GN_HEALER)
-      || ob->query_coder_level());
-}
-
-nomask string
-healer_format(mixed ob, string msg, int e)
-{
-    if (msg[0] == ':') msg = msg[1..<1];
-
-    if (objectp(ob))
-    {
-	if (!e) return "@H-" + capitalize((string)ob->query_real_name()) + ":" + msg;
-	else return "@H-" + capitalize((string)ob->query_real_name()) +
-	    msg;
-    }
-    else if (stringp(ob))
-    {
-	if (!e) return "@H-" + ob + ":" + msg;
-	else return "@H-" + ob + msg;
-    }
-    else return "@H-" + msg;
-}
-
-nomask string *
-healer_list(object me)
-{
-
-
-    string *who_list, tmp, pretitle, name, chanstat, loc;
-    object *who_member, *who, hmark, e;
-    int i, z, add_list, num, il, me_coder, me_level;
-    status isolated;
-
-    //  who = ch_ppl["healer"];
-    who = sort_array(ch_ppl["healer"], "sort_em", this_object());
-    who_member = ({});
-
-    if (me && environment(me))
-	isolated = (status)environment(me)->query(ROOM_ISOLATED);
-    else isolated = 0;
-
-    if (!isolated)
-    {
-	for(i = 0; i < sizeof(who); i++)
-	{
-	    if (who[i])
-		who_member += ({ who[i] });
-	}
-    }
-    else who_member = ({ me });
-
-    who_list = ({});
-
-    me_coder = (int)me->query_coder_level();
-    me_level = (int)me->query_level();
-
-    num = 0;
-
-    for (i = 0; i < sizeof(who_member); i++)
-    {
-	il = (int)who_member[i]->query_invis();
-	hmark = present("healer_mark", who_member[i]);
-
-	// Don't show non-healers on channel to non-coders.
-	if (!hmark && !me_coder) continue;
-
-	if (me_coder || (!environment(who_member[i])->query(ROOM_ISOLATED)
-	    && (!il || (il < IL_TOTALLY_INVISIBLE && me_level > 21))))
-	{
-	    // Guild pretitle
-	    if(hmark)
-	    {
-		pretitle = hmark->query_htitle();
-		num++;
-	    }
-	    else pretitle = "";
-	    //         else      pretitle = who_member[i]->query_pretitle();
-
-	    // Format name
-	    name = capitalize((string) who_member[i]->query_real_name());
-	    if(me_coder){
-		if (il >= IL_TOTALLY_INVISIBLE) name = "<"+name+">";
-		else if (il) name = "("+name+")";
-	    }
-	    else {
-		if (who_member[i]->query_coder_level() && il) continue;
-		else if (il) name = "("+name+")";
-	    }
-
-	    // Channel Status
-	    z = who_member[i]->query_channel_status("healer");
-	    if ((z & CHANNEL_LD)) chanstat = "LinkDead";
-	    else if(interactive_info(who_member[i], II_IDLE) > 300) chanstat = "Idle";
-	    else if ((z & CHANNEL_OFF)) chanstat = "Off";
-	    else if ((z & CHANNEL_BAN)) chanstat = "BANNED";
-	    else chanstat = "On";
-
-	    // Location
-	    if (me_coder<0) loc = "(test character)";
-	    else
-	    if (me_coder || me == who_member[i] ||
-	      (int)who_member[i]->query_level() < me_level) 
-	    { 
-		loc = (string) environment(who_member[i])->short();
-		if (!loc) loc = "Unknown place";
-	    }
-	    else loc = " ";
-	    if (sizeof(loc) > 26) loc = loc[0..23] + "...";
-
-	    tmp = sprintf("  %18s %-14s %-8s  %s", pretitle, name, chanstat, loc);
-	    who_list += ({ tmp });
-	}
-    }
-
-    who_list += ({ "Total of " + num + " people on channel." });
-
-    return who_list;
-}
-
-// ... #ifdef GN_HEALER
-#endif
-
-
-#ifdef GN_FIGHTER
-
-// Fighter's bring up the end and join the channel system!
-#define FLINE1 " ___________________________________________________________________________\n/\\__________________________________________________________________________\\\n\\                                                                          \\"
-#define FLINE2 "\\/__________________________________________________________________________/"
-nomask status
-fighter_check(object ob)
-{
-    if (!ob) return 0;
-
-    return (ob
-      && ((string)ob->query_guild() == GN_FIGHTER)
-      || ob->query_coder_level());
-}
-
-nomask string
-fighter_format(mixed ob, string msg, int e)
-{
-    if (msg[0] == ':') msg = msg[1..<1];
-
-    if (objectp(ob))
-    {
-	if (!e) return "=" + capitalize((string)ob->query_real_name()) + "=" + msg;
-	else return "==" + capitalize((string)ob->query_real_name()) +
-	    msg;
-    }
-    else if (stringp(ob))
-    {
-	if (!e) return "=" + ob + "=" + msg;
-	else return "==" + ob + msg;
-    }
-    else return "==" + msg;
-}
-
-nomask string *
-fighter_list(object me)
-{
-
-    string *who_list, tmp, pretitle, posttitle, name, chanstat, loc;
-    object *who_member, *who, fmark, e;
-    int i, z, add_list, num, il, me_coder, me_level;
-    status isolated;
-
-    who = sort_array(ch_ppl["fighter"], "sort_em", this_object());
-    who_member = ({});
-
-    if (me && environment(me))
-	isolated = (status)environment(me)->query(ROOM_ISOLATED);
-    else isolated = 0;
-
-    if (!isolated)
-    {
-	for(i = 0; i < sizeof(who); i++)
-	{
-	    if (who[i])
-		who_member += ({ who[i] });
-	}
-    }
-    else who_member = ({ me });
-
-    who_list =  ({ FLINE1 });
-    me_coder = (int)me->query_coder_level();
-    me_level = (int)me->query_level();
-
-    num = 0;
-
-    for (i = 0; i < sizeof(who_member); i++)
-    {
-	il = (int)who_member[i]->query_invis();
-	fmark = present("fsymbol", who_member[i]);
-
-	// Don't show non-fighters on channel to non-coders.
-	if (!fmark && !me_coder) continue;
-
-	if (me_coder || (!environment(who_member[i])->query(ROOM_ISOLATED)
-	    && (!il || (il < IL_TOTALLY_INVISIBLE && me_level > 21))))
-	{
-	    if(fmark){ 
-		pretitle = fmark->query_pretitle();
-		num++;
-	    }
-	    else pretitle = "";
-
-	    // Format name
-	    name = capitalize((string) who_member[i]->query_real_name());
-	    if(me_coder){
-		if (il >= IL_TOTALLY_INVISIBLE) name = "<"+name+">";
-		else if (il) name = "("+name+")";
-	    }
-	    else {
-		if (who_member[i]->query_coder_level() && il) continue;
-		else if (il) name = "("+name+")";
-	    }
-
-	    if(fmark)
-		name += " the "+fmark->query_fighter_title();
-
-	    // Channel Status
-	    z = who_member[i]->query_channel_status("fighter");
-	    if ((z & CHANNEL_LD)) chanstat = "LD";
-	    else if(interactive_info(who_member[i], II_IDLE) > 300) chanstat = "Idle";
-	    else if ((z & CHANNEL_OFF)) chanstat = "Off";
-	    else if ((z & CHANNEL_BAN)) chanstat = "BANNED";
-	    else chanstat = "On";
-
-	    if (me_coder<0) loc = "(test character)";
-	    else
-	    if (me_coder || me == who_member[i] ||
-	      (int)who_member[i]->query_level() < me_level) 
-		loc = (string) environment(who_member[i])->short();
-	    else loc = " ";
-	    if (sizeof(loc) > 17) loc = loc[0..13] + "...";
-
-	    tmp = sprintf(" | %14s %-31s %-6s %-17s |", pretitle, name, chanstat, loc);
-	    who_list += ({ tmp });
-	}
-    }
-    tmp = "Total of " + num + " Fighter"+((num>1) ? "s": "")+" visible to you.";
-    tmp = sprintf(" |%73s|\n_\\ %-72s \\", " ",tmp);
-
-    who_list += ({ tmp });
-    who_list += ({ FLINE2 });
-
-    return who_list;
-}
-
-// ...#ifdef GN_FIGHTER
-#endif
-
-nomask status gunn_check(object ob)
-{
-    return (ob && ((int)ob->query_clan("gunn") || (int)ob->query_coder_level()));
-}
-
-nomask string gunn_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob))
-	return "[Gunn] " + capitalize((string)ob->query_real_name()) + msg;
-    if (stringp(ob)) return "[Gunn] " + ob + msg;
-    else return "[Gunn] " + msg;
-}
-
-nomask status rider_check(object ob)
-{
-    return (ob && ((int)ob->query_clan("wind riders") || (int)ob->query_coder_level()));
-}
-
-nomask string rider_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob))
-	return "[WindRiders] " + capitalize((string)ob->query_real_name()) + msg;
-    if (stringp(ob)) return "[WindRiders] " + ob + msg;
-    else return "[WindRiders] " + msg;
-}
-
-nomask status duren_check(object ob)
-{
-    return (ob && ((int)ob->query_clan("o'duren") || (int)ob->query_coder_level()));
-}
-
-nomask string duren_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob))
-	return "[O'Duren] " + capitalize((string)ob->query_real_name()) + msg;
-    if (stringp(ob)) return "[O'Duren] " + ob + msg;
-    else return "[O'Duren] " + msg;
-}
-
-nomask status stealer_check(object ob)
-{
-    return (ob && ((int)ob->query_clan("soul stealers") || (int)ob->query_coder_level()));
-}
-
-nomask string stealer_format(mixed ob, string msg, int e)
-{
-    if (objectp(ob))
-	return "[Soul Stealers] " + capitalize((string)ob->query_real_name()) + msg;
-    if (stringp(ob)) return "[Soul Stealers] " + ob + msg;
-    else return "[Soul Stealers] " + msg;
-}

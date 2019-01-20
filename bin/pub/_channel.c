@@ -29,18 +29,10 @@ channel_cmd(string arg, object me)
     p = (int)me->query_coder_level();
     npc = (int)me->is_npc();
 
-#if 0
-    if (!p && !me->query_testplayer())
-    {
-	WRITE("Sorry, this command is still under development. If you wanted \
-the lord channel log, the command for that is now 'channellog'.");
-	return 1;
-    }
-#endif
-
     if (!arg || lower_case(arg) == "list")
     {
 	tmp2 = (string *)CHANNEL_D->query_channel_names();
+	tmp2 = sort_array(tmp2, #'> /*' Make emacs happy */ );
 	s = sizeof(tmp2);
 	for (i = 0; i < s; i++)
 	{
@@ -49,15 +41,12 @@ the lord channel log, the command for that is now 'channellog'.");
 
 	    if (!x && !p) { tmp2[i] = 0; continue; }
 
-	    tmp2[i] = sprintf(" %-8s : %8s  %s   %s",
+	    tmp2[i] = sprintf(" %-10s : %8s  %s",
 	      tmp2[i],
 	      ((z & CHANNEL_BAN) ? " Banned " :
 		(!x || (z & CHANNEL_OFF))
 		? "   Off  " : "   On   "),
-	      (x ? "Available" : "Unavailable"),
-	      (tmp2[i] == "flord" ?
-		"{FLord} is the finnish lord channel." :
-		""));
+	      (x ? "Available" : "Unavailable"));
 	}
 
 	tmp2 -= ({ 0 });
@@ -69,8 +58,8 @@ the lord channel log, the command for that is now 'channellog'.");
 	}
 
 	tmp2 = ({ " The current channels are:",
-	  sprintf(" %-8s : %8s  %s", "Channel", " Status ", "Availability"),
-	  "---------------------------------",
+	  sprintf(" %-10s : %8s  %s", "Channel", " Status ", "Availability"),
+	  "------------------------------------",
 	}) + tmp2;
 	me->more(tmp2);
 	return 1;
