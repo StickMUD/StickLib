@@ -3,6 +3,7 @@
 // Modified 16-aug-95 by Doomdark.
 
 #ifndef PLAYER_C
+#include <tell_me.h>
 // Prototypes:
 
 varargs void tell_me(string s, status x, status y);
@@ -62,9 +63,9 @@ rcommunicate(string who, string msg) {
     for(i=sizeof(env)-1;i>=0;i--)
 	if(env[i]!=this_object())
 	    if(check_understanding(env[i]))
-		env[i]->tell_me(sprintf("%s %s", who, rsay(msg)));
+		env[i]->tell_me(sprintf("%s %s", who, rsay(msg)), 0, TELL_TYPE_SAY);
 	    else
-		env[i]->tell_me(sprintf("%s %s", who, rmumble()));
+		env[i]->tell_me(sprintf("%s %s", who, rmumble()), 0, TELL_TYPE_SAY);
 }
 
 int

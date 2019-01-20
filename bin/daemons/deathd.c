@@ -1,4 +1,4 @@
-/* 
+/*
  * /bin/daemons/deathd.c
  *
  * Dying is supposed to be funny!
@@ -8,9 +8,11 @@
  *
  * Added some randomness //Frobozz
  */
+#include <tell_me.h>
+
 inherit "/lib/find_name";
 
-#define TR(x) environment(ob)->tell_here(x, ({ ob }))
+#define TR(x) environment(ob)->tell_here(x, 0, TELL_TYPE_DEATH, ({ ob }))
 #define ARB(x) (x)[random(sizeof(x))]
 #define DIES ARB(({ "dies","deceases","demises","departs","passes away" }))
 

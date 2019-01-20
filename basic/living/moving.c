@@ -174,7 +174,7 @@ print_items(object me, mixed *items)
 	    same_amount = 1;
 	}
 	amount++;	// Amount of lines we'll get...
-	last = i;		
+	last = i;
     }
     if (same_amount > 1) {
 	items[last] = sprintf("%d x %s", same_amount, items[last]);
@@ -183,9 +183,9 @@ print_items(object me, mixed *items)
     if (stringp(items[last]))
 	items[last] += ".";
     if (amount > 20)
-	me->tell_me(implode(items, ", ", " and "));
+	me->tell_me(implode(items, ", ", " and "), 0, TELL_TYPE_ROOM_ITEM, 0, 0, 0);
     else
-	me->tell_me(implode(items, ".\n"));
+	me->tell_me(implode(items, ".\n"), 0, TELL_TYPE_ROOM_ITEM, 0, 0, 0);
 }
 
 /*
@@ -407,7 +407,7 @@ to hit %s back!", my_name, Possessive()));
     }
 
     if (query(LIV_BRIEF))
-	z = tell_me((string) environment()->short(5, this_object()) + ".", 0, 0,
+	z = tell_me((string) environment()->short(5, this_object()) + ".", 0,
 	  TELL_TYPE_ROOM_DESC | TELL_BEGIN, 0, 0);
     // Will be used when all rooms use "query_short"!!! (never?)
     // else if (short_str = (string) environment()->query_short(0,this_object())

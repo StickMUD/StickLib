@@ -446,20 +446,6 @@ set_commands(mapping x)
     // wants to use 'replace_program'! -+ Doomdark 14-feb-96 +-
     else if (mappingp(x))
 	commands = x;
-#if 0
-    {
-	commands = x;
-	c = m_indices(x);
-	f = m_values(x);
-	commands = allocate_mapping(sizeof(c));
-	while (i < sizeof(c)) {
-	    if  (stringp(f[i]))
-		commands[c[i]] = symbol_function(f[i], this_object());
-	    else commands[c[i]] = f[i];
-	    i++;
-	}
-    }
-#endif
 }
 
 /****************************************************************
@@ -474,7 +460,7 @@ void
 add_exit(string x, mixed y)
 {
     if (!y) {
-	if (Exits)	
+	if (Exits)
 	    Exits = m_delete(Exits, x);
     }
     else if (!Exits) Exits = ([ x : y ]);
@@ -968,7 +954,7 @@ move(string dir, string room)
 
 status
 weather_cmd(string s)
-{ 
+{
     if (!(query(ROOM_WD) & WD_OUTDOORS)) {
 	this_player() -> tell_me("You have no sense of weather from here!");
 	return 1;
@@ -1080,9 +1066,6 @@ clean_up(int clones)
     object *stuff;
     int count, i;
 
-#if 0
-    return 0;
-#endif
     if (Flags & F_ROOM_NO_CLEANUP) return 0;	// Won't call again!
     if (clones > 1 || environment()) return 1;	// May be called again
 

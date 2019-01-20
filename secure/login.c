@@ -52,6 +52,7 @@ int set_env(mixed value, mixed arg);
 
 #define LOGIN_NAMELEN   11     /* Player's max name length          */
 #define LOGIN_PASSLEN   8      /* Min length for password           */
+#define LOGIN_EMAILLEN  50     /* Player's max email length         */
 
 #define LOGIN_PASSWORD_FAIL 1  /* user can fail once with password. */
 #define LOGIN_PASSWD_EXPIRE 2592000 /* 30 days */
@@ -381,14 +382,14 @@ logon(string msg) {
 
 	cat(LOGIN_WELCOME);
 	/* Every input has its own timeout but also the
-	   whole login sequence has a max time. (check        
-	   login_input()). 
+	   whole login sequence has a max time. (check
+	   login_input()).
 	 */
 	call_out("login_close", LOGIN_TIMEOUT * 5);
 
 	login_state = LOGIN_STATE_NAME;
 
-    case LOGIN_STATE_NAME:             
+    case LOGIN_STATE_NAME:
 	tmp = msg ? msg : "Give your name: ";
 	login_input(tmp, "login_name", 0);
 	break;
@@ -658,7 +659,7 @@ login_password(string str) {
 		return;
 	    }
 	}
-	if(!password_again) { 
+	if(!password_again) {
 	    password_again = str;
 	    logon("Password (again): ");
 	    return;
@@ -675,11 +676,11 @@ login_password(string str) {
 	    return;
 	}
 	else {
-	    passwd_time = time();     
+	    passwd_time = time();
 	    password = crypt(password_again, 0); //New seed.
 	}
-    }   
-    else if(crypt(str, password) != password) {  
+    }
+    else if(crypt(str, password) != password) {
 	write("Wrong password!\n");
 	if(login_password_fail++ < LOGIN_PASSWORD_FAIL) {
 	    logon();
@@ -701,7 +702,24 @@ login_password(string str) {
 	    return;
 	}
     }
-    if(!mailaddr) login_state = LOGIN_STATE_MAIL;    
+
+    if (!sizeof( regexp( ({ str }), "[0-9]" ))
+      || !sizeof( regexp( ({ str }), "[^0-9a-zA-Z]")))
+	tmp = "Your password must contain at least one digit (0-9) and one\n\
+non-alphanumeric character.  Please enter a new password.\n";
+    else tmp = 0;
+
+    if (tmp) {
+	write(tmp);
+	login_password_fail = 0;
+	expire_passwd = password;
+	password = 0; //This causes the passwd to be asked twice.
+	login_state = LOGIN_STATE_PASS;
+	logon();
+	return;
+    }
+
+    if(!mailaddr) login_state = LOGIN_STATE_MAIL;
     else if(gender == -1) login_state = LOGIN_STATE_GEND;
     else login_state = LOGIN_STATE_CONN;
 
@@ -713,7 +731,7 @@ login_password(string str) {
 	tell_me(tmp);
 	destruct(this_object());
 	return;
-    }        
+    }
 
     logon();
 }
@@ -730,8 +748,14 @@ login_email(string str) {
 
     if(!str) str = "";
 
-    if(sscanf(str, "%s@%s", login, addr) != 2) {
-	write("Email address should be type of <login>@<address>\n");
+    if (!sizeof(regexp(({str}), ".+\\@.+\\..+"))) {
+	write("Email address should be of format <identifier>@<domain>.<tld>\n");
+	logon();
+	return;
+    }
+
+    if (sizeof(str) > LOGIN_EMAILLEN) {
+	write("Too long an email - maximum is "+LOGIN_EMAILLEN+" characters.\n");
 	logon();
 	return;
     }

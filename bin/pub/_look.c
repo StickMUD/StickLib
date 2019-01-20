@@ -33,7 +33,7 @@ print_items(object me, mixed *items)
 	    same_amount = 1;
 	}
 	amount++;	// Amount of lines we'll get...
-	last = i;		
+	last = i;
     }
     if (same_amount > 1) {
 	items[last] = sprintf("%d x %s", same_amount, items[last]);
@@ -42,9 +42,9 @@ print_items(object me, mixed *items)
     if (stringp(items[last]))
 	items[last] += ".";
     if (amount > 20)
-	me->tell_me(implode(items, ", ", " and "));
+	me->tell_me(implode(items, ", ", " and "), 0, TELL_TYPE_ROOM_ITEM, 0, 0, 0);
     else
-	me->tell_me(implode(items, ".\n"));
+	me->tell_me(implode(items, ".\n"), 0, TELL_TYPE_ROOM_ITEM, 0, 0, 0);
 }
 
 varargs int

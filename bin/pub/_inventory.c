@@ -4,11 +4,12 @@
 /* Now also supports the 'Murder'-client. -+ Doomdark 23-Jan-98 +- */
 #pragma strict_types
 
+#include <tell_me.h>
 #include <player_defs.h>
 #include <client_defs.h>
 
 int
-print_items(object me, mixed *items)
+print_items(object me, mixed *items, int tell_type)
 {
     int i, last, amount, same_amount;
     if (!sizeof(items)) return 0;
@@ -23,7 +24,7 @@ print_items(object me, mixed *items)
 	    same_amount = 1;
 	}
 	amount++;	// Amount of lines we'll get...
-	last = i;		
+	last = i;
     }
     if (same_amount > 1) {
 	items[last] = sprintf("%d x %s", same_amount, items[last]);
@@ -31,7 +32,7 @@ print_items(object me, mixed *items)
     }
     if (stringp(items[last]))
 	items[last] += ".";
-    me->tell_me(implode(items, ".\n"));
+    me->tell_me(implode(items, ".\n"), 0, tell_type, 0, 0, 0);
     return amount;
 }
 
@@ -69,7 +70,7 @@ inventory_cmd(string arg, object me)
 	    ob[i] = (string) ob[i]->query_short(0, me);
 	    i++;
 	}
-	if (!print_items(me, ob))
+	if (!print_items(me, ob, TELL_TYPE_INV_ITEM))
 	    me->tell_me("- Nothing -");
 	return 1;
     }
@@ -107,7 +108,7 @@ inventory_cmd(string arg, object me)
 	ob[i] = (string) ob[i]->query_short(0, me);
 	i++;
     }
-    if (!print_items(me, ob))
+    if (!print_items(me, ob, TELL_TYPE_INVENTORY))
 	me->tell_me("- Nothing -");
 
     return 1;
