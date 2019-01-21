@@ -38,13 +38,13 @@
 
 /* Bite is sort of a combined pierce & crush */
 #define DT_BITE		8
-#define	DT_CLAW	9
+#define	DT_CLAW		9
 // Real clawing; DT_SLASH == weapon hit, although similar to claw
 
 #define	DT_STAB		10
 // Nothing special as damage, but different hit type at least. -+ DD +-
 
-#define DT_PHYS         12  //Use this only for resistances
+#define DT_PHYSICAL     12  //Use this only for resistances
 
 /* Special or magical attacks */
 
@@ -53,6 +53,7 @@
 #define DT_WATER	54
 #define DT_FIRE		56
 #define DT_AIR		58
+#define DT_SPIRIT	58
 #define DT_COLD		60
 #define DT_ACID		62
 #define DT_ELECTRICITY	64
@@ -67,8 +68,8 @@
 #define DT_NEGATIVE	76
 #define DT_LIGHT	78
 #define DT_POSITIVE	80
-#define	DT_FALL	90
-#define DT_MAGIC	100
+#define	DT_FALL		90
+#define DT_MAGICAL	100
 
 // Added 13-Aug-98, Doomdark: These _should_ be ORed (DT_xxx | DT_yy)
 #define DT_AREA	0x0100

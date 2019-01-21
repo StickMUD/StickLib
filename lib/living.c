@@ -1278,7 +1278,7 @@ hit_player(int dam, int t, mixed hc, object enemy)
 		dodge = 0;
 	    }
     }
-    if(t <= DT_PHYS && t > DT_FORCE && !query_condition(C_STUNNED)
+    if(t <= DT_PHYSICAL && t > DT_FORCE && !query_condition(C_STUNNED)
       && !query_condition(C_NO_DODGE)) {
 	// Armour just gets in the way
 	// But strength is a factor, too

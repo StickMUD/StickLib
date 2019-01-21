@@ -32,7 +32,7 @@ All good followers of Boccob should respect and revere him.");
 fire leaps from %<me.possessive>% fingertips to hit %<him.name>%.");
     // let's add some resistances to make him harder to kill!
     set_condition(RESISTANCE(C_STUNNED),-1);
-    set_resistance(DT_MAGIC, 500);
+    set_resistance(DT_MAGICAL, 500);
     set_resistance(DT_FIRE, 500);
     set_resistance(DT_LIGHT, 500);
     if(UNIQUE_D->create_unique("priest_store_key", 1)) {

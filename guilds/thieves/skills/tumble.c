@@ -143,7 +143,7 @@ query_guild_ac_rate(int dmg, int dtype, int hc, object att)
 
     /* forced dmg..don't tumble..*/
     if (member(({
-	  DT_FORCE, DT_POISON, DT_TIME, DT_MAGIC, DT_NEGATIVE,
+	  DT_FORCE, DT_POISON, DT_TIME, DT_MAGICAL, DT_NEGATIVE,
 	  DT_POSITIVE, DT_LIGHT, DT_DARK, DT_STAB }), dtype) != -1) {
 	write_file(GDIR+"FORCED_DAM",
 	  sprintf("Skipped tumbling %d damage from %s\n",

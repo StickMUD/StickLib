@@ -67,7 +67,7 @@ end_strangulation(object who, mixed target)
     dam = get_damage(who,sym,interactive(target));
     // let's make sure that we can't cast another attack spell at this round
     who->attacked_by(target,1);
-    target->hit_player(dam, DT_MAGIC, 7, who);
+    target->hit_player(dam, DT_MAGICAL, 7, who);
     return 1;
 }
 

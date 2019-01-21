@@ -34,11 +34,11 @@ set_resistance(int res, int value)
 	return 0;
     if(!Resistances) Resistances = ([]);
     if(value > MAX_RES) value = MAX_RES;
-    if(res == DT_PHYS)
+    if(res == DT_PHYSICAL)
     {
 	Resistances[DT_CUT] = Resistances[DT_IMPALE] = Resistances[DT_CRUSH]=
 	Resistances[DT_IMPACT] = Resistances[DT_BITE] = Resistances[DT_CLAW]=
-	Resistances[DT_STAB] = Resistances[DT_PHYS] = value;
+	Resistances[DT_STAB] = Resistances[DT_PHYSICAL] = value;
     }
     else
 	Resistances[res] = value;
@@ -61,11 +61,11 @@ add_resistance(int res, int delta)
     value = Resistances[res] + delta;
     if(value > MAX_RES) value = MAX_RES;
 
-    if(res == DT_PHYS)
+    if(res == DT_PHYSICAL)
     {
 	Resistances[DT_CUT] = Resistances[DT_IMPALE] = Resistances[DT_CRUSH]=
 	Resistances[DT_IMPACT] = Resistances[DT_BITE] = Resistances[DT_CLAW]=
-	Resistances[DT_STAB] = Resistances[DT_PHYS] = value;
+	Resistances[DT_STAB] = Resistances[DT_PHYSICAL] = value;
     }
     else
 	Resistances[res] = value;

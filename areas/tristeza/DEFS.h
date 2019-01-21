@@ -11,6 +11,10 @@
 #include <areas.h>
 #endif
 
+#ifndef _DAEMONS_H
+#include <daemons.h>
+#endif
+
 #ifndef _GENERIC_ROOMS_H
 #include <generic_rooms.h>
 #endif
@@ -35,7 +39,7 @@
 
 #define	TRISTEZA_ROOM_C	"/areas/tristeza/virtual/tristeza_room"
 #define	TOWER_LOOK_C	"/areas/tristeza/tower_look"
-#define	NAMEGEN_C	"/areas/tristeza/name_gen"
+#define	NAMEGEN_C	NAMING_D
 #define	CITYGUARD_C	"/areas/tristeza/npc/guard"
 #define	CITYMONSTER_C	"/areas/tristeza/npc/citymonster"
 #define	CITY_DAEMON	"/areas/tristeza/city_daemon"

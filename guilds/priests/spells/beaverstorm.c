@@ -53,7 +53,7 @@ who moans in pain!",
     dam = get_damage(who,sym,interactive(target));
     // let's make sure that we can't cast another attack spell at this round
     who->attacked_by(target,1);
-    target->hit_player(dam, DT_MAGIC, 0, who);
+    target->hit_player(dam, DT_MAGICAL, 0, who);
     return 1;
 }
 

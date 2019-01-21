@@ -127,7 +127,7 @@ end_manastorm(object who, mixed target)
 
     who->attacked_by(target,1);
     inc_skills(who, sym, get_attack_spell_train(who, sym, target));
-    target->hit_player(dam, DT_MAGIC, 5, who);
+    target->hit_player(dam, DT_MAGICAL, 5, who);
 
     return 1;
 }

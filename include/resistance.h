@@ -48,6 +48,7 @@
 #define RT_WATER	54
 #define RT_FIRE		56
 #define RT_AIR		58
+#define RT_SPIRIT	59
 #define RT_COLD		60
 #define RT_ACID		62
 #define RT_ELECTRICITY	64
@@ -61,6 +62,6 @@
 #define RT_NEGATIVE	76
 #define RT_LIGHT	78
 #define RT_POSITIVE	80
-#define RT_MAGIC	100
+#define RT_MAGICAL	100
 
 #endif /* _RESISTANCE_H */
