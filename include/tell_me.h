@@ -16,6 +16,7 @@
 #define	TELL_TYPE_DEATH			(10 << 8)
 #define	TELL_TYPE_ROOM_BRIEF		(11 << 8)
 #define	TELL_TYPE_ROOM_DESC		(12 << 8)
+#define	TELL_TYPE_TERMINAL_COLOUR	TELL_TYPE_ROOM_DESC
 #define	TELL_TYPE_ROOM_ITEM		(13 << 8)
 #define	TELL_TYPE_ROOM_SMELLS		(14 << 8)
 #define	TELL_TYPE_ROOM_SOUNDS		(15 << 8)
@@ -34,6 +35,7 @@
 #define	TELL_TYPE_WIZ			(28 << 8)
 #define	TELL_TYPE_ARCH			(29 << 8)
 #define	TELL_TYPE_ADMIN			(30 << 8)
+#define	TELL_TYPE_RESERVED		(40 << 8)
 
 #define	TELL_BEGIN			0x20000000
 #define	TELL_END			0x40000000

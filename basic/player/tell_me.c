@@ -1,27 +1,17 @@
-/****************************************************************
-*								*
-* Module:							*
-*	/basic/player/tell_me.c					*
-* Version:							*
-*	 2.1a 10-Jan-98			       			*
-* Last modification:						*
-*	 10-Jan-98, Doomdark					*
-* Description:							*
-*	"Full version" of tell_me.c for player.c. Includes all	*
-*	the nifty things players need, without having to check	*
-*	if this_object() is an NPC or a player (formerly it was	*
-*	living.c that included tell_me.c).			*
-*								*
-* NEW:								*
-*								*
-* 29-dec-97 "Sensing messages" should work now. // Chopin	*
-* 10-Jan-98, Doomdark: Added support for client applets/-cations*
-* 9-Feb-98, Chopin: Moved the part of code that combines format strings
-*   to normal strings from tell_me() to a separate function to fstring.c
-*								*
-****************************************************************/
+/**
+ * Module:
+ *      /basic/player/tell_me.c
+ * Description:
+ *      "Full version" of tell_me.c for player.c. Includes all
+ *      the nifty things players need, without having to check
+ *      if this_object() is an NPC or a player(formerly it was
+ *      living.c that included tell_me.c).
+ *
+ **/
 
 #include "/basic/misc/fstring.c"
+
+#include <mxp.h>
 
 #ifndef PLAYER_C
 
@@ -29,14 +19,14 @@
 #include <tell_me.h>
 #include <living_defs.h>
 #include <conditions.h>
-#include <client_defs.h>
-#include <config.h>
 
-varargs int tell_me(mixed a, mixed b, mixed c, object d, object e, object f);
+public varargs int
+tell_me(mixed str, mixed sense_list, mixed tell_flags, mixed me, mixed him, mixed it, int stat);
+
+int coder_level;
 
 static int liv_Flags;
 static string name;
-static int _value_plr_client;	// Defined in /basic/player/client.c
 
 varargs string query_name(int a, object b);
 varargs string query_short(int a, object b);
@@ -49,274 +39,324 @@ varargs mixed query_condition(int c, int qtype);
 #endif
 
 // Saveable preference data:
-public mapping text_effects;	// Various player-settable effects for the text.
-mapping Env;			// Environment-variables
+public mapping text_effects;    // Various player-settable effects for the
+                                // text.
+mapping Env = ([]);             // Environment-variables
 
 // Temporary run-time data:
-static int s_columns, s_rows;	// Screen dimensions.
-static string s_wrap;		// String sprintf uses in tell_me.
+static int s_columns, s_rows;   // Screen dimensions.
 static string term_reset;
-static int effects_on;		// Should we add effects?
+static int effects_on;          // Should we add effects?
 
-#define	TERM_HAS_EFFECTS(x)	(x == "vt100" || x == "ansi")
+// Term codes for terminal_colour on long descs
+private nosave mapping term_codes;
 
-int
-set_env(mixed env, mixed val)
+// Charsets to set on a user when required
+private static int *_ctrl_charset =({
+  255, 255, 255, 255, 255, 255, 255, 255,
+  255, 255, 255, 255, 255, 255, 255, 255,
+  0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+  0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+});
+
+#define TERM_HAS_EFFECTS(x)    (x == "vt100" || x == "ansi")
+
+// Called by /bin/pub/_set.c
+void set_text_effects(mapping m) { text_effects = m; }
+mapping query_text_effects() { return deep_copy(text_effects); }
+
+int set_env(mixed env, mixed val)
 {
-    if (!Env)
-	Env = ([ ]);
-    if (!val)
-	Env = m_delete (Env, env);
+    if (!Env) Env =([ ]);
+
+    if (!val) {
+    	Env = m_delete(Env, env);
+    	return 1;
+    }
+
     // Unfortunately, some env variables are special... *sigh*
-    // (actually, might be better to use dedicated variables here but...)
-    else {
-	if (!intp(val) && !stringp(val)) return 0;
-	if (env == "term") {
-	    Env[env] = val;
-	    if (TERM_HAS_EFFECTS(val))
-		effects_on = 1;
-	    else
-		effects_on = 0;
-	} else if (env == "rows" || env == "columns") {
-	    Env[env] = to_int(val);
-	    s_wrap = 0;	// This will make us update
-	} else {
-	    Env[env] = val;
-	}
+    //(actually, might be better to use dedicated variables here but...)
+
+    if (!intp(val) && !stringp(val)) return 0;
+    if (env == "term") {
+        Env[env] = val;
+        if (TERM_HAS_EFFECTS(val)) {
+            term_codes = ANSI_D->query_terminal_codes();
+            effects_on = 1;
+        } else {
+            term_codes =([0: ""]);
+            effects_on = 0;
+        }
+    } else if (env == "rows" || env == "columns") {
+        Env[env] = to_int(val);
+        s_columns = 0;
+    } else {
+        Env[env] = val;
     }
     return 1;
 }
 
-mixed
-query_env (mixed env)
+mixed query_env(mixed env)
 {
-    if (!env || !Env)
-	return Env;
+    if (!env || !Env) return Env;
     return Env[env];
 }
 
-
-status
-set_text_effect(int effect, mixed value)
+status set_text_effect(int effect, mixed value)
 {
-    if (!text_effects) text_effects = ([ ]);
-    if (!value)
-	m_delete(text_effects, effect);
-    else
-	text_effects[effect] = value;
+    if (!text_effects) text_effects =([ ]);
+    if (!value) m_delete(text_effects, effect);
+    else text_effects[effect] = value;
+    return 0;
 }
 
-void
-binmsg(string str, int flag)
+string query_text_effect(int effect) {
+    if (!text_effects || !text_effects[effect]) return 0;
+    return text_effects[effect];
+}
+
+void binmsg(string str, int flag)
 {
-    if(!previous_object()) return;
-    if(query_env("binmsg") == "SELF")
-#if 1
-	if(
-#else
-	  if(!sscanf(object_name(previous_object()),
-	      sprintf(PATH_USER_FNAME "%s/%%~s", name)) &&
-#endif
-	    this_player() != this_object())
-	      return;
-	  binary_message(str, flag);
-	  return;
-      }
+    if (!previous_object()) return;
+    if (query_env("binmsg") == "SELF")
+        if (!sscanf(object_name(previous_object()),
+            sprintf("home/%s/%%~s", name)) &&
+          this_player() != this_object()) return;
+    binary_message(str, flag);
+    return;
+}
 
-    public varargs int
-    tell_me(mixed str, mixed sense_list, mixed tell_flags,
-      mixed me, mixed him, mixed it)
-    {
-	mixed data, str2, j;
-	int i, ret, ansi_count, senses;
-	string s;
+/**
+ * Comment
+ *
+ * @param player object
+ * @param mxpEnabled int
+ *
+ * @return string
+ */
+public nomask string
+process_mxp(string message, int mxpEnabled)
+{
+    int line = 0;
+    int length = 0;
+    int i = 0;
+    int inTag = 0;
+    int inEntity = 0;
 
-	// If the second argument is a pointer, we need to check if we can
-	// "sense" this message (ie. see, hear, feel or smell):
-	// Hope it works now //Chopin
+    string *original_lines = explode(message, "\n");
+    string *processed_lines = allocate(sizeof(original_lines));
 
-	if (pointerp(sense_list)) {
-	    senses = 15;
-	    // = LIV_CAN_SEE | LIV_CAN_HEAR | LIV_CAN_SMELL | LIV_CAN_FEEL
-	    // smelling is quite useless though
+    for(line = 0; line < sizeof(original_lines); line++) {
+        processed_lines[line] = mxpEnabled ? MXPMODE(1) : "";
 
-	    // if "me" object is invisible, we can't "see" the message
-	    // unless we can detect invis
+        length = sizeof(original_lines[line]);
 
-	    /* Hmmh. This is a kludgy way; not always what
-	     * we want... -+ Doomdark 05-Sep-98 +-
-	     */
+        for(i = 0; i < length; i++) {
+            if (inTag) { /* in a tag, eg. <send> */
+                if (original_lines[line][i..i] == MXP_END) {
+                    inTag = 0;
 
-	    if(query_condition(C_BLIND) || 
-	      (me && (this_object() != me) && (me->query_invis()>0)
-		&& !query_condition(C_DETECT_INVIS)) )
-		senses &= ~LIV_CAN_SEE;
+                    if (mxpEnabled) {
+                        processed_lines[line] += ">";
+                    }
+                } else if (mxpEnabled) { /* copy tag only when MXP mxpEnabled */
+                    processed_lines[line] += original_lines[line][i..i];
+                }
+            } else if (inEntity) { /* in a tag, eg. <send> */
+                if (mxpEnabled) { /* copy tag only when MXP mxpEnabled */
+                    processed_lines[line] += original_lines[line][i..i];
+                }
 
-	    if(query_condition(C_DEAF))
-		senses &= ~LIV_CAN_HEAR;
+                if (original_lines[line][i..i] == ";") {
+                    inEntity = 0;
+                }
+            } else {
+                if (original_lines[line][i..i] == MXP_BEG) {
+                    inTag = 1;
 
-	    for(i=0;i<sizeof(sense_list);i++) {
-		if(senses == (sense_list[i] | senses))
-		    break;
-	    }
-	    if(i==sizeof(sense_list))
-		return TELL_RETURN_NONE_USED;
-	    // Couldn't sense this message -> let's return!
+                    if (mxpEnabled) {
+                        processed_lines[line] += "<";
+                    }
+                } else if (original_lines[line][i..i] == MXP_END) { /* should not get this case */
+                    processed_lines[line] += ">";
+                } else if (original_lines[line][i..i] == MXP_AMP) {
+                    inEntity = 1;
 
-	    if (stringp(str[i]) && str[i][0] == ':') {
-		str[i] = make_format_string(str[i][1..]);
-	    }
-	    // If it is an SSF, we'll need to make the format string. Note that this
-	    // updates the actual array given as argument, so we'll only format em once!
-	    str2 = str[i];
-	    ret = i;
-	} else {
-	    /* Here we SHOULD consider cases where we have just a single
-	     * sense-specifier.
-	     */
-	    if (stringp(str)) {
-		if (str[0] == ':')
-		    str = make_format_string(str[1..]);
-		str2 = str;
-		ret = 0;
-	    } else if (pointerp(str)) {
-		str2 = str;
-	    } else return TELL_RETURN_NONE_USED;
-	}
-
-	/* Have to make sure screen dimensions are set ok... To optimize, let's
-	 * handle it here, not sooner.
-	 */
-	if (!s_wrap || tell_flags == TELL_UPDATE) {
-	    // We have to keep track of whether there should be special effects...
-	    if (Env && TERM_HAS_EFFECTS(Env["term"]))
-		effects_on = 1;
-	    else
-		effects_on = 0;
-
-	    if (data = query_env("columns")) {
-		if (stringp(data)) {
-		    Env["columns"] = s_columns = to_int(data);
-		    // Hack the "rows" into integer too.
-		    if (stringp(data = Env["rows"]))
-			Env["rows"] = s_rows = to_int(data);
-		} else {
-		    s_columns = (intp(data) && data) ? data : 80;
-		}
-	    }
-	    if (s_columns < 2)
-		s_columns = 80;
-	    if (s_rows < 2)
-		s_rows = 25;
-	    // And, having gotten needed info, we can define the formatting string:
-	    s_wrap = sprintf("%%-=%ds\n", s_columns - 1);
-	    if (tell_flags == TELL_UPDATE);
-	    tell_flags = 0;
-	}
-
-	if (pointerp(str2) && sizeof(str2) > 1) {
-	    str2 = interpret_format_string(str2, effects_on, &ansi_count,
-	      tell_flags, me, him, it);
-	}
-
-	if(!stringp(str2)) return TELL_RETURN_NONE_USED;
-
-	if (intp(tell_flags))
-	    j = tell_flags;
-	else if (pointerp(tell_flags))
-	    j = tell_flags[0];
-
-	/* Now we have the message, and we need to worry about how to
-	 * present it.
-	 */
-
-	/* Client(s) may wish to know type of the message.
-	 * The MM-client indicates this by using begin and end tags:
-	 * (which have to be explicitly marked by mudlib, as messages can
-	 * consist of pieces from more than one call to tell_me())
-	 */
-	if (j && (j & TELL_BEGIN)) {
-	    if (_value_plr_client == CLIENT_MURDER) {
-		ret = TELL_RETURN_CLIENT_IN_USE;	// Ugh.
-		switch (j & TELL_TYPE_MASK) {
-		case TELL_TYPE_INVENTORY:
-		    binary_message(CLIENT_DO_TAG_BEGIN(CLIENT_TAG_INV));
-		    break;
-		case TELL_TYPE_INV_ITEM:
-		    binary_message(CLIENT_DO_TAG_BEGIN(CLIENT_TAG_ITEM));
-		    break;
-		case TELL_TYPE_ROOM_DESC:
-		    binary_message(CLIENT_DO_TAG_BEGIN(CLIENT_TAG_RDESC));
-		    break;
-		case TELL_TYPE_ROOM_ITEM:
-		    binary_message(CLIENT_DO_TAG_BEGIN(CLIENT_TAG_RITEM));
-		    break;
-		}
-	    }
-	}
-
-	/* Also, players may want to add some effects (ANSI-codes) to mark certain
-	 * types of messages (doesn't take into account TELL_BEGIN/END markings,
-	 * although it could well do just that):
-	 */
-	if (effects_on && mappingp(text_effects)
-	  && (s = text_effects[j & TELL_TYPE_MASK])) {
-	    binary_message(s);
-	} else s = 0;
-
-	/* We can also prevent the linewrapping: */
-	if (j & TELL_NO_WRAP) {
-	    if (ansi_count)
-		binary_message(str2);
-	    else
-		tell_object(this_object(), str2);
-	} else {
-	    // There are some special cases where client-side needs more support:
-	    switch (j & TELL_TYPE_MASK) {
-	    case TELL_TYPE_ROOM_DESC:
-		// Room desc should not be wrapped, if we are using the client:
-		if (_value_plr_client == CLIENT_MURDER) {
-		    if (ansi_count)
-			binary_message(str2);
-		    else
-			tell_object(this_object(), str2);
-		    // But we also need the trailing linefeed
-		    binary_message("\n");
-		    break;
-		}
-		// Otherwise (no client) we just fall back to default:
-	    default:
-		if (ansi_count)
-		    binary_message(sprintf(s_wrap, (str2)));
-		else
-		    tell_object(this_object(),sprintf(s_wrap,str2));
-	    }
-	}
-
-	/* And if we had some player-specified effect, we'll end it as well: */
-	if (s) {
-	    if (!term_reset) {
-		term_reset = sprintf("%c[0m", /* ] Make Emacs happy*/ 0x1B);
-		// term_reset = "\e[0m"; // ] _should_ work, does not.
-	    }
-	    binary_message(term_reset);
-	}
-
-	/* And finally we may have to add the end tag too: */
-	if (j && (j & TELL_END)) {
-	    if (_value_plr_client == CLIENT_MURDER) {
-		ret = TELL_RETURN_CLIENT_IN_USE;	// Ugh again.
-		switch (j & TELL_TYPE_MASK) {
-		case TELL_TYPE_INVENTORY:
-		    binary_message(CLIENT_DO_TAG_END(CLIENT_TAG_INV));
-		    break;
-		case TELL_TYPE_ROOM_DESC:
-		    binary_message(CLIENT_DO_TAG_END(CLIENT_TAG_RDESC));
-		    break;
-		}
-	    }
-	}
-	return ret;
+                    if (mxpEnabled) {
+                        processed_lines[line] += "<";
+                    }
+                } else if (mxpEnabled) {
+                    if (original_lines[line][i..i] == "<") {
+                        processed_lines[line] += "&lt;";
+                    } else if (original_lines[line][i..i] == ">") {
+                        processed_lines[line] += "&gt;";
+                    } else if (original_lines[line][i..i] == "&") {
+                        processed_lines[line] += "&amp;";
+                    } else if (original_lines[line][i..i] == "\"") {
+                        processed_lines[line] += "&quot;";
+                    } else {
+                        processed_lines[line] += original_lines[line][i..i];
+                    }
+                } else { /* not MXP - just copy character */
+                    processed_lines[line] += original_lines[line][i..i];
+                }
+            }
+        }
     }
 
+    return implode(processed_lines, "\n");
+}
 
+public varargs int tell_me(mixed str, mixed sense_list, mixed tell_flags,
+         mixed me, mixed him, mixed it, int stat)
+{
+    mixed data, str2;
+    int i, j, ret, ansi_count, senses, mxpEnabled;
+    string s;
+
+    /* Compatibility section: */
+    if (sense_list && intp(sense_list)) {
+        tell_flags = sense_list;
+        sense_list = 0;
+    }
+
+    /* Sense list, done by Chopin.
+     * If the second argument is a pointer, we need to check if we can
+     * "sense" this message(ie. see, hear, feel or smell):
+     * Hope it works now //Chopin
+     */
+    if (pointerp(sense_list)) {
+        senses = 15;
+        /* = LIV_CAN_SEE | LIV_CAN_HEAR | LIV_CAN_SMELL | LIV_CAN_FEEL
+         * smelling and feeling are quite useless though
+         * if "me" object is invisible, we can't "see" the message
+         * unless we can detect invis
+         */
+        if (query_condition(C_BLIND) ||
+         (me &&(this_object() != me) &&(me->query_invis()>0)
+            && !query_condition(C_DETECT_INVIS)) )
+            senses &= ~LIV_CAN_SEE;
+
+        if (query_condition(C_DEAF))
+            senses &= ~LIV_CAN_HEAR;
+
+        for(i=0;i<sizeof(sense_list);i++) {
+            if (senses ==(sense_list[i] | senses))
+                break;
+        }
+        if (i==sizeof(sense_list))
+            return TELL_RETURN_NONE_USED;
+        // Couldn't sense this message -> let's return!
+
+        if (stringp(str[i]) && str[i][0] == ':') {
+            str[i] = make_format_string(str[i][1..]);
+        }
+        // If it is an SSF, we'll need to make the format string. Note that
+        // this updates the actual array given as argument, so we'll only
+        // format em once!
+        str2 = str[i];
+        ret = i;
+    } else {
+        if (stringp(str)) {
+            if (str[0] == ':') str = make_format_string(str[1..]);
+            str2 = str;
+            ret = 0;
+        } else if (pointerp(str))  str2 = str;
+        else return TELL_RETURN_NONE_USED;
+    }
+
+    /* Have to make sure screen dimensions are set ok... To optimize, let's
+     * handle it here, not sooner.
+     */
+    if (!s_columns || tell_flags == TELL_UPDATE) {
+        // We have to keep track of whether there should be special effects...
+        effects_on = (Env && TERM_HAS_EFFECTS(Env["term"])) ? 1 : 0;
+
+        if (data = query_env("columns")) {
+            if (stringp(data)) {
+                Env["columns"] = s_columns = to_int(data);
+                // Hack the "rows" into integer too.
+                if (stringp(data = Env["rows"]))
+                    Env["rows"] = s_rows = to_int(data);
+            } else {
+                s_columns =(intp(data) && data) ? data : 80;
+            }
+        }
+        if (s_columns < 2) s_columns = 80;
+        if (s_rows < 2)    s_rows = 25;
+
+        if (tell_flags == TELL_UPDATE);
+        tell_flags = 0;
+    }
+
+    if (pointerp(str2) && sizeof(str2) > 1) {
+        str2 = interpret_format_string(str2, effects_on, &ansi_count,
+          tell_flags, me, him, it);
+    }
+
+    if (!stringp(str2)) return TELL_RETURN_NONE_USED;
+
+    if (intp(tell_flags)) j = tell_flags;
+    else if (pointerp(tell_flags)) j = tell_flags[0];
+
+    // 23-Dec-12, Germ
+    if (stat) CMD_D->tell_stats(name, str2, coder_level);
+
+    // Process MXP - Uncomment to use!
+#if 0
+    mxpEnabled = query_env("mxp") != 0 && query_env("mxp") == "enabled" ? 1 : 0;
+    str2 = process_mxp(str2, mxpEnabled);
+#endif
+
+#if 0
+    if (j == TELL_TYPE_TELL && query_env("telopt_gmcp"))
+        TELOPT_D->send_comm_channel_text(this_object(), "Tell", 0, str2);
+    else if (j == TELL_TYPE_SAY && query_env("telopt_gmcp"))
+        TELOPT_D->send_comm_channel_text(this_object(), "Say", 0, str2);
+    else if (j == TELL_TYPE_WHISPER && query_env("telopt_gmcp"))
+        TELOPT_D->send_comm_channel_text(this_object(), "Whisper", 0, str2);
+#endif
+
+    /* Now we have the message, and we need to worry about how to present it.
+     * Also, players may want to add some effects(ANSI-codes) to mark certain
+     * types of messages
+     */
+    if (effects_on && mappingp(text_effects)
+        &&(s = text_effects[j & TELL_TYPE_MASK])) {
+        binary_message(s, 1);
+    } else s = 0;
+
+    int wrap = j&TELL_NO_WRAP ? 0 : s_columns-1;
+    int type_term = (j&TELL_TYPE_MASK)==TELL_TYPE_TERMINAL_COLOUR ? 1 : 0;
+
+    if (type_term) {
+        int *orig_charset = 0;
+        if (!term_codes)
+            term_codes = effects_on ? ANSI_D->query_terminal_codes() :([0: ""]);
+        if (effects_on) {
+            orig_charset = get_connection_charset(0);
+            set_connection_charset(_ctrl_charset, 1);
+        }
+        str2 = terminal_colour(str2, term_codes, wrap, 0);
+        if (wrap) tell_object(this_object(), str2 + "\n");
+        else tell_object(this_object(), str2);
+        if (effects_on) set_connection_charset(orig_charset, 0);
+    } else {
+    	if (!wrap) tell_object(this_object(), str2);
+    	else tell_object(this_object(), terminal_colour(str2, 0, wrap, 0));
+    }
+
+    /* And if we had some player-specified effect, we'll end it as well: */
+    if (s) {
+        if (!term_reset) {
+            term_reset = sprintf("%c[0m", /* ] Make Emacs happy*/ 0x1B);
+            // term_reset = "\e[0m"; // ] _should_ work, does not.
+        }
+        binary_message(term_reset, 1);
+    }
+
+    /* Send line feed for messages that are using text wrap */
+    if (!type_term && wrap) tell_object(this_object(), "\n");
+
+    return ret;
+}

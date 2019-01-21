@@ -401,14 +401,14 @@ to hit %s back!", my_name, Possessive()));
 
     if (!query_can_see()) {
 	tell_me("You cannot see anything.", 0,
-	  TELL_TYPE_ROOM_DESC | TELL_BEGIN | TELL_END, 0, 0);
+	  TELL_TYPE_ROOM_BRIEF | TELL_BEGIN | TELL_END, 0, 0);
 	PET_FOLLOW  /* Pets must follow before returning! */
 	return;
     }
 
     if (query(LIV_BRIEF))
 	z = tell_me((string) environment()->short(5, this_object()) + ".", 0,
-	  TELL_TYPE_ROOM_DESC | TELL_BEGIN, 0, 0);
+	  TELL_TYPE_ROOM_BRIEF | TELL_BEGIN, 0, 0);
     // Will be used when all rooms use "query_short"!!! (never?)
     // else if (short_str = (string) environment()->query_short(0,this_object())
     //   tell_me(short_str);

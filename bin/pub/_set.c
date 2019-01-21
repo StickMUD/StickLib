@@ -21,7 +21,7 @@ create()
       "missing":	TELL_TYPE_MISSING,
       "death":		TELL_TYPE_DEATH,
       "roombrief":	TELL_TYPE_ROOM_BRIEF,
-      "roomdesc":	TELL_TYPE_ROOM_DESC,
+      //"roomdesc":	TELL_TYPE_ROOM_DESC,
       "smells":		TELL_TYPE_ROOM_SMELLS,
       "sounds":		TELL_TYPE_ROOM_SOUNDS,
       "roomitem":	TELL_TYPE_ROOM_ITEM,
@@ -111,7 +111,7 @@ set_cmd(string str, object me)
 	if (!(msg = messages[s])) {
 	    me->tell_me(sprintf(
 		"Unknown message type '%s'; available message types are: '%s'.",
-		s, implode(m_indices(messages), "', '", "' and '")));
+		s, implode(sort_array(m_indices(messages), #'>), "', '", "' and '")));
 	    return 1;
 	}
 	x = explode(t, " ");
