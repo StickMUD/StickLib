@@ -194,10 +194,6 @@ Note that it costs you 50 gc.\n\
       ST_BASE_DEX : "dexterity",
       ST_BASE_INT : "intelligence",
       ST_BASE_CON : "constitution",
-#if 0
-      // Not yet:
-      ST_BASE_FAT : "fatigue"
-#endif
     ]);
     add_monster(AREA_TRISTEZA+"hospital/doctor", "Doctor Mengele arrives.", 1);
     add_monster(AREA_TRISTEZA+"hospital/nurse", "A nurse arrives.", 1);
@@ -256,22 +252,6 @@ race_change_cost(object who)
     if (cost > 5000000) cost = 5000000;
 
     return cost;
-
-#if 0
-    int cost;
-
-    if (!who) {
-	cost =  5000000;
-    } else {
-	cost = 100000;
-	cost += 10000 * ((int)who->query_level() - 1);
-	if ((int)who->query_level() > 20)
-	    cost += (((int)who->query_level() - 20) * 300000);
-    }
-
-    if (cost > 10000000) cost = 10000000;
-    return cost;
-#endif
 }
 
 int

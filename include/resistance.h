@@ -63,25 +63,4 @@
 #define RT_POSITIVE	80
 #define RT_MAGIC	100
 
-#if 0
-/* Other damage types which might be added later */
-/* Martial arts sweeps & throws (needs a better define) */
-#define RT_JUDO
-/* Wrestling, grappling? */
-#define RT_WRESTLE	
-
-/* Suffocation (underwater etc.) */
-#define RT_BREATHLESS	
-/* Tentacles, snakes and other slimy things squeezing you */
-#define RT_CONSTRICT	
-/* Psychic damage; ESP, Psionics */
-#define RT_PSYCHIC	
-/* Sickness needs additional data, which disease(s) we deliver */
-#define RT_DISEASE	
-#define RT_ASTRAL	
-#define RT_ETHEREAL	
-#define RT_GOOD		
-#define RT_EVIL		
-#endif
-
 #endif /* _RESISTANCE_H */

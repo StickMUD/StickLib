@@ -124,29 +124,6 @@ buy_item(string str) {
     return 1;
 }
 
-
-
-#if 0
-status
-what_are_mine(){
-    int coef;
-
-    if(!present("alchemist",this_object())){
-	notify_fail("The Alchemist is presently unavailable to do that for you.\n");
-	return 0;
-    }
-    else{
-	coef = COEF_FILE->calc_coef(TP->query_real_name());
-	TP->tell_me(sprintf("The Alchemist whispers to you: Your skill \
-coefficient is %d.",coef));
-	tell_here("The Alchemist whispers something to " + TP->query_name()
-	  + ".",TP);
-    }
-    return 1;
-}
-#endif
-
-
 object clone_minor() {
     return POT_HEAL_MIN->clone_potion(this_player(), 100);
 }
@@ -162,7 +139,6 @@ object clone_bottle() {
 object clone_scalpel() {
     return clone_object(PRIEST_OBJ_DIR "scalpel");
 }
-
 
 void
 reset_room()

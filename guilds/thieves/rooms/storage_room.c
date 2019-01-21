@@ -15,7 +15,6 @@ To be defined in inheriting file:
 
 object *poi;
 
-
 void
 create_room()
 {
@@ -25,8 +24,6 @@ create_room()
     set_short("Store room");
     set_long("Store room!");
 }
-
-
 
 /* Accept everything by default - redefine if needed. //Graah */
 int accept_object(object ob, string desc)
@@ -46,17 +43,6 @@ int accept_object(object ob, string desc)
 
     return 1;
 }
-
-
-
-
-/*
-  !item : List all items in store
-  item  : List items ob->id(item), Exception: armours & weapons
-  ....
-  Destroy all invaluable items.
-  (For native: test for "NO_DESTRUCT" in object and move elsewhere)
-*/
 
 int
 list_item(string item)
@@ -116,7 +102,6 @@ list_item(string item)
     return !first;
 }
 
-
 int
 borrow_item(string item)
 {
@@ -153,7 +138,6 @@ You don't seem to be able to carry that much.\n");
       +" borrowed "+ob->query_short()+" from the Guild at "+ctime(time())+"\n");
     return 1;
 }
-
 
 /*
   Destructs the items over MAX_ITEMS count in store.
@@ -208,9 +192,7 @@ stuff! Let's slow down a bit.");
 	write_file(LOG_DIR+"EQ_LOG", capitalize(
 	    this_player()->query_real_name())+" donated "+
 	  ob->query_short()+" to the Guild at "+ctime(time())+". \n");
-#if 0
-	/* Turned off during testing */
-#endif
+
 	if(!store_list) { /* collect shorts from all items */
 	    int i2;
 	    store_list = all_inventory();
@@ -228,7 +210,6 @@ stuff! Let's slow down a bit.");
     notify_fail("You didn't donate anything.\n");
     return count;
 }
-
 
 int
 donate_item(string item)
@@ -281,31 +262,3 @@ There seems to be nothing to donate" + (str ? (" in "+str) : "") +".");
 
     return donate_items_in_list(item_list,env);
 }
-
-/*
-int
-value_item(string item)
-{
-    object item_ob;
-    int    value;
-
-    if(!item) {
-	me->tell_me("Thief-mage asks: Are you trying to find value <item>?");
-	return 1;
-    }
-    if(!(item_ob=present(item)))
-	if(!(item_ob=present(item,this_player()))) {
-	    me->tell_me("Thief-mage says: You don't have item ("+item+").");
-	    return 1;
-	}
-
-    if(value=count_value(item_ob)) {
-	me->tell_me("Thief-mage says: I'll give you "+value+" gold coins.");
-	if(value>Money)
-	    me->tell_me("...but I have " + (Money ? ("only "+Money) : "no")
-	      +" coins left.\n");
-    } else
-	me->tell_me("Thief-mage says: "+capitalize(item)+" is worthless to me.");
-    return 1;
-}
-*/

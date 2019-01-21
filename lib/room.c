@@ -145,6 +145,72 @@ query_exit(string dir)
     return Exits[dir];
 }
 
+/**
+ * Returns a list of exits in a string format. If the exits haven't been
+ * updated yet, then they will be updated.
+ *
+ * @param mode Which exits are wanted, short or long 0 for short
+ *
+ * @return List of exits in a string
+ **/
+string
+query_exit_list(int mode)
+{
+    int i;
+    string *dirs, *short_dirs;
+
+    // Next block of code used to be function "update_exit_lists":
+
+    if (!(Flags & F_ROOM_EXIT_LISTS_UPDATED))
+    {
+	if (!Exits || !(sizeof(Exits)))
+	{
+	    long_exit_list = "No obvious exits.";
+	    short_exit_list = 0;
+	}
+	else
+	{
+	    dirs = m_indices(Exits);
+
+	    if (sizeof(Exits) == 1)
+		long_exit_list = sprintf("The only obvious exit is %s.", dirs[0]);
+	    else long_exit_list = sprintf("The obvious exits are %s.",
+		  implode(dirs, ", ", " and "));
+
+	    short_dirs = copy(m_indices(Exits));
+
+	    for (i = 0; i < sizeof(short_dirs); i++)
+	    {
+		switch (short_dirs[i])
+		{
+		case "north": short_dirs[i] = "n"; break;
+		case "east": short_dirs[i] = "e"; break;
+		case "south": short_dirs[i] = "s"; break;
+		case "west": short_dirs[i] = "w"; break;
+		case "up": short_dirs[i] = "u"; break;
+		case "down": short_dirs[i] = "d"; break;
+		case "northeast": short_dirs[i] = "ne"; break;
+		case "northwest": short_dirs[i] = "nw"; break;
+		case "southeast": short_dirs[i] = "se"; break;
+		case "southwest": short_dirs[i] = "sw"; break;
+		}
+	    }
+
+	    short_exit_list = efun::implode(short_dirs, ",");
+	}
+
+	Flags |= F_ROOM_EXIT_LISTS_UPDATED;
+    }
+
+    // End of old "update_exit_lists".
+
+    if (mode == 0) {
+	return short_exit_list;
+    }
+
+    return long_exit_list;
+}
+
 mapping
 query_commands()
 {
@@ -219,37 +285,8 @@ query_short(int mode, object who)
 	return short_desc;
     }
 
-    // Next block of code used to be function "update_exit_lists":
-
-    if (!(Flags & F_ROOM_EXIT_LISTS_UPDATED)) {
-	if (!Exits || !(sizeof(Exits))) {
-	    long_exit_list = "No obvious exits.";
-	    short_exit_list = 0;
-	} else {
-	    dirs = m_indices(Exits);
-	    if (sizeof(Exits) == 1)
-		long_exit_list = sprintf("The only obvious exit is %s.", dirs[0]);
-	    else long_exit_list = sprintf("The obvious exits are %s.",
-		  implode(dirs, ", ", " and "));
-	    for (i = 0; i < sizeof(Exits); i++)
-		switch (dirs[i]) {
-	    case "north": dirs[i] = "n"; break;
-	    case "east": dirs[i] = "e"; break;
-	    case "south": dirs[i] = "s"; break;
-	    case "west": dirs[i] = "w"; break;
-	    case "up": dirs[i] = "u"; break;
-	    case "down": dirs[i] = "d"; break;
-	    case "northeast": dirs[i] = "ne"; break;
-	    case "northwest": dirs[i] = "nw"; break;
-	    case "southeast": dirs[i] = "se"; break;
-	    case "southwest": dirs[i] = "sw"; break;
-	    }
-	    short_exit_list = efun::implode(dirs, ",");
-	}
-	Flags |= F_ROOM_EXIT_LISTS_UPDATED;
-    }
-
-    // End of old "update_exit_lists".
+    // 0 for short exit list
+    query_exit_list(0);
 
     if (!short_exit_list) {
 	if (closurep(short_desc))
@@ -333,35 +370,8 @@ query_long(string str, object who)
 	if (Flags & F_ROOM_EXITS_SKIPPED)
 	    return temp;
 
-	// Next block of code used to be function "update_exit_lists":
-
-	if (!(Flags & F_ROOM_EXIT_LISTS_UPDATED)) {
-	    if (!Exits || !sizeof(Exits)) {
-		long_exit_list = "No obvious exits.";
-		short_exit_list = 0;
-	    } else {
-		dirs = m_indices(Exits);
-		if (sizeof(Exits) == 1)
-		    long_exit_list = sprintf("The only obvious exit is %s.", dirs[0]);
-		else long_exit_list = sprintf("The obvious exits are %s.",
-		      implode(dirs, ", ", " and "));
-		for (i = 0; i < sizeof(Exits); i++)
-		    switch (dirs[i]) {
-		case "north": dirs[i] = "n"; break;
-		case "east": dirs[i] = "e"; break;
-		case "south": dirs[i] = "s"; break;
-		case "west": dirs[i] = "w"; break;
-		case "up": dirs[i] = "u"; break;
-		case "down": dirs[i] = "d"; break;
-		case "northeast": dirs[i] = "ne"; break;
-		case "northwest": dirs[i] = "nw"; break;
-		case "southeast": dirs[i] = "se"; break;
-		case "southwest": dirs[i] = "sw"; break;
-		}
-		short_exit_list = efun::implode(dirs, ",");
-	    }
-	    Flags |= F_ROOM_EXIT_LISTS_UPDATED;
-	}
+	// 1 for long descs
+	query_exit_list(1);
 
 	return sprintf("%s\n%s", temp, long_exit_list);
     }

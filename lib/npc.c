@@ -741,34 +741,13 @@ void reset() {
     return;
 }
 
-#if 0
-void
-reset(int arg)
-#else
 void
 create()
-#endif
 {
     string a;
     int b;
     int amount;
-#if 0
-    if (arg) {
-	if (!(npc_Flags & F_NPC_IS_ORIGINAL) || (npc_Flags & F_NPC_CREATE_ORIGINAL)) {
-	    if (npc_Flags & F_NPC_RESET_USED)
-		this_object()->reset_monster();
-	    reset_living();
-	    if (query(NPC_MOVE_AT_RESET)) random_move();
-	}
-	if (random(2)) update_conditions();
-	else update_stats();
-	// Let's update these just to be sure...
-	// Although these calls shouldn't really be needed. *shrug*
-	// We'll only call either one, to maintain efficiency
-	reset_living();
-	return;
-    }
-#endif
+
     if (function_exists("reset_monster")) npc_Flags |= F_NPC_RESET_USED;
     // This will enable tell_me to call catch_tell if that function is defined
     // in the object inheritting this file.  - Chopin

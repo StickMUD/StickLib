@@ -9,11 +9,7 @@
 #define XUSERPATH(name)	({ "players", name })
 // #define XDOMAINPATH(name) ({ "d", name })
 #define REAL_NAME(pl)	((string)pl->query_real_name())
-#if 0
-#define GET_PATH(pl)	((string)pl->query_path())
-#else
 #define	GET_PATH(pl) ((string)pl->query_env("cwd"))
-#endif
 
 nomask public varargs string resolve_path(string path, object player) {
     string *xpath, base;

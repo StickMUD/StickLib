@@ -169,11 +169,6 @@ status buy(string str)
 	    {
 		if(this_player()->query_money() >= item[i])
 		{
-#if 0
-		    log_file("magic_shop", ctime(time())+"   "+
-		      capitalize(this_player()->query_real_name())+
-		      " bought '"+item[i+1]+"'\n");
-#endif
 		    this_player()->tell_me("You buy: "+ item[i+1] +"");
 		    tell_here(this_player()->query_name() +" buys "+
 		      item[i+1] +".", this_player());
@@ -224,12 +219,6 @@ status deal(int i) {
 	this_player()->tell_me("You already have a perfectly good pipe.");
 	return 0;
     }
-#if 0
-    if(i == 8 && present("dictionary", this_player()))
-    {
-	write("You already have one!\n");
-	return 0;
-    }
-#endif
+
     return 1;
 }

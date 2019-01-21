@@ -271,16 +271,6 @@ object query_wielded_by() { return wielded_by; } //Frobozz
 int query_value() { return value; }
 int query_orig_value() { return orig_value; }
 
-#if 0
-// Huh? Name should NOT have any suffix! -+ Doomdark 05-mar-95 +-
-varargs string
-query_name(int mode, object who)
-{
-    if (!mode || ! wielded) return ::query_name(mode, who);
-    return ::query_name(mode, who) + " ("+wielded+")";
-}
-#endif
-
 varargs string
 query_short(int mode, object who)
 {

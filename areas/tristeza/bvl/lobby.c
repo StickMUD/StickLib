@@ -15,12 +15,6 @@ create_room()
     set_light_level(LT_LIGHTS);
     set(ROOM_WD, WD_INDOORS);
     set(IN_CITY);
-#if 0
-    /* took this out so they can defend themselves and
-       not just watch their guards get beat -Haw
-	    set(NO_PK);
-    */
-#endif
     set_exits(([
 	"east" : AREA_TRISTEZA+"bvl/hall",
 	"west" : AREA_TRISTEZA+"virtual/S10_2"

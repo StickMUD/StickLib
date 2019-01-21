@@ -86,11 +86,6 @@ init()
 
     add_action("light_lcmd","light");
     add_action("darken_lcmd","darken");
-#if 0
-    add_action("lords_lcmd","lords");
-    add_action("lord_lcmd","lord");
-    add_action("lordtoggle_lcmd","lordtoggle");
-#endif
     add_action("accept_lcmd","accept");
     add_action("reject_lcmd","reject");
     add_action("expel_lcmd","expel");

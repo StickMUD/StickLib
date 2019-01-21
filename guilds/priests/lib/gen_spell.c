@@ -323,19 +323,9 @@ get_damage(object who, object sym, status pk)
     debugger = sym->query_debugger();
     skill = get_skill(sym);
     s = skill_roll(sym, skill);
-#if 0
-    dam = BALANCE_D->damage(skill,GN_PRIEST,cost+cost_bonus,0);
-    if(pk) dam = 7*dam/10;
-    else dam = 13*dam/10;
-#else
-    // This is much better than balance daemon:
-    // Damage increases linearily with skill, which is good because skills'
-    // learning curve is already quite steep. (When we used balance daemon
-    // players whose skills were about 800 made way too good damage)
 
     damage_rate = (pk) ? PK_DAMAGE_RATE : MK_DAMAGE_RATE;
     dam = to_int(spell_damage_rate * (1.0 + damage_rate * skill / 1000.0));
-#endif
 
     if(critical_success) {
 	dam += random(dam);
@@ -345,13 +335,6 @@ get_damage(object who, object sym, status pk)
     dam -= random(dam_p*dam/100);
     if(debugger) str += sprintf("dam: %d ", dam);
 
-#if 0 // naah... raiding priests is too hard already
-    if((s = sym->query_rank()) &&
-      (strstr("/"+object_name(environment(who)), PRIEST_ROOM_DIR)>=0)) {
-	dam = (110 + s) * dam / 100;
-	if(debugger) str += sprintf("with guild defending bonus: %d", dam);
-    }
-#endif
     sym->inform_debugger(str);
     return dam;
 }

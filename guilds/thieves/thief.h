@@ -170,26 +170,13 @@ int thief_skills(string arg);
 varargs int advance_skill(int sk, int d, int p);
 int stealth();
 int moon_light();
-#if 0
-status steal(mixed str);
-#endif
 status steal_again();
 void test_notice(mixed arg, object targ);
 status brew_poison();
-#if 0
-status sneak();
-#endif
 void stop_sneak();
 status stab(string str);
 status stab_delay_over();
 status stab_cheat_over();
-#if 0
-#if 0
-status appraise(object x, string y);
-#else
-status appraise(string s);
-#endif
-#endif
 status pick(string str);
 string thief_pretitle();
 status canttoggle();
@@ -204,13 +191,6 @@ void remove_tth();
 status thetth(string arg);
 int tits();
 int enforcerlist();
-#if 0
-#if 0
-int peek(object a, string b);
-#else
-int peek(string s);
-#endif
-#endif
 int taxes();
 status cantread(string arg);
 void hit_victim(mixed ar);

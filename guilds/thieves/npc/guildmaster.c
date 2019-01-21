@@ -82,29 +82,3 @@ steal()
 	who = next_inventory(who);
     }
 }
-
-#if 0
-monster_died(ob) {
-    if(attacker_ob)
-	log_file("THIEF_ENEMIES",attacker_ob->query_real_name() +
-	  " (prim) at " + ctime(time()) + "\n");
-    if(alt_attacker_ob)
-	log_file("THIEF_ENEMIES",alt_attacker_ob->query_real_name() +
-	  " (alt) at " + ctime(time()) + "\n");
-    if(attacker_ob)
-	if(!attacker_ob->query_quests("M20")) {
-	    tell_object(attacker_ob,"You have solved a tough minor quest!\n"+
-	      "You feel more experienced.\n");
-	    attacker_ob->add_exp(5000);
-	    attacker_ob->set_quest("M20");
-	}
-    if(alt_attacker_ob)
-	if(!alt_attacker_ob->query_quests("M20")) {
-	    tell_object(alt_attacker_ob,"You have solved a tough minor quest!\n"+
-	      "You feel more experienced.\n");
-	    alt_attacker_ob->add_exp(5000);
-	    alt_attacker_ob->set_quest("M20");
-	}
-    return 0;
-}
-#endif

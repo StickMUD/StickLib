@@ -344,12 +344,7 @@ nomask int banish(string str, int lvl)
 
     if(!str) return 0;
 
-    /*   if(is_banished(str)) return 0; */
-#if 0
-    if(lvl < -3 || !lvl) return 0;
-#else
     if (lvl < -3) return 0;
-#endif
 
     /* It must come from a real player */
     if (!interactive_info(this_player(), II_IP_NUMBER)) return 0;

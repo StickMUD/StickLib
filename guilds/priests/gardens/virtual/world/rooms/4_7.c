@@ -37,9 +37,8 @@ create_virtual(){
 	"northwest":({-1,-1}),
       ]));
 
-    set_distant_look(1);
+    //set_distant_look(1);
     set(SKIP_EXITS);
 
     set_random_desc(do_desc());
-
 }

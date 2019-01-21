@@ -13,7 +13,6 @@ object victim;
 #define MK_MAX_DMG_RANDOM 41
 #define PK_MAX_DMG_RANDOM 21
 
-
 void start_cold(object x);
 status end_cold(object x);
 
@@ -156,21 +155,3 @@ int prevent_insert()
 You think it is safer to keep it out of it.");
     return 1;
 }
-
-#if 0
-status
-do_drop(string s) {
-
-    if (!s) return 0;
-
-    if (id(s)) call_out("my_destruct", 0);
-    return 0;
-}
-
-void
-my_destruct() {
-
-    write("The wand disintegrates.\n");
-    destruct(this_object());
-}
-#endif

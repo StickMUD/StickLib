@@ -128,20 +128,8 @@ reset_room()
 
     pulled = 0;
 
-#if 0
-    if (!mirror) {
-	mirror = clone_object(GDIR + "obj/mirror");
-	move_object(mirror,this_object());
-    }
-#endif
     if (!present("black list", this_object()))
 	call_other(GDIR + "obj/black_list", "???");
-
-#if 0
-    if (!present("votes", this_object()))
-	move_object(clone_object(GDIR + "obj/voter"),
-	  this_object());
-#endif
 
     if (!door) {
 	if ((door = clone_object(DOOR_FILE))) {
@@ -175,35 +163,16 @@ reset_room()
 	      "It is a strong iron lock.");
 	}
 
-	/* Can't have this at the moment */
-#if 0
-	if (!entrdoor) {
-	    if ((entrdoor = clone_object(DOOR_FILE))) {
-		entrdoor->add_door( ({
-		    "It is a huge door.\n",
-		    "It is a huge door.\n" }),
-		  "west", GDIR + "rooms/entry", "huge",
-		  "thief_key", 1, 1, 1, 70,
-		  "It's a huge iron padlock.\n");
-	    }
-	}
-#endif
-
     }
 
-#if 1
     if (!present("tax box", this_object()))
 	move_object(clone_object(GDIR + "obj/cash_box"), this_object());
-#endif
 
-#if 1
     for (i = 0; i < sizeof(assassins); i++)
 	if (!assassins[i]) {
 	    assassins[i] = clone_object(GDIR + "npc/assassin");
 	    move_object(assassins[i], this_object());
 	}
-
-#endif
 
     save_object(SAVEFILE);
 }
@@ -359,21 +328,9 @@ init_room()
     add_action("north","north");
     add_action("resign","resign");
     add_action("fixtitle","fixtitle");
-#if 0
-    add_action("pull", "pull");
-#endif
 
     // They can now check their top ten status manually.
     add_action("toptencheck", "toptencheck");
-
-    /* Not needed any more */
-#if 0
-    /* Top ten is checked each time a thief enters the guild. */
-    if (TP &&
-      living(TP) &&
-      !TP->query_npc())
-	call_other(TOP_TEN, "check_top_ten", TP);
-#endif
 }
 
 int
@@ -768,11 +725,6 @@ nothing less is sufficient.\n");
     CHANNEL_D->remove_from_channel("thief", TP);
     CHANNEL_D->remove_from_channel("thiefgmc", TP);
     CHANNEL_D->remove_from_channel("thiefdmn", TP);
-#if 0
-    // Disable it for now -- there's no /data/guild/ directory
-    GUILD_D->save_guild_data((string)TP->query_real_name(),GN_THIEF,
-      (string)t->query_guild_save() + "#" + time());
-#endif
     destruct(t);
 
     /* No bless no more... */

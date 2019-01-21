@@ -569,31 +569,6 @@ gag_cmd(string who)
 {
     owner->tell_me("Gag command is not available at the moment.");
     return 1;
-#if 0
-    if (!owner->query_coder_level() || guildmaster < TR_DEMON)
-	return 0;
-    if (!who && query_verb() != "whogag")
-	return notify_fail("Gag who?\n"),0;
-    switch(query_verb())
-    {
-    case "gag":
-	if (CHANNEL_D->add_gag(who))
-	    owner->tell_me(who + " has been gagged.");
-	else
-	    owner->tell_me("Gag failed...");
-	break;
-    case "ungag":
-	if (CHANNEL_D->remove_gag(who))
-	    owner->tell_me(who + " has been ungagged.");
-	else
-	    owner->tell_me("Ungag failed...");
-	break;
-    case "whogag":
-	CHANNEL_D->who_gaged(owner);
-	break;
-    }
-    return 1;
-#endif
 }
 
 int kickout(string arg)

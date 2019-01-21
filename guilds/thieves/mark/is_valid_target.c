@@ -36,14 +36,5 @@ is_valid_target(object ob)
 	return 0;
     }
 
-#if 0
-    /* Fuck! */
-    if (present("tmark", ob))
-    {
-	notify_fail("You can't use your skills against another thief!\n");
-	return 0;
-    }
-#endif
-
     return 1;
 }

@@ -17,10 +17,6 @@ remove_cmd(string arg, object me)
     int i, j;
     if (!me && !(me = this_player())) return 0;
 
-#if 0
-    /* Can't remove in the dark (or when blind)? */
-    if (!me -> query_can_see() || me -> test_dark()) return 0;
-#endif
     if (!me -> query_can_move()) return 0;
 
     /* Trying to remove wielded weapon... */
@@ -40,16 +36,11 @@ remove_cmd(string arg, object me)
 	}
 	i = sizeof(a); j = 0;
 	for (i = sizeof(a) - 1; i >= 0; i--) {
-#if 0
-	    if (a[i] && !a[i]->drop())
-#else
-		/* Duh. Drop() does indeed remove the armour in question by itself.. :-/ */
-		if (a[i])
-#endif
-		{
-		    me->unwear(a[i], 0);
-		    j++;
-		}
+	    if (a[i])
+	    {
+		me->unwear(a[i], 0);
+		j++;
+	    }
 	}
 	if (!j) me->tell_me("You aren't wearing any real armours.");
 	return 1;

@@ -74,25 +74,5 @@
 #define DT_AREA	0x0100
 
 #define MAX_RES 900 //Max amount of resistance (in promille)
-#if 0
-/* Other damage types which might be added later */
-/* Martial arts sweeps & throws (needs a better define) */
-#define DT_JUDO
-/* Wrestling, grappling? */
-#define DT_WRESTLE	
-
-/* Suffocation (underwater etc.) */
-#define DT_BREATHLESS	
-/* Tentacles, snakes and other slimy things squeezing you */
-#define DT_CONSTRICT	
-/* Psychic damage; ESP, Psionics */
-#define DT_PSYCHIC	
-/* Sickness needs additional data, which disease(s) we deliver */
-#define DT_DISEASE	
-#define DT_ASTRAL	
-#define DT_ETHEREAL	
-#define DT_GOOD		
-#define DT_EVIL		
-#endif
 
 #endif /* _ATTACK_H */

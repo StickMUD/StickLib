@@ -29,13 +29,6 @@ comm_cmd(object me, object sym, string arg)
 
     p = (int)me->query_coder_level();
 
-#if 0
-    if (!p && !me->query_testplayer()) {
-	WRITE("Sorry, this command is still under development.");
-	return 1;
-    }
-#endif
-
     if(!CHANNEL_D->can_read_channel(me, CH_NAME) ||
       me->query_channel_ban(CH_NAME))
     {

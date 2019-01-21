@@ -1,13 +1,6 @@
 #include <weapon.h>
 
-#if 0
-#define	REMOVE_STRING	"\
-If you want to get rid of the pointed stick, type 'remove pointed stick' or\
- 'remove stick'."
-#else
-/* The above did not work! */
 #define REMOVE_STRING "Just 'unwield' the stick to get rid of it."
-#endif
 
 void
 create_weapon()

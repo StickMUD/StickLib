@@ -119,22 +119,8 @@ receive_imp(string host, string message, int port)
 {
     if (lower_case(message[0..5]) == "nftpd\t")
     {
-#if 0
-#if __HOST_NAME__==MUDHOST
-	if (host != FTPD_IP)
-	{
-	    return;
-	}
-#endif
-#endif
 	return FtpAccess(host, message, port);
     }
-#if 0
-    // Hmpfhm. We don't have /secure/inetd anyway... let's just comment it out?
-    if (message[0..9]=="udp_query:")
-	return udp_query(message[10..],host,port);
-    "/secure/inetd"->receive_udp(host, message);
-#endif
 }
 
 string
@@ -178,13 +164,7 @@ _get_path(string file, string user)
 string
 dtime(int when)
 {
-    return ctime(when);  
-#if 0
-    string month, daytime, foo, day, jahr;
-    sscanf(ctime(when),"%s %s %d %s %d",foo, month, day, daytime, jahr);
-    return sprintf("%s%s%d. %s %d, %s", foo, (day <= 9 ? ",  " : ", "),
-      day, month, jahr, daytime);
-#endif
+    return ctime(when);
 }
 
 string

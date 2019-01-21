@@ -26,14 +26,5 @@ heal_cmd(string name)
     tell_object(ob, "You are healed by " +
       capitalize((string)TP->query_real_name()) + ".\n");
 
-#if 0
-    /* Why wasn't this here before? 11/7/91 Frobozz */
-    /* It isn't required any more. //Graah */
-    if (!IS_CODER_OB(ob))
-	log_file("HEAL", (string)ob->query_real_name() +
-	  "(" + (int)ob->query_level() + ")" + " healed by " +
-	  (string)TP->query_real_name() + "\n");
-#endif
-
     return 1;
 }

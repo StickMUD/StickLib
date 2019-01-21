@@ -2,18 +2,12 @@
 inherit PRIEST_ROOM_DIR "officer_room";
 #include <living_defs.h>
 
-/* Doh. Pleeeeease. No such warped names: */
-#if 0
-#define BOOK_FILE PRIEST_SAVE_DIR "inquisitor's_diary"
-#else
 #define	BOOK_FILE	PRIEST_SAVE_DIR "inq_diary"
-#endif
 #define SHOW_LINES 20
 
 static int book_open;
 static object writer;
 static string* message;
-
 
 string book_desc() {
     if(book_open) return "An old, black book. It's open.";

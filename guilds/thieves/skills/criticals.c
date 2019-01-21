@@ -53,12 +53,6 @@ varargs int critical(int skill, int gm, int adv, int pk) {
     // Demon or enforcer status gives an extra 5%
     if(gm) chance += 50;
 
-
-#if 0
-    if(this_player()->query_coder_level())
-	write("Critical chance: " + chance + "/1000.\n");
-#endif
-
     // Make sure people aren't exceeding the 35% absolute rate
     if(chance < 1) chance = 1;
     else if(chance > 350) chance = 350;
@@ -66,28 +60,12 @@ varargs int critical(int skill, int gm, int adv, int pk) {
     // Check to see that there was a critical at all
     if(random(1001) >= chance) return 0;
 
-#if 1
-    if(find_player("chaotic"))
-	if((int)find_player("chaotic")->query_env("SHOW_THIEF"))
-	    find_player("chaotic")->tell_me("Critical success: " + chance + "/1000(" + (string)this_player()->query_real_name() + ")\n");
-#endif
-
     // Check to see if it was an extra special critical
     if(random(1501) < chance) {
 	// Criticals of 3rd level are even more scarce.
 	if(random(2701) < chance) {
-#if 1
-	    if(find_player("chaotic"))
-		if((int)find_player("chaotic")->query_env("SHOW_THIEF"))
-		    find_player("chaotic")->tell_me("Triple success: " + chance + "/1000(" + (string)this_player()->query_real_name() + ")\n");
-#endif
 	    return 3;
 	} else  {
-#if 1
-	    if(find_player("chaotic"))
-		if((int)find_player("chaotic")->query_env("SHOW_THIEF"))
-		    find_player("chaotic")->tell_me("Double success: " + chance + "/1000(" + (string)this_player()->query_real_name() + ")\n");
-#endif
 	    return 2;
 	}
     }

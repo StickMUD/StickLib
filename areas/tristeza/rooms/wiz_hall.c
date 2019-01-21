@@ -75,19 +75,3 @@ ring(string str)
     this_player() -> tell_me("Ok.");
     return 1;
 }
-
-// Quest room isnt needed anymore - Quest daemon handles the quests -=Germ=-
-#if 0
-status
-north()
-{
-    if ((int) this_player()->query_coder_level() < LVL_CODER) {
-	this_player() -> tell_me("A strong magic force stops you.");
-	return 1;
-    }
-    this_player() -> tell_me("You wriggle through the force field...");
-    this_player()->move_player("north through shimmering field",
-      "/room/quest_room");
-    return 1;
-}
-#endif

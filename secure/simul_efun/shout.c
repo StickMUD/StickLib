@@ -1,13 +1,3 @@
-#if 0
-// Old one:
-void shout(string s) {
-    filter_array(users(), lambda(({'u}),({#'&&,
-	  ({#'environment, 'u}),
-	  ({#'!=, 'u, ({#'this_player})}),
-	  ({#'tell_object, 'u, s})
-	})));
-}
-#else
 void shout(string s) {
     object *u, ob;
     int i;
@@ -23,4 +13,3 @@ void shout(string s) {
     if (ob)
 	efun::set_this_player(ob);
 }
-#endif

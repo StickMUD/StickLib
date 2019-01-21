@@ -55,15 +55,7 @@ title_cmd(string str)
 	}
     }
 
-    // Check to see if they have taken care of this for us
-#if 0
-    if((tmp[0] == "a") || (tmp[0] == "an") || (tmp[0] == "the"))
-	title = str;
-    else
-	title = "the " + str;
-#else
     title = str;
-#endif
 
     // No "God*"s...unless they really are one!
     if ((LL < 26) && (!CODER))

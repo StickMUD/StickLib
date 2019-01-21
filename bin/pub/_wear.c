@@ -16,10 +16,6 @@ wear_cmd(string arg, object me)
 
     if (!me->query_can_move()) return 0;
 
-#if 0
-    if (me->test_dark()) return 0;
-#endif
-
     if (!arg) return notify_fail("Wear what?\n"), 0;
 
     if (arg == "all") {

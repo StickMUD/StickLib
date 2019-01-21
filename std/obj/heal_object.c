@@ -47,31 +47,6 @@ destruct_me() {
     return 1;
 }
 
-#if 0
-heart_beat()
-{
-    x++;
-
-    if(!master || !environment(master) ||
-      !master->query_sit() ||
-      (!present("wooden bench",environment(master)) &&
-	!environment(master)->id("lord_throne") &&
-      )) {
-	destruct_me();
-	return;
-    }
-
-    destruct_other_heal_obs();
-
-    /* Graah: sick and poisoned don't heal here... */
-    if (!master->query_condition(C_POISONED) &&
-      !master->query_condition(C_SICK) &&
-      !(x % (int)master->query(PLR_TIME_TO_HEAL))
-    )
-	master->heal_self(2);
-}
-#endif
-
 quit() {
     destruct_me();
     return 0;

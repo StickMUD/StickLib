@@ -32,7 +32,7 @@
 //	mappings; code looks horrible as is.
 // 04-nov-96: Doomdark; did some small changes, supplied by Kelgath; for example,
 //	now most of the commands are in separate file (stupid_commands.c)
-// 13-nov-96: updates ++Skarda	
+// 13-nov-96: updates ++Skarda
 // 15-Apr-97 / Graah: Show if/when Rank is Advanced.
 // 20-Jun-97 / Graah: Support for GUILDLESS (/include/guild.h) added.
 // 10-Jul-97 / Graah: Re-checked troll and half-dorc training.
@@ -49,13 +49,6 @@
 #include <attack.h>
 
 #include <tune.h>
-
-/* This has to be moved to another location; inherits seem to have to come
- * before prototypes.
- */
-#if 0
-#include "/guilds/thieves/thief.h"
-#endif
 
 #include <room_defs.h>
 #include <stats.h>
@@ -75,11 +68,7 @@
 
 inherit "/guilds/thieves/skills/criticals";
 
-// ... And this was moved from the earlier point by Doomdark
-// 18-Dec-97
-#if 1
 #include "thief.h"
-#endif
 /* Bunch of variables that are needed... */
 mapping skills;
 int success, targ_lev, sneak, t_level, guildmaster, tth;
@@ -252,12 +241,6 @@ int get() { return 1; }
 int
 drop(status silent)
 {
-#if 0
-    /* This causes spam, and, tattoos can not exactly be dropped
-       I think... /Graah */
-    if (!silent && this_player() && this_player() == owner)
-	this_player()->tell_me("Dropping your precious guild mark? Are you NUTS?");
-#endif
     return 1;
 }
 
@@ -614,57 +597,8 @@ convert()
     /* Just a small level bonus */
     skills[SK_TUMBLING] = 1024 + 50 * (kakka > 20 ? (kakka - 20) : 0);
 
-#if 0
-    skills[SK_TTH]      = sb + (int)owner->query_stat(ST_DEX) * 10 + random(100);
-    skills[SK_STAB]     = sb + (int)owner->query_str() * 10 + random(100);
-    skills[SK_SNEAK]    = sb + (int)owner->query_stat(ST_DEX) * 10 + random(100);
-    skills[SK_PICK]     = sb + (int)owner->query_int() * 20 + random(100);
-    skills[SK_STEAL]    = sb + (int)owner->query_stat(ST_DEX) * 20 + random(100);
-    skills[SK_APPRAISE] = sb + (int)owner->query_int() * 40 + random(100);
-    /* Just a small level bonus */
-    skills[SK_TUMBLING] = 1024 + 50 * (kakka > 20 ? (kakka - 20) : 0);
-#endif
-
     steal_tax = 0;
     tax_time = time();
-
-#if 0
-    if (stringp(old_thief =
-	(string)GUILDD_D->restore_guild_data(
-	  (string)environment()->query_real_name(),GN_THIEF)))
-#else
-	if(0)
-#endif
-	{
-
-	    write("Debug: old thief, it says: \"" + old_thief + "\".\n");
-
-	    if (sscanf(old_thief,
-		"%d#%d#%d#%d#%d#%d#%d#%d#%d#%d#%d#%d#%s#%d#%s#%d#%d",
-		guildmaster,show_tattoo,cantflag, skills[SK_STAB],
-		skills[SK_SNEAK], skills[SK_TTH], skills[SK_PICK],
-		skills[SK_STEAL], skills[SK_APPRAISE], skills[SK_TUMBLING],
-		steal_tax, tax_time, pretitle, ban, tattoo_desc,
-		skills[SK_POISON],
-		resign_date) != 17)
-	    {
-		environment()->tell_me("Old guild data restore unsuccessful.  \
-Attempt logged.");
-	    }
-	    else
-	    if (resign_date > 800000000) {
-		for(i=0;i<8;i++) skills[i] -= skills[i]/10;
-		resign_date = time()- resign_date;
-		resign_date /= 86400;
-		if (resign_date > 100) resign_date = 100;
-
-		for(i=0;i < resign_date;i++)
-		    for(j=0;j<8;j++) skills[j] = (skills[j] * 5)/100;
-
-		environment()->tell_me("Skills penalized for " +
-		  resign_date + " days of absence.");
-	    }
-	}
 
     initialize_guild(query_guild_save());
 }
@@ -997,11 +931,6 @@ Tumbling:\t%s\n\
     else
 	s += "\nYou are not using any skills at the moment.";
 
-#if 0
-    s += "\nMaximum skill level for you is " +
-    EV(M_MAX_SK_LVL(t_level)) + ".";
-#endif
-
     if (guildmaster > 0)
     {
 #ifdef OLD_GOVERNMENT
@@ -1077,17 +1006,6 @@ varargs int advance_skill(int sk, int d, int p)
 
     if (sk < 0) sk = 0;
 
-    // Max skill level for level. See thief.h.
-    // Got the inspiration when a certain cheater again started killing
-    // himself to level 1. :-D / Graah
-    // April 2, 1998 - Kieve -> Took out the max level for training.
-    //   The bug which allowed that seems to have been fixed, and
-    //   also, demons imposed higher training requirements for lower
-    //   level players.
-#if 0
-    if (sk >= (M_MAX_SK_LVL(t_level))) return sk;
-#endif
-
     if (p < 1)
 	p = 1; /* Default */
     else if (p > 100)
@@ -1141,15 +1059,6 @@ varargs int advance_skill(int sk, int d, int p)
 
 	nsk += magic;
     }
-
-#if 0
-    new_desc = EV(nsk);
-
-    if (new_desc != old_desc)
-    {
-	owner->tell_me("Your skill advances to " + new_desc + "!");
-    }
-#endif
 
     newr = rank_no(nsk);
 
@@ -1785,9 +1694,6 @@ guild_mem_mort(object mort, object killer)
     if (already_mort) return;
     already_mort = 1;
 
-    // None of the guilds supports this message any more.
-    // Bull
-#if 0
     if (!owner->query_coder_level())
     {
 	place = (string)environment(owner)->query_short(2, owner);
@@ -1797,7 +1703,6 @@ guild_mem_mort(object mort, object killer)
 	    capitalize((string)mort->query_real_name()),
 	    place));
     }
-#endif
 
     call_out("done_mort",150);
 }

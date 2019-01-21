@@ -72,20 +72,6 @@ pull_lever(string str) {
 	notify_fail("However hard you try to pull the lever, \
 nothing happens.\n"),0;
 
-#if 0
-    if(HALL->query_shut()) {
-	tell_here(":%<me.capname>% pull%<me.ending_s>% on the lever. You \
-hear the cathedral gates open.",0,0,0,who,0,0);
-	HALL->shut_gates(0);
-    } else {
-	tell_here(":%<me.capname>% pull%<me.ending_s>% on the lever. You \
-hear the cathedral gates swing shut.",0,0,0,who,0,0);
-	HALL->shut_gates(1);
-    }
-#else
-    tell_here(":%<me.capname>% pull%<me.ending_s>% on the lever, but it "
-      "will not move.",0,0,0,who,0,0);
-#endif
     return 1;
 }
 

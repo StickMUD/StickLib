@@ -14,9 +14,6 @@ wave_cmd(string arg, object me)
 
     if (!me && !(me = this_player())) return 0;
 
-#if 0
-    if (me->test_dark()) return 0;
-#endif
     if (!me->query_can_move()) return 0;
 
     if (arg) {

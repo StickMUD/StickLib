@@ -19,7 +19,6 @@ might of " GOD_NAME ".",
 #define M_END 1
 #define M_CRITICAL 2
 
-
 void
 create_spell() {
     spell_type = SP_OFFENSIVE;
@@ -126,12 +125,6 @@ end_manastorm(object who, mixed target)
     dam = get_damage(who,sym,interactive(target));
     dam = (100+t) * dam / 100;
 
-#if 0
-    if(critical_success) {
-	target->add_condition(C_STUNNED, 3 + random(a/2));
-	HERE->tell_here(&(messages[M_CRITICAL]),0,0,0,who,target,0);
-    }
-#endif
     who->attacked_by(target,1);
     inc_skills(who, sym, get_attack_spell_train(who, sym, target));
     target->hit_player(dam, DT_MAGIC, 5, who);

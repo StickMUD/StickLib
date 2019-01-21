@@ -55,33 +55,6 @@ void init()
 	return;
     }
 
-#if 0
-    if (environment()==this_player() && this_player()->query_guild()!="thief")
-    {
-	environment(this_player())->tell_here("The obsidian ring EXPLODES as "+
-	  this_player()->query_name()+" takes it!",
-	  ({this_player()}));
-	this_player()->tell_me(
-	  "The obsidian ring EXPLODES as you take it! WOAH!!");
-
-	o = all_inventory(environment(this_player()));
-	for (i = sizeof(o) - 1; i >= 0; i--)
-	{
-	    if (living(o[i])) {
-		if (o[i] == this_player())
-		{
-		    o[i]->tell_me("That really HURT!");
-		    o[i]->hit_player(random(100)+100);
-		}
-		else o[i]->hit_player(random(20)+10);
-	    }
-	}
-
-	destruct(this_object());
-	return;
-    }
-#endif
-
     // And this prevents from it being given for PK cheat.
     add_action("give_cmd", "give");
 }

@@ -60,12 +60,8 @@ check_top_ten(object playerob)
 
     skills = ({ });
 
-    for(i = 0;i<9;i++)
-#if 0
-	skills += (mixed)tm->query_skills(i);
-#else
-    skills += ({ tm->query_skills(i) });
-#endif
+    for (i = 0; i < 9; i++)
+	skills += ({ tm->query_skills(i) });
 
     if (!skills || sizeof(skills) < 9) return;
 

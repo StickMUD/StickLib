@@ -455,9 +455,6 @@ who_old_cmd(string arg, object me)
 	this_player()->tell_me("Try 'party' to get\
  list of all parties.");
 	return 1;
-#if 0
-	return (int) "/areas/tristeza/virtual/S8_6"->party_list();
-#endif
     case 'q':
 	s = sort_array(
 	  map(
@@ -471,7 +468,7 @@ who_old_cmd(string arg, object me)
     case 'r':
 	show_who_special(WHO_R, me);
 	return 1;
-    default:    
+    default:
 	me->tell_me(
 	  "Usage: who c/f/l/p/q/r/d/g\n"+
 	  "(countries/followers/linkdead/party/quick/race/diseases/guilds)");

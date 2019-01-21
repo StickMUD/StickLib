@@ -52,7 +52,6 @@ hit_player(int hit, int type, int hc, object enemy)
 	}
 	if (!fight) {
 	    fight = 1;
-	    call_out("throw", 1, enemy);
 	}
     }
     return ::hit_player(hit, type, hc, enemy);
@@ -74,35 +73,6 @@ yell(object ob)
 		  "You hear someone shout: Help! "+ob->query_name()+" is trying to rob the bank!\
  That might cause serious disturbance to our customer service!");
     }
-}
-
-void
-throw(object ob)
-{
-    int amount, m;
-
-    if (!ob || !living(ob))
-	ob = query_attack();
-    if(!ob || !living(ob) || environment(ob)!=environment()) {
-	fight = 0;
-	return;
-    }
-    if ((m = query_money()) < (amount = random(11) + 5))
-	return;
-    if (!random(5)) {
-	ob -> tell_me("Teller throws some coins at you. OUCH!");
-	environment() -> tell_here("Teller throws some coins at "
-	  + (string) ob->query_name(0, this_object())+".", ({ ob, this_object() }));
-	ob -> hit_player(3 * amount, 0, 0, this_object());
-	//    set_money(m - amount);
-	// Teller actually throws _amount_ of coins.
-	// Nah, stupid.
-#if 0
-	ob->add_money(amount); // Utters like this one! (really?)
-#endif
-    }
-    call_out("throw", 6, ob);
-    // Teller throws coins in about every 30 sec or so.
 }
 
 int

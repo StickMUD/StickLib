@@ -75,10 +75,6 @@ void init_room()
 {
     if (interactive(this_player()))
     {
-#if 0
-	if (this_player()->query_ghost())
-	    this_player()->remove_ghost();
-#endif
 	if (PEACE_D->query_peace())
 	    this_player()->tell_me("Peace is upon the world, no \"player killing\"");
     }

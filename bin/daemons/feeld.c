@@ -4,7 +4,7 @@
 *	/bin/daemons/feeld.c					*
 * Description:							*
 *	Centralized daemon that handles all 'feelings', ie.	*
-	commands related to social activities such as "smile",	*
+*	commands related to social activities such as "smile",	*
 *	"frown", "slap" and such. Called by living objects,	*
 *	players or NPCs. For player objects the call is		*
 *	done by module /basic/player/command_driver.c.		*
@@ -117,16 +117,6 @@ find_target(string str, status flag)
 
     return notify_fail("You can't see any \""+str+"\" here.\n"), 0;
 }
-
-#if 0
-
-void
-init()
-{
-    add_action("soul_driver","",1);
-}
-
-#endif
 
 void
 create()

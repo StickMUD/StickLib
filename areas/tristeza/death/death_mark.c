@@ -51,10 +51,6 @@ heart_beat()
     case "elf":    hb_wait = dead_elf(environment(), hb_count); break;
     case "dark elf": hb_wait = dead_dark_elf(environment(), hb_count);
 	break;
-#if 0
-    case "hobbit": hb_wait = dead_hobbit(environment(), hb_count); break;
-    case "dwarf":  hb_wait = dead_dwarf(environment(), hb_count); break;
-#endif
     default:       hb_wait = dead_human(environment(), hb_count); break;
     }
     hb_count++;

@@ -11,3 +11,15 @@ home/*
 
 # No files intended to be shared with the Internet
 www/*
+
+# No new areas
+areas/darkhill
+areas/darkhill/*
+areas/eloria
+areas/eloria/*
+areas/flashburn
+areas/flashburn/*
+areas/kandawen
+areas/kandawen/*
+areas/westhorn
+areas/westhorn/*

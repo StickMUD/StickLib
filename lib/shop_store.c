@@ -192,71 +192,7 @@ list_item(string item)
     me->tell_me("Num\tCost\tItem\t\t\tNum\tCost\tItem");
     me->more(obs[0..i / 2 - 1]);
 
-    //if (me->query_coder_level()) me->tell_me(sprintf("DEBUG: obs=%O.", obs));
-    //    if (count >= MAX_LISTED)
-    //	me->tell_me("*** LIST TRUNCATED ***");
     return 1;
-
-    /* And old code: */
-#if 0
-    len = sizeof(str = (string)ob->short());
-    if (!old_len) {
-	text = sprintf("%s\n%d\t%d\t%-24s",
-	  text, count, value, str
-	);
-	if (len > 24) old_len = 0;
-	else old_len = len;
-    } else {
-	text = sprintf("%s%d\t%d\t%-24s",
-	  text, count, value, str
-	);
-	old_len = 0;
-    }
-}
-}	}
-
-ob_next = first_inventory();
-
-while(ob_next) {
-    ob = ob_next;
-    ob_next = next_inventory(ob);
-
-    if(((val = (int)ob->query_value()) < min_value) ||
-      !(value = adjust_sale_value(val, ob))) {
-	/*** destroy invaluable items from store ***/
-	if(interactive(ob))
-	    move_object(ob,"/room/church");
-	else destruct(ob);
-    } else {
-	/*** list items ***/
-	if(++count>MAX_LISTED) break;
-	/* can't use switch because of continue command */
-	if(    (list_type==1 && (!ob->id(item)))
-	  || (list_type==2 && (!ob->is_armour()))
-	  || (list_type==3 && (!ob->is_weapon())) )
-	    continue;
-
-	if(first) {
-	    text = "Num\tCost\tItem\t\t\tNum\tCost\tItem";
-	    first = 0;
-	}
-	len = sizeof(str = (string)ob->short());
-	if (!old_len) {
-	    text = sprintf("%s\n%d\t%d\t%-24s",
-	      text, count, value, str
-	    );
-	    if (len > 24) old_len = 0;
-	    else old_len = len;
-	} else {
-	    text = sprintf("%s%d\t%d\t%-24s",
-	      text, count, value, str
-	    );
-	    old_len = 0;
-	}
-    }
-}
-me->tell_me(text);    
-#endif
 }
 
 int
@@ -356,17 +292,13 @@ stuff! Let's slow down a bit.");
 	if(value>Money) {
 	    me->tell_me("Shopkeeper says: I can't afford any more right now.");
 	    environment(me)->tell_here("Shopkeeper says: \
-I wish I had my tax refund, I'm quite low on money.",me); 
+I wish I had my tax refund, I'm quite low on money.",me);
 	    if(count) break; else return 1;
 	}
 	Money -= value;
 
 	environment(me)->tell_here(seller+" sells "+desc+".",me);
 	me->tell_me("Shopkeeper gives you "+value+" coins for "+desc+".");
-#if 0
-	/* Turned off during testing */
-	add_worth(value,ob); /* info for WIZLIST */
-#endif
 	this_player()->add_money(value);
 
 	if(destr_flag) {

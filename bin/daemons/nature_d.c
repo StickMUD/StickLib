@@ -1,5 +1,5 @@
 /*
-** /complex/nature.c  "The Mother Nature"
+** /bin/daemons/nature_d.c  "The Mother Nature"
 **
 ** Weather & Time mechanisms for Stickmud.
 **
@@ -473,10 +473,6 @@ weather_forecast()
 		    u[i]->add_hp((int)u[i]->query_max_hp(), 1 );
 		    u[i]->add_sp((int)u[i]->query_max_sp(), 1 );
 		    u[i]->add_fp((int)u[i]->query_max_fp(), 1 );
-#if 0
-		    u[i]->add_hp( -2 * ( (int)u[i]->query_hp() ), 1 );
-		    u[i]->hit_player( 1000000, DT_FORCE, 0, 0 );
-#endif
 		}
 	    }
 	    return;
@@ -766,19 +762,11 @@ string Official_Season(int m) {
       "autumn", "autumn", "winter", "winter" })[m-1]; }
 
 /* Long nights... //Graah */
-#if 1
 int SunriseH(int m)	{ return ({ 10,9,9,8,7,7,6,6,7,8,9,10 })[m-1]; }
 int SunsetH(int m)	{ return ({ 15,16,17,19,20,21,22,21,20,19,17,16 })[m-1]; }
-#endif
-
-#if 0
-int SunriseH(int m) { return ({  7, 6, 5, 4, 3, 3, 4, 4, 5, 5, 6, 6 })[m-1]; }
-int SunsetH(int m)  { return ({ 17,18,19,20,21,22,23,22,21,20,19,18 })[m-1];}
-#endif
 
 int Avg_Temp(int m)	{ return ({ -10,-5,5,15,20,25,30,30,20,10,-5,-15 })[m-1]; }
 int Avg_Humid(int m)	{ return ({ 20,30,60,70,80,70,40,30,40,50,40,30 })[m-1]; }
-
 
 void
 Inform(string s, int outd)
@@ -801,13 +789,6 @@ Inform(string s, int outd)
 		    u[x] -> tell_me(s);
 	}
     }
-
-    /*	for(x = 0; x < sizeof(u); x++)
-     *		if ( (ob = environment(u[x])) && ((int)ob->query(ROOM_WD) & outd))
-     *			tell_object(u[x], s);
-     */
-
-
     // temporary set_ functions to test out the weather
 }
 

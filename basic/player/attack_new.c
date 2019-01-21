@@ -251,12 +251,6 @@ do_attack(int hit_amount, int hit_class, int dmg_type, object enemy,
 	    how = " with a bone crushing sound";
 	    what = "smash";
 	    what2 = "smashes";
-#if 0
-	} else {
-	    how = " to small fragments";
-	    what = "massacre";
-	    what2 = "massacres";
-#endif
 	} else if (tmp < 47) {
 	    how = " spraying blood everywhere";
 	    what = "slaughter";
@@ -350,15 +344,6 @@ attack()
 	tell_me("You cannot fight back!");
 	return 1;
     }
-
-    // New... the 'busy flag'. Is used by guilds to prevent 'normal' hits
-    // when casting spells etc:
-
-#if 0
-    // No need; checked at /obj/living.c::heart_beat already! -+ Doomdark +-
-    if (funcall(_busy, this_object()))
-	return 1;
-#endif
 
     // NEW! Guilds can 'mask' the 'normal' attack!
     /* Guilds are goin g'bye: we won't need this crap
@@ -481,85 +466,3 @@ attack()
     */
     return 1;
 }
-
-/***************************************************************************
-
-			End of useful code...
-
-***************************************************************************/
-
-// ANCIENT: (spells that were once in-built to living.c!)
-
-#if 0
-// We are casting a spell!!!!
-if (spell_cost) {
-    spell_points -= spell_cost;
-
-    // New spell messages (shock and fireball provided by Dolandar)
-    // 28.8.1992 //Frobozz
-
-    my_name = query_name(0, ob);
-    switch(spell_name) {
-    case "magic missile":
-	ob->tell_me(sprintf("%s points at you and a magic\
- missile hits you exploding.", my_name));
-	tell_me(sprintf("You point your finger and a magic missile\
- explodes at %s.", name_of_attacker));
-	environment() -> tell_here(sprintf("%s points at %s and a magic\
- missile hits %s exploding.",
-	    my_name, name_of_attacker, (string)ob->Objective()),
-	  ({ this_object(),ob }));
-	break;
-    case "shock":
-	ob->tell_me(sprintf("%s points at you and you feel icy\
- fingers grasping at your very heart.", my_name));
-	tell_me(sprintf("You say the magical words and point at %s\
- who recoils in pain.", name_of_attacker));
-	environment() -> tell_here(sprintf("%s utters a word and\
- points at %s who recoils in pain.", my_name, name_of_attacker),
-	  ({ this_object(),ob }));
-	break;
-    case "fire ball":
-	ob->tell_me(sprintf("%s points at you and mutters\
- something. You are engulfed in searing hot flames.", my_name));
-	tell_me(sprintf("You point at %s and invoke magical words.\
- Huge ball of fire explodes around %s.",
-	    name_of_attacker, (string)ob->Objective()));
-	environment() -> tell_here(sprintf("%s points %s finger and a\
- ball of fire explodes around %s.", my_name, Possessive(), name_of_attacker),
-	  ({ this_object(),ob }));
-	break;
-    default:
-
-	// These were the old descs, not much imagination, they are here in case
-	// someone uses initiate_spell() //Frobozz
-
-	ob->tell_me(sprintf("You are hit by a %s.", spell_name));
-	tell_me(sprintf("You cast a %s.", spell_name));
-	environment() -> tell_here(sprintf("%s casts a %s at %s.",
-	    my_name, spell_name, name_of_attacker),
-	  ({ this_object(),ob }));
-	break;
-    }
-}
-#endif
-
-#if 0
-// And still ancient stuff; check for breaking the weapon sometimes:
-
-if ((liv_Flags & F_LIV_IS_PLAYER) && name_of_weapon && tmp > 20
-  && random(100) < (weapon_class - level * 2 / 3 - 14 - query_random_luck()))
-{
-    tell_me(
-      "You fumble with your great weapon. CRACK! You managed to smash it\
- into hundreds of small pieces. Nice.");
-    log_file("BAD_SWORD", sprintf("%s, %s, %s\n",
-	name_of_weapon->query_short(), creator(name_of_weapon),
-	object_name(name_of_weapon)));
-    destruct(name_of_weapon);
-    weapon_class = 3;
-    return 1;
-}
-
-
-#endif

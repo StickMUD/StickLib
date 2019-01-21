@@ -18,10 +18,6 @@ wield_cmd(string s, object me)
 
     if (!me -> query_can_move()) return 0;
 
-    /* Shouldn't wielding be allowed in the dark? */
-#if 0
-    if (me -> test_dark()) return 0;
-#endif
     if (!s) return notify_fail("Wield what?\n"), 0;
 
     if (sscanf(s, "the %s", t))

@@ -27,13 +27,7 @@ give_cmd(string str, object me)
 	notify_fail("Not now, you are fighting!\n");
 	return 0;
     }
-    /* Why? */
-#if 0
-    if (me -> query_rest()) {
-	me -> tell_me(TOO_RELAXED);
-	return 1;
-    }
-#endif
+
     if(sscanf(str, "%d coins to %s", coins, dest) == 2) item = 0;
     else if( sscanf(str, "1 coin to %s", dest) == 1) coins = 1;
     else if( sscanf(str, "coin to %s", dest) == 1) coins = 1;

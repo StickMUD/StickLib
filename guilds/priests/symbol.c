@@ -201,13 +201,9 @@ status prevent_attack() {
 }
 
 void guild_mem_mort(object who, object hitter) {
-    // No guild supports this message any longer.
-    // Bull
-#if 0
     if(!environment(owner)->query(ROOM_ISOLATED))
 	INFORMER->inform(sprintf("%s's faithful follower %s is mortally \
 wounded!", ORDERS[order+1], cap_name));
-#endif
 }
 
 void guild_mem_died(object who, object killer) {

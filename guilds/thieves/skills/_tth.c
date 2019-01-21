@@ -80,10 +80,10 @@ tth_cmd(string arg, object owner)
     else
 	tmp1 = capitalize(tmp1);
 
-    if (!can_throw(owner, item)) 
+    if (!can_throw(owner, item))
 	return 1;
 
-    if (!check_free_hands(item,owner)) 
+    if (!check_free_hands(item,owner))
 	return 1;
 
     if (!owner->query_can_move())
@@ -91,17 +91,6 @@ tth_cmd(string arg, object owner)
 	owner->tell_me("You can't move!");
 	return 1;
     }
-
-    // Can throw any shit you want, but only weapons train. /Graah
-#if 0
-    // Can only throw weapons from now. / Graah
-    if (!item->is_weapon())
-    {
-	owner->tell_me(capitalize(tmp1) +
-	  " does not resemble a weapon enough to be thrown.");
-	return 1;
-    }
-#endif
 
     if (item->query_wielded())
 	owner->unwield(item, 0);
@@ -122,9 +111,9 @@ tth_cmd(string arg, object owner)
 
     if (!target || (!present(target, environment(owner))))
     {
-	if (!tmp2) 
+	if (!tmp2)
 	    owner->tell_me("Your opponent isn't here.");
-	else 
+	else
 	    owner->tell_me("Who's that \"" + capitalize(tmp2) + "\"?");
 
 	return 1;

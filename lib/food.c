@@ -173,14 +173,6 @@ reset(int arg)
 *								*
 ****************************************************************/
 
-#if 0
-/* Sure we can bag 'em. But perhaps option set_no_insert or something? */
-prevent_insert() {
-    this_player() -> tell_me("But that would spoil your " + query_name() + "!");
-    return 1;
-}
-#endif
-
 string
 how_much_left()
 {

@@ -25,10 +25,6 @@ where_cmd(string str, object me)
     int cost;
     int WhereON;
 
-    /*
-      if (!CHECK) return 0;
-    */
-
     see_always = 0;
     if (!me && !(me = this_player())) return 0;
 
@@ -72,14 +68,6 @@ to be able to use that command (min. lvl " + WHERE_ALL_LVL + "!)\n"), 0;
 	return 1;
     }
 
-#if 0
-    if (who == me)
-    {
-	me -> tell_me("Don't you know where you are?!?!");
-	return 1;
-    }
-#endif
-
     if (!who->query_npc() &&
       !(wholevel = where_map(who, mylevel, (int) me->query_coder_level())))
     {
@@ -97,14 +85,6 @@ to be able to use that command (min. lvl " + WHERE_ALL_LVL + "!)\n"), 0;
 	 */
 	cost = SP_COST + random(wholevel * 2);
     }
-    /* cost is almost nothing here - Necros
-      else
-	{
-	  // Yup. Cost for lords too now.
-	  cost = 1 + (50 - mylevel) / 8;
-	  if (cost < 1) cost = 1;
-	}
-    */
 
     if ((int)TP->query_sp() < cost)
 	return notify_fail(
@@ -133,10 +113,7 @@ show_where(string name, object who, int wholevel, int my_clevel)
     if(who->query_prevent_where()) {
 	return name + " is nowhere to be seen.";
     }
-    /* Was
-       if (!(sdesc = (string) environment(who) -> query_short(4, who)))
-       but why "Dark room"...where has its drawbacks.
-       */
+
     if (!see_always) sdesc =
 	(string) environment(who)->query_short(4, who);
     else sdesc =
@@ -202,10 +179,6 @@ other players...\nCan't detect anyone.");
 	me -> add_sp(-1);
 	return;
     }
-
-    /*
-      u = sort_array(u, SA_ABCSORT_ARRAY, 0);
-    */
 
     me->tell_me("You concentrate on finding out location of the \
 other players...\nYou find out locations of the following players:");

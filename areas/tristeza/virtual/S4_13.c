@@ -43,18 +43,6 @@ place in a great hurry.");
 status
 south_cmd()
 {
-#if 0
-    this_player()->tell_me(
-      "\nA Gnome stops you and says: Sorry, under construction.\n");
-    if (this_player()->query_coder_level() ||
-      this_player()->query_gender() == G_FEMALE)
-	this_player()->tell_me(
-	  "Gnome looks at you and adds: Well, YOU can enter...but don't \
-touch anything! And stay out of our way!\n\n");
-    else
-	return 1;
-#endif
-
     if (this_player() &&
       (this_player()->id("city_guard") ||
 	this_player()->id("ebonflow") ||
@@ -62,5 +50,6 @@ touch anything! And stay out of our way!\n\n");
 	this_player()->id("leper") ||
 	this_player()->id("janitor")))
 	return 1;
+
     return 0;
 }

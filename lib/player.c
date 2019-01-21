@@ -167,35 +167,7 @@ static int _value_plr_client;	// Client we are using, if any
 // for all instances but uses same one, and only gives pointer to it... neat!
 // (note that this way to do it more efficient; main reason)
 
-// YOOORRGHH!! These titles can change any time! I'll fix this
-// to ask them from levels_d... /Graah
 static string *LordTitles;
-#if 0
-static string *LordTitles =
-({
-  "Servant", "Squire", "Knight", "Lord", "Warlord",
-  "Supreme Lord", "Overlord", "Baron", "Viscount",
-  "Earl", "Count", "Marquis", "Duke", "Archduke",
-  "Prince", "Crown Prince", "King", "Imperial Prince",
-  "Emperor", "Sovereign", "Legend", "Temporal",
-  "High Temporal", "Celestial", "High Celestial",
-  "Empyreal", "High Empyreal", "Eternal", "High Eternal",
-  "Hierarch", "Old One", "Great Old One",
-  "Outer God", "Crazy", "Mad", "rm My Savefile",
-
-  "Servant", "Squiress", "Knight", "Lady",
-  "Warlady", "Supreme Lady", "Overlady", "Baroness",
-  "Viscountess", "Lesser Countess",
-  "Greater Countess", "Marquise", "Duchess",
-  "Archduchess", "Princess", "Crown Princess",
-  "Queen", "Imperial Princess",
-  "Empress", "Sovereigness", "Legend",
-  "Temporal", "High Temporal","Celestial", "High Celestial",
-  "Empyreal", "High Empyreal","Eternal", "High Eternal",
-  "Hierarch", "Old One", "Great Old One",
-  "Outer Goddess", "Crazy", "Mad", "rm My Savefile"
-});
-#endif
 
 // Let's filter out garbage CTRL-codes from all text...
 private static int *_charset = ({
@@ -330,11 +302,6 @@ query_can_quit()
     // Not during a fight or when mortally wounded
     if (is_fighting() || query_hp() < 0) return 0;
 
-    // Also not when poisoned by those nasty thieves! /Graah
-#if 0
-    if (call_other("/guilds/thieves/poison_d",
-	"is_poisoned", this_object())) return 0;
-#endif
     return 1;
 }
 
@@ -618,26 +585,6 @@ nomask void
 add_exp(int e)
 {
     int c;
-
-    // Level/xp limit is lifted again. But this will return if high
-    // level guys rush all to join mages, the only level-based guild.
-    // If anyone detects that kind of cheating, change to #if 1
-    // /Graah
-#if 0
-    //
-    // Temporary limitation to prevent ridiculous levels,
-    // because super high-level priests, having no skills,
-    // really ruin all balance. /Graah
-    //
-    // This MIGHT be lifted if all skill-less guilds get skills.
-    //
-    // if (level >= 90 && e > 0) return;
-    //
-    if ((e > 0) &&
-      (exp_times >= 2) &&
-      (experience >= 617661762))  // Askur's current exp :)
-	return;
-#endif
 
     // Over 200k to one person at a time! /Graah
     // However, if there are mega-monsters, and you want more exp,
@@ -1214,22 +1161,11 @@ save_character()
     return 1;
 }
 
-/* Hmmh. Perhaps we should log calls... */
 nomask void
 set_level(int lev)
 {
     if (!intp(lev) || lev < 1) return;
 
-#if 0
-    /* To catch the level change bug. Added nomask too.  --Val */
-    if (!previous_object())
-    {
-	log_file("LEVEL", sprintf("%s %s: from %d to %d by %s in %s\n",
-	    ctime(time()), name, level, lev,
-	    (previous_object() ? object_name(previous_object()) : "--this--")
-	    (environment() ? = object_name(environment()) : "--void--")));
-    }
-#endif
     level = lev;
 }
 
@@ -1549,12 +1485,6 @@ heart_beat()
 	    i = query_race_stat(RACE_HP_HEAL_RATE) + (random(20) + level) / 25 + (intoxicated ? 1 : 0) + query_stat(ST_HP_HEAL_RATE);
 	    if (cond & 1)
 		i = (i + random(2)) / 2;
-
-	    // Do we have that stupid "heal ob"?
-#if 0
-	    if (present("heal ob", this_object()))
-		i += 2;
-#endif
 
 	    hit_point += i;
 	    if (hit_point > max_hp) hit_point = max_hp;

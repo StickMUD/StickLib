@@ -99,14 +99,6 @@ insertIntoLocker(string str)
 	  "You are using it; remove it first.\n"), 0;
     if(sscanf(object_name(ob), "%s#%d", obFileName, tmp) < 2)
 	return notify_fail("That's not a valid item.\n"),0;
-    // Let's convert obsolete files... if they're used.
-    /* No  need to, right now. Perhaps again some day? */
-#if 0
-    if (obFileName == "obj/weapon" || obFileName == "/obj/weapon")
-	obFileName = WEAPON_FILE;
-    else if (obFileName == "obj/armour" || obFileName == "/obj/armour")
-	obFileName = ARMOUR_FILE;
-#endif
 
     if(ob->query_unique()) {
 	if(!u_conf)

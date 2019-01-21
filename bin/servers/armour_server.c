@@ -181,13 +181,6 @@ make_armour(string n)
 
     ar = clone_object(ARMOUR_FILE);
     ar->set_short(n);
-
-    /* No decent id system yet :-( */
-#if 0
-    /* Not exactly correct - some of 'em should be adjectives! */
-    ar->add_name(explode(n + " "," "));
-#endif
-
     ar->set_name(n);
     ar->set_long("It's a quite normal " + n + ".");
     ar->set_type(F_ARMOUR_TYPE_NAME(armours[x + ARM_TOOLSLOT]));

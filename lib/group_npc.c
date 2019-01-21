@@ -104,20 +104,16 @@ group_attacked(object victim, object attacker, object *members)
 	if (!group_messages || !(x = group_messages["ask_help_msg", 0]))
 	    s = sprintf("%s yells: Help, I'm being attacked!",
 	      query_name());
-#if 0
-	else s = format_string(x, this_object(), attacker, 0);
-#else
+
 	s = x;
-#endif
+
 	attacker->tell_me(s, 0, 0, this_object(), attacker, 0);
 
 	if (!group_messages || !(x = group_messages["ask_help_msg", 1]))
 	    ; // We'll use the one used above!
-#if 0
-	else s = format_string(x, this_object(), attacker, 0);
-#else
+
 	x = s;
-#endif
+
 	if (s)
 	    environment()->tell_here(s,
 	      0, 0,
@@ -143,20 +139,16 @@ group_attacked(object victim, object attacker, object *members)
 	    if (!group_messages || !(s = group_messages["cant_help_msg", 0]))
 		s = sprintf("%s yells: Sorry, but I'm fighting myself!",
 		  query_name());
-#if 0
-	    else s = format_string(x, this_object(), attacker, 0);
-#else
+
 	    s = x;
-#endif
+
 	    if (s) attacker->tell_me(s, 0, 0, this_object(), attacker, 0);
 
 	    if (!group_messages || !(x = group_messages["cant_help_msg", 1]))
 		; // We'll use the one used above!
-#if 0
-	    else s = format_string(x, this_object(), attacker, 0);
-#else
+
 	    s = x;
-#endif
+
 	    if (s) environment()->tell_here(s, 0, 0,
 		  ({ attacker, this_object() }),
 		  this_object(), attacker, 0);
@@ -166,21 +158,17 @@ group_attacked(object victim, object attacker, object *members)
 	    if (!group_messages || !(s = group_messages["can_help_msg", 0]))
 		s = sprintf("%s yells: Sure, let's bash this shithead!",
 		  query_name());
-#if 0
-	    else s = format_string(x, this_object(), attacker, 0);
-#else
+
 	    s = x;
-#endif
+
 	    if (s) attacker->tell_me(s, 0, 0, this_object(),
 		  attacker, 0);
 
 	    if (!group_messages || !(x = group_messages["can_help_msg", 1]))
 		; // We'll use the one used above!
-#if 0
-	    else s = format_string(x, this_object(), attacker, 0);
-#else
+
 	    s = x;
-#endif
+
 	    if (s) environment()->tell_here(s, 0, 0,
 		  ({ attacker, this_object() }),
 		  this_object(), attacker, 0);

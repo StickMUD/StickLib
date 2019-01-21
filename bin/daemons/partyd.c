@@ -48,26 +48,6 @@ create()
     members = ([ ]);
     hooks = ([ ]);
     party_id = 0;
-#if 0
-    if (!(u = users()) || !(i = sizeof(u))) return;
-    // Now, in case we recompile this daemon, let's check out which
-    // parties exist already!
-    while (--i >= 0) {
-	pl = u[i];
-	if (!(pid = (int) pl->query_party(PARTY_ID))) continue;
-	members[pl] = pid;
-	if (pid > party_id) party_id = pid;
-	if (!(tmp = parties[pid])) {
-	    tmp = ({ pl });
-	} else {
-	    if (pl->query_party(PARTY_LEADER))
-		tmp = ({ pl }) + tmp;
-	    else
-		tmp = tmp + ({ pl });
-	}
-	parties[pid] = tmp;
-    }
-#endif
 }
 
 nomask void

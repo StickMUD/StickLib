@@ -38,51 +38,11 @@ ever conceive!",
 
 status monster_died(object p)
 {
-    object sce; 
+    object sce;
     object id;
-
-    /*  shout(capitalize(this_player()->query_real_name())+
-    " has conquered the evil Sh"); */
 
     this_player()->tell_me("You have an empty feeling about not getting\
  the power you should. Weird.");
-
-#if 0
-    sce = clone_object("/players/cigam/nk/sceptre_tristeza");
-    sce->set_kingdom_name(CITY_NAME);
-
-    move_object(sce, this_player());
-    UNIQUE_D->create_unique(object_name(sce), 1);
-    if (!UNIQUE_D->query_unique(object_name(sce))) {
-	destruct(sce);
-	return 0;
-    }
-    UNIQUE_D->add_unique(object_name(sce), sce);
-
-    sce->set_castle_entrance(AREA_EAST "east/to_castle");
-    sce->make_king(this_player()->query_real_name());
-    this_player()->tell_me("Naima, the Goddess of Protection appears \
-in front of you!\n\
-Naima smiles gently at you.\n\
-Naima says: I am pleased with you, mortal!\n\
-Naima gives you the Sceptre of the King of " CITY_NAME "!\n\
-Naima smiles sadly and disappears.");
-    id = present("kingdom_id", this_player());
-    if (id && id->is_king()) {
-	shout("\n\nThe world of "+MUD_NAME+" has arisen to see the dawn of \
-a new and noble age! Let it be known that from now on all of "+MUD_NAME+" \
-is to hail "+
-	  capitalize(this_player()->query_real_name())+" as their true \
-Emperor!");
-    }
-    else {
-	shout("\n\nAfter a sorrow age of evil darkness in the once \
-admirable " CITY_NAME " Kingdom, King "+
-	  capitalize(this_player()->query_real_name())+" will now be the ruler \
-of these parts of the world! May he bring true and noble life \
-back to us once again!\n\n"); 
-    }
-#endif
 
     return 0;
 }

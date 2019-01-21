@@ -1,4 +1,4 @@
-#0:0
+#3:2
 room_effects 0
 room_map "---+\nlll|\nl@l|\neel|\n---+\n"
 objects 0
@@ -7,15 +7,13 @@ rooms_home "/guilds/priests/gardens/virtual/world/rooms/"
 descs_home "/guilds/priests/gardens/virtual/world/descs/"
 server_ob "guilds/priests/gardens/virtual/server"
 random_objects 0
-effects 0
-effect_chance 0
 beat_function 0
 moving_command 0
 moving_msgout 0
 moving_msgin 0
 moving_flag 0
-distant_look 1
 read 1
 X 10
 Y 2
-sps_in_pool 599
+Z 0
+sps_in_pool 597

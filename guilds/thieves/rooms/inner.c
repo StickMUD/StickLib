@@ -194,15 +194,6 @@ read(string arg) {
     return 1;
 }
 
-#if 0
-east() {
-    if (TP->query_coder_level() < LVL_APPRENTICE) return 0;
-
-    TP->move_player("east#players/graah/workroom");
-    return 1;
-}
-#endif
-
 int
 gc(string arg)
 {
@@ -224,20 +215,6 @@ gc(string arg)
 	write("Your hand passes through it.\n");
 	return 1;
     }
-
-#if 0
-    if ((!tm->query_guildmaster()) &&
-      /*
-	      ((int)TP->query_level() < 25 ||
-	      (int) TP->query_stat(ST_BASE_DEX) < 24 ||
-	      (int) TP->query_stat(ST_BASE_STR) < 24)) {
-      */
-      (int)TP->query_level() < 25) {
-
-	write("As you try that, an electric shock hits you!\n");
-	return 1;
-    }
-#endif
 
     inv = deep_inventory(TP);
     for (i = 0; i < sizeof(inv); i++) {

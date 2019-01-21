@@ -17,23 +17,6 @@ create_spell() {
     funs = ({ #'begin_cure, #'cure_disease });
 }
 
-#if 0
-mixed
-parse_target_string(string s) {
-    string dis_name, tar_name;
-
-    // have to return -1 if error
-    notify_fail("Cure what from whom?\n");
-    if(!s) return -1;
-    s = lower_case(s);
-    if(sscanf(s, "%s from %s", dis_name, tar_name)!=2)
-	return -1;
-    if(dis_name == "disease")
-	return notify_fail("Cure what disease? Please be more precise.\n"),-1;
-    return ({dis_name, tar_name});
-}
-#endif
-
 void
 begin_cure(object who, mixed data)
 {

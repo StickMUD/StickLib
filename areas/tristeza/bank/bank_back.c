@@ -131,12 +131,7 @@ open_vault(string str)
 void
 log_robber(object ob)
 {
-#if 0
-    write_file(LOGFILE, capitalize((string)ob->query_real_name())
-      +" " + ctime(time()) + "\n");
-#else
     log_file(LOGFILE, capitalize((string)ob->query_real_name())
       +" " + ctime(time()) + "\n");
-#endif
 }
 

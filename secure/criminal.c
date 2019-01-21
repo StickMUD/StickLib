@@ -306,11 +306,6 @@ check_crimes(object ob)
 		    "Judge tells you: You were accused for " +
 		    upper_case(crime_name(cdata(i, CD_CRIME))) +
 		    ", and found guilty! Surrender to nearest City Guard."));
-
-#if 0
-		/* If we want a log file, write into it here */
-#endif
-
 	    }
 
 	    cdata(i, CD_TIME) = 0; /* Gets purged */

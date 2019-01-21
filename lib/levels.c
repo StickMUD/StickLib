@@ -182,25 +182,15 @@ create()
     // Old stat cost modifiers for races:
     // Str, Con, Dex, Int, Fat
     RaceModifiers = ([
-      "elf":	({ 120, 110, 90, 80, 100 }),
-      "dark elf":	({ 122, 110, 90, 78, 100 }),
-      "dwarf": ({ 90,120,120,100, 100 }),
-      "hobbit": ({ 120, 90, 80,110, 100 }),
-      "half-orc": ({ 80, 80,110,120, 100 }),
-      "troll": ({ 60, 60,130,200, 100 }),
-      "human": ({ 125, 125,125,125, 125 }),
-      0:	({ 100, 100,100,100, 100 })
+      "elf":        ({ 120, 110,  90,  80, 100 }),
+      "dark elf":   ({ 122, 110,  90,  78, 100 }),
+      "dwarf":      ({ 90,  120, 120, 100, 100 }),
+      "hobbit":     ({ 120,  90,  80, 110, 100 }),
+      "half-orc":   ({ 80,   80, 110, 120, 100 }),
+      "troll":      ({ 60,   60, 130, 200, 100 }),
+      "human":      ({ 125, 125, 125, 125, 125 }),
+      0:	    ({ 100, 100, 100, 100, 100 })
     ]);
-    /*
-      ([
-      "race name": ({
-      ({ "male/neuter title1", "male/neuter title2", ... }),
-      ({ "female title1", "female title2", ... }),
-      (optional) ({ "neuter title1", "neuter title2", ... })
-      }),
-      ...
-      ])
-      */
 
     ladies = ({
       0, "Squiress", "Knightess", "Lady", "Heraldess",
@@ -605,13 +595,6 @@ query_exp_for_level(int lvl)
     }
 
     return LevelLimits[lvl];
-
-#if 0
-    if(lvl > 25 && lvl < 31) return 15000000 + (lvl - 25) * 10000000;
-    if(lvl > 30 && lvl < 40) return 65000000 + (lvl - 30) * 25000000;
-    if(lvl > 39 && lvl < 50) return 290000000 + (lvl - 39) * 50000000;
-    if(lvl > 49) return 790000000 + (lvl - 49) * 100000000;
-#endif
 }
 
 /* Function name: query_exp_times_for_level
@@ -721,7 +704,7 @@ string query_pretitle(mixed ob, int l_level, int gender)
     } else {
 	if (ob->query_is_testplayer()) return "Testplayer";
 	l = (int)ob->query_coder_level();
-	if (l > 0 && l < LVL_JUNIOR) return "Apprentice Wizard";
+	if (l > 0 && l < LVL_NOVICE) return "Apprentice Wizard";
     }
 
     if (l)
@@ -745,33 +728,6 @@ string query_pretitle(mixed ob, int l_level, int gender)
 	else
 	    return "Testplayer";
     }
-#if 0
-    if (l ) switch(l) {
-    case LVL_ADMIN:
-	return "Admin";
-    case LVL_COADMIN:
-	return "Co-Admin";
-    case LVL_ARCH:
-	return "Arch Wizard";
-    case LVL_ELDER:
-	return "Elder Wizard";
-    case LVL_SENIOR:
-	return "Senior Wizard";
-    case LVL_CODER:
-	return "Wizard";
-    case LVL_NOVICE:
-	return "Novice Wizard";
-    case LVL_APPRENTICE:
-	return "Apprentice Wizard";
-
-    case LVL_PSUEDO:
-	return "Pseudo-Admin";
-    case LVL_POLICE:
-	return "Enforcer";
-    default:
-	return "Testplayer";
-    }
-#endif
 
     // Female titles have typos - "-ess" doesn't make anything
     // feminine...someone smarter should check them. //Graah
@@ -802,7 +758,6 @@ query_races()
 {
     return m_indices(RaceMaxStats);
 }
-
 
 void
 table()

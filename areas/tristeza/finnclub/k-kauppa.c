@@ -98,15 +98,6 @@ The 'Blue' comes from its wrapping, which is blue striped plastic.",
       "Pullo Salmiakkikossua (bottle of salmiac kossu)",
       -1, CITY_PATH + "finnclub/salmiakki_kossu", 700,
       "drink", 0, 0,
-
-#if 0
-      / Finland is not open at the moment.
-      ({ "map", "map of finland", "finland map", "finmap" }),
-      "Map of Finland",
-      -1, AREA_FINLAND + "obj/finmap", 250,
-      "map", 0, 0,
-#endif
-
       ({ "paisti", "karjalan", "roast", "karjalanpaisti",
 	"karelian roast" }),
       "Karjalanpaisti ('Karelian roast')",

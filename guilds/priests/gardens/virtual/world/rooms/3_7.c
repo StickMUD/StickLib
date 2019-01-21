@@ -41,7 +41,7 @@ completely another world.",
       ]));
 
     add_command("south", "south_cmd");
-    set_distant_look(1);
+    //set_distant_look(1);
 }
 
 void

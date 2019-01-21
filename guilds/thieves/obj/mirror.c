@@ -8,7 +8,7 @@
 reset(arg) { }
 
 init() {
-    add_action("enter", "enter");
+//    add_action("enter", "enter");
 }
 
 short() { return "Large, shining silver mirror"; }
@@ -92,11 +92,6 @@ enter(str) {
       AREA_ORCTOWN+"lvl3/pit_cave",
       AREA_ORCTOWN+"lvl3/pit_cave",
       AREA_ORCTOWN + "lvl2/mine1",
-#endif
-#if 0
-      "players/frobozz/room/lobby",
-      "players/thannis/taso1/dc7",
-      "players/flathead/swamp1",
 #endif
 #ifdef AREA_SEWERS
       AREA_SEWERS + "lvl2/wide9",

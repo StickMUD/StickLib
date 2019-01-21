@@ -246,10 +246,6 @@ _check_pick(int eq_nr)
     if (!pointerp(x = pick_items[eq_nr])) return;
     if (!x[0]) return;
     if (ob = present(x[0], environment())) {
-#if 0
-	// Better do destructing bit later...
-	destruct(ob);
-#endif
 	// Let's then print msg if one is specified...
 	if (environment())
 	    if (stringp(x[2]))
@@ -268,5 +264,5 @@ _check_pick(int eq_nr)
 		break;
 	    }
 	}
-    }	
+    }
 }

@@ -140,7 +140,7 @@ that beings other than animals had lived here for centuries.",
 	"northwest":({-1,-1}),
       ]));
 
-    set_distant_look(1);
+    //set_distant_look(1);
     set(SKIP_EXITS);
 
     restore_object(SAVE_FILE);

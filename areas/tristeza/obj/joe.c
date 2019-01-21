@@ -65,10 +65,6 @@ moving()
 
     if (!tmp || !ob)
     {
-#if 0
-	if (find_player("graah"))
-	    find_player("graah")->tell_me("Joe on eksynyt!");
-#endif
 	destruct(this_object());
 	return;
     }

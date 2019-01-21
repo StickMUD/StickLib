@@ -10,14 +10,6 @@ void serenity(int t) {
     tmp = this_player()->query_condition(RESISTANCE(C_STUNNED));
     tmp = duration / (1 + (tmp / duration));
     this_player()->add_condition(RESISTANCE(C_STUNNED), tmp);
-
-#if 0
-    // This would be too good, imho //Chopin
-    duration /= 2;
-    tmp = this_player()->query_condition(RESISTANCE(C_UNCONSCIOUS));
-    tmp = duration / (1 + (tmp / duration));
-    this_player()->add_condition(RESISTANCE(C_UNCONSCIOUS), tmp);
-#endif
 }
 
 void

@@ -210,18 +210,6 @@ query_special_properties()
 // Is there really a need to secure these? This is purely player stuff. /Graah
 nomask int *query_specialProperties() { return specialProperties; }
 
-// Oh no. Not these stupid "(worn)" in _name_.
-#if 0
-// So, why not use the 'original' version, then
-varargs string
-query_name(int mode, object who)
-{
-    if (!mode || ! worn)
-	return ::query_name(mode, who);
-    return sprintf("%s (%s)", ::query_name(mode, who), worn);
-}
-#endif
-
 varargs string
 query_short(int mode, object who)
 {

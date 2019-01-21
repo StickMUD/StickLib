@@ -29,16 +29,7 @@ create_room()
 	"pull"	: "pull",
 	"turn"	: "pull",
 	"move"	: "pull",
-	//"down"	: "down"
       ]));
-    //add_object(AREA_W+"obj/donator_gate", 0, 1);
-
-#if 0
-    add_object( ({ DOOR_FILE,
-	({ "add_door",
-	  "It is an incredibly thick and heavy stone door.",
-	  "west", AREA_TRISTEZA+"rooms/door_trap1", 0,0,1,1 }) }), 0,1);
-#endif
 }
 
 void
@@ -63,7 +54,6 @@ coin_drop()
     }
 }
 
-
 status
 open(string str)
 {
@@ -79,14 +69,3 @@ pull(string str)
     (AREA_TRISTEZA+"rooms/door_trap1")->toggle_door();
     return 1;
 }
-
-#if 0
-status
-down()
-{
-    this_player()->tell_me("You slip and are swept away by the water...");
-    this_player()->move_player("Vslips and is swept away by the water",
-      AREA_SEWERS+"lvl1/tube12");
-    return 1;
-}
-#endif

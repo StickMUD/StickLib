@@ -43,9 +43,4 @@ You can see the Shower Room to the west.");
 	  "youcanthavethiskey", 1, 0, 1, 60,
 	  "It is quite a complex lock, but not impossible to pick." );
     }
-
-    //	add_permanent(GDIR+"camp_board");
-#if 0
-    add_permanent(GDIR+"boter");
-#endif
 }

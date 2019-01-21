@@ -12,10 +12,6 @@ clothes_cmd(string arg, object me)
 
     if (me -> test_dark()) return 0;
 
-#if 0
-    if (!me->query_can_move()) return 0;
-#endif
-
     /* Why shouldn't we use this cmd even if paralyzed? */
     if (arg) {
 	who = present(lower_case(arg),environment(me));

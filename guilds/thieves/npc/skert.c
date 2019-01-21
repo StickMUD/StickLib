@@ -31,13 +31,4 @@ grrr(object who)
     if (!who) return;
     who->tell_me("Skert tells you: I THINK YOU SHOULD VISIT DEATH!\n");
     who->move_player("X#"+AREA_TRISTEZA+"death/death_room");
-
-    /* I want to see this! */
-#if 0
-    gr = find_player("graah");
-    if (gr)
-	gr->tell_me("!!! *** " +
-	  capitalize((string)who->query_real_name()) +
-	  " might be doing the golem quest *** !!!");
-#endif
 }

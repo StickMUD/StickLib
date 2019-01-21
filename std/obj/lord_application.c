@@ -33,36 +33,28 @@ long() {
 }
 
 init() {
-#if 0
-    if(this_player()->query_level()>=30 && !this_player()->query_coder_level()
-#else
-      if(this_player()->query_level() >= 30
-#endif
-	&& !this_player()->query_npc())
-	  add_action("sign","sign");
-  }
+    if(this_player()->query_level() >= 30
+      && !this_player()->query_npc())
+	add_action("sign","sign");
+}
 
-    sign(str) {
-	if(!id(str)) return;
-#if 0
-	if(this_player()->query_level()<30 || this_player()->query_coder_level()
-#else
-	  if(this_player()->query_level()<30
-#endif
-	    || this_player()->query_npc()) return;
-	  signer=this_player()->query_real_name();
-	  log_file("LORD_SIGNED",capitalize(who)+" to 25 by "+capitalize(signer)+" at "+ctime(time())+"\n");
-	  write("Ok.\n");
-	  return 1;
-      }
+sign(str) {
+    if(!id(str)) return;
+    if(this_player()->query_level()<30
+      || this_player()->query_npc()) return;
+    signer=this_player()->query_real_name();
+    log_file("LORD_SIGNED",capitalize(who)+" to 25 by "+capitalize(signer)+" at "+ctime(time())+"\n");
+    write("Ok.\n");
+    return 1;
+}
 
-	get() { return 1; }
+get() { return 1; }
 
-	drop() { return; }
+drop() { return; }
 
-	query_signed() { return !(!signer); }
-	set_signed(string str) { signer = str; }
+query_signed() { return !(!signer); }
+set_signed(string str) { signer = str; }
 
-	set_applyer(str) { who=str; }
+set_applyer(str) { who=str; }
 
-	void clean_up() { destruct(this_object()); }
+void clean_up() { destruct(this_object()); }

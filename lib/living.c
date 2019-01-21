@@ -155,11 +155,6 @@ static object hitter;		// Who or what called hit_player?
 static object kill_ob;		// Living we'll attack on next hb (NPCs?)
 static int cons_moves;		// # of consecutive moves in 1 round
 
-#if 0
-static string spell_name;
-static int spell_cost, spell_dam;
-#endif
-
 // These are used by player.c only but need to be here still. :-(
 static int GuildFlags;
 static mapping GuildHooks;
@@ -1010,11 +1005,7 @@ drink_alco(int strength)
 {
     if ((intoxicated + strength) > (query_stat(ST_CON)
 	+ query_race_stat(RACE_DRUNKNESS_RATE))) {
-#if 0
-	if (random(2)) tell_me("You fail to reach the drink with your mouth.");
-	else tell_me("You missed.");
-	return 0;
-#endif
+
 	tell_me("You feel perfectly relaxed and content, and then "
 	  "black out. ");
 	// Was C_UNCONSCIOUS, but this is better! /Graah
@@ -1229,17 +1220,6 @@ hit_player(int dam, int t, mixed hc, object enemy)
 	return 0;
     }
 
-#if 0
-    // Prevent cheating guilds from causing damage when it is impossible
-    // 18.7.1994 //Graah
-    // Let's not waste resources here; call_others eat time _in vain_
-    // Guilds need to be fixed instead. -+ Doomdark +-
-    if (enemy && enemy != this_object() && enemy_flags
-      && !enemy->query_can_move()) {
-	return 0;
-    }
-#endif
-
     // Amount to avoid due to AC:
     // NEW! Now reduces 25% of AC plus random(AC / 2)... Same amount than previously,
     // but not as random!
@@ -1333,21 +1313,6 @@ hit_player(int dam, int t, mixed hc, object enemy)
 	    if(dam < 0) dam = 0;
 	}
     }
-
-
-    // There is something weird in the following piece of code so I
-    // added #if 0:
-    // The greater the hit_class, the smaller the chance to hit ?!
-    // Another reason is, that I want to be able to call that hc-closure
-    // later in the code. Chopin 3-May-98 
-#if 0
-    // This is where we check hit class (accuracy).
-    // It must not affect damage. Strange.
-
-    if (!intp(hc))
-	hc = 0;
-    if ((dam - hc) <= 0) return 0;
-#endif
 
     //MUDwide tuning of damage. This will be removed from here when all
     //the guilds implement it in their own code.

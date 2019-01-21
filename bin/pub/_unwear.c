@@ -16,10 +16,6 @@ unwear_cmd(string arg, object me)
     int i, j;
     if (!me && !(me = this_player())) return 0;
 
-#if 0
-    /* Can't remove in the dark? */
-    if (me -> test_dark()) return 0;
-#endif
     if (!me -> query_can_move()) return 0;
 
     if (!arg) return notify_fail("Unwear what?\n"), 0;

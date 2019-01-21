@@ -11,7 +11,7 @@ string query_gate_desc() {
 	"The heavy brass gates, which were used to protect the \
 cathedral's wealth in times of war, are shut. You see a magical \
 shimmering around them.";
-    else return 
+    else return
 	"There are heavy brass gates here, thrown wide open.";
 }
 
@@ -71,13 +71,6 @@ int query_shut() {
 
 void shut_gates(int shut_em) {
     if(gates_shut == shut_em) return;
-
-#if 0
-    if(!find_object(GUILD_ENTRANCE))
-	call_other(GUILD_ENTRANCE, "???", 0);
-    if(!find_object(GARDEN_ENTRY))
-	call_other(GARDEN_ENTRY, "???", 0);
-#endif
 
     GUILD_ENTRANCE->shut_gates(shut_em);
     GARDEN_ENTRY->shut_gates(shut_em);

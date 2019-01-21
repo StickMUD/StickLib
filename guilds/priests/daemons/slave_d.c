@@ -1,12 +1,10 @@
 /*
  * SLAVE DAEMON (Couldn't invite a better name :)
  * written by Chopin 6/7/97
- * 
+ *
  * This daemon keeps log of "slaves" a player has, and moves them
  * with him.
  */
-
-
 #include "../priest.h"
 #include <daemons.h>
 #include <room_defs.h>
@@ -58,12 +56,8 @@ remove_all_slaves(object pl) {
     int i;
     object *objs, ob;
 
-#if 0
-    temp_data -= ([ pl ]);
-#else
-    // No no no. Use m_delete with mappings
     m_delete(temp_data, pl);
-#endif
+
     if(!(t = slaves[pl])) return;
     objs = m_indices(t);
     for(i=sizeof(objs); --i>=0;) {

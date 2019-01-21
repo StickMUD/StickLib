@@ -60,29 +60,6 @@
 #define DT_LIGHT	(1<<24)
 #define DT_POSITIVE	(1<<25)
 
-#if 0
-/* Other damage types which might be added later */
-/* Martial arts sweeps & throws (needs a better define) */
-#define DT_JUDO		(1<<5)
-/* Wrestling, grappling? */
-#define DT_WRESTLE	(1<<6)
-
-/* Suffocation (underwater etc.) */
-#define DT_BREATHLESS	(1<<)
-/* Tentacles, snakes and other slimy things squeezing you */
-#define DT_CONSTRICT	(1<<)
-/* Psychic damage; ESP, Psionics */
-#define DT_PSYCHIC	(1<<)
-/* Magical damage (already covered by elements?) */
-#define DT_MAGIC	(1<<)
-/* Sickness needs additional data, which disease(s) we deliver */
-#define DT_DISEASE	(1<<)
-#define DT_ASTRAL	(1<<)
-#define DT_ETHEREAL	(1<<)
-#define DT_GOOD		(1<<)
-#define DT_EVIL		(1<<)
-#endif
-
 /*
  * Constructed damage types and bitfields for testing
  *

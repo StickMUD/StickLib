@@ -321,15 +321,6 @@ query_guild_ac_rate(int dmg, int dtype, int hc, object att)
     if (rate < 3) rate = 3;
     else if (rate > 90) rate = 90;
 
-#if 0
-    write_file(GDIR+"TUMBLE_LOG",
-      sprintf("%s avoided %d damage from %d with skill level %d (%d%%).\n",
-	capitalize(owner->query_real_name()),
-	dmg - (int)(dmg*(1.0 - (float)rate/100.0)), dmg,
-	skills[SK_TUMBLING], rate));
-#endif
-
-    //return ((rate * dmg) / 100);
     // rate is the percentage by which the dmg is reduced... not
     // by how much is taken!!  ie if dmg is 100, and rate is 90,
     // the damage given is 10.  if rate is 15, the damage is 85.

@@ -16,7 +16,6 @@ do_desc() {
     return sprintf("%s %s", ADESC(DESC1), ADESC(DESC2));
 }
 
-
 void
 create_virtual(){
     set(ROOM_WD, WD_OUTDOORS);
@@ -36,7 +35,7 @@ create_virtual(){
 	"northwest":({-1,-1}),
       ]));
 
-    set_distant_look(1);
+    //set_distant_look(1);
     set(SKIP_EXITS);
     set_long(do_desc());
 }

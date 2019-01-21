@@ -1,4 +1,4 @@
-#0:0
-terrains (["t":"tunnel","m":"mountain_edge","h":"hill","w":"water","e":"meadow","l":"forest_light","d":"forest_dark",])
+#3:2
+m_terrains (["h":"hill";0;0,"e":"meadow";0;0,"l":"forest_light";0;0,"m":"mountain_edge";0;0,"t":"tunnel";0;0,"w":"water";0;0,"d":"forest_dark";0;0,])
 objects ([])
 maps ({({0,0,13,8,"gardens_of_boccob",}),})

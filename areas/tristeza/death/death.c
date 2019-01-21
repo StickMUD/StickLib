@@ -192,11 +192,6 @@ remark_someone(object ob)
     }
 
     ob->tell_me("Death tells you: " + tmp);
-
-#if 0
-    if (find_player("graah"))
-	find_player("graah")->tell_me("Death remarked " + name + ": " + tmp);
-#endif
 }
 
 void
