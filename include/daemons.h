@@ -25,6 +25,7 @@
 #define KINGDOM_D       "/bin/daemons/kingdom_d"
 #define LEVELS_D        "/lib/levels"
 #define MAIL_D          "/bin/daemons/maild"
+#define MAPPER_D        "/bin/daemons/mapper_d"
 #define MCHAR_D         "/bin/daemons/mchard"
 #define MUDLOCK_D       "/bin/daemons/mudlock_d"
 #define NAMING_D        "/bin/daemons/naming_d"
@@ -35,6 +36,7 @@
 #define SHELL_D         "/bin/daemons/shelld"
 #define SKILL_D         "/bin/daemons/skilld"
 #define SMOKE_D         "/bin/daemons/smoked"
+#define TELOPT_D        "/bin/daemons/telopt_d"
 #define UNIQUE_D        "/bin/daemons/uniqued"
 #define WHO_D           "/bin/daemons/who_d"
 

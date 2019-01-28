@@ -18,9 +18,11 @@
  ***************************************************/
 
 #include "/sys/interactive_info.h"
+#include "/sys/telnet.h"
 
 #include <coder_levels.h>
 #include <daemons.h>
+#include <levels.h>
 #include <mchar.h>
 #include <mud_name.h>
 #include <tell_me.h>
@@ -33,6 +35,7 @@
 #define	LOGIN_C
 
 #include "/basic/living/tell_me.c"
+#include "/basic/player/telopt.c"
 
 private static int _value_plr_client;	// Client he/she is using, if any
 
@@ -300,7 +303,7 @@ login_connect()
 	    return;
 	}
     }
-    else { 
+    else {
 	if(!other_copy)  other_copy = find_player(name);
 
 	if(interactive(other_copy)) {
@@ -326,15 +329,21 @@ login_connect()
 	  "password" : password,
 	  "password_time" : passwd_time,
 	]);
+
 	if (_window_x && _window_y) {
 	    attrs["window_x"] = _window_x;
 	    attrs["window_y"] = _window_y;
 	}
+
 	if (_value_plr_client)
 	    attrs["client"] = _value_plr_client;
 
-	if(interactive_copy)
-	    player_ob->initialize(name, password, passwd_time, 
+	if (gmcp_cache) {
+	    attrs["gmcp_cache"] = gmcp_cache;
+	}
+
+	if (interactive_copy)
+	    player_ob->initialize(name, password, passwd_time,
 	      level, mailaddr, gender, 1, attrs);
 	else
 	    player_ob->initialize(name, password, passwd_time,
@@ -374,11 +383,10 @@ logon(string msg) {
 
     switch(login_state) {
 
-    case LOGIN_STATE_NULL: 
-	/* Stickmud feature alert!	Starks
-		// Some random titles to scare them with /Graah
-		write((string)DESC_D->query_mud_name() + "\n");
-	*/
+    case LOGIN_STATE_NULL:
+	// Tell the client that we support these protocols
+	binary_message( ({ IAC, WILL, TELOPT_MSSP }), 3);
+	binary_message( ({ IAC, WILL, TELOPT_GMCP }), 3);
 
 	cat(LOGIN_WELCOME);
 	/* Every input has its own timeout but also the
@@ -703,12 +711,13 @@ login_password(string str) {
 	}
     }
 
-    if (!sizeof( regexp( ({ str }), "[0-9]" ))
-      || !sizeof( regexp( ({ str }), "[^0-9a-zA-Z]")))
-	tmp = "Your password must contain at least one digit (0-9) and one\n\
-non-alphanumeric character.  Please enter a new password.\n";
-    else tmp = 0;
-
+    /*
+	if (!sizeof( regexp( ({ str }), "[0-9]" ))
+	  || !sizeof( regexp( ({ str }), "[^0-9a-zA-Z]")))
+	    tmp = "Your password must contain at least one digit (0-9) and one\n\
+    non-alphanumeric character.  Please enter a new password.\n";
+	else tmp = 0;
+    */
     if (tmp) {
 	write(tmp);
 	login_password_fail = 0;

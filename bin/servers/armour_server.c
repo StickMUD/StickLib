@@ -46,121 +46,120 @@ create()
 
       /* Standard armour parts */
 
-      "leather jacket",		T_ARMOUR,	2,4,200,0,0,
-      "leather hood",		T_HELMET,	1,2,750,0,0,
-      "leather sleeves",		T_BRACERS,	1,2,500,0,0,
-      "leather gloves",		T_GLOVES,	1,2,500,0,0,
-      "leather leggings",		T_LEGGINGS,	1,2,500,0,0,
+      "leather jacket",         ARMOUR_TYPE_BODY_ARMOUR,       2,4,200,0,0,
+      "leather hood",           ARMOUR_TYPE_HELMET,            1,2,750,0,0,
+      "leather sleeves",        ARMOUR_TYPE_BRACERS,           1,2,500,0,0,
+      "leather gloves",         ARMOUR_TYPE_GLOVES,            1,2,500,0,0,
+      "leather leggings",       ARMOUR_TYPE_LEGGINGS,          1,2,500,0,0,
 
-      "padded jacket",		T_ARMOUR,	2,4,300,0,0,
-      "padded cap",		T_HELMET,	1,2,750,0,0,
-      "padded sleeves",		T_BRACERS,	1,2,500,0,0,
-      "padded gloves",		T_GLOVES,	1,2,500,0,0,
-      "padded leggings",		T_LEGGINGS,	1,2,500,0,0,
+      "padded jacket",          ARMOUR_TYPE_BODY_ARMOUR,       2,4,300,0,0,
+      "padded cap",             ARMOUR_TYPE_HELMET,            1,2,750,0,0,
+      "padded sleeves",         ARMOUR_TYPE_BRACERS,           1,2,500,0,0,
+      "padded gloves",          ARMOUR_TYPE_GLOVES,            1,2,500,0,0,
+      "padded leggings",        ARMOUR_TYPE_LEGGINGS,	       1,2,500,0,0,
 
-      "studded jacket",		T_ARMOUR,	2,4,350,0,0,
-      "studded cap",		T_HELMET,	1,2,800,0,0,
-      "studded sleeves",		T_BRACERS,	1,2,550,0,0,
-      "studded gloves",		T_GLOVES,	1,2,550,0,0,
-      "studded leggings",		T_LEGGINGS,	1,2,550,0,0,
+      "studded jacket",         ARMOUR_TYPE_BODY_ARMOUR,       2,4,350,0,0,
+      "studded cap",            ARMOUR_TYPE_HELMET,            1,2,800,0,0,
+      "studded sleeves",        ARMOUR_TYPE_BRACERS,           1,2,550,0,0,
+      "studded gloves",         ARMOUR_TYPE_GLOVES,            1,2,550,0,0,
+      "studded leggings",       ARMOUR_TYPE_LEGGINGS,          1,2,550,0,0,
 
-      "ring mail jacket",		T_ARMOUR,	3,6,500,0,0,
-      "ring mail coif",		T_HELMET,	1,2,800,0,0,
-      "ring mail sleeves",		T_BRACERS,	1,2,550,0,0,
-      "ring mail gauntlets",	T_GLOVES,	1,2,550,0,0,
-      "ring mail leggings",	T_LEGGINGS,	1,2,550,0,0,
+      "ring mail jacket",       ARMOUR_TYPE_BODY_ARMOUR,       3,6,500,0,0,
+      "ring mail coif",         ARMOUR_TYPE_HELMET,            1,2,800,0,0,
+      "ring mail sleeves",      ARMOUR_TYPE_BRACERS,           1,2,550,0,0,
+      "ring mail gauntlets",    ARMOUR_TYPE_GLOVES,            1,2,550,0,0,
+      "ring mail leggings",     ARMOUR_TYPE_LEGGINGS,          1,2,550,0,0,
 
-      "splint mail jacket",	T_ARMOUR,	3,6,550,0,0,
-      "splint mail coif",		T_HELMET,	1,2,570,0,0,
-      "splint mail bracers",	T_BRACERS,	1,2,570,0,0,
-      "splint mail gauntlets",	T_GLOVES,	1,2,570,0,0,
-      "splint mail leggings",	T_LEGGINGS,	1,2,570,0,0,
+      "splint mail jacket",     ARMOUR_TYPE_BODY_ARMOUR,       3,6,550,0,0,
+      "splint mail coif",       ARMOUR_TYPE_HELMET,            1,2,570,0,0,
+      "splint mail bracers",    ARMOUR_TYPE_BRACERS,           1,2,570,0,0,
+      "splint mail gauntlets",  ARMOUR_TYPE_GLOVES,            1,2,570,0,0,
+      "splint mail leggings",   ARMOUR_TYPE_LEGGINGS,          1,2,570,0,0,
 
-      "chain mail jerkin",		T_ARMOUR,	3,6,600,0,0,
-      "chain mail coif",		T_HELMET,	1,2,600,0,0,
-      "chain mail sleeves",	T_BRACERS,	1,2,600,0,0,
-      "chain mail gauntlets",	T_GLOVES,	1,2,600,0,0,
-      "chain mail leggings",	T_LEGGINGS,	1,2,600,0,0,
+      "chain mail jerkin",      ARMOUR_TYPE_BODY_ARMOUR,       3,6,600,0,0,
+      "chain mail coif",        ARMOUR_TYPE_HELMET,            1,2,600,0,0,
+      "chain mail sleeves",     ARMOUR_TYPE_BRACERS,           1,2,600,0,0,
+      "chain mail gauntlets",   ARMOUR_TYPE_GLOVES,            1,2,600,0,0,
+      "chain mail leggings",    ARMOUR_TYPE_LEGGINGS,          1,2,600,0,0,
 
-      "scale mail jacket",		T_ARMOUR,	3,6,660,0,0,
-      "scale mail coif",		T_HELMET,	1,2,620,0,0,
-      "scale mail bracers",	T_BRACERS,	1,2,620,0,0,
-      "scale mail gauntlets",	T_GLOVES,	1,2,620,0,0,
-      "scale mail leggings",	T_LEGGINGS,	1,2,620,0,0,
+      "scale mail jacket",      ARMOUR_TYPE_BODY_ARMOUR,       3,6,660,0,0,
+      "scale mail coif",        ARMOUR_TYPE_HELMET,            1,2,620,0,0,
+      "scale mail bracers",     ARMOUR_TYPE_BRACERS,           1,2,620,0,0,
+      "scale mail gauntlets",   ARMOUR_TYPE_GLOVES,            1,2,620,0,0,
+      "scale mail leggings",    ARMOUR_TYPE_LEGGINGS,          1,2,620,0,0,
 
-      "banded breastplate",	T_ARMOUR,	4,9,940,0,0,
-      "banded helmet",		T_HELMET,	1,2,800,0,0,
-      "banded bracers",		T_BRACERS,	1,2,800,0,0,
-      "banded gauntlets",		T_GLOVES,	1,2,800,0,0,
-      "banded leggings",		T_LEGGINGS,	2,5,4500,0,0,
+      "banded breastplate",     ARMOUR_TYPE_BODY_ARMOUR,       4,9,940,0,0,
+      "banded helmet",          ARMOUR_TYPE_HELMET,            1,2,800,0,0,
+      "banded bracers",         ARMOUR_TYPE_BRACERS,           1,2,800,0,0,
+      "banded gauntlets",       ARMOUR_TYPE_GLOVES,            1,2,800,0,0,
+      "banded leggings",        ARMOUR_TYPE_LEGGINGS,          2,5,4500,0,0,
 
-      "plated breastplate",	T_ARMOUR,	4,9,1500,0,0,
-      "plated helmet",		T_HELMET,	2,5,2200,0,0,
-      "plate mail bracers",	T_BRACERS,	1,3,1200,0,0,
-      "plate mail gauntlets",	T_GLOVES,	1,3,900,0,0,
-      "plate mail leggings",	T_LEGGINGS,	2,5,4750,0,0,
+      "plated breastplate",     ARMOUR_TYPE_BODY_ARMOUR,       4,9,1500,0,0,
+      "plated helmet",          ARMOUR_TYPE_HELMET,            2,5,2200,0,0,
+      "plate mail bracers",     ARMOUR_TYPE_BRACERS,           1,3,1200,0,0,
+      "plate mail gauntlets",   ARMOUR_TYPE_GLOVES,            1,3,900,0,0,
+      "plate mail leggings",    ARMOUR_TYPE_LEGGINGS,          2,5,4750,0,0,
 
-      "mithril breastplate",	T_ARMOUR,	5,10,7500,0,0,
-      "mithril helmet",		T_HELMET,	2,4,6000,0,0,
-      "mithril bracers",		T_BRACERS,	1,2,4500,0,0,
-      "mithril gauntlets",		T_GLOVES,	1,2,2500,0,0,
-      "mithril leggings",		T_LEGGINGS,	2,4,6500,0,0,
+      "mithril breastplate",    ARMOUR_TYPE_BODY_ARMOUR,       5,10,7500,0,0,
+      "mithril helmet",         ARMOUR_TYPE_HELMET,            2,4,6000,0,0,
+      "mithril bracers",        ARMOUR_TYPE_BRACERS,           1,2,4500,0,0,
+      "mithril gauntlets",      ARMOUR_TYPE_GLOVES,            1,2,2500,0,0,
+      "mithril leggings",       ARMOUR_TYPE_LEGGINGS,          2,4,6500,0,0,
 
-      "wooden buckler",		T_SHIELD,	1,2,500,0,0,
-      "small wooden shield",	T_SHIELD,	1,2,550,0,0,
-      "medium wooden shield",	T_SHIELD,	1,2,600,0,0,
-      "large wooden shield",	T_SHIELD,	1,3,550,0,0,
+      "wooden buckler",         ARMOUR_TYPE_SHIELD,            1,2,500,0,0,
+      "small wooden shield",    ARMOUR_TYPE_SHIELD,            1,2,550,0,0,
+      "medium wooden shield",   ARMOUR_TYPE_SHIELD,            1,2,600,0,0,
+      "large wooden shield",    ARMOUR_TYPE_SHIELD,            1,3,550,0,0,
 
-      "leather buckler",		T_SHIELD,	1,2,500,0,0,
-      "small leather shield",	T_SHIELD,	1,2,520,0,0,
-      "medium leather shield",	T_SHIELD,	1,2,550,0,0,
-      "large leather shield",	T_SHIELD,	1,3,500,0,0,
+      "leather buckler",        ARMOUR_TYPE_SHIELD,            1,2,500,0,0,
+      "small leather shield",   ARMOUR_TYPE_SHIELD,            1,2,520,0,0,
+      "medium leather shield",  ARMOUR_TYPE_SHIELD,            1,2,550,0,0,
+      "large leather shield",   ARMOUR_TYPE_SHIELD,            1,3,500,0,0,
 
-      "iron buckler",		T_SHIELD,	1,2,600,0,0,
-      "small iron shield",		T_SHIELD,	1,2,700,0,0,
-      "medium iron shield",	T_SHIELD,	1,3,800,0,0,
-      "large iron shield",		T_SHIELD,	1,4,900,0,0,
+      "iron buckler",           ARMOUR_TYPE_SHIELD,            1,2,600,0,0,
+      "small iron shield",      ARMOUR_TYPE_SHIELD,            1,2,700,0,0,
+      "medium iron shield",     ARMOUR_TYPE_SHIELD,            1,3,800,0,0,
+      "large iron shield",      ARMOUR_TYPE_SHIELD,            1,4,900,0,0,
 
-      "steel buckler",		T_SHIELD,	1,2,1000,0,0,
-      "small steel shield",	T_SHIELD,	1,2,1200,0,0,
-      "medium steel shield",	T_SHIELD,	1,3,1600,0,0,
-      "large steel shield",	T_SHIELD,	2,5,3000,0,0,
+      "steel buckler",          ARMOUR_TYPE_SHIELD,            1,2,1000,0,0,
+      "small steel shield",     ARMOUR_TYPE_SHIELD,            1,2,1200,0,0,
+      "medium steel shield",    ARMOUR_TYPE_SHIELD,            1,3,1600,0,0,
+      "large steel shield",     ARMOUR_TYPE_SHIELD,            2,5,3000,0,0,
 
-      "mithril buckler",		T_SHIELD,	1,2,2200,1,0,
-      "small mithril shield",	T_SHIELD,	1,2,3400,1,0,
-      "medium mithril shield",	T_SHIELD,	2,4,5500,1,0,
-      "large mithril shield",	T_SHIELD,	2,4,7500,1,0,
+      "mithril buckler",        ARMOUR_TYPE_SHIELD,            1,2,2200,1,0,
+      "small mithril shield",   ARMOUR_TYPE_SHIELD,            1,2,3400,1,0,
+      "medium mithril shield",  ARMOUR_TYPE_SHIELD,            2,4,5500,1,0,
+      "large mithril shield",   ARMOUR_TYPE_SHIELD,            2,4,7500,1,0,
 
-      "chain mail jacket",		T_ARMOUR,	3,6,600,0,0,
-      "mithril chain shirt",	T_ARMOUR,	4,8,6000,1,0,
-      "visored helmet",		T_HELMET,	2,5,4500,0,0,
-      "iron pot helmet",		T_HELMET,	1,2,800,0,0,
+      "chain mail jacket",      ARMOUR_TYPE_BODY_ARMOUR,       3,6,600,0,0,
+      "mithril chain shirt",    ARMOUR_TYPE_BODY_ARMOUR,       4,8,6000,1,0,
+      "visored helmet",         ARMOUR_TYPE_HELMET,            2,5,4500,0,0,
+      "iron pot helmet",        ARMOUR_TYPE_HELMET,            1,2,800,0,0,
 
       /* Special/magical armour parts */
 
-      "elven chain shirt",		T_ARMOUR,	5,10,9000,1,"elf",
-      "elven chain coif",		T_HELMET,	2,4,8000,1,
-      "elven chain sleeves",	T_BRACERS,	1,2,8500,1,
-      "elven chain leggings",	T_LEGGINGS,	2,4,8500,1,
+      "elven chain shirt",      ARMOUR_TYPE_BODY_ARMOUR,       5,10,9000,1,"elf",
+      "elven chain coif",       ARMOUR_TYPE_HELMET,            2,4,8000,1,
+      "elven chain sleeves",    ARMOUR_TYPE_BRACERS,           1,2,8500,1,
+      "elven chain leggings",   ARMOUR_TYPE_LEGGINGS,          2,4,8500,1,
 
-      "crystal breastplate",	T_ARMOUR,	5,12,7000,1,0,
-      "crystal helmet",		T_HELMET,	2,6,6500,1,0,
-      "crystal bracers",		T_BRACERS,	1,4,6800,1,0,
-      "crystal leggings",		T_LEGGINGS,	2,6,6800,1,0,
+      "crystal breastplate",    ARMOUR_TYPE_BODY_ARMOUR,       5,12,7000,1,0,
+      "crystal helmet",         ARMOUR_TYPE_HELMET,            2,6,6500,1,0,
+      "crystal bracers",        ARMOUR_TYPE_BRACERS,           1,4,6800,1,0,
+      "crystal leggings",       ARMOUR_TYPE_LEGGINGS,          2,6,6800,1,0,
 
       /* Special things */
-      "chastity belt",		T_BELT,		1, 1, 2000, 1, 0,
+      "chastity belt",          ARMOUR_TYPE_BELT,              1,1,2000,1,0,
     });
 
     array_size = sizeof(armours);
-
 }
 
 /*
  * Function name:  make_armour
  * Description  :  generate a standard armour part
  * Arguments    :  n = armour's full name
- * Returns      :  /obj/armour object,	or 0 if failed
+ * Returns      :  /lib/armour object,	or 0 if failed
  */
 public object
 make_armour(string n)
@@ -183,11 +182,11 @@ make_armour(string n)
     ar->set_short(n);
     ar->set_name(n);
     ar->set_long("It's a quite normal " + n + ".");
-    ar->set_type(F_ARMOUR_TYPE_NAME(armours[x + ARM_TOOLSLOT]));
-    ar->set_ac((int)armours[x + ARM_AC]);
-    ar->set_value(((int)armours[x + ARM_VALUE] * 2) / 3);
-    ar->set_weight((int)armours[x + ARM_WEIGHT]);
-    if (armours[x + ARM_RACE]) ar->set_race((string)armours[x + ARM_RACE]);
+    ar->set_type(armours[x + ARM_TOOLSLOT]);
+    ar->set_ac(armours[x + ARM_AC]);
+    ar->set_value((armours[x + ARM_VALUE] * 2) / 3);
+    ar->set_weight(armours[x + ARM_WEIGHT]);
+    if (armours[x + ARM_RACE]) ar->set_race(armours[x + ARM_RACE]);
 
     // Let's handle this as it should be. If we had "black long sword"
     // why should ids be "black", "long" and "sword". Duh. Instead,

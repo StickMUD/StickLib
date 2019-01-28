@@ -7,6 +7,7 @@
 #define BACKBONE_UID "backbone"
 
 #include "/secure/simul_efun/amylaar.c"
+#include "/secure/simul_efun/json.c"
 #include "/secure/simul_efun/do_find_object.c"
 
 int interactivep(object ob) { return interactive(ob); }

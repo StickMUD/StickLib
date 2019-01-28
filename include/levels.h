@@ -12,5 +12,7 @@
 #define LVL_CAN_OWN_CASTLE		15
 #define LVL_CAN_OWN_HOME		5
 
+#define LVL_LEVELS			100
+
 #endif
 

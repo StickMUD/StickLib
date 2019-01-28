@@ -33,6 +33,7 @@ inherit LIVING_FILE;
 #include <conditions.h>
 #include <coder_levels.h>
 #include <daemons.h>
+#include <gmcp_defs.h>
 #include <weatherdesc.h>
 #include <invis_levels.h>
 #include <party.h>
@@ -61,6 +62,7 @@ inherit "/basic/player/skills";
 
 inherit "/basic/player/clothing";
 inherit "/basic/player/skill_mod";
+inherit "/basic/player/telopt";
 
 #define CURRENT_PATH query_env("cwd")
 #define TP this_player()
@@ -952,7 +954,25 @@ initialize(string str, string passwd, int passtime,
 
     /* If login-module wanted to pass us some data: */
     if (attrs) {
-	//tell_me(sprintf("DEBUG: attrs=%O.", attrs));
+	if (member(attrs, "gmcp_cache") > 0) {
+	    gmcp_cache = attrs["gmcp_cache"];
+	    set_env("gmcp", 1);
+
+	    // Mudlet loves GA being sent.  It is for the most part one of their requirements
+	    // for being listed.  https://wiki.mudlet.org/w/Listing_Your_MUD
+	    // -Tamarindo
+	    if (member(gmcp_cache, GMCP_PKG_CORE_HELLO) > 0 &&
+	      member(gmcp_cache[GMCP_PKG_CORE_HELLO], GMCP_KEY_CORE_HELLO_CLIENT) > 0 &&
+	      gmcp_cache[GMCP_PKG_CORE_HELLO][GMCP_KEY_CORE_HELLO_CLIENT] == "Mudlet") {
+		;
+		//set_prompt_iacga(1);
+	    }
+	} else {
+	    set_env("gmcp", 0);
+	}
+
+	tell_me(sprintf("\n%s rebooted %s ago.\n", MUD_NAME, secs2sstring(query_uptime())));
+
 	if (i = attrs["window_x"]) {
 	    if (i < TELL_MIN_X)
 		i = TELL_MIN_X;

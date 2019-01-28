@@ -966,6 +966,8 @@ inaugurate_master(int arg)
 
     set_driver_hook(H_AUTO_INCLUDE, #'_auto_include_hook);
 
+    set_driver_hook(H_TELNET_NEG, "telopt_negotiate");
+
     if (!_access) create();
 }
 
