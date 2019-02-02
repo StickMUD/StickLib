@@ -17,6 +17,7 @@
 
  ***************************************************/
 
+#include "/sys/input_to.h"
 #include "/sys/interactive_info.h"
 #include "/sys/telnet.h"
 
@@ -36,6 +37,7 @@
 
 #include "/basic/living/tell_me.c"
 #include "/basic/player/telopt.c"
+#include "/basic/player/prompt.c"
 
 private static int _value_plr_client;	// Client he/she is using, if any
 
@@ -199,7 +201,7 @@ create() {
 	return;
     }
 
-    level  = -1; 
+    level  = -1;
     gender = -1;
     password_again = 0;
 
@@ -239,14 +241,22 @@ private static int _input_mode;
 
 nomask static void
 login_input(string txt, string fun, status a) {
-
     remove_call_out("login_timeout");
+
     call_out("login_timeout", LOGIN_TIMEOUT);
-    if (txt) TELL_ME(sprintf("\n%s",txt));
+
+    if (txt) {
+	TELL_ME(sprintf("\n%s",txt));
+
+	if (query_prompt_iacga()) {
+	    binary_message (({IAC, GA}), 2);
+	}
+    }
+
     _func_name = fun;
     _input_mode = a;
+
     input_to("catch_it", a);
-    //input_to(fun, a);
 }
 
 /* Let's make all the commands go through this function, so the client might
@@ -302,8 +312,7 @@ login_connect()
 	    destruct(this_object());
 	    return;
 	}
-    }
-    else {
+    } else {
 	if(!other_copy)  other_copy = find_player(name);
 
 	if(interactive(other_copy)) {
@@ -322,9 +331,7 @@ login_connect()
 	write("\nFailed to connect! Quitting.\n");
 	if (player_ob)
 	    destruct(player_ob);
-    }
-    else if(player_ob) {
-
+    } else if(player_ob) {
 	attrs = ([
 	  "password" : password,
 	  "password_time" : passwd_time,
@@ -370,7 +377,6 @@ login_connect()
 
 static nomask varargs int
 logon(string msg) {
-
     object player_ob;
     string tmp;
 
@@ -384,18 +390,29 @@ logon(string msg) {
     switch(login_state) {
 
     case LOGIN_STATE_NULL:
+	/* Every input has its own timeout but also the
+	   whole login sequence has a max time. (check
+	   login_input()).
+	 */
+
+	call_out("login_close", LOGIN_TIMEOUT * 5);
+
 	// Tell the client that we support these protocols
 	binary_message( ({ IAC, WILL, TELOPT_MSSP }), 3);
 	binary_message( ({ IAC, WILL, TELOPT_GMCP }), 3);
 
 	cat(LOGIN_WELCOME);
-	/* Every input has its own timeout but also the
-	   whole login sequence has a max time. (check
-	   login_input()).
-	 */
-	call_out("login_close", LOGIN_TIMEOUT * 5);
 
 	login_state = LOGIN_STATE_NAME;
+
+	// Mudlet loves GA being sent.  It is for the most part one of their requirements
+	// for being listed.  https://wiki.mudlet.org/w/Listing_Your_MUD
+	// -Tamarindo
+	if (gmcp_cache && member(gmcp_cache, GMCP_PKG_CORE_HELLO) > 0 &&
+	  member(gmcp_cache[GMCP_PKG_CORE_HELLO], GMCP_KEY_CORE_HELLO_CLIENT) > 0 &&
+	  gmcp_cache[GMCP_PKG_CORE_HELLO][GMCP_KEY_CORE_HELLO_CLIENT] == "Mudlet") {
+	    set_prompt_iacga(1);
+	}
 
     case LOGIN_STATE_NAME:
 	tmp = msg ? msg : "Give your name: ";
@@ -475,7 +492,7 @@ validName(string str)
     offensive = ({  ".*fuck.*", ".*cunt.*", ".*arse.*",
       ".*shit.*", ".*gay.*", ".*lesb.*",
       ".*penis.*", ".*bitch.*",
-      ".*suck.*",".*masturb.*", ".*clit.*", ".*cock.*"   
+      ".*suck.*",".*masturb.*", ".*clit.*", ".*cock.*"
     });
 
     for (i = sizeof(offensive) - 1 ; i >= 0 ; i--)

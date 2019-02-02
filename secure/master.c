@@ -964,6 +964,8 @@ inaugurate_master(int arg)
 	// "/secure/", "/room/"
       }) );
 
+    set_driver_hook(H_PRINT_PROMPT, "print_prompt");
+
     set_driver_hook(H_AUTO_INCLUDE, #'_auto_include_hook);
 
     set_driver_hook(H_TELNET_NEG, "telopt_negotiate");

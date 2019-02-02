@@ -63,6 +63,7 @@ inherit "/basic/player/skills";
 inherit "/basic/player/clothing";
 inherit "/basic/player/skill_mod";
 inherit "/basic/player/telopt";
+inherit "/basic/player/prompt";
 
 #define CURRENT_PATH query_env("cwd")
 #define TP this_player()
@@ -964,8 +965,7 @@ initialize(string str, string passwd, int passtime,
 	    if (member(gmcp_cache, GMCP_PKG_CORE_HELLO) > 0 &&
 	      member(gmcp_cache[GMCP_PKG_CORE_HELLO], GMCP_KEY_CORE_HELLO_CLIENT) > 0 &&
 	      gmcp_cache[GMCP_PKG_CORE_HELLO][GMCP_KEY_CORE_HELLO_CLIENT] == "Mudlet") {
-		;
-		//set_prompt_iacga(1);
+		set_prompt_iacga(1);
 	    }
 	} else {
 	    set_env("gmcp", 0);
