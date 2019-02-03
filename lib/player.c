@@ -1632,8 +1632,8 @@ heart_beat()
 
     if (query_env("gmcp")) {
 	TELOPT_D->send_char_status(this_object());
-	TELOPT_D->send_char_training_list(this_object());
-	TELOPT_D->send_char_session_training(this_object());
+	//TELOPT_D->send_char_training_list(this_object());
+	//TELOPT_D->send_char_session_training(this_object());
     }
 
     if (query(PLR_HPSP_REPORT_ON)) {
