@@ -844,6 +844,12 @@ reset()
 
 		if (ob) {
 		    move_object(ob, this_object());
+
+		    // Let's send GMCP to clients that are interested to know the room may have updated.
+		    foreach (object entity : all_inventory(this_object()))
+		    if (entity->query(LIV_IS_PLAYER) && entity->query_env("gmcp"))
+			TELOPT_D->send_char_items_add(entity, "room", ob);
+
 		    room_residents[j][INDEX_OBJECT] = ob;
 		    if (stringp(tmp[INDEX_MSG]))
 			tell_here(tmp[INDEX_MSG], ob);
@@ -870,8 +876,14 @@ reset()
 	}
 	if (k || first_inventory() != permanent_objects[0]) {
 	    i = s;
-	    while ((--i) >= 0) move_object(permanent_objects[i],
-		  this_object());
+	    while ((--i) >= 0) {
+		move_object(permanent_objects[i], this_object());
+
+		// Let's send GMCP to clients that are interested to know the room may have updated.
+		foreach (object entity : all_inventory(this_object()))
+		if (entity->query(LIV_IS_PLAYER) && entity->query_env("gmcp"))
+		    TELOPT_D->send_char_items_add(entity, "room", permanent_objects[i]);
+	    }
 	}
     }
 
@@ -891,6 +903,22 @@ init()
 	  (F_ROOM_HAS_EFFECTS)) {
 	    Flags |= F_ROOM_HB_ON;
 	    configure_object(this_object(), OC_HEART_BEAT, 1);
+	}
+    }
+
+    // Let's send GMCP to clients that are interested to know someone has arrived.
+    foreach (object entity : all_inventory(this_object())) {
+	if (entity->query_env("gmcp")) {
+	    if (entity != this_player()) {
+		if (this_player()->query(LIV_IS_PLAYER))
+		    TELOPT_D->send_room_add_player(entity, this_player());
+		else
+		    TELOPT_D->send_char_items_add(entity, "room", this_player());
+	    } else {
+		TELOPT_D->send_room_info(this_player());
+		TELOPT_D->send_room_players(this_player());
+		TELOPT_D->send_char_items_list(this_player(), "room");
+	    }
 	}
     }
 }
@@ -1026,6 +1054,14 @@ command_driver(string s)
 	// party daemon, so that party follow is possible!
 	if (i && this_player() && !present(this_player(), this_object())) {
 	    PARTY_D->player_moved(this_player(), v, s, this_object());
+
+	    // And let's send some GMCP to those clients that are intested.
+	    foreach (object entity : all_inventory(this_object()))
+	    if (entity != this_player() && entity->query_env("gmcp"))
+		if (this_player()->query(LIV_IS_PLAYER))
+		    TELOPT_D->send_room_remove_player(entity, this_player());
+		else
+		    TELOPT_D->send_char_items_remove(entity, "room", this_player());
 	}
 	if (i) return i;
     }
@@ -1039,6 +1075,13 @@ command_driver(string s)
 	if (i && this_player() && !present(this_player(), this_object())) {
 	    // Same for "normal exits"; let's inform party daemon.
 	    PARTY_D->player_moved(this_player(), v, s, this_object());
+
+	    foreach (object entity : all_inventory(this_object()))
+	    if (entity != this_player() && entity->query_env("gmcp"))
+		if (this_player()->query(LIV_IS_PLAYER))
+		    TELOPT_D->send_room_remove_player(entity, this_player());
+		else
+		    TELOPT_D->send_char_items_remove(entity, "room", this_player());
 	}
 	if (i) return i;
     }

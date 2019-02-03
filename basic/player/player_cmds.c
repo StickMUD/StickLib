@@ -47,7 +47,7 @@ int Str, Dex, Con, Int, max_Str, max_Dex, max_Con, max_Int;
 string password;                // This player's crypted password.
 int passwd_time;
 int coder_level;
-string guild;
+//string guild;
 
 status attack_object(object x);
 int query(int x);
@@ -294,6 +294,16 @@ quit()
 	PARTY_D -> player_quitted(this_object());
     // And also mchar daemon... It needs to know. :)
     MCHAR_D->add_logout(name);
+
+    if (interactive(this_object()) && this_object()->query_env("gmcp")) {
+        TELOPT_D->send_core_goodbye(this_object());
+    }
+
+    foreach (object entity : all_inventory(environment(this_object()))) {
+        if (!living(entity) || entity == this_object() || !entity->query_env("gmcp")) continue;
+
+        TELOPT_D->send_room_remove_player(entity, this_object());
+    }
 
     destruct(this_object());
     return 1;

@@ -61,8 +61,10 @@ inherit "/basic/object/dimensions";
 inherit "/basic/misc/fstring";
 
 #include <conditions.h>
-#include <race.h>
+#include <daemons.h>
 #include <disease_defs.h>
+#include <living_defs.h>
+#include <race.h>
 
 string	eating_mess, eater_mess;
 int	value, strength, is_poisoned;
@@ -209,6 +211,19 @@ eat_cmd(string str)
 	this_player() -> tell_me(
 	  "The food was spoiled and rotten. You throw it away.");
 	if (environment()) environment()->add_weight(-(query_weight()));
+
+	if (environment() != this_player()) {
+	    foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+		if (you->query_env("gmcp")) {
+		    TELOPT_D->send_char_items_remove(you, "room", this_object());
+		}
+	    }
+	} else {
+	    if (this_player()->query_env("gmcp")) {
+		TELOPT_D->send_char_items_remove(this_player(), "inv", this_object());
+	    }
+	}
+
 	destruct(this_object());
 	return 1;
     }
@@ -249,7 +264,6 @@ You feel very sick, as if you've been poisoned.");
 	TP->set_condition(C_POISONED,(random(60)+1));
     }
 
-
     this_object()->extra_eat();
 
     if (--full < 1) {
@@ -259,6 +273,17 @@ You feel very sick, as if you've been poisoned.");
 	    "You devoured the whole thing.",
 	    "You fat glutton, you ate all of it!"})[random(4)]);
 	if (environment()) environment()->add_weight(-(query_weight()));
+	if (environment() != this_player()) {
+	    foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+		if (you->query_env("gmcp")) {
+		    TELOPT_D->send_char_items_remove(you, "room", this_object());
+		}
+	    }
+	} else {
+	    if (this_player()->query_env("gmcp")) {
+		TELOPT_D->send_char_items_remove(this_player(), "inv", this_object());
+	    }
+	}
 	destruct(this_object());
 	return 1;
     }

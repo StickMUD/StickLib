@@ -23,6 +23,7 @@
 
 #include <channels.h>
 #include <coder_levels.h>
+#include <daemons.h>
 #include <guild.h>
 #include <room_defs.h>
 #include <invis_levels.h>
@@ -224,6 +225,13 @@ join_channel(string ch, object ob)
     if (member(ch_ppl[ch], ob) != -1) return 1;
     ch_ppl[ch] -= ({ 0 }); // Purge lost members
     ch_ppl[ch] += ({ ob });
+
+    foreach (object player : ch_ppl[ch]) {
+	if (player->query(LIV_IS_PLAYER) && player->query_env("gmcp")) {
+            TELOPT_D->send_comm_channel_players(player);
+	}
+    }
+
     return 1;
 }
 
@@ -235,6 +243,13 @@ remove_from_channel(string ch, object ob)
     if (member(ch_ppl[ch], ob) == -1) return 1;
     ch_ppl[ch] -= ({ ob });
     ch_ppl[ch] -= ({ 0 }); // Purge lost members
+
+    foreach (object player : ch_ppl[ch]) {
+	if (player->query(LIV_IS_PLAYER) && player->query_env("gmcp")) {
+            TELOPT_D->send_comm_channel_players(player);
+	}
+    }
+
     return 1;
 }
 
@@ -367,58 +382,62 @@ check_channels(object ob)
 nomask int
 send_channel_message(mixed ob, string ch, string msg)
 {
-    string tmp, cn;
+    string tmp, cn, ob_name;
     int i, e, indent;
+    object who;
 
     if (!member(channels, ch)) return 0;
     if (!stringp(msg)) return 0;
 
     if (objectp(ob)
       && environment(ob)->query(ROOM_ISOLATED)
-      && !ob->query_coder_level())
-    {
+      && !ob->query_coder_level()) {
 	ob->tell_me("No one heard you.");
 	return 1;
-    }
-    else cn = capitalize(ch);
+    } else cn = capitalize(ch);
+
     if (!pointerp(ch_ppl[ch])) return 0;
 
     ch_ppl[ch] -= ({ 0 }); // Purge lost members
     e = 0;
 
     // Emote?
-    if (msg[0] == ':')
-    {
+    if (msg[0] == ':') {
 	indent = sizeof(ch) + 3;
 	msg = msg[1..<1];
 	if (msg[0] != ' ') msg = " " + msg;
 	e = 1;
-    }
-    // Normal message, add ": "
-    else
-    {
+    } else { // Normal message, add ": "
 	if (stringp(ob))
 	    indent = sizeof(ob) + 3;
 	else
 	    indent = sizeof(ob->query_real_name()) + 3;
 	if (ch == "lord") msg = " " + msg;
-	else
-	{
+	else {
 	    msg = ": " + msg;
 	    indent += sizeof(ch) + 2;
 	}
     }
 
+    if (objectp(ob)) {
+        ob_name = (string)ob->query_real_name();
+    } else if (stringp(ob)) {
+	ob_name = ob;
+    } else ob_name = "";
+
     tmp = call_other(this_object(), ch + "_format", ob, msg, e);
 
-    tmp = b_string(tmp, 72, indent);
+    //tmp = b_string(tmp, 72, indent);
 
-    for (i = sizeof(ch_ppl[ch]) - 1; i >= 0; i--)
-    {
+    for (i = sizeof(ch_ppl[ch]) - 1; i >= 0; i--) {
 	if (objectp(ch_ppl[ch][i]) &&
 	  ch_ppl[ch][i]->is_on_channel(ch) &&
 	  !((int)ch_ppl[ch][i]->query_channel_status(ch) & CHANNEL_OFF))
 	    ch_ppl[ch][i]->tell_me(tmp, 0, channels[ch][0], 0, 0, 0);
+
+        // Send to GMCP Clients
+        if (ch_ppl[ch][i]->query(LIV_IS_PLAYER) && ch_ppl[ch][i]->query_env("gmcp"))
+            TELOPT_D->send_comm_channel_text(ch_ppl[ch][i], ch, ob_name, tmp);
     }
 
     log_channel(ch, tmp);

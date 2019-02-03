@@ -986,9 +986,8 @@ initialize(string str, string passwd, int passtime,
 	if (i || j) {
 	    tell_me(sprintf("DEBUG: Screen size set to %d x %d.",i,j));
 	}
-	// else tell_me("DEBUG: No window size passed.");
+
 	i = set_client(attrs["client"]);
-	//tell_me(sprintf("DEBUG: Client id %d (0 means none).", i));
     }
 
     // move to start here
@@ -1167,6 +1166,24 @@ initialize(string str, string passwd, int passtime,
     race_update();
 
     player_initialized = 1;
+
+    if (query_env("gmcp")) {
+	TELOPT_D->send_external_discord_status(this_object());
+	TELOPT_D->send_char_name(this_object());
+	TELOPT_D->send_char_vitals(this_object());
+	TELOPT_D->send_char_stats(this_object());
+	TELOPT_D->send_char_maxstats(this_object());
+	TELOPT_D->send_char_status_vars(this_object());
+	TELOPT_D->send_char_status(this_object());
+	//TELOPT_D->send_char_conditions_list(this_object());
+	//TELOPT_D->send_char_resistances_list(this_object());
+	//TELOPT_D->send_char_afflictions_list(this_object());
+	//TELOPT_D->send_comm_channel_players(this_object());
+	//TELOPT_D->send_comm_channel_list(this_object());
+	TELOPT_D->send_char_items_list(this_object(), "inv");
+	TELOPT_D->send_client_gui(this_object());
+    }
+
     if (_value_plr_client == CLIENT_MURDER) {
 	PRINT_INV
     }
@@ -1340,13 +1357,22 @@ heart_beat()
 	// save_me(1);
 
 	set(PLR_CONNECT_TIME, query(PLR_CONNECT_TIME) + time() - query(PLR_LOGIN_TIME));
+
 	environment()->tell_here(sprintf(
 	    "Link Death arrives on his %s %s and carries %s away!",
 	    ({ "black", "red", "purple", "pink", "green",
 	      "yellow", "blue", "gray", "white", "octarine"})[random(10)],
 	    ({ "stallion", "horse", "dragon", "wyrm"})[random(4)], query_name())
 	  , this_object());
+
 	link_death_room = object_name(environment());
+
+	// If any players are in the room with us and they use a GMCP client let's send an update.
+	foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+	    if (you->query_env("gmcp")) {
+		TELOPT_D->send_room_remove_player(you, this_object());
+	    }
+	}
 
 	move_object(this_object(), GENERIC_ROOM_PURGATORY);
 	// Let's inform the guild object, in case it wants to know! -+ Doomdark +-
@@ -1603,6 +1629,12 @@ heart_beat()
     if (attackers && whimpy && hit_point < (whimpy * max_hp / 100)
       && is_fighting() && query_can_move())
 	run_away();
+
+    if (query_env("gmcp")) {
+	TELOPT_D->send_char_status(this_object());
+	TELOPT_D->send_char_training_list(this_object());
+	TELOPT_D->send_char_session_training(this_object());
+    }
 
     if (query(PLR_HPSP_REPORT_ON)) {
 	if (hit_point != last_hp || spell_points != last_sp

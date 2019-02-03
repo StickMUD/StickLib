@@ -231,6 +231,11 @@ move_player(string dir_dest, mixed optional_dest_ob)
     if (!optional_dest_ob) {
 	if (!stringp(dir_dest) || sscanf(dir_dest, "%s#%s", dir, dest) < 2) {
 	    tell_me("Move to bad dir/dest");
+
+            if ((liv_Flags & F_LIV_IS_PLAYER) && this_object()->query_env("gmcp")) {
+                TELOPT_D->send_room_wrong_direction(this_object(), dir);
+            }
+
 	    return;
 	}
     } else {
@@ -244,6 +249,11 @@ move_player(string dir_dest, mixed optional_dest_ob)
 
     if (!is_teleport && !query_can_move()) {
 	tell_me("You try to move, but you can't!");
+
+        if ((liv_Flags & F_LIV_IS_PLAYER) && this_object()->query_env("gmcp")) {
+            TELOPT_D->send_room_wrong_direction(this_object(), dir);
+        }
+
 	return;
     }
 
@@ -351,12 +361,21 @@ to hit %s back!", my_name, Possessive()));
     from = environment();
     move_object(this_object(), dest);
 
+    // Let's send GMCP to clients that are interested to know someone has left.
+    if (from) {
+        foreach (object entity : filter(all_inventory(from), (: $1->query_env("gmcp") :))) {
+            if (this_object()->query(LIV_IS_PLAYER))
+                TELOPT_D->send_room_remove_player(entity, this_object());
+            else
+                TELOPT_D->send_char_items_remove(entity, "room", this_object());
+        }
+    }
+
     // No living should be destructed in init() but currently we have
     // the open_time test in church that does exactly this. We get
     // loads of shit to logfile. --Val
 
     if (!this_object() || !environment()) return;
-
 
     /* Let's remove combat commands from the queue. */
     if (liv_Flags & F_LIV_IS_PLAYER) {

@@ -15,6 +15,8 @@
 ****************************************************************/
 
 #include <container_defs.h>
+#include <daemons.h>
+#include <living_defs.h>
 
 inherit CONTAINER_FILE;
 
@@ -94,6 +96,18 @@ can_put_and_get(string s)
 
     if (living(environment())) environment() -> add_weight(
 	  - (query_weight()));
+
+    // If it is in our inventory and we are using a client that understands GMCP let's perform an update.
+    if (own && own->query(LIV_IS_PLAYER) && own->query_env("gmcp")) {
+        TELOPT_D->send_char_items_remove(own, "inv", this_object());
+    }
+
+    // And since items may have been scattered all over the room let's update clients interested in that change.
+    foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+        if (you->query_env("gmcp")) {
+            TELOPT_D->send_char_items_list(you, "room");
+        }
+    }
 
     destruct(this_object());
     return 0;

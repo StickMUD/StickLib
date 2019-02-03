@@ -13,6 +13,11 @@
  */
 /* 18-Jan-96: extra_move_object()  //Graah */
 
+#include "/sys/tls.h"
+
+#include <daemons.h>
+#include <living_defs.h>
+
 public status
 get_all(string place, object from, object me)
 {
@@ -84,6 +89,16 @@ get_one_item(string str, object me, int weight)
     if (!str || !me) return 0;
 
     str = lower_case(str);
+
+    // Now possible for players to "get" an item by its hash too.
+    if (sizeof(str) == 40 && me->query(LIV_IS_PLAYER) && me->query_env("gmcp")) {
+        foreach (object thing : all_inventory(environment(me))) {
+            if (str == hash(TLS_HASH_SHA1, object_name(thing))) {
+                ob = thing;
+                break;
+            }
+        }
+    }
 
     if (!(ob = present(str, environment(me))))
 	if (environment(me) -> id(str)) {

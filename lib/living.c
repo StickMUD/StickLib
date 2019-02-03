@@ -960,8 +960,21 @@ drop_one_item(mixed ob, int force)
 	    add_weight(- ((wt + 1) / 2), 1);
 	else add_weight(-wt, 1);
 
+    if (this_object()->query(LIV_IS_PLAYER) && this_object()->query_env("gmcp")) {
+	TELOPT_D->send_char_items_remove(this_object(), "inv", ob);
+    }
+
     move_object(ob, environment());
-    call_other(environment(), "extra_move_object", ob, environment());
+
+    if (ob) {
+	foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+	    if (you->query_env("gmcp")) {
+		TELOPT_D->send_char_items_add(you, "room", ob);
+	    }
+	}
+
+	call_other(environment(), "extra_move_object", ob, environment());
+    }
 
     return 1;
 }
@@ -1378,32 +1391,57 @@ hit_player(int dam, int t, mixed hc, object enemy)
     return dam;
 }
 
-
 void
-transfer_all_to(object dest)
-{
+transfer_all_to(object dest) {
     object *ob;
     object mon;
     int i;
 
-    if (ob = all_inventory())
-	for (i = sizeof(ob) - 1; i >= 0; i--)
+    // no transfer for pseudo-mortals!
+    if (this_object()->query_pseudo_mortal()) return;
+
+    if (ob = all_inventory()) {
+	for (i = sizeof(ob) - 1; i >= 0; i--) {
 	    // Beware that drop() might destruct the object.
-	    if (!ob[i] -> drop(1) && ob[i])
-	    {
+	    if (!ob[i]->drop(3) && ob[i]) {
 		move_object(ob[i], dest);
+
+		if (this_object()->query(LIV_IS_PLAYER) && this_object()->query_env("gmcp")) {
+		    TELOPT_D->send_char_items_remove(this_object(), "inv", ob[i]);
+		}
+
+		if (!living(dest) && dest->is_room()) {
+		    foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+			if (you->query_env("gmcp")) {
+			    TELOPT_D->send_char_items_add(you, "room", ob[i]);
+			}
+		    }
+		}
+
 		call_other(environment(), "extra_move_object",
 		  ob[i], dest);
 	    }
+	}
+    }
+
     local_weight = 0;
+
     if (!money) return;
+
     if (mon = present(" money", dest)) {
-	mon -> set_money((int) mon->query_money() + money);
+	mon -> set_money((int) mon->query_money() + money, 1);
     } else {
 	mon = clone_object(GENERIC_MONEY_OBJECT);
-	mon -> set_money(money);
+	mon -> set_money(money, 1);
 	move_object(mon, dest);
+
+	foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+	    if (you->query_env("gmcp")) {
+		TELOPT_D->send_char_items_list(you, "room");
+	    }
+	}
     }
+
     money = 0;
 }
 

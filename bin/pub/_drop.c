@@ -2,6 +2,8 @@
 /* Moved to /bin/pub 23-sep-94. */
 /* 18-Jan-96 extra_move_object() - not with coins. //Graah */
 
+#include "/sys/tls.h"
+
 #include <cmd.h>
 #include <player_defs.h>
 #include <generic_items.h>
@@ -58,14 +60,26 @@ drop_cmd(string s, object me)
 	    ob -> set_money(coins);
 	    move_object(ob, environment(me));
 	}
-	/* Is it needed? */
-	// I think it is. Ever heard of "drop coins & enter with double char"-trick?
-#if 1
+
 	me->save_me(0); /* Checkpoint */
-#endif
+
+        // Env may want to respond...
+        env->item_dropped(ob);
 	return 1;
     }
+
     s = lower_case(s);
+
+    // Now possible for players to "drop" an item by its hash too.
+    if (sizeof(s) == 40 && me->query(LIV_IS_PLAYER) && me->query_env("gmcp")) {
+        foreach (object thing : all_inventory(me)) {
+            if (s == hash(TLS_HASH_SHA1, object_name(thing))) {
+                ob = thing;
+                break;
+            }
+        }
+    }
+
     if (!(ob = present(s, me))) {
 	me -> tell_me(sprintf("You don't have any \"%s\".", s));
 	return 1;

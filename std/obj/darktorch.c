@@ -15,11 +15,11 @@
 *       NEW:                                                    *
 *								*
 * - The torch is now a weapon! It cannot be lit unless it	*
-*   is wielded. This makes sense: it's silly to be able to	* 
+*   is wielded. This makes sense: it's silly to be able to	*
 *   carry many lit torches at once.  This also prevents		*
 *   players from cheating by carrying 20 lit torches.		*
 * - The WC of the torch is 2 if lit and 1 if not lit.		*
-*								* 
+*								*
 *								*
 * 20-sept-94:							*
 * - light & extinguish-cmds don't check syntax any more,        *
@@ -32,12 +32,14 @@
 *								*
 ****************************************************************/
 
-#include <treasure.h>
+#include <daemons.h>
 #include <lights.h>
+#include <living_defs.h>
+#include <treasure.h>
 
 #define LIGHT_LEVEL -2
 
-#define TP this_player() 
+#define TP this_player()
 
 int amount_of_fuel;
 status is_lighted;
@@ -242,20 +244,31 @@ hold_cmd(string str)
 /****************************************************************/
 /****************************************************************/
 
-void
-out_of_fuel()
+void out_of_fuel()
 {
     object ob;
 
     ob = environment();
     while (environment(ob)) ob = environment(ob);
     if (ob)
-	ob->tell_here("The "+query_name()+" stops emitting darkness.");
+        ob->tell_here("The "+query_name()+" stops emitting darkness.");
     set_light(-light_level);
-    if (living(ob=environment())) ob->add_weight(-(query_weight()));
+    if (living(ob=environment())) {
+        ob->add_weight(-(query_weight()));
+
+        if (ob->query(LIV_IS_PLAYER) && ob->query_env("gmcp")) {
+            TELOPT_D->send_char_items_remove(ob, "inv", this_object());
+        }
+    } else {
+        foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+            if (you->query_env("gmcp")) {
+                TELOPT_D->send_char_items_remove(you, "room", this_object());
+            }
+        }
+    }
+
     destruct(this_object());
 }
-
 
 /***************************************************************/
 /***************************************************************/

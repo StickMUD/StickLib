@@ -308,14 +308,12 @@ public varargs int tell_me(mixed str, mixed sense_list, mixed tell_flags,
     str2 = process_mxp(str2, mxpEnabled);
 #endif
 
-#if 0
     if (j == TELL_TYPE_TELL && query_env("gmcp"))
         TELOPT_D->send_comm_channel_text(this_object(), "Tell", 0, str2);
     else if (j == TELL_TYPE_SAY && query_env("gmcp"))
         TELOPT_D->send_comm_channel_text(this_object(), "Say", 0, str2);
     else if (j == TELL_TYPE_WHISPER && query_env("gmcp"))
         TELOPT_D->send_comm_channel_text(this_object(), "Whisper", 0, str2);
-#endif
 
     /* Now we have the message, and we need to worry about how to present it.
      * Also, players may want to add some effects(ANSI-codes) to mark certain

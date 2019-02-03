@@ -5,6 +5,7 @@
 #include <conditions.h>
 #include <stats.h>
 #include <cmd.h>
+#include <daemons.h>
 #include <disease.h>
 
 /* We have to artifically check if we can eat, before letting player object
@@ -69,7 +70,7 @@ devour_cmd(string what, object me)
 {
     int dummy,decay, heal_amount, corpse_level, half_corpse;
     string pronoun, corpse_name, race;
-    object corpse;
+    object corpse, ob;
     int i;
     object *inv;
 
@@ -131,21 +132,57 @@ devour_cmd(string what, object me)
 
     pronoun = (string)me->query_pronoun();
     half_corpse = sscanf((string)corpse->short(),"Half-eaten corpse of %s",corpse_name);
+
     if (can_eat(corpse_level,0,me))
     {
-	me -> tell_me("You eat the warm corpse with good appetite. YUMMY!");
-	inv = all_inventory(corpse);
-	for(i=0;i < sizeof(inv);i++)
-	{
-	    move_object(inv[i],environment(corpse));
-	}
-	destruct(corpse);
+        object corpse_env;
+        corpse_env = environment(corpse);
+
+        me->tell_me("You eat the warm corpse with good appetite. YUMMY!");
+
+        /* Had foreach for all_inventory(), but we've had issues with too much
+         * stuff laying around, so lets optimize a little
+         */
+        if (corpse_env) {
+            while (ob = first_inventory(corpse))
+                move_object (ob, corpse_env);
+
+            if (corpse_env == me) {
+                // Subtract weight before desting -- Germ
+                me->add_weight(-(int)corpse->query_weight());
+
+                destruct(corpse);
+
+                // And update our gmcp.Char.Items inventory, if interested -- Tamarindo
+                TELOPT_D->tell_me_items_list_inv(me);
+            } else {
+                destruct(corpse);
+
+                // Otherwise the past contents of this corpse, if any, are now strewn across the ground
+                // so let's update everyones gmcp.Char.Items room, if interested
+                TELOPT_D->tell_here_items_list(corpse_env);
+            }
+        }
     } else if (!half_corpse && can_eat(corpse_level/2,1,me)) {
-	me -> tell_me("You start eating the corpse with good appetite, but you get stuffed when you have eaten half of it.");
-	heal_amount /= 2;
-	corpse->set_orig_level(corpse_level/2);
-	corpse->set_short_desc("Half-eaten corpse of ");
-    } else  return 1;
+        object corpse_env;
+        corpse_env = environment(corpse);
+
+        me -> tell_me("You start eating the corpse with good appetite, but you "
+                      "get stuffed when you have eaten half of it.");
+        heal_amount /= 2;
+        corpse->set_orig_level(corpse_level/2);
+        corpse->set_short_desc("Half-eaten corpse of ");
+        corpse->set_weight( ((int)corpse->query_weight())/2 );
+
+        // Since our short desc suddenly changed...
+        // Let's update everyones gmcp.Char.Items room, if interested
+        if (corpse_env == me) {
+            TELOPT_D->tell_me_items_list_inv(me);
+        } else {
+            TELOPT_D->tell_here_items_list(corpse_env);
+        }
+    }
+
     environment(me) -> tell_here((string)me->query_name(0, me)
       +" jumps on the corpse and starts tearing it apart.\nAfter "
       +pronoun+" has torn it to pieces, "+pronoun+" gorges "

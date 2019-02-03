@@ -46,6 +46,7 @@
 #include <daemons.h>
 #include <guild.h>
 #include <corpse_defs.h>
+#include <generic_items.h>
 
 status dead, ghost, player_kills;
 static int liv_Flags;
@@ -193,6 +194,58 @@ exp_gained(int exp, int kr_level, int kr_ep, int kr_expt,
     if (exp < 0) return 0;
 
     return exp;
+}
+
+// Transfers even cursed things(if they are otherwise droppable)
+void move_inventory_to(object dest)
+{
+    object *obs, ob;
+    int i, cash;
+
+    obs = all_inventory();
+
+    foreach(ob : obs) {
+	// Beware that drop() might destruct the object.
+	if (ob->drop(1) || !ob)
+	    continue;
+
+	if (this_object()->query(LIV_IS_PLAYER) && this_object()->query_env("gmcp")) {
+	    TELOPT_D->send_char_items_remove(this_object(), "inv", ob);
+	}
+
+	move_object(ob, dest);
+
+	if (ob) {
+	    foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+		if (you->query_env("gmcp")) {
+		    TELOPT_D->send_char_items_add(you, "room", ob);
+		}
+	    }
+
+	    environment()->extra_move_object(ob, dest);
+	}
+    }
+
+    cash = this_object()->query_money();
+
+    if (cash < 1)
+	return;
+
+    if (ob = present(" money", dest)) {
+	ob->set_money((int)ob->query_money() + cash);
+    } else {
+	ob = clone_object(GENERIC_MONEY_OBJECT);
+	move_object(ob, dest);
+	ob->set_money(cash);
+
+	foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+	    if (you->query_env("gmcp")) {
+		TELOPT_D->send_char_items_list(you, "room");
+	    }
+	}
+    }
+
+    this_object()->set_money(0);
 }
 
 // mode 1: normal death (we have an attacker)
@@ -457,13 +510,27 @@ death(int mode, object killer)
 	    // worn things outside.
 	    for (--x; x >= 0; x--) {
 		if (inv[x] && !inv[x]->is_used() && !inv[x]->drop(3))
-		    if (inv[x]) move_object(inv[x], environment());
+		    if (inv[x]) {
+			move_object(inv[x], environment());
+
+			foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+			    if (you->query_env("gmcp")) {
+				TELOPT_D->send_char_items_add(you, "room", inv[x]);
+			    }
+			}
+		    }
 	    }
 	}
 
 	if (remains) {
 	    transfer_all_to(remains);
 	    move_object(remains, environment());
+
+	    foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+		if (you->query_env("gmcp")) {
+		    TELOPT_D->send_char_items_add(you, "room", remains);
+		}
+	    }
 	} else transfer_all_to(environment());
     }
 
@@ -471,9 +538,19 @@ death(int mode, object killer)
     // Controlled monster mk is nice: otherwise it's MK but it does
     // not reduce stats. //Graah
 
-    if (!this_object() -> second_life(pk, nicemk, killer,remains))
+    if (!this_object() -> second_life(pk, nicemk, killer,remains)) {
+	// Let's inform the guild object, in case it wants to know before we destruct the object!
+	if (GuildFlags &(1 << G_HOOK_DEATH))
+	    funcall(GuildHooks[G_HOOK_DEATH], this_object(), killer);
+
+	foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+	    if (you->query_env("gmcp")) {
+		TELOPT_D->send_char_items_remove(you, "room", this_object());
+	    }
+	}
+
 	destruct(this_object());
-    else {
+    } else {
 	x = 0;
 	while (x < attackers) {
 	    if (attacker[x] && present(attacker[x], environment()))

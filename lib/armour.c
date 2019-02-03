@@ -63,9 +63,11 @@
 #define	F_ARM_ORIGINAL		4
 #define	F_ARM_NOT_CREATED	8
 
-#include <curse.h>
 #include <armour_defs.h>
 #include <conditions.h>
+#include <curse.h>
+#include <daemons.h>
+#include <living_defs.h>
 #include <stats.h>
 
 inherit "/basic/curse";	// Curse.c inherits /basic/id.c too
@@ -308,10 +310,16 @@ init()
 ****************************************************************/
 
 varargs status
-wear_cmd(string str, object who)
+wear_cmd(string str, object me)
 {
-    if (objectp(who)) who -> wear(this_object(), 0);
-    else this_player()->wear(this_object(), 0);
+    if (!me && !(me = this_player())) return 0;
+    me->wear(this_object(), 0);
+
+    // Let's update our inventory on GMCP clients too.
+    if (me->query(LIV_IS_PLAYER) && me->query_env("gmcp")) {
+        TELOPT_D->send_char_items_update(me, this_object());
+    }
+
     return 1;
 }
 
@@ -321,6 +329,12 @@ unwear_cmd(string s, object who)
     if (objectp(who))
 	who -> unwear(this_object(), 0);
     else this_player() -> unwear(this_object(), 0);
+
+    // Let's update our inventory on GMCP clients too.
+    if (who && who->query(LIV_IS_PLAYER) && who->query_env("gmcp")) {
+        TELOPT_D->send_char_items_update(who, this_object());
+    }
+
     return 1;
 }
 

@@ -1,109 +1,92 @@
+#include <daemons.h>
+#include <living_defs.h>
+#include <treasure.h>
+
 string tied_to;
 object tied_to_ob;
 
-id(str) {
-    return str == "rope";
-}
-
-short() {
-    if (tied_to)
-	return "a rope tied to " + tied_to;
-    return "a rope";
-}
-string query_short() {
-    return (string)short();
-}
-
-string query_long()
+void create_treasure()
 {
-    return "You see nothing special about the rope.";
-}
-long() {
-    write(query_long()+"\n");
-}
-
-query_name() {
-    return "rope";
+    set_name("rope");
+    set_id( ({ "rope" }) );
+    set_short("a rope");
+    set_long("You see nothing special about the rope.");
+    set_weight(1);
+    set_value(100);
 }
 
-query_value() { return 15; }
+string query_short() {
+    if (tied_to) return ::query_short()+" tied to " + tied_to;
+    return ::query_short();
+}
 
-get() {
+void init() {
+    add_action("tie_cmd",   "tie");
+    add_action("untie_cmd", "untie");
+}
+
+status get() {
+    if (!tied_to) return 1;
+    this_player()->tell_me("But the rope is tied to " + tied_to + ".");
+    return 0;
+}
+
+status tie_cmd(string str)
+{
+    object env, me;
+    if ( !str || !(me=this_player()) || !(env=environment(me))) return 0;
     if (tied_to) {
-	write("The rope is tied to " + tied_to + ".\n");
-	return 0;
+	return notify_fail("It is already tied to " + tied_to + ".\n" );
     }
-    return 1;
-}
-
-query_weight() {
-    return 1;
-}
-
-init() {
-    add_action("tie", "tie");
-    add_action("untie", "untie");
-}
-
-tie(str) {
     string t1, t2;
-    object ob;
-
-    if (!str)
-	return 0;
-    if (tied_to) {
-	write("It is already tied to " + tied_to + ".\n");
-	return 1;
-    }
-    if (sscanf(str, "%s to %s", t1, t2) != 2)
-	return 0;
-    if (!id(t1))
-	return 0;
+    if (sscanf(str, "%s to %s", t1, t2) != 2) return 0;
+    if (!id(t1)) return 0;
     if (t2 == "me") {
-	write("Why would you do that ?\n");
-	return 1;
+	return notify_fail( "Why would you do that?\n" );
     }
-    ob = present(t2, this_player());
-    if (!ob)
-	ob = present(t2, environment(this_player()));
+    object ob = present(t2, me);
+    if (!ob) ob = present(t2, env);
+    if (!ob && env->id(t2)) ob = env;
     if (!ob) {
-	if (call_other(environment(this_player()), "id", t2))
-	    ob = environment(this_player());
+	return notify_fail( "Tie rope to where?\n" );
     }
-    if (!ob) {
-	write("Tie rope to where?\n");
-	return 1;
+    if (!ob->tie(t2)) {
+	return notify_fail("You can't tie the rope to " + t2 + ".\n");
     }
-    if (!call_other(ob, "tie", t2)) {
-	write("You can't tie the rope to " + t2 + ".\n");
-	return 1;
-    }
-    /* Is he carrying the rope ? */
-    if (environment() == this_player()) {
-	move_object(this_object(), environment(this_player()));
-	call_other(this_player(), "add_weight", - query_weight());
+    // Is he carrying the rope?
+    if (environment() == me) {
+	move_object(this_object(), env);
+
+	if (me->query(LIV_IS_PLAYER) && me->query_env("gmcp")) {
+	    TELOPT_D->send_char_items_remove(me, "inv", this_object());
+	}
+
+	me->add_weight(-query_weight());
     }
     tied_to = t2;
     tied_to_ob = ob;
-    write("Ok.\n");
-    say(call_other(this_player(), "query_name") + " ties rope to " +
-      t2 + ".\n");
+    me->tell_me("Ok.");
+    env->tell_here((string)me->query_name()+" ties rope to " + t2 + ".", me);
     return 1;
 }
 
-untie(str) {
-    if (!id(str))
-	return 0;
-    if (!tied_to) {
-	write("It is not tied to anything.\n");
+status untie_cmd(string str)
+{
+    object me;
+    if (!str || !id(str) || !(me=this_player())) return 0;
+    if (!tied_to || !tied_to_ob) {
+	me->tell_me("It is not tied to anything.");
 	return 1;
     }
-    if (!call_other(tied_to_ob, "untie")) {
-	write("You fail.\n");
+    if (!tied_to_ob->untie()) {
+	me->tell_me("You fail.");
 	return 1;
     }
-    write("Ok.\n");
+    me->tell_me("Ok.");
+    environment(me)->tell_here((string)me->query_name()
+      +" unties the rope.",me);
     tied_to = 0;
     tied_to_ob = 0;
     return 1;
 }
+

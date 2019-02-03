@@ -7,6 +7,7 @@
 
 #include <cmd.h>
 #include <daemons.h>
+#include <living_defs.h>
 
 varargs nomask int
 unwear_cmd(string arg, object me)
@@ -35,6 +36,11 @@ unwear_cmd(string arg, object me)
 		j++;
 	    }
 	}
+
+        if (me->query(LIV_IS_PLAYER) && me->query_env("gmcp")) {
+            TELOPT_D->send_char_items_list(me, "inv");
+        }
+
 	if (!j) me->tell_me("You aren't wearing any real armours.");
 	return 1;
     }

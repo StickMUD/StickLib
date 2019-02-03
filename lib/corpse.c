@@ -2,15 +2,11 @@
  * This is a decaying corpse. It is created automatically
  * when a player or monster dies.
  */
-/* Now we become to a pile of bones when enough time has passed... */
 
-/* Notify the room when we are totally gone. //Graah 29-Dec-94 */
+#include <daemons.h>
+#include <living_defs.h>
 
-/* Was 120, made it twice as quick. //Graah  */
-/* And I compromised it, it was too quick //Frobozz */
-/* Added mummifcation -Necros */
-// Too quick these days. //Graah
-#define DECAY_TIME	90
+#define DECAY_TIME	120
 // 100 normal, <100 slower, >100 faster
 #define DECAY_SPEED     25
 
@@ -19,14 +15,8 @@ int mummy; /* Necros */
 int decay, decay_speed, orig_level, was_player;
 string orig_race; /* Added this one 31-apr-94. -Doomdark. */
 object killer;
+int desting;
 
-/*
-status 
-prevent_insert() {
-    if (this_player()) this_player() -> tell_me("The corpse is too big.");
-    return 1;
-}
-*/
 status get() { return 1; }
 status is_corpse() { return 1; }
 
@@ -42,11 +32,16 @@ int query_weight() {
     object *inv;
     int rets, i;
     inv = all_inventory(this_object());
-    if(inv)
-	for(i=0;i<sizeof(inv);i++) {
+
+    // Since we're calling recount_weight while this is still in inventory
+    // If we're desting, let's return 0 to ignore this.
+    if (desting) return 0;
+
+    if (inv)
+	for (i = 0; i < sizeof(inv); i++) {
 	    rets += inv[i]->query_weight();
 	}
-    if(mummy) return rets + ( 1 + orig_level / 10);
+    if (mummy) return rets + ( 1 + orig_level / 10);
     if (orig_level)
 	return rets + ( 1 + orig_level / 5 );
     return rets + 5;
@@ -131,49 +126,76 @@ init() {
 
 void
 create() {
-    name = "nobody";
+    name = "Nobody";
     was_player = killer = 0;
     short_desc = "Corpse of ";
     decay = 5;
     decay_speed = DECAY_SPEED; // Normal decay speed
+    desting = 0;
 }
 
-void
-decay()
-{
-    object e, ob;
-
-    if(mummy) return;
+void decay() {
+    if (mummy) return;
     decay -= 1;
 
-    if (decay > 0)
-    {
-	call_out("decay", (20*DECAY_SPEED)/decay_speed);
-	return;
+    if (decay > 0) {
+        if (find_call_out("decay") < 0)
+            call_out("decay", (20*DECAY_SPEED)/decay_speed);
+        return;
     }
 
-    e = environment();
+    object env = environment();
+    object ob;
 
-    if (e)
-    {
-	if (living(e))
-	{
-	    e->add_weight(-(query_weight()));
-	    e = environment(e);
-	}
+    if (env && all_inventory(this_object())) {
+        if (living(env))
+            env->tell_me(query_name() + " turns to dust.");
+        else
+            env->tell_here(query_name() + " turns to dust.");
 
-	if (e)
-	    e->tell_here(query_name() + " turns to dust.");
+        while (ob = first_inventory()) {
+            move_object(ob, env);
+
+            // If the player holding the corpse is receiving new items in their inventory, update
+            // their client if appropriate.
+            if (env->query(LIV_IS_PLAYER) && env->query_env("gmcp")) {
+                TELOPT_D->send_char_items_add(env, "inv", ob);
+            }
+        }
+
+        // Update clients of players in the room that there are new items around them
+        if (!living(env)) {
+            foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+                if (you->query_env("gmcp")) {
+                    TELOPT_D->send_char_items_list(you, "room");
+                }
+            }
+        }
+
+        desting = 1;
+
+        while (env) {
+            env->recount_weight();
+            env = environment(env);
+        }
     }
 
-    while (ob = first_inventory()) {
-	move_object(ob, e);
+    // Remove the destructing corpse from the client information
+    if (!living(env)) {
+        foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+            if (you->query_env("gmcp")) {
+                TELOPT_D->send_char_items_remove(you, "room", this_object());
+            }
+        }
+    } else if (env->query(LIV_IS_PLAYER) && env->query_env("gmcp")) {
+        TELOPT_D->send_char_items_remove(env, "inv", this_object());
     }
-    if (e) e->recount_weight();
+
     destruct(this_object());
 }
 
 status can_put_and_get() { return 1; }
+
 string
 search_obj(object ob)
 {

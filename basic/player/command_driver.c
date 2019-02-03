@@ -32,13 +32,10 @@
 *								*
 ****************************************************************/
 
-// private static status commands_loaded;
 private static int cmds_available;
-// static mapping cmd;
 static string *cmds;	// New! Saves memory.
 static object cmdd;	// New. Should make call_others bit faster...
 private static mapping InbuiltCmds;
-// Should make things faster as well...
 
 #include <coder_levels.h>
 #include <daemons.h>
@@ -65,7 +62,7 @@ private static mapping InbuiltCmds;
 #include "/basic/player/rsay.c"
 #include "/basic/player/desc.c"
 
-static object guild_object;
+//static object guild_object;
 static mapping guild_commands;
 int coder_level;
 
@@ -75,7 +72,7 @@ int query(int x);
 varargs void tell_me(string s, status a, status b);
 status save_character();
 string get_env(string s);
-void set_env(string s, mixed x);
+//void set_env(string s, mixed x);
 mixed do_client_command(string cmd, string arg);
 
 #endif
@@ -155,6 +152,15 @@ rehash_commands()
     }
 }
 
+private string
+you_cant_go_that_way(string verb) {
+    if (query_env("gmcp")) {
+	TELOPT_D->send_room_wrong_direction(this_object(), verb);
+    }
+
+    return "You can't go that way.\n";
+}
+
 nomask status
 command_driver(string arg)
 {
@@ -221,8 +227,8 @@ command_driver(string arg)
     switch(verb) {
     case "north": case "east": case "south": case "west":
     case "northeast": case "southeast": case "southwest": case "northwest":
-    case "exit": case "out": case "enter": case "up": case "down": 
-	notify_fail(query(LIV_IS_FLEEING) ? "" : "You can't go that way.\n");
+    case "exit": case "out": case "enter": case "up": case "down":
+	notify_fail(query(LIV_IS_FLEEING) ? "" : funcall(#'you_cant_go_that_way, verb));
 	if (!query_can_move()) {
 	    tell_me("You are unable to move!");
 	    return 1;
@@ -232,7 +238,6 @@ command_driver(string arg)
     case "take": verb = "get"; break;
     case "describe": verb = "desc"; break;
     case "destruct": verb = "dest"; break;
-	//	case "destr": case "dest": verb = "destruct"; break;
     case "wizem": verb = "wiz"; break;
     case "i": verb = "inventory"; break;
     case "consider": verb = "cons"; break;

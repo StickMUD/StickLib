@@ -1,6 +1,8 @@
 #pragma strict_types
 
 #include <cmd.h>
+#include <daemons.h>
+#include <living_defs.h>
 
 inherit "/lib/find_name";
 
@@ -27,6 +29,11 @@ wear_cmd(string arg, object me)
 		me -> wear(ob, 0);
 	    ob = next_inventory(ob);
 	}
+
+        if (me->query(LIV_IS_PLAYER) && me->query_env("gmcp")) {
+            TELOPT_D->send_char_items_list(me, "inv");
+        }
+
 	return 1;
     }
 

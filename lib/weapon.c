@@ -394,7 +394,7 @@ void set_poisoned(int x) { poisoned = x; }
 void
 set_bluntness(int arg)
 {
-    bluntness = arg; 
+    bluntness = arg;
     new_value();
     //	if (IS_WIELDED) UPDATE_WEAPON;
     // Not needed any more. -+ 10-mar-96 Doomdark +-
@@ -611,6 +611,12 @@ wield_cmd(string str, object me, status left)
 {
     if (!me && !(me = this_player())) return 0;
     me -> wield(this_object(), 0, left);
+
+    // Let's update our inventory on GMCP clients too.
+    if (me->query(LIV_IS_PLAYER) && me->query_env("gmcp")) {
+        TELOPT_D->send_char_items_update(me, this_object());
+    }
+
     return 1;
 }
 
@@ -622,6 +628,12 @@ unwield_cmd(string str, object me)
     if (!me && !(me = this_player())) return 0;
     if (!str && !wielded) me -> tell_me("You are not wielding a weapon.");
     else me -> unwield(this_object(), 0);
+
+    // Let's update our inventory on GMCP clients too.
+    if (me->query(LIV_IS_PLAYER) && me->query_env("gmcp")) {
+        TELOPT_D->send_char_items_update(me, this_object());
+    }
+
     return 1;
 }
 

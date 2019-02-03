@@ -54,6 +54,7 @@
 *								*
 ****************************************************************/
 
+#include <daemons.h>
 #include <player_defs.h>
 
 inherit "/basic/id";
@@ -434,5 +435,12 @@ my_destruct(status silent)
     if (!silent)
 	environment() -> tell_here(sprintf(
 	    "The %s breaks as it is dropped down.", container));
+
+    foreach (object you : filter(all_inventory(environment()), (: $1->query(LIV_IS_PLAYER) :))) {
+        if (you->query_env("gmcp")) {
+            TELOPT_D->send_char_items_remove(you, "room", this_object());
+        }
+    }
+
     destruct(this_object());
 }

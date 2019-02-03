@@ -30,9 +30,12 @@ int party_id;
 // party_id : ({ player_ob1, ...})
 // Party leader is always the first in the list.
 mapping parties;
+
 mapping members;	// "Reversed" party list; index is player object,
 // value number of party player belongs to.
+
 mapping hooks;		// Mapping of all hooks 'connected' to players.
+
 status hb_on;		// Turning hb on is costly... So let's be sure it's needed
 
 nomask int del_party(object o, int i);
@@ -42,8 +45,8 @@ varargs nomask int set_party_data(int i, string s, mixed x, mixed y);
 nomask void
 create()
 {
-    object *u, *tmp, pl;
-    int i, pid;
+    //object *u, *tmp, pl;
+    //int i, pid;
     parties = ([ ]);
     members = ([ ]);
     hooks = ([ ]);
@@ -209,7 +212,7 @@ del_party(object plr, int pid)
 	m_delete(parties, pid);
     else {
 	if (leader) {
-	    set_party_data(pid, "tell_me", 
+	    set_party_data(pid, "tell_me",
 	      "[Party]: The new party leader is "+ capitalize(
 		(string)arg[0]->query_real_name()));
 
@@ -220,7 +223,7 @@ del_party(object plr, int pid)
     }
 
     return 1;
-}                    
+}
 
 varargs nomask int
 set_party_data(int pid, string func, mixed arg, mixed arg2)
@@ -249,7 +252,7 @@ query_party_data(int pid, string func, mixed arg)
     list = parties[pid];
     if (!list) return 0;
 
-    ret = ({});   
+    ret = ({});
     i = sizeof(list);
     for (j = is_null = 0; j < i; j++) {
 	if (list[j])
@@ -311,7 +314,7 @@ update_party(int pid)
     if (i = sizeof(list)) {
 	if (i > 1) {
 	    if (!list[0]->query_party(PARTY_LEADER)) {
-		set_party_data(pid, "tell_me", "[Party]: The new party leader is "+ 
+		set_party_data(pid, "tell_me", "[Party]: The new party leader is "+
 		  capitalize((string)list[0]->query_real_name()));
 		list[0] -> set_party(PARTY_LEADER, 1);
 	    }

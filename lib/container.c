@@ -10,6 +10,11 @@
 *								*
 ****************************************************************/
 
+#include "/sys/object_info.h"
+
+#include <daemons.h>
+#include <living_defs.h>
+
 inherit "/basic/id";
 inherit "/basic/object/dimensions";
 
@@ -20,6 +25,7 @@ string info;
 static int used_functions;
 
 #define	RESET_USED	1
+#define	INIT_USED	2
 
 /****************************************************************
 *								*
@@ -100,17 +106,34 @@ read_cmd(string str)
 
 /* Standard create was missing */
 void
-create()
-{
+create() {
     if (function_exists("reset_container"))
 	used_functions |= RESET_USED;
+
+    if (function_exists( "init_container"))
+        used_functions |= INIT_USED;
+
     this_object()->create_container();
 }
 
+
 // And so was reset...
 void
-reset()
-{
+reset() {
     if (used_functions & RESET_USED)
 	this_object()->reset_container();
 }
+
+// And also init...
+void init() {
+    if (used_functions & INIT_USED)
+        this_object()->init_container();
+
+    object me = environment();
+    if (!me || !object_info(me, OI_ONCE_INTERACTIVE)) return;
+
+    // Let's send GMCP to clients that are interested to know something is now in this container.
+    if (me->query_env("gmcp"))
+        TELOPT_D->send_char_items_list(me, "container", this_object());
+}
+
