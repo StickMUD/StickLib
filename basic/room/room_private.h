@@ -20,6 +20,9 @@
 #define	F_ROOM_HAS_EFFECTS	        (1 << 15)
 #define	F_ROOM_HB_ON			(1 << 16)
 #define F_ROOM_ISOLATED			(1 << 17)
+#define F_ROOM_BANK                     (1 << 18)
+#define F_ROOM_MAZE                     (1 << 19)
+#define F_ROOM_MAP_REGISTERED           (1 << 20)
 
 #define	ROOM_FLAGS			50
 

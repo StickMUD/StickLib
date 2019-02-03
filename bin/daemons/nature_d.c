@@ -88,6 +88,7 @@ the werevolves!
 #include <living_defs.h>
 #include <coder_levels.h>
 #include <attack.h>
+#include <sound.h>
 
 #pragma strict_types
 
@@ -133,6 +134,8 @@ string Rain_Type();
 
 // Anyone can change year's name, but only admins should do it.
 void set_Yearname(string arg) { Yearname = arg; }
+
+varargs object *message_outdoors(int outdoors, int exclude_coders);
 
 void
 update()
@@ -441,6 +444,7 @@ void
 mooooh()
 {
     while(remove_call_out("mooooh")!=-1);
+    map_objects(message_outdoors(WD_INDOORS|WD_OUTDOORS|WD_CITY, 0), "sound", SD_SOUND_COW, SD_VOLUME_LOW);
     Inform("You hear distant 'MOOOoooooooOOOOHH!'", WD_ALL);
 }
 
@@ -458,6 +462,7 @@ weather_forecast()
 	    return; /* Only one weather msg at once */
 	}
 	else {
+	    map_objects(message_outdoors(WD_OUTDOORS, 0), "sound", SD_SOUND_LIGHTNING, SD_VOLUME_LOW);
 	    Inform("Lightning strikes not too far away from here!", WD_OUTDOORS);
 	    Inform("Suddenly lights flash rapidly.", WD_INDOORS);
 	    if( ! random(10) ) {
@@ -767,6 +772,17 @@ int SunsetH(int m)	{ return ({ 15,16,17,19,20,21,22,21,20,19,17,16 })[m-1]; }
 
 int Avg_Temp(int m)	{ return ({ -10,-5,5,15,20,25,30,30,20,10,-5,-15 })[m-1]; }
 int Avg_Humid(int m)	{ return ({ 20,30,60,70,80,70,40,30,40,50,40,30 })[m-1]; }
+
+varargs object *message_outdoors(int outdoors, int exclude_coders) {
+   object env, *players = ({});
+   foreach (object ob : users()) {
+        if (!ob || !(env = environment(ob))) continue;
+        if (exclude_coders && (ob->query_coder_level() || ob->query_testplayer())) continue;
+        if (outdoors!=WD_ALL && ob->query_brief_weather()) continue;
+        if (((int)env->query(ROOM_WD)||WD_NONE)&outdoors) players += ({ ob });
+   }
+   return players;
+}
 
 void
 Inform(string s, int outd)

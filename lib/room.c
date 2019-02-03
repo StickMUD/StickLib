@@ -23,10 +23,12 @@
 #include <room_defs.h>
 #include <daemons.h>
 #include <player_defs.h>
+#include <sound.h>
 #include <tell_me.h>
 #include <client_defs.h>
 #include <npc_defs.h>
 #include <treasure_defs.h>
+#include <mxp.h>
 
 #define	TYPE_MONSTER	1
 #define	TYPE_OBJECT	2
@@ -80,6 +82,7 @@ private static closure ExtraLookFunc;
 
 #include "/basic/room/set_n_query.c"
 #include "/basic/room/tell_here.c"	/* We'll include it, easier to edit... */
+#include "/basic/room/map.c"
 
 // Prototypes; let's order functions to speed things up (I hope):
 public void init();
@@ -172,6 +175,10 @@ query_exit_list(int mode)
 	{
 	    dirs = m_indices(Exits);
 
+//          for (i = 0; i < sizeof(dirs); i++) {
+//              dirs[i] = MXPTAG("Ex") + dirs[i] + MXPTAG("/Ex");
+//          }
+
 	    if (sizeof(Exits) == 1)
 		long_exit_list = sprintf("The only obvious exit is %s.", dirs[0]);
 	    else long_exit_list = sprintf("The obvious exits are %s.",
@@ -194,6 +201,9 @@ query_exit_list(int mode)
 		case "southeast": short_dirs[i] = "se"; break;
 		case "southwest": short_dirs[i] = "sw"; break;
 		}
+
+		// Let's MXP 12.25.2004 -Tamarindo
+		//short_dirs[i] = MXPTAG("Ex") + short_dirs[i] + MXPTAG("/Ex");
 	    }
 
 	    short_exit_list = efun::implode(short_dirs, ",");
@@ -904,6 +914,15 @@ init()
 	    Flags |= F_ROOM_HB_ON;
 	    configure_object(this_object(), OC_HEART_BEAT, 1);
 	}
+
+        // Let's register this room so it could be mapped.
+        if (Flags & ~F_ROOM_MAP_REGISTERED) {
+            // Master object uses set_map_private_key(string actual_room_path_here)
+            // after the virtual server clones the room.
+            if (map_environment && map_area)
+                MAPPER_D->register_map_room(map_private_key ? map_private_key : this_object());
+            Flags |= F_ROOM_MAP_REGISTERED;
+        }
     }
 
     // Let's send GMCP to clients that are interested to know someone has arrived.
@@ -965,6 +984,26 @@ heart_beat()
 /* To be redefined if needed. Called when items are handled with
    'get', 'put' or 'drop' commands in the room. //Graah */
 void extra_move_object(object ob, object to) { }
+
+varargs public void
+sound(string _sound, int _volume, int _duration, int _priority)
+{
+    string sound_enabled = 0;
+
+    foreach (object player : all_inventory(this_object())) {
+        if (!interactive(player)) continue;
+
+        sound_enabled = player->query_env("sound");
+
+        if (sound_enabled == SD_PROTOCOL_MSP) {
+            tell_object(player, sprintf("!!SOUND(%s V=%d L=%d P=%d)\n",
+                _sound,
+                _volume != 0 ? _volume : SD_VOLUME_NORMAL,
+                _duration != 0 ? _duration : SD_DURATION_NORMAL,
+                _priority != 0 ? _priority : SD_PRIORITY_NORMAL));
+        }
+    }
+}
 
 varargs status // has to be varargs ++Tron.
 move(string dir, string room)

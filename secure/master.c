@@ -1712,28 +1712,19 @@ get_ed_buffer_save_file_name(string file)
 // compile_object() for virtual objects
 // Now all files under any virtual directory can be virtual. ++Tron
 // They only need their own server.
-nomask object
-compile_object(string path)
-{
-    string server;
-    string tmp;
+nomask object compile_object(string path) {
+    string server, tmp;
     object ob;
-
-    // URGH!
-    if (path[0] != '/')
-	path = "/" + path;
-    //printf("Virtual path: %s.", path);
-
-    if (sscanf(path, "%s/virtual/", tmp))
-    {
-	server = tmp+"/virtual/server.c";
-	if (file_size(server) > 0) 
-	    if(ob = (object)server->compile_object(path)) {
-		rename_object(ob, path);
-	    }
-	return ob;
+    if (path[0] != '/') path = "/" + path;
+    if (!sscanf(path, "%s/virtual/", tmp)) return 0;
+    server = tmp+"/virtual/server.c";
+    if (file_size(server) <= 0 ) return ob;
+    if(ob = (object)server->compile_object(path)) {
+	rename_object(ob, path);
+	ob->set_map_private_key(path);
     }
-    return 0;
+
+    return ob;
 }
 
 // Give a path to a simul_efun file. Observe that it is a string returned,

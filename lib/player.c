@@ -184,6 +184,7 @@ private static int *_charset = ({
 // inheritting them to get better error descs! -+ Doomdark +-
 // Otherwise let's use includes; faster & more efficient.
 
+#include "/basic/player/sound.c"
 #include "/basic/player/tell_me.c"
 #include "/basic/player/set_n_query.c"
 #include "/basic/player/spells.c"
