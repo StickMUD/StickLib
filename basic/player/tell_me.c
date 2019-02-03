@@ -303,7 +303,7 @@ public varargs int tell_me(mixed str, mixed sense_list, mixed tell_flags,
     if (stat) CMD_D->tell_stats(name, str2, coder_level);
 
     // Process MXP - Uncomment to use!
-#if 0
+#if 1
     mxpEnabled = query_env("mxp") != 0 && query_env("mxp") == "enabled" ? 1 : 0;
     str2 = process_mxp(str2, mxpEnabled);
 #endif

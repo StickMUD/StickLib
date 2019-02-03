@@ -22,7 +22,8 @@ void create() {
     slaves = ([]);
 
     // If it's multidimensional mapping, make it be one!!!! -+ Doomdark +-
-    temp_data = allocate_mapping(0, 2);
+    //temp_data = allocate_mapping(0, 2);
+    temp_data = ([]);
 }
 
 status add_slave(object player, object ob) {
@@ -104,7 +105,7 @@ void go_ld(object player) {
     data = ({});
 
     foreach (object ob : objs) {
-	data += ({ ob, file_name(environment(ob)) });
+	data += ({ ob, object_name(environment(ob)) });
 	ob->move_player("X", GUILD_ROOM_DIR + "oblivion");
     }
 

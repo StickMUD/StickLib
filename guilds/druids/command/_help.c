@@ -98,12 +98,12 @@ status do_cmd(object master, object mark, string args)
         }
     }
 
-    i = strlen(args);
+    i = sizeof(args);
 
     args = terminal_colour("%^BOLD%^" + args + "%^RESET%^",
                             ansi_codes);
 
-    i = strlen(args) - i;
+    i = sizeof(args) - i;
 
     header += sprintf("|%|*s|\n", length + i, what + args);
     header += "`" + line +  "'\n";

@@ -190,7 +190,7 @@ void create_treasure() {
     master = 0;
     pretitle = 0;
 
-    if (member_array('#', file_name(this_object())) < 0) {
+    if (member(object_name(this_object()), '#') < 0) {
 	return;
     }
 

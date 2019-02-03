@@ -37,6 +37,7 @@
 #define SHELL_D         "/bin/daemons/shelld"
 #define SKILL_D         "/bin/daemons/skilld"
 #define SMOKE_D         "/bin/daemons/smoked"
+#define TIMEZONE_D      "/bin/daemons/timezone_d"
 #define TELOPT_D        "/bin/daemons/telopt_d"
 #define UNIQUE_D        "/bin/daemons/uniqued"
 #define WHO_D           "/bin/daemons/who_d"
