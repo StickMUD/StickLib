@@ -21,6 +21,8 @@ private int load_more_file(int line);
 private int more_search(string str);
 
 #ifndef PLAYER_C
+#include <tell_me.h>
+
 varargs void tell_me(string s, status x);
 varargs void print_prompt(string prompt);
 #endif
@@ -128,7 +130,8 @@ n\tsearch for next occurrance of last r.e\n\
 		}
 		text += more_text[(more_line++) - more_pos] + "\n";
 	    }
-	    tell_me(text, 1);
+
+	    tell_me(text, 0, TELL_TYPE_TERMINAL_COLOUR);
 	}
     }
     if (more_line >= more_last) {
@@ -138,10 +141,10 @@ n\tsearch for next occurrance of last r.e\n\
     }
     if (SHOWLINE) {
 	//printf("--More--(%d/%d)", more_line, more_last);
-	print_prompt(sprintf("--More--(%d/%d)", more_line, more_last));
+	print_prompt(sprintf("--More-- (%d/%d)", more_line, more_last));
     } else {
 	//printf("--More--(%d%%)", more_line * 100 / more_last);
-	print_prompt(sprintf("--More--(%d%%)", more_line * 100 / more_last));
+	print_prompt(sprintf("--More-- (%d%%)", more_line * 100 / more_last));
     }
     input_to("even_more", 0);
 }

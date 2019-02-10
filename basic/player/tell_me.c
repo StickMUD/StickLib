@@ -235,20 +235,25 @@ public varargs int tell_me(mixed str, mixed sense_list, mixed tell_flags,
         binary_message(s, 1);
     } else s = 0;
 
-    int wrap = j&TELL_NO_WRAP ? 0 : s_columns-1;
-    int type_term = (j&TELL_TYPE_MASK)==TELL_TYPE_TERMINAL_COLOUR ? 1 : 0;
+    int wrap = j & TELL_NO_WRAP ? 0 : s_columns-1;
+    int type_term = (j & TELL_TYPE_MASK) == TELL_TYPE_TERMINAL_COLOUR ? 1 : 0;
 
     if (type_term) {
         int *orig_charset = 0;
+
         if (!term_codes)
-            term_codes = effects_on ? ANSI_D->query_terminal_codes() :([0: ""]);
+            term_codes = effects_on ? ANSI_D->query_terminal_codes() : ([0: ""]);
+
         if (effects_on) {
             orig_charset = get_connection_charset(0);
             set_connection_charset(_ctrl_charset, 1);
         }
+
         str2 = terminal_colour(str2, term_codes, wrap, 0);
+
         if (wrap) tell_object(this_object(), str2 + "\n");
         else tell_object(this_object(), str2);
+
         if (effects_on) set_connection_charset(orig_charset, 0);
     } else {
     	if (!wrap) tell_object(this_object(), str2);
@@ -261,6 +266,7 @@ public varargs int tell_me(mixed str, mixed sense_list, mixed tell_flags,
             term_reset = sprintf("%c[0m", /* ] Make Emacs happy*/ 0x1B);
             // term_reset = "\e[0m"; // ] _should_ work, does not.
         }
+
         binary_message(term_reset, 1);
     }
 

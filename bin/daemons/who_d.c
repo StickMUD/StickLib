@@ -66,7 +66,7 @@ nomask string *who_list(object me, object *who)
 
     who_list = ({ HEAD1, HEAD2, HEAD3 });
 
-    tmp = sprintf(" |%|73s|\n |%73s|\n |%|73s|\n |%73s|", 
+    tmp = sprintf(" |%^bold%^%^yellow%^%|73s%^reset%^|\n |%73s|\n |%|73s|\n |%73s|", 
       "-{-----   "+efun::implode(explode(MUD_NAME, ""), "  ")+"   -----}-",
       " ",
       "Local time is "+ctime(time()),
