@@ -128,7 +128,7 @@ public mapping query_gmcp_cache() {
 **	that aligns with the GMCP specification.  If the cache was not updated
 **	then this function will return 0, prompting the function that called
 **	this to send no data to the intended recipient, because they should
-**	already have it. 
+**	already have it.
 */
 private mixed
 parse_cache(string package, mixed gmcp, string *keys) {
@@ -155,247 +155,250 @@ parse_cache(string package, mixed gmcp, string *keys) {
 			updated = 1;
 
 			gmcp_cache[package][id] = ([ keys[key]: element[keys[key]] ]);
-		} else if (member(gmcp_cache[package][id], keys[key]) < 1) {
-		    updated = 1;
-
-		    gmcp_cache[package][id][keys[key]] = element[keys[key]];
-		} else {
-		    mixed sent = element[keys[key]];
-		    mixed cached = gmcp_cache[package][id][keys[key]];
-
-		    if (sent != cached) {
-			updated = 1;
-		    }
-
-		    gmcp_cache[package][id][keys[key]] = element[keys[key]];
-		}
-	    }
-	}
-
-	if (!result || !pointerp(result)) {
-	    result = ({ element });
-	} else result += ({ element });
-    }
-} else if (mappingp(gmcp)) {
-    if (package == GMCP_PKG_CHAR_ITEMS) {
-	string location = gmcp[GMCP_KEY_CHAR_ITEMS_LOCATION];
-	int dummy;
-
-	if (member(({ GMCP_VALUE_CHAR_ITEMS_LOCATION_INV,
-	      GMCP_VALUE_CHAR_ITEMS_LOCATION_ROOM }), location) < 0
-	  && sscanf(location, GMCP_VALUE_CHAR_ITEMS_LOCATION_CONTAINER, dummy) != 1) {
-	    return 0; // Shouldn't happen
-	}
-
-	if (member(gmcp_cache, package) < 1) {
-	    gmcp_cache[package] = ([ ]);
-	}
-
-	if (member(gmcp_cache[package], location) < 1) {
-	    updated = 1;
-	    gmcp_cache[package][location] = ([ ]);
-
-	    // List package uses GMCP_KEY_CHAR_ITEMS_ITEMS, while
-	    // Add/Update packages use GMCP_KEY_CHAR_ITEMS_ITEM per the spec
-	    string items_key = member(gmcp, GMCP_KEY_CHAR_ITEMS_ITEMS) > 0
-	    ? GMCP_KEY_CHAR_ITEMS_ITEMS
-	    : GMCP_KEY_CHAR_ITEMS_ITEM;
-
-	    foreach (mapping map : gmcp[items_key]) {
-		string id = map[keys[0]];
-
-		for (int key = 1; key < sizeof(keys); key++) {
-		    if (member(gmcp_cache[package][location], id) < 1) {
-			gmcp_cache[package][location][id] = ([ keys[key]: map[keys[key]] ]);
 #if 0
 		    {
 #endif
-		    } else {
-			gmcp_cache[package][location][id][keys[key]] = map[keys[key]];
-		    }
-		}
-
-		if (!result || !pointerp(result)) {
-		    result = ([
-		      GMCP_KEY_CHAR_ITEMS_LOCATION: location,
-		      items_key: ({ map })
-		    ]);
-		} else result[items_key] += ({ map });
-	    }
-	} else {
-	    // List package uses GMCP_KEY_CHAR_ITEMS_ITEMS, while
-	    // Add/Update packages use GMCP_KEY_CHAR_ITEMS_ITEM per the spec
-	    string items_key = member(gmcp, GMCP_KEY_CHAR_ITEMS_ITEMS) > 0
-	    ? GMCP_KEY_CHAR_ITEMS_ITEMS
-	    : GMCP_KEY_CHAR_ITEMS_ITEM;
-
-	    foreach (mapping map : gmcp[items_key]) {
-		string id = map[keys[0]];
-
-		for (int key = 1; key < sizeof(keys); key++) {
-		    if (member(gmcp_cache[package][location], id) < 1) {
-			gmcp_cache[package][location][id] = ([ keys[key]: map[keys[key]] ]);
-#if 0
-		    {
-#endif
+		    } else if (member(gmcp_cache[package][id], keys[key]) < 1) {
 			updated = 1;
-		    } else if (member(gmcp_cache[package][location][id], keys[key]) < 1) {
-			gmcp_cache[package][location][id][keys[key]] = map[keys[key]];
-			updated = 1;
+
+			gmcp_cache[package][id][keys[key]] = element[keys[key]];
 		    } else {
-			mixed sent = map[keys[key]];
-			mixed cached = gmcp_cache[package][location][id][keys[key]];
+			mixed sent = element[keys[key]];
+			mixed cached = gmcp_cache[package][id][keys[key]];
 
 			if (sent != cached) {
-			    gmcp_cache[package][location][id][keys[key]] = map[keys[key]];
 			    updated = 1;
 			}
+
+			gmcp_cache[package][id][keys[key]] = element[keys[key]];
 		    }
 		}
-
-		if (!result || !pointerp(result)) {
-		    result = ([
-		      GMCP_KEY_CHAR_ITEMS_LOCATION: location,
-		      items_key: ({ map })
-		    ]);
-		} else result[items_key] += ({ map });
 	    }
+
+	    if (!result || !pointerp(result)) {
+		result = ({ element });
+	    } else result += ({ element });
 	}
-    } else if (package == GMCP_PKG_GROUP) {
-	foreach (string key : keys) {
-	    if (member(gmcp, key) > 0) {
-		if (member(gmcp_cache, package) < 1) {
-		    gmcp_cache[package] = ([ ]);
-		}
+    } else if (mappingp(gmcp)) {
+	if (package == GMCP_PKG_CHAR_ITEMS) {
+	    string location = gmcp[GMCP_KEY_CHAR_ITEMS_LOCATION];
+	    int dummy;
 
-		if (key == GMCP_KEY_GROUP_MEMBERS && pointerp(gmcp[key])) {
-		    string *names;
+	    if (member(({ GMCP_VALUE_CHAR_ITEMS_LOCATION_INV,
+		  GMCP_VALUE_CHAR_ITEMS_LOCATION_ROOM }), location) < 0
+	      && sscanf(location, GMCP_VALUE_CHAR_ITEMS_LOCATION_CONTAINER, dummy) != 1) {
+		return 0; // Shouldn't happen
+	    }
 
-		    // Let's first fetch a list of player names in our party from the cache,
-		    // if they exist, so we could determine if someone had dropped out of the
-		    // party and we need to update the cache and send to the client.
-		    if (member(gmcp_cache[package], key) > 0 && sizeof(gmcp_cache[package][key])) {
-			names = m_indices(gmcp_cache[package][key]);
+	    if (member(gmcp_cache, package) < 1) {
+		gmcp_cache[package] = ([ ]);
+	    }
+
+	    if (member(gmcp_cache[package], location) < 1) {
+		updated = 1;
+		gmcp_cache[package][location] = ([ ]);
+
+		// List package uses GMCP_KEY_CHAR_ITEMS_ITEMS, while
+		// Add/Update packages use GMCP_KEY_CHAR_ITEMS_ITEM per the spec
+		string items_key = member(gmcp, GMCP_KEY_CHAR_ITEMS_ITEMS) > 0
+		? GMCP_KEY_CHAR_ITEMS_ITEMS
+		: GMCP_KEY_CHAR_ITEMS_ITEM;
+
+		foreach (mapping map : gmcp[items_key]) {
+		    string id = map[keys[0]];
+
+		    for (int key = 1; key < sizeof(keys); key++) {
+			if (member(gmcp_cache[package][location], id) < 1) {
+			    gmcp_cache[package][location][id] = ([ keys[key]: map[keys[key]] ]);
+#if 0
+			{
+#endif
+			} else {
+			    gmcp_cache[package][location][id][keys[key]] = map[keys[key]];
+			}
 		    }
 
-		    foreach (mapping player : gmcp[key]) {
-			if (member(player, GMCP_KEY_GROUP_MEMBERS_NAME) > 0) {
-			    // Remove this player from the balance of the names we were tracking.
-			    // We'll check if any names are left at the end in our balance and if
-			    // so we'll trigger an update to the client.
-			    if (names && sizeof(names) && member(names, player[GMCP_KEY_GROUP_MEMBERS_NAME]) != -1) {
-				names -= ({ player[GMCP_KEY_GROUP_MEMBERS_NAME] });
+		    if (!result || !pointerp(result)) {
+			result = ([
+			  GMCP_KEY_CHAR_ITEMS_LOCATION: location,
+			  items_key: ({ map })
+			]);
+		    } else result[items_key] += ({ map });
+		}
+	    } else {
+		// List package uses GMCP_KEY_CHAR_ITEMS_ITEMS, while
+		// Add/Update packages use GMCP_KEY_CHAR_ITEMS_ITEM per the spec
+		string items_key = member(gmcp, GMCP_KEY_CHAR_ITEMS_ITEMS) > 0
+		? GMCP_KEY_CHAR_ITEMS_ITEMS
+		: GMCP_KEY_CHAR_ITEMS_ITEM;
+
+		foreach (mapping map : gmcp[items_key]) {
+		    string id = map[keys[0]];
+
+		    for (int key = 1; key < sizeof(keys); key++) {
+			if (member(gmcp_cache[package][location], id) < 1) {
+			    gmcp_cache[package][location][id] = ([ keys[key]: map[keys[key]] ]);
+#if 0
+			{
+#endif
+			    updated = 1;
+			} else if (member(gmcp_cache[package][location][id], keys[key]) < 1) {
+			    gmcp_cache[package][location][id][keys[key]] = map[keys[key]];
+			    updated = 1;
+			} else {
+			    mixed sent = map[keys[key]];
+			    mixed cached = gmcp_cache[package][location][id][keys[key]];
+
+			    if (sent != cached) {
+				gmcp_cache[package][location][id][keys[key]] = map[keys[key]];
+				updated = 1;
 			    }
+			}
+		    }
 
-			    // If none of the players in the party exist, add this to the cache!
-			    if (member(gmcp_cache[package], key) < 1) {
-				updated = 1;
+		    if (!result || !pointerp(result)) {
+			result = ([
+			  GMCP_KEY_CHAR_ITEMS_LOCATION: location,
+			  items_key: ({ map })
+			]);
+		    } else result[items_key] += ({ map });
+		}
+	    }
+	} else if (package == GMCP_PKG_GROUP) {
+	    foreach (string key : keys) {
+		if (member(gmcp, key) > 0) {
+		    if (member(gmcp_cache, package) < 1) {
+			gmcp_cache[package] = ([ ]);
+		    }
 
-				gmcp_cache[package][key] = ([
-				  player[GMCP_KEY_GROUP_MEMBERS_NAME] : ([
-				    GMCP_KEY_GROUP_MEMBERS_INFO_HP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_HP],
-				    GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP],
-				    GMCP_KEY_GROUP_MEMBERS_INFO_SP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_SP],
-				    GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP],
-				    GMCP_KEY_GROUP_MEMBERS_INFO_FP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_FP],
-				    GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP],
-				    GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL],
-				    GMCP_KEY_GROUP_MEMBERS_INFO_HERE: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_HERE],
-				  ])
-				]);
-			    } else if (member(gmcp_cache[package][key], player[GMCP_KEY_GROUP_MEMBERS_NAME]) < 1) {
-				// If the player does not exist in the cache, add the player!
-				updated = 1;
+		    if (key == GMCP_KEY_GROUP_MEMBERS && pointerp(gmcp[key])) {
+			string *names;
 
-				gmcp_cache[package][key][player[GMCP_KEY_GROUP_MEMBERS_NAME]] = ([
-				  GMCP_KEY_GROUP_MEMBERS_INFO_HP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_HP],
-				  GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP],
-				  GMCP_KEY_GROUP_MEMBERS_INFO_SP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_SP],
-				  GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP],
-				  GMCP_KEY_GROUP_MEMBERS_INFO_FP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_FP],
-				  GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP],
-				  GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL],
-				  GMCP_KEY_GROUP_MEMBERS_INFO_HERE: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_HERE],
-				]);
-			    } else {
-				// Let's see if anything changed with this player
-				foreach (string info : ({
-				    GMCP_KEY_GROUP_MEMBERS_INFO_HP, GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP,
-				    GMCP_KEY_GROUP_MEMBERS_INFO_SP, GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP,
-				    GMCP_KEY_GROUP_MEMBERS_INFO_FP, GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP,
-				    GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL,
-				    GMCP_KEY_GROUP_MEMBERS_INFO_HERE })) {
-				    mixed sent = player[GMCP_KEY_GROUP_MEMBERS_INFO][info];
-				    mixed cached = gmcp_cache[package][key][player[GMCP_KEY_GROUP_MEMBERS_NAME]][info];
+			// Let's first fetch a list of player names in our party from the cache,
+			// if they exist, so we could determine if someone had dropped out of the
+			// party and we need to update the cache and send to the client.
+			if (member(gmcp_cache[package], key) > 0 && sizeof(gmcp_cache[package][key])) {
+			    names = m_indices(gmcp_cache[package][key]);
+			}
 
-				    if (sent != cached) {
-					updated = 1;
-					gmcp_cache[package][key][player[GMCP_KEY_GROUP_MEMBERS_NAME]][info] = sent;
+			foreach (mapping player : gmcp[key]) {
+			    if (member(player, GMCP_KEY_GROUP_MEMBERS_NAME) > 0) {
+				// Remove this player from the balance of the names we were tracking.
+				// We'll check if any names are left at the end in our balance and if
+				// so we'll trigger an update to the client.
+				if (names && sizeof(names) && member(names, player[GMCP_KEY_GROUP_MEMBERS_NAME]) != -1) {
+				    names -= ({ player[GMCP_KEY_GROUP_MEMBERS_NAME] });
+				}
+
+				// If none of the players in the party exist, add this to the cache!
+				if (member(gmcp_cache[package], key) < 1) {
+				    updated = 1;
+
+				    gmcp_cache[package][key] = ([
+				      player[GMCP_KEY_GROUP_MEMBERS_NAME] : ([
+					GMCP_KEY_GROUP_MEMBERS_INFO_HP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_HP],
+					GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP],
+					GMCP_KEY_GROUP_MEMBERS_INFO_SP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_SP],
+					GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP],
+					GMCP_KEY_GROUP_MEMBERS_INFO_FP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_FP],
+					GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP],
+					GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL],
+					GMCP_KEY_GROUP_MEMBERS_INFO_HERE: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_HERE],
+				      ])
+				    ]);
+				} else if (member(gmcp_cache[package][key], player[GMCP_KEY_GROUP_MEMBERS_NAME]) < 1) {
+				    // If the player does not exist in the cache, add the player!
+				    updated = 1;
+
+				    gmcp_cache[package][key][player[GMCP_KEY_GROUP_MEMBERS_NAME]] = ([
+				      GMCP_KEY_GROUP_MEMBERS_INFO_HP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_HP],
+				      GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP],
+				      GMCP_KEY_GROUP_MEMBERS_INFO_SP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_SP],
+				      GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP],
+				      GMCP_KEY_GROUP_MEMBERS_INFO_FP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_FP],
+				      GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP],
+				      GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL],
+				      GMCP_KEY_GROUP_MEMBERS_INFO_HERE: player[GMCP_KEY_GROUP_MEMBERS_INFO][GMCP_KEY_GROUP_MEMBERS_INFO_HERE],
+				    ]);
+				} else {
+				    // Let's see if anything changed with this player
+				    foreach (string info : ({
+					GMCP_KEY_GROUP_MEMBERS_INFO_HP, GMCP_KEY_GROUP_MEMBERS_INFO_MAXHP,
+					GMCP_KEY_GROUP_MEMBERS_INFO_SP, GMCP_KEY_GROUP_MEMBERS_INFO_MAXSP,
+					GMCP_KEY_GROUP_MEMBERS_INFO_FP, GMCP_KEY_GROUP_MEMBERS_INFO_MAXFP,
+					GMCP_KEY_GROUP_MEMBERS_INFO_LEVEL,
+					GMCP_KEY_GROUP_MEMBERS_INFO_HERE })) {
+					mixed sent = player[GMCP_KEY_GROUP_MEMBERS_INFO][info];
+					mixed cached = gmcp_cache[package][key][player[GMCP_KEY_GROUP_MEMBERS_NAME]][info];
+
+					if (sent != cached) {
+					    updated = 1;
+					    gmcp_cache[package][key][player[GMCP_KEY_GROUP_MEMBERS_NAME]][info] = sent;
+					}
 				    }
 				}
 			    }
 			}
-		    }
 
-		    if (sizeof(names)) {
+			if (sizeof(names)) {
+			    updated = 1;
+
+			    // Delete names of party members who are no longer in the party from the cache.
+			    foreach (string name : names) {
+				m_delete(gmcp_cache[package][key], name);
+			    }
+			}
+
+			// This ends the block of code for the special handling of GMCP_KEY_GROUP_MEMBERS information 
+		    } else if (member(gmcp_cache[package], key) < 1) {
 			updated = 1;
+			gmcp_cache[package][key] = gmcp[key];
+		    } else {
+			mixed sent = gmcp[key];
+			mixed cached = gmcp_cache[package][key];
 
-			// Delete names of party members who are no longer in the party from the cache.
-			foreach (string name : names) {
-			    m_delete(gmcp_cache[package][key], name);
+			if (sent != cached) {
+			    updated = 1;
+			    gmcp_cache[package][key] = sent;
 			}
 		    }
 
-		    // This ends the block of code for the special handling of GMCP_KEY_GROUP_MEMBERS information 
-		} else if (member(gmcp_cache[package], key) < 1) {
-		    updated = 1;
-		    gmcp_cache[package][key] = gmcp[key];
-		} else {
-		    mixed sent = gmcp[key];
-		    mixed cached = gmcp_cache[package][key];
-
-		    if (sent != cached) {
-			updated = 1;
-			gmcp_cache[package][key] = sent;
-		    }
-		}
-
-		if (!result && !mappingp(result)) {
-		    result = ([ key: gmcp[key] ]);
+		    if (!result && !mappingp(result)) {
+			result = ([ key: gmcp[key] ]);
 #if 0
-		{
+		    {
 #endif
-		} else result[key] = gmcp[key];
+		    } else result[key] = gmcp[key];
+		}
 	    }
-	}
-    } else {
-	foreach (string key : keys) {
-	    if (member(gmcp, key) > 0) {
-		if (pointerp(gmcp[key]) || mappingp(gmcp[key])) {
-		    updated = 1;
-		    gmcp_cache[package][key] = gmcp[key];
-		} else {
-		    mixed sent = gmcp[key];
-		    mixed cached = gmcp_cache[package][key];
-
-		    if (sent != cached) {
+	} else {
+	    foreach (string key : keys) {
+		if (member(gmcp, key) > 0) {
+		    if (pointerp(gmcp[key]) || mappingp(gmcp[key])) {
 			updated = 1;
-			gmcp_cache[package][key] = sent;
-		    }
-		}
+			gmcp_cache[package][key] = gmcp[key];
+		    } else {
+			mixed sent = gmcp[key];
+			mixed cached = gmcp_cache[package][key];
 
-		if (!result && !mappingp(result)) {
-		    result = ([ key: gmcp[key] ]);
+			if (sent != cached) {
+			    updated = 1;
+			    gmcp_cache[package][key] = sent;
+			}
+		    }
+
+		    if (!result && !mappingp(result)) {
+			result = ([ key: gmcp[key] ]);
 #if 0
-		{
+		    {
 #endif
-		} else result[key] = gmcp[key];
+		    } else result[key] = gmcp[key];
+		}
 	    }
 	}
     }
-}
 
-return updated ? result : 0;
+    return updated ? result : 0;
 }
 
 /*
@@ -1158,52 +1161,55 @@ gmcp_message(string package, mixed value, int refresh) {
 
     // make sure it makes sense to send to this client
     if (interactive() && package && gmcp_enabled) {
+#if 0
+    }
+#endif
 #else
-	// in the case of External.Discord.Hello we need to reply while we are
-	// inside of the login object, so we're being more liberal with this
-	// check.  A smart way may be to include the set/query Env within
-	// the login object -Tamarindo (coding at 1am)
-	if (interactive() && package) {
+    // in the case of External.Discord.Hello we need to reply while we are
+    // inside of the login object, so we're being more liberal with this
+    // check.  A smart way may be to include the set/query Env within
+    // the login object -Tamarindo (coding at 1am)
+    if (interactive() && package) {
 #endif /* LOGIN_C */
-	    // validate value
-	    if (package != GMCP_PKG_CLIENT_GUI) {
-		switch (typeof(value))
-		{
-		case T_MAPPING:
-		    /* only string keys are valid */
-		    if (sizeof(filter(value, (:!stringp($1):)))) {
-			return 0;
-		    }
-		case T_POINTER:
-		case T_STRING:
-		case T_NUMBER:
-		case T_FLOAT:
-		    // Only send what has changed
-		    cache_value = gmcp_cache_filter(package, value);
-		    break;
-		    /* Invalid types */
-		case T_OBJECT:
-		case T_CLOSURE:
+	// validate value
+	if (package != GMCP_PKG_CLIENT_GUI) {
+	    switch (typeof(value))
+	    {
+	    case T_MAPPING:
+		/* only string keys are valid */
+		if (sizeof(filter(value, (:!stringp($1):)))) {
 		    return 0;
 		}
-
-		// Send only if the cache changed
-		if (refresh ? value : cache_value) {
-		    string json_serialized_value = json_encode(refresh ? value : cache_value);
-
-		    // send the client the value
-		    binary_message(({IAC, SB, TELOPT_GMCP}));
-		    binary_message(sprintf("%s %s", package, json_serialized_value));
-		    binary_message(({IAC, SE}));
-		}
-	    } else { // GMCP_PKG_CLIENT_GUI needs sent raw
-		binary_message(({IAC, SB, TELOPT_GMCP}));
-		binary_message(sprintf("%s %s", package, value));
-		binary_message(({IAC, SE}));
+	    case T_POINTER:
+	    case T_STRING:
+	    case T_NUMBER:
+	    case T_FLOAT:
+		// Only send what has changed
+		cache_value = gmcp_cache_filter(package, value);
+		break;
+		/* Invalid types */
+	    case T_OBJECT:
+	    case T_CLOSURE:
+		return 0;
 	    }
 
-	    return 1;
+	    // Send only if the cache changed
+	    if (refresh ? value : cache_value) {
+		string json_serialized_value = json_encode(refresh ? value : cache_value);
+
+		// send the client the value
+		binary_message(({IAC, SB, TELOPT_GMCP}));
+		binary_message(sprintf("%s %s", package, json_serialized_value));
+		binary_message(({IAC, SE}));
+	    }
+	} else { // GMCP_PKG_CLIENT_GUI needs sent raw
+	    binary_message(({IAC, SB, TELOPT_GMCP}));
+	    binary_message(sprintf("%s %s", package, value));
+	    binary_message(({IAC, SE}));
 	}
 
-	return 0;
+	return 1;
     }
+
+    return 0;
+}

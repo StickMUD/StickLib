@@ -375,13 +375,10 @@ tell_here_items_remove(object env, object removed) {
 */
 nomask void
 send_client_gui(object who) {
-    // if (who->query_real_name() != "tamjr") // temporary
     who->gmcp_message(GMCP_PKG_CLIENT_GUI, sprintf("%s\n%s",
         GMCP_KEY_CLIENT_GUI_VERSION, GMCP_VALUE_CLIENT_GUI_URL));
-    //else
-    //who->gmcp_message(GMCP_PKG_CLIENT_GUI, sprintf("%d\n%s",
-    //    GMCP_KEY_CLIENT_GUI_VERSION, GMCP_VALUE_CLIENT_GUI_URL_DEV));
 }
+
 /*
 **   Function: send_client_map
 **
@@ -401,6 +398,7 @@ send_client_map(object who) {
 
     who->gmcp_message(GMCP_PKG_CLIENT_MAP, client_map);
 }
+
 /*
 ** Function: send_core_ping
 **
@@ -467,6 +465,20 @@ send_core_goodbye(object who) {
     who->gmcp_message(GMCP_PKG_CORE_GOODBYE, "Goodbye, adventurer");
 }
 
+/*
+** Function: send_external_discord_info
+**
+** Returns: void
+**
+** Parameters:
+**
+**	object who
+**		The player object we intended to send the information.
+**
+** Purpose:
+**
+**	See https://wiki.mudlet.org/w/Standards:Discord_GMCP#External.Discord.Info
+*/
 nomask void
 send_external_discord_info(object who) {
     mapping external_discord_info = ([
@@ -477,11 +489,25 @@ send_external_discord_info(object who) {
     who->gmcp_message(GMCP_PKG_EXTERNAL_DISCORD_INFO, external_discord_info);
 }
 
+/*
+** Function: send_external_discord_status
+**
+** Returns: void
+**
+** Parameters:
+**
+**	object who
+**		The player object we intended to send the information.
+**
+** Purpose:
+**
+**	See https://wiki.mudlet.org/w/Standards:Discord_GMCP#External.Discord.Status
+*/
 nomask void
 send_external_discord_status(object who) {
     mapping external_discord_status = ([
 	GMCP_KEY_EXTERNAL_DISCORD_STATUS_GAME: GMCP_VALUE_EXTERNAL_DISCORD_STATUS_GAME,
-	GMCP_KEY_EXTERNAL_DISCORD_STATUS_STARTTIME: who->query(PLR_LOGIN_TIME), 
+	GMCP_KEY_EXTERNAL_DISCORD_STATUS_STARTTIME: who->query(PLR_LOGIN_TIME),
       ]);
 
     who->gmcp_message(GMCP_PKG_EXTERNAL_DISCORD_STATUS, external_discord_status);
