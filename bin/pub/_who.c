@@ -27,9 +27,9 @@ nomask status who_cmd(string arg)
     switch (arg)
     {
     case "q":
-	who = (string *)WHO_D->who_quick(TP, users()); 
-	TP->tell_me(sprintf("\nTotal of %d players visible to you:\n\n%s.", 
-	    sizeof(who), 
+	who = (string *)WHO_D->who_quick(TP, users());
+	TP->tell_me(sprintf("\nTotal of %d players visible to you:\n\n%s.",
+	    sizeof(who),
 	    implode(who, ", ", " and ")));
 	break;
     case "r":
@@ -87,7 +87,8 @@ nomask status who_cmd(string arg)
 	    TP->tell_me("Linkdead: "+implode(linkdead, ", ", " and "));
 	else
 	    TP->tell_me("No linkdead players.");
-    }         
+    }
+
     return 1;
 }
 

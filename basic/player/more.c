@@ -22,6 +22,7 @@ private int more_search(string str);
 
 #ifndef PLAYER_C
 varargs void tell_me(string s, status x);
+varargs void print_prompt(string prompt);
 #endif
 
 static private object more_caller;
@@ -136,9 +137,11 @@ n\tsearch for next occurrance of last r.e\n\
 	return;
     }
     if (SHOWLINE) {
-	printf("--More--(%d/%d)", more_line, more_last);
+	//printf("--More--(%d/%d)", more_line, more_last);
+	print_prompt(sprintf("--More--(%d/%d)", more_line, more_last));
     } else {
-	printf("--More--(%d%%)", more_line * 100 / more_last);
+	//printf("--More--(%d%%)", more_line * 100 / more_last);
+	print_prompt(sprintf("--More--(%d%%)", more_line * 100 / more_last));
     }
     input_to("even_more", 0);
 }
