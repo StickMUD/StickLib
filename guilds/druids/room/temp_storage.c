@@ -1,13 +1,12 @@
 #include <nroom.h>
 #include <areas.h>
-#include <mxp.h>
 
 void
 create_room()
 {
 	set_short("Workroom");
-	set_long(MXPTAG("B") +
-"This is a standard workroom. You do not usually "+ MXPTAG("/B") + "see any of these, except\
+	set_long(
+"This is a standard workroom. You do not usually see any of these, except\
  with new coders. Even the desk is empty. There is a note on the wall."
  );
 

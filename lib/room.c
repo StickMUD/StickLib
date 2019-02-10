@@ -28,7 +28,6 @@
 #include <client_defs.h>
 #include <npc_defs.h>
 #include <treasure_defs.h>
-#include <mxp.h>
 
 #define	TYPE_MONSTER	1
 #define	TYPE_OBJECT	2
@@ -175,10 +174,6 @@ query_exit_list(int mode)
 	{
 	    dirs = m_indices(Exits);
 
-//          for (i = 0; i < sizeof(dirs); i++) {
-//              dirs[i] = MXPTAG("Ex") + dirs[i] + MXPTAG("/Ex");
-//          }
-
 	    if (sizeof(Exits) == 1)
 		long_exit_list = sprintf("The only obvious exit is %s.", dirs[0]);
 	    else long_exit_list = sprintf("The obvious exits are %s.",
@@ -201,9 +196,6 @@ query_exit_list(int mode)
 		case "southeast": short_dirs[i] = "se"; break;
 		case "southwest": short_dirs[i] = "sw"; break;
 		}
-
-		// Let's MXP 12.25.2004 -Tamarindo
-		//short_dirs[i] = MXPTAG("Ex") + short_dirs[i] + MXPTAG("/Ex");
 	    }
 
 	    short_exit_list = efun::implode(short_dirs, ",");

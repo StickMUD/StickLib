@@ -11,8 +11,6 @@
 
 #include "/basic/misc/fstring.c"
 
-#include <mxp.h>
-
 #ifndef PLAYER_C
 
 #include "/basic/living/living_private.h"
@@ -126,87 +124,6 @@ void binmsg(string str, int flag)
     return;
 }
 
-/**
- * Comment
- *
- * @param player object
- * @param mxpEnabled int
- *
- * @return string
- */
-public nomask string
-process_mxp(string message, int mxpEnabled)
-{
-    int line = 0;
-    int length = 0;
-    int i = 0;
-    int inTag = 0;
-    int inEntity = 0;
-
-    string *original_lines = explode(message, "\n");
-    string *processed_lines = allocate(sizeof(original_lines));
-
-    for(line = 0; line < sizeof(original_lines); line++) {
-        processed_lines[line] = mxpEnabled ? MXPMODE(1) : "";
-
-        length = sizeof(original_lines[line]);
-
-        for(i = 0; i < length; i++) {
-            if (inTag) { /* in a tag, eg. <send> */
-                if (original_lines[line][i..i] == MXP_END) {
-                    inTag = 0;
-
-                    if (mxpEnabled) {
-                        processed_lines[line] += ">";
-                    }
-                } else if (mxpEnabled) { /* copy tag only when MXP mxpEnabled */
-                    processed_lines[line] += original_lines[line][i..i];
-                }
-            } else if (inEntity) { /* in a tag, eg. <send> */
-                if (mxpEnabled) { /* copy tag only when MXP mxpEnabled */
-                    processed_lines[line] += original_lines[line][i..i];
-                }
-
-                if (original_lines[line][i..i] == ";") {
-                    inEntity = 0;
-                }
-            } else {
-                if (original_lines[line][i..i] == MXP_BEG) {
-                    inTag = 1;
-
-                    if (mxpEnabled) {
-                        processed_lines[line] += "<";
-                    }
-                } else if (original_lines[line][i..i] == MXP_END) { /* should not get this case */
-                    processed_lines[line] += ">";
-                } else if (original_lines[line][i..i] == MXP_AMP) {
-                    inEntity = 1;
-
-                    if (mxpEnabled) {
-                        processed_lines[line] += "<";
-                    }
-                } else if (mxpEnabled) {
-                    if (original_lines[line][i..i] == "<") {
-                        processed_lines[line] += "&lt;";
-                    } else if (original_lines[line][i..i] == ">") {
-                        processed_lines[line] += "&gt;";
-                    } else if (original_lines[line][i..i] == "&") {
-                        processed_lines[line] += "&amp;";
-                    } else if (original_lines[line][i..i] == "\"") {
-                        processed_lines[line] += "&quot;";
-                    } else {
-                        processed_lines[line] += original_lines[line][i..i];
-                    }
-                } else { /* not MXP - just copy character */
-                    processed_lines[line] += original_lines[line][i..i];
-                }
-            }
-        }
-    }
-
-    return implode(processed_lines, "\n");
-}
-
 public varargs int tell_me(mixed str, mixed sense_list, mixed tell_flags,
          mixed me, mixed him, mixed it, int stat)
 {
@@ -301,12 +218,6 @@ public varargs int tell_me(mixed str, mixed sense_list, mixed tell_flags,
 
     // 23-Dec-12, Germ
     if (stat) CMD_D->tell_stats(name, str2, coder_level);
-
-    // Process MXP - Uncomment to use!
-#if 1
-    mxpEnabled = query_env("mxp") != 0 && query_env("mxp") == "enabled" ? 1 : 0;
-    str2 = process_mxp(str2, mxpEnabled);
-#endif
 
     if (j == TELL_TYPE_TELL && query_env("gmcp"))
         TELOPT_D->send_comm_channel_text(this_object(), "Tell", 0, str2);
