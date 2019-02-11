@@ -6,8 +6,8 @@
  * USERS NOTICE NO DIFFERENCE ANYHOW.
  *
  */
- 
-#include <room_defs.h> 
+
+#include <room_defs.h>
 #pragma combine_strings
 
 #if !defined(NO_INHERIT) && !defined(NROOM_NO_INHERIT)
