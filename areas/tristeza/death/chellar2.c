@@ -1,5 +1,5 @@
 /* Chamber of the Eternity */
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 
 void

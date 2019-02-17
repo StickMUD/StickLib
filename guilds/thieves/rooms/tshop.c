@@ -2,7 +2,7 @@ inherit "/lib/shop";
 #include "/areas/tristeza/DEFS.h"
 
 #define NROOM_NO_INHERIT
-#include <nroom.h>
+#include <room.h>
 
 #include <gender.h>
 #include <properties.h>

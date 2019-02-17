@@ -1,6 +1,6 @@
 #pragma strict_types
 #include <npc_defs.h>
-#include <nroom.h>
+#include <room.h>
 #include <guild.h>
 #include "dirs.h"
 

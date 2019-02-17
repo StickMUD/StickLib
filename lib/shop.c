@@ -18,7 +18,7 @@
 ****************************************************************/
 #pragma strict_types
 
-#include <nroom.h>
+#include <room.h>
 
 #include <generic_items.h>
 

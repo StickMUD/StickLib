@@ -1,5 +1,5 @@
 #include "../gardens.h"
-#include <nroom.h>
+#include <room.h>
 #include PRIEST_GARDENS "push_cmd.c"
 #include <guild.h>
 

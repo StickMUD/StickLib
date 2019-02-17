@@ -3,7 +3,7 @@
 	wedding and engagement rings.
 				- Minx Sept. 28, 1995           */
 
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include <generic_items.h>
 

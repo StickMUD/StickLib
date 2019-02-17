@@ -20,7 +20,7 @@ NEW:
 
 ***********************/
 
-#include <nroom.h>
+#include <room.h>
 
 #pragma strict_types
 

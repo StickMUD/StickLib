@@ -42,7 +42,7 @@
 //
 // 26-Sep-96 / Graah: Lords are level 25, not 20!
 
-#include <nroom.h>
+#include <room.h>
 #include <daemons.h>
 //#include <macros.h>
 #include <npc_defs.h>

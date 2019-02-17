@@ -2,7 +2,7 @@
  casino_es.c - magic green poker machine 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

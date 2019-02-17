@@ -1,14 +1,8 @@
-#ifndef _PIPEDEFS_H
-#define	_PIPEDEFS_H
-/* pipedefs.h */
+#ifndef _PIPE_DEFS_H
+#define	_PIPE_DEFS_H
 
 #include <smoke_defs.h>
 
-#ifndef	SMOKE_D
-#define	SMOKE_D	"/bin/daemons/smoked"
-#endif
-
-//#define PIPE_DIR   "/u/macleod/"
 #define DURATION        20
 
 #define ADDICTION       0
@@ -29,4 +23,4 @@
 
 #define	PIPE_FILE	"/std/obj/pipe"
 
-#endif
+#endif //_PIPE_DEFS_H

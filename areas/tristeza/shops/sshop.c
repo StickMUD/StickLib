@@ -1,6 +1,6 @@
 /* TOBACCO STORE - Coded by MacLeod */
 
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include <pipe_defs.h>
 #include "../DEFS.h"

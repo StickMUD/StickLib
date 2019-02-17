@@ -1,5 +1,5 @@
 /* Lobby of the Brotherhood vs. Lords */
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #define PASSWORD "keblghmn"
 #define TP this_player()

@@ -27,7 +27,7 @@
 
 #pragma strict_types
 
-#include <nroom.h>
+#include <room.h>
 
 #include <criminal.h>
 #include <city_name.h>

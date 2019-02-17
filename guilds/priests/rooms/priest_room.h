@@ -1,2 +1,2 @@
 #include "../priest.h"
-#include <nroom.h>
+#include <room.h>

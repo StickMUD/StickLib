@@ -12,7 +12,7 @@
 *	27-aug-98, Doomdark: Modified for StickLib.		*
 ****************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include <city_name.h>
 #include <generic_items.h>

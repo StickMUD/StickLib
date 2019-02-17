@@ -1,5 +1,5 @@
 /* The finale : Death has summoned the players */
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #define CHURCH	"/room/church"
 #define VOID	"/room/void"

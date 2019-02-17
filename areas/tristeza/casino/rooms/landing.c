@@ -2,7 +2,7 @@
  landing.c -  stairway landing 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include <door_defs.h>
 #include "../casino.h"
 

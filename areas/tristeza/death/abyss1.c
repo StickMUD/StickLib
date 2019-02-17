@@ -1,5 +1,5 @@
 /* The Abyss */
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 
 void

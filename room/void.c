@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 
 status
 church()

@@ -6,11 +6,12 @@
 int
 shop_open()
 {
-    if ( !present("boris", this_object()) )
+    if (!present("boris", this_object()))
     {
 	notify_fail("The shopkeeper is not here.\n");
 	return 0;
     }
+
     return 1;
 }
 
@@ -24,19 +25,17 @@ create_shop()
     set_short("Weaponsmith's shop");
     set_long("You are in the shop of the United Weaponsmiths of "
       + CITY_NAME+". A plaque hangs on the wall. You can also ask Boris to\
- 'sharpen' or 'mend' "+"or 'fix' a weapon, or have an 'offer' of its  cost.");
+ 'sharpen' or 'mend' or 'fix' a weapon, or have an 'offer' of its cost.");
     set_exits(([ "north" : AREA_TRISTEZA+"virtual/S3_7" ]));
     set_light_level(LT_LIGHTS);
     set_commands(([
 	"sharpen" : "check_weapon",
-	"sharp"   : "check_weapon",
-	"mend"	   : "check_weapon",
-	"fix"	   : "check_weapon",
-	"offer"   : "check_weapon",
+	"sharp" : "check_weapon",
+	"mend" : "check_weapon",
+	"fix" : "check_weapon",
+	"offer" : "check_weapon",
       ]));
-    // add_monster(AREA_TRISTEZA + "npc/guard_lieutenant",
-    //  "Guard Lieutenant arrives.", 1);
-    // add_monster(AREA_TRISTEZA+"npc/guard_captain", "Guard Captain arrives.", 1);
+
     add_monster( ({ AREA_TRISTEZA+"npc/shopkeeper",
 	({ "set_name", "Boris" }),
 	({ "set_gender", G_MALE }),
@@ -82,7 +81,7 @@ check_weapon(string str)
     }
     if (what->query_blunt()) {
 	this_player()->tell_me("Cannot sharpen "+wname
-	  + ", it's a blunt weapon.");
+	  + ", it is a blunt weapon.");
 	return 1;
     }
     if (!what->query_bluntness()) {

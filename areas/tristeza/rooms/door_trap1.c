@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <door_defs.h>
 #include <areas.h>
 #define TP this_player()

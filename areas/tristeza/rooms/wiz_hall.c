@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include <coder_levels.h>
 #include <generic_npcs.h>

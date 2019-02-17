@@ -16,7 +16,7 @@ home
 
 */
 
-#include <nroom.h>
+#include <room.h>
 
 #include "thief.h"
 #include <weapon_defs.h>

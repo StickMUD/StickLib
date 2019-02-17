@@ -1,6 +1,6 @@
 /* Secret Tunnels of the Thieves */
 #include <areas.h>
-#include <nroom.h>
+#include <room.h>
 #include <door_defs.h>
 #include <guild.h>
 #include <areas.h>

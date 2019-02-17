@@ -1,6 +1,6 @@
 /* Link Death's workroom */
 /* New version */
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #define TP this_player()
 #define CHURCH "/room/church"

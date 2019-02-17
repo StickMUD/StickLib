@@ -2,7 +2,7 @@
  casino_en.c - magical blue poker machine (vidpoker1) 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

@@ -1,6 +1,6 @@
 /* Storage for enforcers/GMs only */
 
-#include <nroom.h>
+#include <room.h>
 #include <bboard_defs.h>
 #include <generic_items.h>
 #include <guild.h>

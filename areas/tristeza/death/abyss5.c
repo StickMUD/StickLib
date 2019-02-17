@@ -1,6 +1,6 @@
 /* The Abyss */
 /* Rewards and finale of the Quest */
-#include <nroom.h>
+#include <room.h>
 #include <daemons.h>
 #include <quests.h>
 #include <areas.h>

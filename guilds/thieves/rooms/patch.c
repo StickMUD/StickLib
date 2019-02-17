@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <room_defs.h>
 #include "dirs.h"
 

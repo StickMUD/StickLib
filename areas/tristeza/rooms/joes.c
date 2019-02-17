@@ -1,6 +1,6 @@
 // EAT AT JOE'S!
 
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 
 object ob;

@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <armour_defs.h>
 #include <areas.h>
 #include <daemons.h>

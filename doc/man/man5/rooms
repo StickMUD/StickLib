@@ -3,7 +3,7 @@ NAME
 
 DESCRIPTION
 
-	#include <nroom.h>
+	#include <room.h>
 
 	/room/room.c
 

@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 void create_room() {
     set_short("A path leading behind the church");
     set_long(

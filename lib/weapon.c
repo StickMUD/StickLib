@@ -17,6 +17,7 @@
 
 #include <conditions.h>
 #include <curse.h>
+#include <daemons.h>
 #include <weapon_defs.h>
 #include <attack.h>
 #include <living_defs.h>

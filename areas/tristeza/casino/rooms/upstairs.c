@@ -2,7 +2,7 @@
  upstairs.c - poker room 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include <door_defs.h>
 #include <room_defs.h>

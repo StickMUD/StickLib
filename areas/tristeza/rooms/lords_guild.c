@@ -18,7 +18,7 @@
 //
 // 26-Sep-96 / Graah: Level 25 is the new 1st Lord level!
 
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include <quests.h>
 #include <daemons.h>

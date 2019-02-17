@@ -1,5 +1,5 @@
 #include "../DEFS.h"
-#include <nroom.h>
+#include <room.h>
 
 #define EXIT_LIST ({ \
       "north", "south", "east", "west", \

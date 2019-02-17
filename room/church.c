@@ -5,7 +5,7 @@
 **  -Tamarindo
 */
 
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include <daemons.h>
 #include <city_name.h>

@@ -1,7 +1,7 @@
 /* death_room.c */
 /* Mrpr 901119 */
 /* Graah 941123 (!) */
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 
 #define WRITE(x) players[j]->tell_me(x)

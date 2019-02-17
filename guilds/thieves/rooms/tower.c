@@ -1,5 +1,5 @@
 
-#include <nroom.h>
+#include <room.h>
 
 #include <guild.h>
 

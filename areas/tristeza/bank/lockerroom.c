@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include "locker_defs.h"
 
 int booted;

@@ -1,6 +1,6 @@
 // Version 1.0 29-sep-95 by Doomdark. To be used by _virtual_ Main Town
 
-#include <nroom.h>
+#include <room.h>
 #include <npc_defs.h>
 #include <treasure_defs.h>
 #include <city_name.h>

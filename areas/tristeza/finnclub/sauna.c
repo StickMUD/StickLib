@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 
 #include <disease_defs.h>
 

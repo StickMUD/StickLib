@@ -2,7 +2,7 @@
  casino_ws.c - Lordly slot machine (slot3) 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

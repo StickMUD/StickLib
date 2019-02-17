@@ -1,5 +1,5 @@
 
-#include <nroom.h>
+#include <room.h>
 #include <npc_defs.h>
 #ifdef LIV_OK_TO_PK
 #undef LIV_OK_TO_PK

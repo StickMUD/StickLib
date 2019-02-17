@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include "../DEFS.h"
 
 #define TP this_player()

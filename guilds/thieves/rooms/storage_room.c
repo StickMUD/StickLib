@@ -1,7 +1,7 @@
 // 29-Aug-96 / Graah: Doesn't accept crap any more.
 //		      However, it DOES accept poisoned things and thief
 //		      stuff such as lockpicks.
-#include <nroom.h>
+#include <room.h>
 
 #define MAX_AT_ONCE 5
 #define MAX_LISTED  100

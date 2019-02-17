@@ -6,7 +6,7 @@
 /* */
 /* starbyt 151093 */
 
-#include <nroom.h>
+#include <room.h>
 
 mapping cards;
 int card_count;

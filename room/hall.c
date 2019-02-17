@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <mud_name.h>
 #include <bboard_defs.h>
 #include <generic_rooms.h>

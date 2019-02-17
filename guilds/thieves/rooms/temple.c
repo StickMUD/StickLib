@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <corpse_defs.h>
 #include "/areas/tristeza/DEFS.h"
 

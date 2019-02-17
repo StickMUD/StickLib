@@ -2,7 +2,7 @@
  casino_nc.c - Baccarat table 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

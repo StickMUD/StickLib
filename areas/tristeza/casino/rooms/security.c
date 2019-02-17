@@ -8,7 +8,7 @@
 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include <key_defs.h>
 #include "../casino.h"
 

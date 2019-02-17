@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <macros.h>
 #include <conditions.h>
 #include <door_defs.h>

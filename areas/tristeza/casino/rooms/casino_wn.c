@@ -2,7 +2,7 @@
  casino_wn.c - goblinoid slot (slot1.c) 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

@@ -1,5 +1,5 @@
 
-#include <nroom.h>
+#include <room.h>
 #include "weddings.h"
 inherit "basic/misc/emote";   
 #define TP this_player()

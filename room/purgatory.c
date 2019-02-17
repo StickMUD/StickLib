@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 
 #define	SHOP	(AREA_TRISTEZA+"shops/shop")

@@ -12,7 +12,7 @@
 
 // Change approved 10-jul-95 by Doomdark.
 
-#include <nroom.h>
+#include <room.h>
 #include <drink_defs.h>
 #include <criminal.h>
 

@@ -2,7 +2,7 @@
  casino_s.c - Wheel of fortune
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

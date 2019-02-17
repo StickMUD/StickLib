@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include "weddings.h"
 
 #define TP this_player()

@@ -24,7 +24,7 @@
 
 #include "/sys/configuration.h"
 
-#include <nroom.h>
+#include <room.h>
 #include <player_defs.h>
 #include <daemons.h>
 #include <virtual_defs.h>
@@ -53,7 +53,7 @@ private status moving_flag;      // 1 if players moves with special command.
 
 private status read;             // 1 if special description has been read.
 
-int X, Y, Z;                     // Coordinates of this room.
+int X, Y;                        // Coordinates of this room.
 static int virtualFlags;         // Used to hold some useful info
 
 /**
@@ -326,7 +326,7 @@ get_server()
  * create function.
  **/
 nomask static void
-create_room() 
+create_room()
 {
     mixed  *tmp;
 
@@ -598,7 +598,7 @@ add_virtual_exit(string dir, int x, int y) {
 nomask status
 set_random_desc(string *list)
 {
-    if(!pointerp(list)) return 0;
+    if (!pointerp(list)) return 0;
 
     set_long(list[random(sizeof(list))]);
 
@@ -618,13 +618,12 @@ set_random_desc(string *list)
 nomask status
 set_hb(int i)
 {
-    if(i < 0 || i > 2) return 0;
+    if (i < 0 || i > 2) return 0;
 
     if (i) {
 	virtualFlags |= (F_VIRTUAL_HB_ENABLED | F_VIRTUAL_HB_ON);
     } else {
 	virtualFlags &= (~(F_VIRTUAL_HB_ENABLED | F_VIRTUAL_HB_ON));
-	;
     }
 
     return 1;

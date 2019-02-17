@@ -2,7 +2,7 @@
  casino_se.c - magical red poker machine 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

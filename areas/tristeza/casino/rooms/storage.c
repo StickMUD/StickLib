@@ -2,7 +2,7 @@
  storage.c - casino storage room 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 
 void

@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <invis_levels.h>
 #include <conditions.h>
 #include <living_defs.h>

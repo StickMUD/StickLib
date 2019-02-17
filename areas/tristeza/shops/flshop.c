@@ -1,7 +1,7 @@
 /* flshop.c */
 /* Oletko halunnut olla kukkakauppias? */
 
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include <generic_items.h>
 #include <generic_npcs.h>

@@ -1,4 +1,4 @@
-#include <nroom.h>
+#include <room.h>
 #include <generic_rooms.h>
 #include <generic_items.h>
 

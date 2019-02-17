@@ -4,7 +4,7 @@
  * Check usage from /room/race_guild.c
  */
 
-/* #include <nroom.h> if needed */
+/* #include <room.h> if needed */
 
 string *seq;
 int seq_count;

@@ -1,6 +1,6 @@
 #include "defs.h"
 
-#include <nroom.h>
+#include <room.h>
 
 void
 create_room()

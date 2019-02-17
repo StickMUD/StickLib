@@ -205,7 +205,7 @@
 
    #include <virtual_room.h>
 
- This room is compatible with nroom.h with some changes:
+ This room is compatible with room.h with some changes:
 
    create_room() is called create_virtual()
    reset_room()  is called reset_virtual()

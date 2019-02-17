@@ -2,7 +2,7 @@
  casino_nw.c - Ancient slot machine (slot2) 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

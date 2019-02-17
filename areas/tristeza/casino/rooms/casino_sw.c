@@ -2,7 +2,7 @@
  casino_sw.c - Guild slot machine (slot4) 
 *********************************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../casino.h"
 #include "stealing.h"
 

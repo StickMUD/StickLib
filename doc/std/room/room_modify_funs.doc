@@ -1,7 +1,7 @@
 /****************************************************************
 *								*
 * Document:	room modifying functions.			*
-* Relates to:	/lib/room.c; used by #include <nroom.h>		*
+* Relates to:	/lib/room.c; used by #include <room.h>		*
 * Version:	Version 2.04					*
 * Last update:	Last update 17-Jul-96 by Graah.			*
 * Description:	Describes how rooms are set up, and lists	*
@@ -44,7 +44,7 @@ DESCRIPTION:	Set specified condition for the room.
 		instead of just one! (for example, ROOM_WD)!
 
 ARGUMENT(int):	The condition to set. These are defined in
-		/include/room_defs.h; nroom.h automatically
+		/include/room_defs.h; room.h automatically
 		includes these defined values, so use them
 		instead of straight integers.
 

@@ -26,7 +26,7 @@ For example there might be a room that looked like this:
 /* A small room in which the door.c is used. */
 #include <door_defs>
 /* Defines for example DOOR_FILE & KEY_FILE. */
-#include <nroom.h>
+#include <room.h>
 /* Standard room that should be used (instead of inheritting /room/room.c). */
 
 void create_room() {

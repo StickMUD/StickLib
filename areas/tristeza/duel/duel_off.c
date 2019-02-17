@@ -6,7 +6,7 @@
  AUTHOR:  Tron
  *********************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "dueld.h"
 #include <areas.h>
 

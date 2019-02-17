@@ -1,7 +1,7 @@
 /****************************************************************
 *								*
 * Document:	SSF.doc						*
-* Relates to:	/obj/living.c,/lib/room.c (<nroom.h>		*
+* Relates to:	/obj/living.c,/lib/room.c (<room.h>		*
 * Version:	Version 1.0a					*
 * Updates:      Updated 03-sep-96 by Doomdark			*
 * Description:	Describes how messages are to be given to living*

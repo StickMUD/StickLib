@@ -1,5 +1,5 @@
 // Entrance to Finland is now here! Graah 23-Jun-96
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include "../DEFS.h"
 

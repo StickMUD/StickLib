@@ -1,7 +1,7 @@
 // This tunnel leads to a crypt and out of the priest guild. Do not tell
 // anything about this to the priests!
 
-#include <nroom.h>
+#include <room.h>
 #include <guild.h>
 #include "../DEFS.h"
 

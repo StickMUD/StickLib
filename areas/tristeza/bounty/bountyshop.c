@@ -7,7 +7,7 @@
  AUTHOR:  Tron
  *********************************************************/
 
-#include <nroom.h>
+#include <room.h>
 #include "../DEFS.h"
 #define SAVE AREA_TRISTEZA "bounty/bounty_save"
 

@@ -1,6 +1,6 @@
 #include "/sys/configuration.h"
 
-#include <nroom.h>
+#include <room.h>
 #include <areas.h>
 #include <generic_items.h>
 
