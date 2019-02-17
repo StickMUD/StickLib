@@ -69,7 +69,6 @@ string msgin, msgout, mmsgout, mmsgin;	//Msgs when arriving and leaving
 #include <daemons.h>
 #include <conditions.h>
 #include <tell_me.h>
-#include <client_defs.h>
 
 static object *hunted;
 static object *attacker;
@@ -468,19 +467,6 @@ to hit %s back!", my_name, Possessive()));
 
 	    if (x)
 		print_items(this_object(), inv);
-	}
-    }
-
-
-    if (z == TELL_RETURN_CLIENT_IN_USE) {
-	if (z = (string) environment()->query(ROOM_SHORT_EXIT_LIST)) {
-	    tell_object(this_object(), sprintf(
-		CLIENT_TAG_BEGIN CLIENT_TAG_EXITS " %s" CLIENT_TAG_END
-		CLIENT_TAG_BEGIN CLIENT_TAG_NEGATE CLIENT_TAG_RDESC CLIENT_TAG_END, z));
-	} else {
-	    tell_object(this_object(),
-	      CLIENT_TAG_BEGIN CLIENT_TAG_EXITS CLIENT_TAG_END
-	      CLIENT_TAG_BEGIN CLIENT_TAG_NEGATE CLIENT_TAG_RDESC CLIENT_TAG_END);
 	}
     }
 

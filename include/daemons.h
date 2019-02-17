@@ -20,6 +20,7 @@
 #define FINGER_D        "/bin/daemons/fingerd"
 #define FINGER_D2       "/bin/daemons/finger_d"
 #define FUMBLE_D        "/bin/daemons/fumbled"
+#define GRAPEVINE_D     "/secure/grapevine_d"
 #define GROUP_D         "/bin/daemons/groupd"
 #define GUILD_D         "/bin/daemons/guildd"
 #define HALLU_D         "/bin/daemons/hallucinations"
@@ -39,6 +40,7 @@
 #define SMOKE_D         "/bin/daemons/smoked"
 #define TIMEZONE_D      "/bin/daemons/timezone_d"
 #define TELOPT_D        "/bin/daemons/telopt_d"
+#define TWITTER_D       "/secure/twitter_d"
 #define UNIQUE_D        "/bin/daemons/uniqued"
 #define WHO_D           "/bin/daemons/who_d"
 

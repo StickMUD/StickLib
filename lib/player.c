@@ -40,7 +40,6 @@ inherit LIVING_FILE;
 #include <tell_me.h>
 #include <race.h>
 #include <stats.h>
-#include <client_defs.h>
 #include <areas.h>
 #include <generic_rooms.h>
 #include <guild.h>
@@ -105,7 +104,6 @@ int dump_esc(string s);
 status query_can_quit();
 int listen_shout(int x);
 int save_character();
-mixed do_client_command(string a, string b);
 
 // Banish server
 #define LOGIN_OBJECT  "secure/login"
@@ -164,7 +162,6 @@ static int hp_delay, sp_delay, fp_delay;
 // Static count-down variables.
 static closure _busy;		// Closure set by guild objects.
 static int allow_shadow;       // Do we allow shadowing?
-static int _value_plr_client;	// Client we are using, if any
 
 // NEW! Global arrays; note that AmyGD does _NOT_ allocate separate array
 // for all instances but uses same one, and only gives pointer to it... neat!
@@ -209,7 +206,6 @@ private static int *_charset = ({
 #else
 #include "/basic/player/attack_new.c"
 #endif
-#include "/basic/player/client.c"
 
 /****************************************************************
 *								*
@@ -965,7 +961,7 @@ initialize(string str, string passwd, int passtime,
 	    // -Tamarindo
 	    if (member(gmcp_cache, GMCP_PKG_CORE_HELLO) > 0 &&
 	      member(gmcp_cache[GMCP_PKG_CORE_HELLO], GMCP_KEY_CORE_HELLO_CLIENT) > 0 &&
-	      gmcp_cache[GMCP_PKG_CORE_HELLO][GMCP_KEY_CORE_HELLO_CLIENT] == "Mudlet") {
+	      member(GMCP_CLIENT_LIST_IAC_GA, gmcp_cache[GMCP_PKG_CORE_HELLO][GMCP_KEY_CORE_HELLO_CLIENT])) {
 		set_prompt_iacga(1);
 	    }
 	} else {
@@ -984,11 +980,10 @@ initialize(string str, string passwd, int passtime,
 		j = TELL_MIN_Y;
 	    set_env("rows", j);
 	}
+
 	if (i || j) {
 	    tell_me(sprintf("DEBUG: Screen size set to %d x %d.",i,j));
 	}
-
-	i = set_client(attrs["client"]);
     }
 
     // move to start here
@@ -1183,10 +1178,6 @@ initialize(string str, string passwd, int passtime,
 	//TELOPT_D->send_comm_channel_list(this_object());
 	TELOPT_D->send_char_items_list(this_object(), "inv");
 	TELOPT_D->send_client_gui(this_object());
-    }
-
-    if (_value_plr_client == CLIENT_MURDER) {
-	PRINT_INV
     }
 }
 

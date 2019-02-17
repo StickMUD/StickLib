@@ -32,7 +32,6 @@
 #include <player_defs.h>
 #include <guild.h>
 #include <tell_me.h>
-#include <client_defs.h>
 #include <tune.h>
 #include <generic_items.h>
 #include <corpse_defs.h>

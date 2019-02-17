@@ -26,9 +26,6 @@
 *   level 24.							*
 * - In-built commands now handled through closures; much more	*
 *   efficient!							*
-* 10-Jan-98, Doomdark: Added support for client-originated	*
-*	commands. They look much like HTML-tags; <SET xxx=yyy>	*
-*	and so on.						*
 *								*
 ****************************************************************/
 
@@ -62,7 +59,6 @@ private static mapping InbuiltCmds;
 #include "/basic/player/rsay.c"
 #include "/basic/player/desc.c"
 
-//static object guild_object;
 static mapping guild_commands;
 int coder_level;
 
@@ -72,8 +68,6 @@ int query(int x);
 varargs void tell_me(string s, status a, status b);
 status save_character();
 string get_env(string s);
-//void set_env(string s, mixed x);
-mixed do_client_command(string cmd, string arg);
 
 #endif
 #endif
@@ -178,26 +172,7 @@ command_driver(string arg)
 		arg = sprintf("%s %s", verb[1..<1], arg);
 	    else arg = verb[1..<1];
 	verb = "emote";
-	/* NEW! Client may use special html-attribute-like commands; they begin
-	 * with '<'. Of course, player might manually use it all by him/herself too
-	 * but it's mainly tailored for client-programs' needs
-	 */
-    } else if (i == '<') do {
-	    if (arg) {
-		if (arg[<1] != '>')
-		    break;
-		arg = arg[0..<2];
-	    } else {
-		if (verb[<1] != '>')
-		    break;
-		verb = verb[0..<2];
-	    }
-	    // Ok, now we're sure to have a client-command!
-	    x = do_client_command(verb[1..], arg);
-	    if (stringp(x))
-		tell_me(x, 0, 0, 0, 0, 0);
-	    return 1;
-	} while (0);
+    }
 
     // New: Guild commands!
 

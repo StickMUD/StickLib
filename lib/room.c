@@ -25,7 +25,6 @@
 #include <player_defs.h>
 #include <sound.h>
 #include <tell_me.h>
-#include <client_defs.h>
 #include <npc_defs.h>
 #include <treasure_defs.h>
 
@@ -848,9 +847,10 @@ reset()
 		    move_object(ob, this_object());
 
 		    // Let's send GMCP to clients that are interested to know the room may have updated.
-		    foreach (object entity : all_inventory(this_object()))
+		    foreach (object entity : all_inventory(this_object())) {
 		    if (entity->query(LIV_IS_PLAYER) && entity->query_env("gmcp"))
 			TELOPT_D->send_char_items_add(entity, "room", ob);
+		    }
 
 		    room_residents[j][INDEX_OBJECT] = ob;
 		    if (stringp(tmp[INDEX_MSG]))

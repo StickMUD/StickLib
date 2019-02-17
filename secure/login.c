@@ -27,8 +27,6 @@
 #include <mchar.h>
 #include <mud_name.h>
 #include <tell_me.h>
-#include <client_defs.h>
-#include <player_defs.h>
 #include <player_defs.h>
 #include <generic_rooms.h>
 #include <config.h>
@@ -39,11 +37,7 @@
 #include "/basic/player/telopt.c"
 #include "/basic/player/prompt.c"
 
-private static int _value_plr_client;	// Client he/she is using, if any
-
 int set_env(mixed value, mixed arg);
-
-#include "/basic/player/client.c"
 
 #define TELL_ME(x)      tell_object(this_object(),(x))
 #define LOGIN_GUEST     "std/obj/guest"
@@ -274,16 +268,7 @@ catch_it(string txt)
 	return;
     }
 
-    /* First we'll check if the client wants to communicate with us. Possible. */
-    if (txt && txt[0] == '<') {
-	sscanf(txt, "<%s%t%s>", txt, args);
-	s = do_client_command(txt, args);
-	if (stringp(s))
-	    tell_me(s);
-	input_to("catch_it", _input_mode);
-    } else {
-	call_other(this_object(), _func_name, txt);
-    }
+    call_other(this_object(), _func_name, txt);
 }
 
 /*********************************
@@ -341,9 +326,6 @@ login_connect()
 	    attrs["window_x"] = _window_x;
 	    attrs["window_y"] = _window_y;
 	}
-
-	if (_value_plr_client)
-	    attrs["client"] = _value_plr_client;
 
 	if (gmcp_cache) {
 	    attrs["gmcp_cache"] = gmcp_cache;
@@ -410,7 +392,7 @@ logon(string msg) {
 	// -Tamarindo
 	if (gmcp_cache && member(gmcp_cache, GMCP_PKG_CORE_HELLO) > 0 &&
 	  member(gmcp_cache[GMCP_PKG_CORE_HELLO], GMCP_KEY_CORE_HELLO_CLIENT) > 0 &&
-	  gmcp_cache[GMCP_PKG_CORE_HELLO][GMCP_KEY_CORE_HELLO_CLIENT] == "Mudlet") {
+	  member(GMCP_CLIENT_LIST_IAC_GA, gmcp_cache[GMCP_PKG_CORE_HELLO][GMCP_KEY_CORE_HELLO_CLIENT])) {
 	    set_prompt_iacga(1);
 	}
 

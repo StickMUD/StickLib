@@ -1,6 +1,8 @@
-
 #ifndef GMCP_DEFS_H
 #define GMCP_DEFS_H
+
+// This is used in the login and player objects.
+#define GMCP_CLIENT_LIST_IAC_GA                         ({"Mudlet", "Grapevine"})
 
 #define GMCP_PKG_CLIENT_GUI                             "Client.GUI"
 #define GMCP_KEY_CLIENT_GUI_VERSION                     "1"
