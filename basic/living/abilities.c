@@ -35,6 +35,7 @@ static int nextStatCheck; // Timer; used for efficiency. Tells when to
 #include "/basic/living/living_private.h"
 #include <race.h>
 #include <stats.h>
+#include <daemons.h>
 
 static int max_sp, max_hp, max_fp;
 int hit_point, spell_points, fatigue_points;
@@ -101,9 +102,6 @@ set_stat(int st, int value)
 	    Fatigue = max_Fatigue = value; // Sumppen 25.06.96
 	else
 	    Fatigue = value;
-	/*
-	    max_fp = 60 + Fatigue * query_race_stat(RACE_FP_RATE);
-	*/
 	return Fatigue;
     case ST_BASE_STR:
 	return (max_Str = value);
@@ -113,8 +111,6 @@ set_stat(int st, int value)
 	return (max_Con = value);
     case ST_BASE_DEX:
 	return (max_Dex = value);
-	/*  case ST_BASE_FAT:
-	    return (max_Fatigue = value); */
     }
 
     return 0;
@@ -224,30 +220,30 @@ add_stat(int stat, int delta, int duration, object item)
 	if (duration <= 0) {
 	    switch (stat) {
 	    case ST_STR:
-		return set_stat(ST_STR, Str + delta); 
+		return set_stat(ST_STR, Str + delta);
 	    case ST_INT:
-		return set_stat(ST_INT, Int + delta); 
+		return set_stat(ST_INT, Int + delta);
 	    case ST_CON:
-		return set_stat(ST_CON, Con + delta); 
+		return set_stat(ST_CON, Con + delta);
 	    case ST_DEX:
-		return set_stat(ST_DEX, Dex + delta); 
+		return set_stat(ST_DEX, Dex + delta);
 	    case ST_FAT:
 		return set_stat(ST_FAT, Fatigue + delta);
 	    case ST_BASE_STR:
 		set_stat(ST_BASE_STR, max_Str + delta);
-		return set_stat(ST_STR, Str + delta); 
+		return set_stat(ST_STR, Str + delta);
 	    case ST_BASE_INT:
 		set_stat(ST_BASE_INT, max_Int + delta);
-		return set_stat(ST_INT, Int + delta);  
+		return set_stat(ST_INT, Int + delta);
 	    case ST_BASE_CON:
-		set_stat(ST_BASE_CON, max_Con + delta); 
-		return set_stat(ST_CON, Con + delta); 
+		set_stat(ST_BASE_CON, max_Con + delta);
+		return set_stat(ST_CON, Con + delta);
 	    case ST_BASE_DEX:
-		set_stat(ST_BASE_DEX, max_Dex + delta); 
-		return set_stat(ST_DEX, Dex + delta); 
+		set_stat(ST_BASE_DEX, max_Dex + delta);
+		return set_stat(ST_DEX, Dex + delta);
 	    case ST_BASE_FAT:
-		set_stat(ST_BASE_FAT, max_Fatigue + delta); 
-		return set_stat(ST_FAT, Fatigue + delta); 
+		set_stat(ST_BASE_FAT, max_Fatigue + delta);
+		return set_stat(ST_FAT, Fatigue + delta);
 	    }
 	    return 0;
 
@@ -517,6 +513,12 @@ update_stats()
 	}
     }
     if (s) tell_me(s);
+
+    if ((liv_Flags & F_LIV_IS_PLAYER) && this_object()->query_env("gmcp")) {
+	TELOPT_D->send_char_vitals(this_object());
+        TELOPT_D->send_char_stats(this_object());
+        TELOPT_D->send_char_maxstats(this_object());
+    }
 }
 
 // Abilities as arrays (as they should have been ages ago)

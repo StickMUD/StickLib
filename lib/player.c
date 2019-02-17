@@ -1628,17 +1628,22 @@ heart_beat()
 	//TELOPT_D->send_char_session_training(this_object());
     }
 
-    if (query(PLR_HPSP_REPORT_ON)) {
-	if (hit_point != last_hp || spell_points != last_sp
-	  || fatigue_points != last_fp){
-	    last_hp = hit_point;
-	    last_fp = fatigue_points;
-	    last_sp = spell_points;
+    if (hit_point != last_hp || spell_points != last_sp
+      || fatigue_points != last_fp) {
+	last_hp = hit_point;
+	last_fp = fatigue_points;
+	last_sp = spell_points;
+
+	if (query(PLR_HPSP_REPORT_ON)) {
 	    tell_me(sprintf("< HP %d/%d | SP %d/%d "+
 		"| FP %d/%d >\n",
 		hit_point, max_hp,
 		spell_points, max_sp,
 		fatigue_points, max_fp), TELL_NO_WRAP);
+	}
+
+	if (query_env("gmcp")) {
+	    TELOPT_D->send_char_vitals(this_object());
 	}
     }
 
