@@ -1,19 +1,19 @@
-#include <scroll.h>
+#include <treasure.h>
+
+mixed *data;
 
 void
-create_scroll()
+create_treasure()
 {
     set_name("parchment scroll");
     set_short("Parchment Scroll");
     set_id(({ "parchment", "scroll" }));
-    //set_long("There is some writing on this scroll, perhaps you should read it?");
     set_long("It is a scroll which allows you to enchant an armour. "
              "Small print says: You can only enchant an armour once. "
              "Might not work for armour that is already enchanted.");
     set_read("It is a scroll which allows you to enchant an armour. "
              "Small print says: You can only enchant an armour once. "
              "Might not work for armour that is already enchanted.");
-    set_scroll_commands ("begin_invoke", "end_invoke");
 
     set_value(800);
 }

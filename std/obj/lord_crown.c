@@ -350,18 +350,18 @@ to use string \"" + badstrs[i] + "\" on lord channel.");
 		switch(x) {
 	    case -1: continue; break;
 	    case  1: ob[i]->tell_me("Ok.");break;
-	    default: ob[i]->tell_me(str, TELL_TYPE_LORD_CHANNEL); break;
+	    default: ob[i]->tell_me(str, TELL_TYPE_LORD); break;
 	    }
 	    else
 	    if (!isolated)
-		ob[i]->tell_me(str, TELL_TYPE_LORD_CHANNEL);
+		ob[i]->tell_me(str, TELL_TYPE_LORD);
     }
 
     // Filter out some garbage
 
     if ((member(({ "hello", "hi", "bye", "hiya", "greetings",
 	    "moi", "re" }), tmp) < 0) && !isolated)
-	log_file("LORD_CHANNEL", str + "\n");
+	log_file("LORD", str + "\n");
 
     return 1;
 }

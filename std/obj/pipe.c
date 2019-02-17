@@ -3,6 +3,7 @@
  ***********************************/
 
 #include <treasure.h>
+#include <daemons.h>
 #include <pipe_defs.h>
 
 #define MY_NAME         capitalize((string)smoker->query_name())

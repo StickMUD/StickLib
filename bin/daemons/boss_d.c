@@ -8,12 +8,12 @@
  * 25-Nov-18, Tamarindo: Added GMCP.
  *
  */
+#include "/sys/files.h"
 
 #include <daemons.h>
 #include <sound.h>
 #include <boss.h>
 #include <player_defs.h>
-#include <sys/files.h>
 
 #define LOG_FILE "SPECIAL_EQUIPMENT"
 #define PATH "/std/obj/special"
@@ -40,7 +40,7 @@ send_gmcp(object equipment, object room)
 {
     foreach (object you : filter(all_inventory(room), (: $1->query(LIV_IS_PLAYER) :)))
     {
-	if (you->query_env("telopt_gmcp"))
+	if (you->query_env("gmcp"))
 	{
 	    TELOPT_D->send_char_items_add(you, "room", equipment);
 	}
@@ -97,20 +97,15 @@ public void generate_items(object env, int level)
     if ( !objectp(env)) return;
     switch (level) {
     case 250..349:
-        generate_drop(10, EGG_INVULN, env); // was 5
         generate_drop(20, LEAF_COCA, env);
-        generate_drop(20, ROOT_MARUNA, env);
-        generate_drop(20, PLANT_JOJOJOPO, env);
         generate_drop(10, MAGIC_LOCKPICK, env);
         generate_drop(10, SCROLL_OF_TIME_DISTORTION, env); // was 5
         generate_drop(10, SCROLL_OF_LOCATION, env); // was 15
         generate_drop(10, SCROLL_OF_ABJURATION, env);
-        generate_drop(10, SCROLL_OF_POISON_DETECTION, env);
         generate_drop(15, SCROLL_OF_RECALL, env);
         generate_drop(15, SCROLL_OF_HEALING, env);
         generate_drop(15, SCROLL_ENCHANT_WEAPON, env);
         generate_drop(15, SCROLL_ENCHANT_ARMOUR, env);
-        generate_drop(15, SCROLL_ENCHANT_INSTRUMENT, env);
         generate_drop(10, POTION_DETECT_MAGIC, env);  // was 5
         generate_drop(20, POTION_REGENERATION, env);
         generate_drop(100, POTION_HEALING, env); // Was 20
@@ -120,20 +115,15 @@ public void generate_items(object env, int level)
 
         // Falls through...
     case 150..249:
-        generate_drop(5, EGG_INVULN, env);
         generate_drop(15, LEAF_COCA, env);
-        generate_drop(15, ROOT_MARUNA, env);
-        generate_drop(15, PLANT_JOJOJOPO, env);
         generate_drop(5, MAGIC_LOCKPICK, env);
         generate_drop(5, SCROLL_OF_TIME_DISTORTION, env);
         generate_drop(5, SCROLL_OF_LOCATION, env);  // was 10
         generate_drop(5, SCROLL_OF_ABJURATION, env);
-        generate_drop(5, SCROLL_OF_POISON_DETECTION, env);
         generate_drop(10, SCROLL_OF_RECALL, env);
         generate_drop(10, SCROLL_OF_HEALING, env);
         generate_drop(10, SCROLL_ENCHANT_WEAPON, env);
         generate_drop(10, SCROLL_ENCHANT_ARMOUR, env);
-        generate_drop(10, SCROLL_ENCHANT_INSTRUMENT, env);
         generate_drop(5, POTION_DETECT_MAGIC, env);
         generate_drop(15, POTION_REGENERATION, env); // was 20
         generate_drop(25, POTION_HEALING, env); // was 20 then 15
@@ -143,12 +133,9 @@ public void generate_items(object env, int level)
         // Falls through...
     case 100..149:
         generate_drop(10, LEAF_COCA, env);
-        generate_drop(10, ROOT_MARUNA, env);
-        generate_drop(10, PLANT_JOJOJOPO, env);
         generate_drop(5, SCROLL_OF_HEALING, env);
         generate_drop(5, SCROLL_ENCHANT_WEAPON, env);
         generate_drop(5, SCROLL_ENCHANT_ARMOUR, env);
-        generate_drop(5, SCROLL_ENCHANT_INSTRUMENT, env);
         generate_drop(10, POTION_REGENERATION, env);
         generate_drop(15, POTION_HEALING, env); // was 10
         generate_drop(15, POTION_REFRESHING, env);  // was 20 then 10
@@ -157,8 +144,6 @@ public void generate_items(object env, int level)
         // Falls through...
     default:
         generate_drop(5, LEAF_COCA, env);  // added
-        generate_drop(5, ROOT_MARUNA, env);  // added
-        generate_drop(5, PLANT_JOJOJOPO, env);  // added
         generate_drop(5, POTION_REFRESHING, env);  // added
         generate_drop(5, POTION_MANA, env);  // was 100
         generate_drop(5, POTION_HEALING, env);  // added
@@ -168,9 +153,9 @@ public void generate_items(object env, int level)
 
 // Called by monster_died() in various boss monsters
 public void random_drop(object npc) {
-    if ( !objectp(npc)) return;
+    if (!objectp(npc)) return;
     object env = environment(npc);
-    generate_items( env, (int)npc->query_level());
+    generate_items(env, (int)npc->query_level());
     env->sound(SD_SOUND_LIGHTNING);
     env->tell_here(sprintf("As %s falls, there is a bright flash!", npc->query_name()));
 }
