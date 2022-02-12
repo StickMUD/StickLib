@@ -146,13 +146,13 @@ So that IP name lookups work, patch the function f_interactive_info (svalue_t *s
 #### Tune the configuration so it is right for this server
 ```
 cd src/settings
-nano stickmud
+nano sticklib
 ```
 #### Complete the driver installation (update paths as needed)
 ```
 cd ..
 ./autogen.sh
-./configure --prefix=/home/sticklib/ldmud --libdir=/home/sticklib/ldmud/lib --bindir=/home/sticklib/ldmud/bin --with-setting=stickmud
+./configure --prefix=/home/sticklib/ldmud --libdir=/home/sticklib/ldmud/lib --bindir=/home/sticklib/ldmud/bin --with-setting=sticklib
 make
 make install
 make install-all
