@@ -119,6 +119,7 @@ python3 setup.py install --user
 ```
 #### Edit comm.c so that IP name lookups work for StickMUD
 ```
+cd ~/ldmud
 nano src/comm.c
 ```
 So that IP name lookups work, patch the function f_interactive_info (svalue_t *sp) to update the hname:
