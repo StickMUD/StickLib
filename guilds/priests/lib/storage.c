@@ -3,7 +3,7 @@
  *
  */
 
-#pragma strict_types
+
 
 #include "../rooms/priest_room.h"
 #include <criminal.h>

@@ -1,5 +1,6 @@
 /* The Guildmaster */
 /* REALLY tough! */
+#include <sys/configuration.h>
 #include <npc.h>
 #include <key_defs.h>
 
@@ -14,7 +15,7 @@ object key;
 void
 create_monster()
 {
-    set_heart_beat(1);
+    configure_object(this_object(), OC_HEART_BEAT, 1);
     set_name("guildmaster");
     set_short("The Guildmaster");
     set_long("He looks very skilled. I suggest you hold your things.");

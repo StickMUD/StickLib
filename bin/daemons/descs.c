@@ -22,7 +22,7 @@
 #define CMPCNT 6    /* compare count */
 #define MAX_NEG (2*CMPCNT)  /* max negative adjective */
 
-#pragma strict_types
+
 
 #include <conditions.h>
 

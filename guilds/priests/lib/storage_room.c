@@ -6,7 +6,7 @@
 
 #include "../rooms/priest_room.h"
 
-#pragma strict_types
+
 
 #define MAX_AT_ONCE 5
 #define MAX_LISTED  40

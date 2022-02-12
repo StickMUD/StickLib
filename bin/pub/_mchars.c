@@ -3,7 +3,7 @@
 // Allows players to check their _own_ multiple characters. Just so that
 // they can't simply say: "I did not know it was not registered."
 
-#pragma strict_types
+
 #include <cmd.h>
 //#include <invis_levels.h>
 #include <daemons.h>

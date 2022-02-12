@@ -20,7 +20,7 @@
 #include <stats.h>
 #include <gender.h>
 
-#pragma strict_types
+
 
 // Variables
 static mapping tits;

@@ -120,7 +120,7 @@ void binmsg(string str, int flag)
         if (!sscanf(object_name(previous_object()),
             sprintf("home/%s/%%~s", name)) &&
           this_player() != this_object()) return;
-    binary_message(str, flag);
+    binary_message(to_bytes(str, "UTF-8"), flag);
     return;
 }
 
@@ -232,7 +232,7 @@ public varargs int tell_me(mixed str, mixed sense_list, mixed tell_flags,
      */
     if (effects_on && mappingp(text_effects)
         &&(s = text_effects[j & TELL_TYPE_MASK])) {
-        binary_message(s, 1);
+        binary_message(to_bytes(s, "UTF-8"), 1);
     } else s = 0;
 
     int wrap = j & TELL_NO_WRAP ? 0 : s_columns-1;
@@ -267,7 +267,7 @@ public varargs int tell_me(mixed str, mixed sense_list, mixed tell_flags,
             // term_reset = "\e[0m"; // ] _should_ work, does not.
         }
 
-        binary_message(term_reset, 1);
+        binary_message(to_bytes(term_reset, "UTF-8"), 1);
     }
 
     /* Send line feed for messages that are using text wrap */

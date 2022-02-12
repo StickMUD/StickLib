@@ -1,7 +1,7 @@
 // /bin/daemons/stat_d.c
 // 19-Apr-98 / Graah
 
-#pragma strict_types
+
 
 int invis_level;
 int alignment;

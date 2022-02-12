@@ -25,7 +25,7 @@
  *   "tool" etc). Thus, shop can sell non-food things.
  */
 
-#pragma strict_types
+
 
 #include <room.h>
 

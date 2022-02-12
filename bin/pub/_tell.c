@@ -11,7 +11,7 @@
 // Graah 17-Jul-96: Isolated rooms
 //
 
-#pragma strict_types
+
 
 #include "/sys/interactive_info.h"
 #include "/sys/object_info.h"

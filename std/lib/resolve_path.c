@@ -3,7 +3,7 @@
  * Make path name absolute.
  * 'player' is optional.
  */
-#pragma strict_types
+
 
 #define PATHERROR	"NONE"
 #define XUSERPATH(name)	({ "players", name })

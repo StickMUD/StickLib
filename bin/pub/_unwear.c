@@ -3,7 +3,7 @@
  * -Doomdark 19-sep-94.
  */
 
-#pragma strict_types
+
 
 #include <cmd.h>
 #include <daemons.h>

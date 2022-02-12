@@ -3,7 +3,7 @@
  * Change path name to contain the tilde (~) mark if it can be shortened.
  * Optional 'player' can be string or object.
  */
-#pragma strict_types
+
 
 #ifndef _CONFIG_H
 #include <config.h>

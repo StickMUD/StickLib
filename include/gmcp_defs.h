@@ -7,10 +7,10 @@
 #define GMCP_PKG_CLIENT_GUI                             "Client.GUI"
 #define GMCP_KEY_CLIENT_GUI_VERSION                     "1"
 #define GMCP_KEY_CLIENT_GUI_URL                         "url"
-#define GMCP_VALUE_CLIENT_GUI_URL                       "https://www.kandawen.com/Kandawen.zip"
+#define GMCP_VALUE_CLIENT_GUI_URL                       "https://raw.githubusercontent.com/StickMUD/StickMUDMudletGUI/master/StickMUD.mpackage"
 #define GMCP_PKG_CLIENT_MAP                             "Client.Map"
 #define GMCP_KEY_CLIENT_MAP_URL                         "url"
-#define GMCP_VALUE_CLIENT_MAP_URL                       "https://www.kandawen.com/maps/map.xml"
+#define GMCP_VALUE_CLIENT_MAP_URL                       "https://raw.githubusercontent.com/StickMUD/StickMUDOfficialmap/master/maps/map.xml"
 #define GMCP_PKG_CORE					"Core"
 #define GMCP_PKG_CORE_HELLO				"Core.Hello"
 #define GMCP_KEY_CORE_HELLO_CLIENT			"client"
@@ -28,12 +28,12 @@
 #define GMCP_PKG_EXTERNAL_DISCORD_INFO			"External.Discord.Info"
 #define GMCP_KEY_EXTERNAL_DISCORD_INFO_INVITEURL	"inviteurl"
 #define GMCP_KEY_EXTERNAL_DISCORD_INFO_APPLICATIONID	"applicationid"
-#define GMCP_VALUE_EXTERNAL_DISCORD_INFO_APPLICATIONID	"491085457959026698" // Update!
+#define GMCP_VALUE_EXTERNAL_DISCORD_INFO_APPLICATIONID	"<bunch of numbers>" // Update!
 #define GMCP_PKG_EXTERNAL_DISCORD_STATUS		"External.Discord.Status"
 #define GMCP_KEY_EXTERNAL_DISCORD_STATUS_GAME		"game"
 #define GMCP_VALUE_EXTERNAL_DISCORD_STATUS_GAME		"Kandawen"
 #define GMCP_KEY_EXTERNAL_DISCORD_STATUS_STARTTIME	"starttime"
-#define GMCP_VALUE_EXTERNAL_DISCORD_INFO_INVITEURL	"https://discord.gg/dhmTtbZ" // Update
+#define GMCP_VALUE_EXTERNAL_DISCORD_INFO_INVITEURL	"https://discord.gg/<fill in>" // Update
 #define GMCP_PKG_CHAR					"Char"
 #define GMCP_PKG_CHAR_LOGIN				"Char.Login"
 #define GMCP_KEY_CHAR_LOGIN_NAME			"name"

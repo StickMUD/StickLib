@@ -30,7 +30,7 @@
 
 inherit "/basic/id";
 
-#pragma strict_types
+
 
 #define _MAX_SIZE_DEFAULT 150
 #define _BOARD_SUBJ	0		// message mapping index

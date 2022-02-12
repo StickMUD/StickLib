@@ -9,7 +9,7 @@
  * 5-Sep-98 / Graah	Added some stick-distribution patches
  */
 
-#pragma strict_types
+
 
 #include <mud_name.h>
 

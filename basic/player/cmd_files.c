@@ -25,7 +25,7 @@
 *                                                               *
 ****************************************************************/
 
-#pragma strict_types
+
 
 // These are defined so that the module can be test-compiled
 // stand-alone, before trying to compile the player object:

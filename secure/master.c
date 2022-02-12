@@ -18,7 +18,7 @@
 ****************************************************************/
 
 #pragma strong_types
-#pragma strict_types
+
 
 #include "/sys/driver_hook.h"
 #include "/sys/interactive_info.h"
@@ -38,7 +38,9 @@
 #include "/include/areas.h"
 #include "/include/generic_rooms.h"
 
-#define PLANFILE "/www/.plan"
+#define ADD_SLASH(p)	"/" + p
+
+#define PLANFILE	"/www/.plan"
 #define	HTMLPLANFILE	"/www/finger.html"
 
 // Some of these need to be without the leading slash, at least
@@ -795,6 +797,40 @@ flag(string str)
     printf("master: Unknown flag %s.\n", str);
 }
 
+static string _include_dirs_hook (string include_name, string current_file)
+// Return the full pathname of an include file.
+//
+// Argument:
+//   include_name: the name given in the #include <...> directive.
+//   current_file: the filename of the file compiled.
+//
+// Result:
+//   The full pathname of the include file.
+//   0 if no such file exists.
+//
+// If include_name can't be found as such, the function looks in /sys
+// and /room for /sys/<include_name> resp. /room/<include_name>.
+{
+    string name, part;
+    int pos;
+
+    if (file_size(ADD_SLASH(include_name)) >= 0)
+	return include_name;
+    name = "sys/"+include_name;
+    if (file_size(ADD_SLASH(name)) >= 0)
+	return name;
+    name = "include/"+include_name;
+    if (file_size(ADD_SLASH(name)) >= 0)
+	return name;
+    name = "secure/"+include_name;
+    if (file_size(ADD_SLASH(name)) >= 0)
+	return name;
+    name = "room/"+include_name;
+    if (file_size(ADD_SLASH(name)) >= 0)
+	return name;
+    return 0;
+}
+
 //---------------------------------------------------------------------------
 static string _auto_include_hook (string base_file, string current_file, int sys_include)
 // Optional string to be included when compiling <base_file>.
@@ -959,12 +995,9 @@ inaugurate_master(int arg)
 	({ #'call_other, "/bin/daemons/remarks",
 	  "query_random_notify_fail", 'cmd }) ));
 
-    set_driver_hook(H_INCLUDE_DIRS, ({
-	"/include/std/", "/include/",
-	// "/secure/", "/room/"
-      }) );
-
     set_driver_hook(H_PRINT_PROMPT, "print_prompt");
+
+    set_driver_hook(H_INCLUDE_DIRS, #'_include_dirs_hook);
 
     set_driver_hook(H_AUTO_INCLUDE, #'_auto_include_hook);
 

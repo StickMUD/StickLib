@@ -16,7 +16,7 @@
 * Modifications:						*
 *								*
 ****************************************************************/
-#pragma strict_types
+
 
 #include <room.h>
 

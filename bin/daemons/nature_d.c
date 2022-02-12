@@ -90,8 +90,6 @@ the werevolves!
 #include <attack.h>
 #include <sound.h>
 
-#pragma strict_types
-
 #define SAVETIME	900	/* heartbeats between saves */
 #define	SAVEFILE	"/data/d/nature_d/nature_save"
 inherit "/room/weathersave";

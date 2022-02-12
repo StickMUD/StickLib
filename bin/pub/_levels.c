@@ -1,4 +1,4 @@
-#pragma strict_types
+
 #include <cmd.h>
 #include <daemons.h>
 #include <gender.h>

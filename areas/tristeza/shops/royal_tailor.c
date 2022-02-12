@@ -5,7 +5,7 @@
 #include <cloth_defs.h>
 #include <city_name.h>
 
-#pragma strict_types
+
 
 mixed inv;
 

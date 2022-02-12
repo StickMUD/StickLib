@@ -84,8 +84,7 @@ tell_here(mixed s, mixed sense, mixed flags, mixed dont_tell_these,
 	break;
     default:
 	while(x) {
-	    //if (living(x) && member(x, (object*) dont_tell_these) < 0) TELL_X(x);
-	    if (living(x) && m_contains(x, (object*) dont_tell_these) < 0) TELL_X(x);
+	    if (living(x) && member(dont_tell_these, x) < 0) TELL_X(x);
 	}
     }
     if (CALL_CATCH_TELL) {

@@ -1,3 +1,4 @@
+#include <sys/configuration.h>
 #include <group_npc.h>
 #include <daemons.h>
 
@@ -37,14 +38,14 @@ create_monster()
     set_money(random(100) + 99);
     set_alignment(AL_NEUTRAL);
     set_guild("thief");
-    set_heart_beat(1);
+    configure_object(this_object(), OC_HEART_BEAT, 1);
 
     yelled = 0;
 }
 
 heart_beat()
 {
-    string *temp;
+    string temp;
     string name1;
     string *exits;
     object *inv;
@@ -69,7 +70,6 @@ heart_beat()
 	      "ACK! " + name1 + " is trying to kill me! Help me out!!",
 	    })[random(3)];
 	    CHANNEL_D->send_channel_message(TO, "thief", temp);
-	    // display_mesg((string)this_object()->query_name(),0,temp);
 	}
     }
     else yelled = 0;

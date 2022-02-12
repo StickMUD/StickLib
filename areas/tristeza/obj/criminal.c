@@ -12,7 +12,7 @@
  *	5	murder
  *
  */
-#pragma strict_types
+
 
 int crime_time, crime_level;
 

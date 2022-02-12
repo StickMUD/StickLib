@@ -4,7 +4,7 @@
 //
 // - Now allows left wielding too...
 
-#pragma strict_types
+
 #include <cmd.h>
 
 varargs nomask status

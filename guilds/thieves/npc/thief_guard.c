@@ -1,3 +1,4 @@
+#include <sys/configuration.h>
 #include <group_npc.h>
 #include <attack.h>
 #include <weapon_defs.h>
@@ -42,7 +43,6 @@ of Thieves. Type \"join\" if you wish to join the guild.");
     set_level(25);
     set_ep(250000);
     set_hp(4000);
-    // set_wimpy(0);
     set_dead_ob(this_object());
     set_money(random(500) + 150);
     set_alignment(AL_NASTY);
@@ -50,7 +50,7 @@ of Thieves. Type \"join\" if you wish to join the guild.");
     set_gender(G_MALE);
     set_guild("thief");
     set_group("thief_guard");
-    set_heart_beat(1);
+    configure_object(this_object(), OC_HEART_BEAT, 1);
 
     armour = clone_object(ARMOUR_FILE);
     armour->set_name("chain mail");
@@ -122,25 +122,6 @@ stomps %<him.capname>% into a wet spot on the floor.",
 
     if (ATT && present(ATT,environment(TO)) && (random(100) < 60))
     {
-	/* What? A THIEF attacks his own guild guard???!? */
-	/* Teleport him into some nasty place. */
-	if ((string)ATT->query_guild() == GN_THIEF)
-	{
-	    ATT->tell_me(
-	      "Guard yells: Why you little insect...how DARE you to attack me?!!!\n\
-Your tattoo glows brightly and your surroundings change...");
-
-	    ATT->move_player( ({
-		"X#"+AREA_FARAWAY+"mountain/glacier6",
-		/*
-			  "X#players/graah/crypt/lobby",
-			  "X#room/sewers/lvl2/tube1"
-		*/
-	      })[random(1)] );
-
-	    //	::heart_beat();
-	}
-
 	if (random(100) > 75)
 	{
 	    ATT->tell_me("The guard kicks you skillfully in the groin.");

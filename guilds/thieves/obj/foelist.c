@@ -2,7 +2,7 @@
 //   Made it so demons could use these lists... Hey, they're
 //   the bosses now.
 
-#pragma strict_types
+
 
 inherit "basic/id";
 

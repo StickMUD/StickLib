@@ -895,30 +895,30 @@ gmcp_input(int *optdata) {
 
     switch (package) {
     case GMCP_PKG_CORE_HELLO:
-	gmcp_cache_filter(package, json_decode(value));
+	gmcp_cache_filter(package, json_parse(value));
 	TELOPT_D->send_client_map(this_player());
 	break;
     case GMCP_PKG_CORE_SUPPORTS_SET:
-	gmcp_cache_filter(package, json_decode(value));
+	gmcp_cache_filter(package, json_parse(value));
 	break;
     case GMCP_PKG_CORE_SUPPORTS_ADD:
-	gmcp_cache_filter(package, json_decode(value));
+	gmcp_cache_filter(package, json_parse(value));
 	break;
     case GMCP_PKG_CORE_SUPPORTS_REMOVE:
-	gmcp_cache_filter(package, json_decode(value));
+	gmcp_cache_filter(package, json_parse(value));
 	break;
     case GMCP_PKG_CORE_KEEPALIVE:
 	// Not yet supported
 	break;
     case GMCP_PKG_CORE_PING:
-	gmcp_cache_filter(package, json_decode(value ? value : "null"));
+	gmcp_cache_filter(package, json_parse(value ? value : "null"));
 	gmcp_message(package, "");
 	break;
     case GMCP_PKG_EXTERNAL_DISCORD_GET:
 	TELOPT_D->send_external_discord_status(this_player());
 	break;
     case GMCP_PKG_EXTERNAL_DISCORD_HELLO:
-	gmcp_cache_filter(package, value ? json_decode(value) : value);
+	gmcp_cache_filter(package, value ? json_parse(value) : value);
 	TELOPT_D->send_external_discord_info(this_player());
 	TELOPT_D->send_external_discord_status(this_player());
 	break;
@@ -1111,7 +1111,7 @@ telopt_negotiate(int action, int option, int *optdata) {
 
 	if (action == DO) {
 	    binary_message(({IAC, SB, TELOPT_MSSP}));
-	    binary_message(mssp_message());
+	    binary_message(to_bytes(mssp_message(), "UTF-8"));
 	    binary_message(({IAC, SE}));
 	}
 	break;
@@ -1140,14 +1140,14 @@ telopt_negotiate(int action, int option, int *optdata) {
 	    set_env("gmcp", 1);
 #endif /* LOGIN_C */
 
-	    binary_message(sprintf("%c%c%c", IAC, DONT, option), 3);
+	    binary_message(to_bytes(sprintf("%c%c%c", IAC, DONT, option), "UTF-8"), 3);
 	} else if (action == DO) {
 #ifndef LOGIN_C
 	    if (query_env("gmcp")) return;
 	    set_env("gmcp", 1);
 #endif /* LOGIN_C */
 
-	    binary_message(sprintf("%c%c%c", IAC, WONT, option), 3);
+	    binary_message(to_bytes(sprintf("%c%c%c", IAC, WONT, option), "UTF-8"), 3);
 	}
 #endif
     }
@@ -1195,16 +1195,16 @@ gmcp_message(string package, mixed value, int refresh) {
 
 	    // Send only if the cache changed
 	    if (refresh ? value : cache_value) {
-		string json_serialized_value = json_encode(refresh ? value : cache_value);
+		string json_serialized_value = json_serialize(refresh ? value : cache_value);
 
 		// send the client the value
 		binary_message(({IAC, SB, TELOPT_GMCP}));
-		binary_message(sprintf("%s %s", package, json_serialized_value));
+		binary_message(to_bytes(sprintf("%s %s", package, json_serialized_value), "UTF-8"));
 		binary_message(({IAC, SE}));
 	    }
 	} else { // GMCP_PKG_CLIENT_GUI needs sent raw
 	    binary_message(({IAC, SB, TELOPT_GMCP}));
-	    binary_message(sprintf("%s %s", package, value));
+	    binary_message(to_bytes(sprintf("%s %s", package, value), "UTF-8"));
 	    binary_message(({IAC, SE}));
 	}
 

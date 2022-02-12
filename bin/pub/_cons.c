@@ -1,6 +1,6 @@
 // Moved to /bin/pub 17-oct-95 by Doomdark.
 
-#pragma strict_types
+
 
 #include <player_defs.h>
 

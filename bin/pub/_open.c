@@ -3,7 +3,7 @@
  * 19-sep-94 Doomdark,
  */
 
-#pragma strict_types
+
 #include <cmd.h>
 
 varargs nomask status

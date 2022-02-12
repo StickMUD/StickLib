@@ -3,7 +3,7 @@
  * Made by Val (Tero.Pelander@utu.fi)
  * Last change: 29.3.1996
  */
-#pragma strict_types
+
 
 #define VERSION         "v1.11C"
 #define DEST            "/areas/tristeza/adv_guild/adv_guild"

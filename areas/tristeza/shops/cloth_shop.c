@@ -4,7 +4,7 @@
 #include <daemons.h>
 #include <cloth_defs.h>
 
-#pragma strict_types
+
 
 mixed inv;
 

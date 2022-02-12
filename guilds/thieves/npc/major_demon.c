@@ -16,7 +16,7 @@ the usual glowing red eyes. He can kill you with a wink of his eye!");
     set_ac(200);
     set_hp(10000);
     set_ep(500000);
-    set_al(AL_EVIL);
+    set_alignment(AL_EVIL);
     set_breath_attack(300, 10,
       "The demon breathes fire on you!",
       "A terrible fire breath almost scorches your flesh!", DT_FIRE);

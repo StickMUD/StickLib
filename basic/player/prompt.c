@@ -19,7 +19,9 @@ set_prompt_iacga(int arg) {
 varargs void
 print_prompt(string prompt) {
     if (prompt_iacga) {
-	binary_message (prompt, 1);
-	binary_message (({IAC, GA}), 2);
-    } else write(prompt);
+	binary_message(to_bytes(prompt, "UTF-8"), 1);
+	binary_message(({IAC, GA}), 2);
+    } else {
+	write(prompt);
+    }
 }

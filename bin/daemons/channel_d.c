@@ -172,15 +172,17 @@ tail_channel(string ch, object plr)
     file = query_channel_log_file(ch);
     size = file_size(file);
 
-    if(size < 1000)
-	msg = read_bytes(file, -size, size);
-    else
-	msg = read_bytes(file, -1000, 1000);
+    if (size < 1000) {
+	msg = to_text(read_bytes(file, -size, size), "UTF-8");
+    } else {
+	msg = to_text(read_bytes(file, -1000, 1000), "UTF-8");
+    }
 
-    if(!msg  ||  msg == "")
+    if (!msg || msg == "") {
 	plr->tell_me("Empty file or file not found.");
-    else
+    } else {
 	plr->tell_me(msg, 0, channels[ch][0]);
+    }
 }
 
 nomask string *

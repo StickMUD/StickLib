@@ -1,6 +1,6 @@
 /* Equipment list (a la DikuMUD) */
 
-#pragma strict_types
+
 
 #include <cmd.h>
 #include <macros.h>

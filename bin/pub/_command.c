@@ -1,4 +1,4 @@
-#pragma strict_types
+
 
 nomask int
 command_cmd(string s, object me, string mode, int flags)

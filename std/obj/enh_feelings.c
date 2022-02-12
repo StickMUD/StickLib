@@ -12,7 +12,7 @@
  *
  */
 
-#pragma strict_types
+
 
 inherit "basic/id";
 

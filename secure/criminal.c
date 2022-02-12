@@ -5,7 +5,7 @@
  * Handle NPC witnesses, and accusations (player witnesses). Clever.
  *
  */
-#pragma strict_types
+
 
 #include <criminal.h>
 

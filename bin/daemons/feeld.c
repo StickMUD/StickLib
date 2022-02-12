@@ -17,7 +17,7 @@
 *								*
 ****************************************************************/
 
-#pragma strict_types
+
 
 #include <daemons.h>
 #include <coder_levels.h>

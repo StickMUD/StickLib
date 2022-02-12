@@ -11,7 +11,7 @@
 //   5-Sep-98 / Graah:
 //	Fixed for stick-dist
 
-#pragma strict_types
+
 
 #include <player_defs.h>
 #include <mud_name.h>

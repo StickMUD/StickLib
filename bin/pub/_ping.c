@@ -2,7 +2,7 @@
 //
 // Sends audible bell to the poor victim.
 
-#pragma strict_types
+
 
 #include "/sys/interactive_info.h"
 

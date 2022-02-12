@@ -16,7 +16,7 @@
 #include <drink_defs.h>
 #include <criminal.h>
 
-#pragma strict_types
+
 
 #define TP this_player()
 

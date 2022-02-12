@@ -1,4 +1,4 @@
-#pragma strict_types
+
 inherit "/bin/pub/_wield";
 
 varargs nomask status

@@ -16,7 +16,7 @@
  * When clothing is worn, the cloth object is destructed.
  *
  */
-#pragma strict_types
+
 
 inherit "/basic/id";
 

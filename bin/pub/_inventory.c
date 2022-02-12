@@ -2,7 +2,7 @@
 // Can see own inventory in any light condition. Graah 23-Jun-96
 
 /* Now also supports the 'Murder'-client. -+ Doomdark 23-Jan-98 +- */
-#pragma strict_types
+
 
 #include <tell_me.h>
 #include <player_defs.h>

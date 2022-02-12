@@ -1,6 +1,6 @@
 /* Miscellaneous commands */
 
-#pragma strict_types
+
 
 #include <conditions.h>
 #include <coder_levels.h>

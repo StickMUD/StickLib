@@ -6,11 +6,8 @@
 
 #include "thief.h"
 
-#pragma strict_types
-
 #define SAVEFILE GDIR2 + "GUILD_SAVE"
 #define REALNAME(x) ((string)(x)->query_real_name())
-//#define Realname(x) (capitalize((string)(x)->query_real_name()))
 #define TP this_player()
 
 /* Protos */
@@ -75,13 +72,6 @@ mysterious lever in western wall.");
     call_other(TOP_TEN, "reset_top_ten");
 
     call_out("reset_room", 1);
-    /*
-       if (file_size("/guilds/thieves/GM_VOTES.o") != -1)
-       {
-	  vote_ob = clone_object("/guilds/thieves/voter");
-	  move_object(vote_ob, this_object());
-       }
-    */
 }
 
 int query_tax_base() { return tax_base; }
@@ -192,7 +182,7 @@ is_thief(object who)
     return ob;
     if (who->query_coder_level()) return ob;
 
-    if ((int)ob->query_guildmaster() >= TR_DEMON) return ob;
+    if (ob->query_thief_level() >= TR_DEMON) return ob;
 
     if (REALNAME(who) != guildmaster)
     {
@@ -200,10 +190,10 @@ is_thief(object who)
 	{
 	    if (member(enforcers, REALNAME(who)) != -1)
 	    {
-		ob->set_guildmaster(TR_ENFORCER);
-	    } else ob->set_guildmaster(0);
-	} else ob->set_guildmaster(TR_CO_GM);
-    } else ob->set_guildmaster(TR_GM);
+		ob->set_thief_level(TR_ENFORCER);
+	    } else ob->set_thief_level(0);
+	} else ob->set_thief_level(TR_CO_GM);
+    } else ob->set_thief_level(TR_GM);
 
     return ob;
 }
@@ -366,9 +356,9 @@ pull(string arg)
 	return 0;
     }
 
-    write("Ok. You hear a creacking sound and a crash from the west!\n");
+    write("Ok. You hear a creaking sound and a crash from the west!\n");
     say(this_player()->query_name() + " pulls the lever.\n"+
-      "You hear a creacking sound and a crash from the west!\n");
+      "You hear a creaking sound and a crash from the west!\n");
 
     call_other(GDIR + "rooms/entry", "trap_door");
     pulled = 1;
@@ -675,11 +665,11 @@ nothing less is sufficient.\n");
 
     t = is_thief(TP);
 
-    if (t && t->query_guildmaster() < TR_DEMON)
+    if (t && t->query_thief_level() < TR_DEMON)
     {
 	if (!TP->query_coder_level())
 	{
-	    if (t->query_guildmaster() >= TR_GM)
+	    if (t->query_thief_level() >= TR_GM)
 	    {
 		if (REALNAME(TP) == guildmaster)
 		{

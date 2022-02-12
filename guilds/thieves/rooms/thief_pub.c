@@ -1,4 +1,4 @@
-#pragma strict_types
+
 
 #include <daemons.h>
 #include <room_defs.h>

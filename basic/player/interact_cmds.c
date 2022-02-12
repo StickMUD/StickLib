@@ -10,7 +10,7 @@
  * 27-Jan-1998 New: Deaf people can't hear you. //Chopin
  */
 
-#pragma strict_types
+
 
 #include <coder_levels.h>
 #include <invis_levels.h>

@@ -76,7 +76,7 @@ inherit "/basic/object/dimensions";
 // Prototypes:
 
 private void check_armour();
-varargs status wear_me(object who, status silent);
+varargs status wear_me(object who, status silent, string where);
 varargs status unwear_me(object who, status silent);
 int query_ac();
 
@@ -206,7 +206,17 @@ string query_race() { return race; }
 nomask string
 query_special_properties()
 {
-    return implode(specialProperties, "#");
+    string ret;
+
+    for (int i = 0; i < sizeof(specialProperties); i++) {
+	if (!i) {
+	    ret = sprintf("%d", specialProperties[i]);
+	} else {
+	    ret += sprintf("#%d", specialProperties[i]);
+	}
+    }
+
+    return ret;
 }
 
 // Is there really a need to secure these? This is purely player stuff. /Graah

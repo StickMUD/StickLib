@@ -29,8 +29,6 @@
 
 #include <coder_levels.h>
 
-#pragma strict_types
-
 #define SAVE_FILE "/data/d/banish_d/new_banish_save"
 
 /* Prototypes */

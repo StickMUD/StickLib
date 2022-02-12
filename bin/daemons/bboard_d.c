@@ -20,7 +20,7 @@
 #include <coder_levels.h>
 #include <bboard_defs.h>
 
-#pragma strict_types
+
 
 #define _SAVEDIR	"/data/d/bboard_d/"
 #define	_SAVEFILE	"/data/d/bboard_d/last_notes"

@@ -9,7 +9,7 @@
  * in /include/criminal.h. Use the defines.
  *
  */
-#pragma strict_types
+
 
 #include <criminal.h>
 

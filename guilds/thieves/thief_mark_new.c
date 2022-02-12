@@ -44,6 +44,7 @@
 // 23-Sep-97 / Graah: New system to allow multiple stabbing
 // 25-Sep-97 / Graah: Tumble, stab and tth crits use same rates.
 // 02-Apr-98 / Kieve: Took out the max level checks
+#include <sys/interactive_info.h>
 #include <treasure.h>
 
 #include <attack.h>
@@ -263,7 +264,7 @@ int query_steal_tax() { return steal_tax; }
 
 int query_delay_stab() { return delay_stab; }
 int query_advantage() { return advantage; }
-query_thief_level() { return t_level; }
+int query_thief_level() { return t_level; }
 int query_sneak() { return (sneak ? sneak : 0); }
 int query_tumbtime() { return (tumbtime + TUMBSEC - time()); }
 object query_summoner() { return summoner; }
@@ -987,7 +988,7 @@ varargs int advance_skill(int sk, int d, int p)
     int oldr, newr;
 
     // Hah hah haa! But don't make it less than 8.
-    if (query_idle(owner) > 10) return sk;
+    if (interactive_info(owner, II_IDLE) > 10) return sk;
 
     // Not obfuscated enough!
     if ((weird = environment(owner)) &&

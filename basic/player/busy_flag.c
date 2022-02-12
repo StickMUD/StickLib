@@ -1,4 +1,4 @@
-#pragma strict_types
+
 /*
  * This file in inherited by the player object. No need for monsters to have
  * this.

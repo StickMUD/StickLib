@@ -1,4 +1,4 @@
-#pragma strict_types
+
 #pragma save_types
 
 #include "/include/config.h"

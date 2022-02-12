@@ -1,4 +1,4 @@
-#pragma strict_types
+
 #include <npc_defs.h>
 #include <room.h>
 #include <guild.h>

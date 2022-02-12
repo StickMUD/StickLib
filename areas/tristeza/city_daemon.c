@@ -3,7 +3,7 @@
 
 // V2.0 19-feb-95 by Doomdark.
 
-#pragma strict_types
+
 
 #include <room_defs.h>
 

@@ -17,7 +17,7 @@
 
 #include <armour_defs.h>
 
-#pragma strict_types
+
 
 mixed *armours;
 static int array_size;
