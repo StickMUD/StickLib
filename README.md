@@ -107,7 +107,7 @@ cd ldmud
 ```
 #### Checkout the version that matches production StickMUD
 ```
-git checkout 3.6.4
+git checkout 3.6.5
 rm -rf ldmud/.git
 ```
 #### Install Python Efun Package for LDMud
