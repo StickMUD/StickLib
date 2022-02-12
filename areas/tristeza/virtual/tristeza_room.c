@@ -160,8 +160,6 @@ setup_room(int x, int y)
 	    "You are on the Fighters' Square. The Lords' Street runs east and the\
  Wall Street to the south. In the northwest corner stands a tall tower.";
 	    add_permanent(GENERIC_FROBOZZ_STATUE);
-	    add_monster("/u/starks/snpc/boxer",
-	      "Rylle arrives.", 1);
 	    break;
 	case 2:
 	    long = "You are on the Wall Street which goes north\
