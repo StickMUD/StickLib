@@ -148,6 +148,66 @@ So that IP name lookups work, patch the function f_interactive_info (svalue_t *s
 cd src/settings
 nano sticklib
 ```
+Which should resemble the following:
+```
+#!/bin/sh
+#
+# Settings for the StickMUD
+#
+# configure will strip this part from the script.
+
+#export LDFLAGS="-L/usr/local/opt/libiconv/lib -L/usr/local/opt/pcre/lib -L/usr/lib ${LDFLAGS}"
+#export CPPFLAGS="-I/usr/local/opt/libiconv/include -I/usr/local/opt/pcre/include -I/usr/include ${CPPFLAGS}"
+#export CFLAGS="-I/usr/include ${CFLAGS}"
+#export EXTRA_CFLAGS=$CFLAGS
+
+exec ./configure --prefix=/home/sticklib/ldmud --libdir=/home/sticklib/ldmud/lib --bindir=/home/sticklib/ldmud/bin --with-setting=sticklib $*
+exit 1
+
+# --- The actual settings ---
+
+with_portno=5680
+with_udp_port=5690
+with_max_players=200
+with_time_to_swap=0
+with_time_to_swap_variables=0
+with_time_clean_up=3600
+with_time_to_reset=1800
+with_read_file_max_size=100000
+with_max_byte_transfer=100000
+with_otable_size=131072
+with_htable_size=131072
+with_max_array_size=20000
+with_max_mapping_keys=20000
+with_max_mapping_size=60000
+with_max_malloced=0
+with_max_cost=5000000
+with_master_name=secure/master_amy
+with_max_trace=100
+with_max_user_trace=60
+with_evaluator_stack_size=5000
+with_erq_debug=4
+with_python_script=../python-efuns/startup.py
+
+enable_erq=xerq
+enable_access_control=no
+enable_dynamic_costs=yes
+enable_compat_mode=yes
+enable_strict_euids=no
+enable_supply_parse_command=no
+enable_initialization_by___init=no
+enable_malloc_trace=no
+enable_malloc_lpc_trace=no
+enable_comm_stat=yes
+enable_apply_cache_stat=yes
+enable_use_parse_command=no
+enable_use_pcre=yes
+enable_use_json=yes
+enable_use_xml=yes
+enable_use_python=yes
+enable_use_mysql=no
+enable_use_ipv6=no
+```
 #### Complete the driver installation (update paths as needed)
 ```
 cd ..
