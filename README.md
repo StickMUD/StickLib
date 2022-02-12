@@ -219,6 +219,7 @@ make install-all
 ```
 ### Clone from the StickMUD GitHub repository
 ```
+cd ~/ldmud
 git clone --recursive https://github.com/StickMUD/StickLib.git lib
 cd lib
 rm -rf .git
