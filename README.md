@@ -99,14 +99,9 @@ cd pcre-8.45
 make
 sudo make install
 ```
-### Install LDMud
-```
-cd ~/
-mkdir ldmud
-cd ldmud
-```
 ### Clone from the LDMud GitHub repository
 ```
+cd ~/
 git clone https://github.com/ldmud/ldmud.git
 cd ldmud
 ```
